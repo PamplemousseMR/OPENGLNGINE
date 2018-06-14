@@ -1,0 +1,61 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Buzz_Eyelids
+Ns 90.196078
+Ka 1 1 1
+Kd 0.409600 0.409600 0.409600
+Ks 0.250000 0.250000 0.250000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Buzz_Face_Diff.bmp
+map_d Buzz_Face_Diff.bmp
+
+newmtl Buzz_Eyes
+Ns 90.196078
+Ka 1 1 1
+Kd 0.409600 0.409600 0.409600
+Ks 0.250000 0.250000 0.250000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Buzz_Eye_Diff.bmp
+map_d Buzz_Eye_Diff.bmp
+map_Ka Buzz_Eye_Diff.bmp
+
+newmtl Buzz_Face
+Ns 90.196078
+Ka 1 1 1
+Kd 0.409600 0.409600 0.409600
+Ks 0.250000 0.250000 0.250000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Buzz_Face_Diff.bmp
+map_d Buzz_Face_Diff.bmp
+map_Ka Buzz_Face_Diff.bmp
+
+newmtl Buzz_Limbs
+Ns 90.196078
+Ka 1 1 1
+Kd 0.409600 0.409600 0.409600
+Ks 0.250000 0.250000 0.250000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Buzz_Legs_Diff.bmp
+map_d Buzz_Legs_Diff.bmp
+map_Ka Buzz_Legs_Diff.bmp
+
+newmtl Buzz_Torso
+Ns 90.196078
+Ka 1 1 1
+Kd 0.409600 0.409600 0.409600
+Ks 0.250000 0.250000 0.250000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Buzz_Torso_Diff.bmp
+map_d Buzz_Torso_Diff.bmp
+map_Ka Buzz_Torso_Diff.bmp

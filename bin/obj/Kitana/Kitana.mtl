@@ -1,0 +1,619 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 26.09.2012 17:42:43
+
+newmtl material_0
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_1
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_2
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl Accessory_MIC
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.3 0.3 0.3
+	map_Ka Kitana_Hair_DiffA.png
+	map_Kd Kitana_Hair_DiffA.png
+	map_Ks Kitana_hair_Spec.png
+	map_bump KitanaHairNormal.png
+	bump KitanaHairNormal.png
+
+newmtl Character_MIC
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.3 0.3 0.3
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+	map_Ks Kitana_Spec.png
+	map_bump KitanaNormal.png
+	bump KitanaNormal.png
+
+newmtl material_8
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_9
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_10
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_11
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_12
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_13
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_14
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_15
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_16
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_17
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_18
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_19
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_20
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_21
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_22
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_23
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_24
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_25
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_26
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_27
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_28
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_29
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_30
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_31
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_32
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_33
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_34
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_35
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_36
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_37
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_38
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_39
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_40
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_41
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_42
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_43
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_44
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_45
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_46
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_47
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_48
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png
+
+newmtl material_49
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2 0.2 0.2
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Kitana_Diff.png
+	map_Kd Kitana_Diff.png

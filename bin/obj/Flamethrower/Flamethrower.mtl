@@ -1,0 +1,58 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 26.12.2015 17:24:36
+
+newmtl Material_000001
+Ns 33.0000
+Ni 1.5000
+d 1.0000
+Tf 1.0000 1.0000 1.0000 
+illum 2
+Ka 0.1 0.1 0.1
+Kd 1.0000 1.0000 1.0000
+Ks 0.5 0.5 0.5
+map_Ka Flamer_d.png
+map_Kd Flamer_d.png
+map_Ks Flamer_s.png
+bump Flamer_n.png
+
+newmtl Material_001c14
+Ns 33.0000
+Ni 1.5000
+d 1.0000
+Tf 1.0000 1.0000 1.0000 
+illum 2
+Ka 0.1 0.1 0.1
+Kd 1.0000 1.0000 1.0000
+Ks 0.5 0.5 0.5
+map_Ka FlamerMagazineLarge_d.png
+map_Kd FlamerMagazineLarge_d.png
+map_Ks FlamerMagazineLarge_s.png
+bump FlamerMagazineLarge_n.png
+
+newmtl Material_001d8e
+Ns 33.0000
+Ni 1.5000
+d 1.0000
+Tf 1.0000 1.0000 1.0000 
+illum 2
+Ka 0.1 0.1 0.1
+Kd 1.0000 1.0000 1.0000
+Ks 0.5 0.5 0.5
+map_Ka FlamerJetFuelTank_d.png
+map_Kd FlamerJetFuelTank_d.png
+map_Ks FlamerJetFuelTank_s.png
+bump FlamerJetFuelTank_n.png
+
+newmtl Material_002cf5
+Ns 33.0000
+Ni 1.5000
+d 1.0000
+Tf 1.0000 1.0000 1.0000 
+illum 2
+Ka 0.1 0.1 0.1
+Kd 1.0000 1.0000 1.0000
+Ks 0.5 0.5 0.5
+map_Ka FlamerNapalmTank_d.png
+map_Kd FlamerNapalmTank_d.png
+map_Ks FlamerNapalmTank_s.png
+bump FlamerNapalmTank_n.png
