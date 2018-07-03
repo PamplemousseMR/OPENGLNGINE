@@ -30,10 +30,6 @@ IF(NOT ${OPENGL_FOUND})
     MESSAGE(FATAL_ERROR "Can't find OpenGL")
 ENDIF()
 
-IF(NOT ${OPENGL_GLU_FOUND})
-    MESSAGE(FATAL_ERROR "Can't find Glu")
-ENDIF()
-
 TARGET_INCLUDE_DIRECTORIES(${openglngine_project_name} PRIVATE ${OPENGL_INCLUDE_DIR})
 TARGET_LINK_LIBRARIES(${openglngine_project_name} ${OPENGL_LIBRARY})
 
