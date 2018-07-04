@@ -3,21 +3,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 #------------ project ------------
 PROJECT("OPENGLNGINE")
 
-#------ execute conan ------
-SET(openglngine_conan_cmd "conan")
-SET(openglngine_conan_arg1 "install")
-SET(openglngine_conan_arg2 "-s")
-SET(openglngine_conan_arg3 "build_type=${CMAKE_BUILD_TYPE}")
-SET(openglngine_conan_arg4 "-if")
-SET(openglngine_conan_arg5 ${CMAKE_BINARY_DIR})
-SET(openglngine_conan_arg6 ${PROJECT_SOURCE_DIR})
-
-EXECUTE_PROCESS(COMMAND ${openglngine_conan_cmd} ${openglngine_conan_arg1} ${openglngine_conan_arg2} ${openglngine_conan_arg3} ${openglngine_conan_arg4} ${openglngine_conan_arg5} ${openglngine_conan_arg6} RESULT_VARIABLE openglngine_error)
-
-IF(NOT ${openglngine_error} STREQUAL "0")
-    MESSAGE(FATAL_ERROR "Can't execute conan : " ${openglngine_conan_cmd} " " ${openglngine_conan_arg1} " " ${openglngine_conan_arg2} " " ${openglngine_conan_arg3} " " ${openglngine_conan_arg4} " " ${openglngine_conan_arg5} " " ${openglngine_conan_arg6})
-ENDIF()
-
     #------------ todo ------------
     LINK_DIRECTORIES("C:/Users/romain/Desktop/OPENGLNGINE/libs/lib/release")
 
