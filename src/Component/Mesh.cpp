@@ -1,5 +1,5 @@
-#include "Mesh.h"
-#include "Buffer.h"
+#include "Component/Mesh.h"
+#include "GL/Buffer.h"
 
 #define BUFFER_OFFSET(i) ((GLfloat *)nullptr + (i))
 

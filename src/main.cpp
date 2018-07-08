@@ -5,20 +5,19 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
-#include <SOIL/SOIL.h>
 
-#include "Mesh.h"
-#include "Buffer.h"
-#include "Shader.h"
-#include "Program.h"
-#include "Uniform.h"
-#include "Texture.h"
-#include "Group.h"
-#include "Material.h"
-#include "Map.h"
-#include "Object.h"
-#include "OBJFile.h"
-#include "Component.h"
+#include "Component/Mesh.h"
+#include "GL/Buffer.h"
+#include "GL/Shader.h"
+#include "GL/Program.h"
+#include "GL/Uniform.h"
+#include "GL/Texture.h"
+#include "Asset/Group.h"
+#include "Asset/Material.h"
+#include "Asset/Map.h"
+#include "Asset/Object.h"
+#include "Asset/OBJFile.h"
+#include "Component/Component.h"
 
 using namespace std;
 

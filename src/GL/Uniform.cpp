@@ -1,4 +1,4 @@
-#include "Uniform.h"
+#include "GL/Uniform.h"
 
 using namespace std;
 using namespace glm;

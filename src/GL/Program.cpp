@@ -1,5 +1,5 @@
-#include "Program.h"
-#include "Shader.h"
+#include "GL/Program.h"
+#include "GL/Shader.h"
 
 using namespace std;
 

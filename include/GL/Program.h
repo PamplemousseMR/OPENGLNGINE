@@ -1,7 +1,7 @@
 #pragma once
-#include<vector>
-#include<GL/glew.h>
-#include<iostream>
+#include <vector>
+#include <GL/glew.h>
+#include <iostream>
 
 namespace GL {
 

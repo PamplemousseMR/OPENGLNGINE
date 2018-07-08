@@ -1,5 +1,5 @@
-#include "Map.h"
-#include "Texture.h"
+#include "Asset/Map.h"
+#include "GL/Texture.h"
 
 using namespace glm;
 using namespace std;

@@ -2,8 +2,8 @@
 #include <GL\glew.h>
 #include <vector>
 #include <iostream>
-#include <SOIL\SOIL.h>
 #include <string>
+#include "SOIL\SOIL.h"
 
 namespace GL
 {

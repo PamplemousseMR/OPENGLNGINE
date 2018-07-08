@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "Component/Component.h"
 
 using namespace std;
 using namespace glm;

@@ -3,13 +3,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 #------------ project ------------
 PROJECT("OPENGLNGINE")
 
-    #------------ todo ------------
-    LINK_DIRECTORIES("C:/Users/romain/Desktop/OPENGLNGINE/libs/lib/release")
-
 #------------ variables ------------
 SET(openglngine_src_dir "src")
 SET(openglngine_header_dir "include")
+SET(openglngine_bin_dir "bin")
 SET(openglngine_project_name "openglngine")
+SET(openglngine_glsl_files "${openglngine_bin_dir}/GLSL")
+SET(openglngine_obj_files "${openglngine_bin_dir}/obj")
 
 #------------ find files ------------
 FILE(GLOB_RECURSE openglngine_src_files ${openglngine_src_dir}/*)
@@ -36,6 +36,6 @@ TARGET_LINK_LIBRARIES(${openglngine_project_name} ${OPENGL_LIBRARY})
 #------ link with libraries created by conan ------
 TARGET_LINK_LIBRARIES(${openglngine_project_name} ${CONAN_LIBS})
 
-    #------ todo ------
-    INCLUDE_DIRECTORIES("libs/include")
-    TARGET_LINK_LIBRARIES(${openglngine_project_name} "SOIL")
+#------ copy binary files ------
+file(COPY ${openglngine_glsl_files} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+file(COPY ${openglngine_obj_files} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

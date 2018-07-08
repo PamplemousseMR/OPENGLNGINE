@@ -1,9 +1,9 @@
 #pragma once
-#include<GL\glew.h>
-#include<string>
-#include<vector>
-#include<fstream>
-#include<iostream>
+#include <GL\glew.h>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <iostream>
 
 namespace GL {
 
