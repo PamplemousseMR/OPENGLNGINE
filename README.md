@@ -8,7 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- [OpenGL](https://www.opengl.org/) : The premier environment for developing portable, interactive 2D and 3D graphics applications.
+- [Conan](https://conan.io/) : The C / C++ Package Manager for Developers.
+- [OpenGL](https://www.opengl.org/) : An environment for developing portable, interactive 2D and 3D graphics applications.
 - [glew](http://glew.sourceforge.net/index.html) : The OpenGL Extension Wrangler Library.
 - [glfw](http://www.glfw.org/) : It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
 - [glm](https://glm.g-truc.net/0.9.9/index.html) : A mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
@@ -16,7 +17,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### compilation
 
-TODO
+Use conan to download/build libraries : `conan install -s build_type=Release -if C:\build_release .`
+
+Generate using cmake in the same build directory than conan: `cmake`.
 
 ## Authors
 
