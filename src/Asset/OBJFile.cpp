@@ -51,25 +51,25 @@ namespace Assets
 
 	void OBJFile::push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)
 	{
-		if (usemtl == nullptr)throw(invalid_argument("[OBJFile " + _name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] usemtl can`t be nullptr"));
+        if (usemtl == nullptr)throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] usemtl can`t be nullptr"));
 		if(index->size() < 0)
-			throw(invalid_argument("[OBJFile " + _name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] push with no index"));
+            throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] push with no index"));
 		else
 		{
 			vec3 vec = index->back();
 			if(vec[1] != 0 && textCoord->size() == 0)
-				throw(invalid_argument("[OBJFile " + _name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] use texture coord on faces with no texture coord define"));
+                throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] use texture coord on faces with no texture coord define"));
 			if (vec[2] != 0 && normal->size() == 0)
-				throw(invalid_argument("[OBJFile " + _name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] use normal on faces with no normal define"));
+                throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] use normal on faces with no normal define"));
 		}
 		try {
 			if (*usemtl != "")
-				_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, usemtl);
+                m_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, usemtl);
 			else
-				_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, nullptr);
+                m_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, nullptr);
 		}
 		catch(invalid_argument e){
-			throw(invalid_argument("[OBJFile " + _name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] " + e.what()));
+            throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] " + e.what()));
 		}
 		index->clear();
 		*usemtl = "";
@@ -78,7 +78,7 @@ namespace Assets
 	vector<Material*> OBJFile::findMaterial(const string& mtl) const
 	{
 		vector<Material*> m;
-		for (Object* ob : _objects)
+        for (Object* ob : m_objects)
 			for (Group* gp : ob->getGroups())
 				for (Material* ma : gp->getMaterials())
 					if (ma && ma->getName() == mtl)
@@ -89,21 +89,21 @@ namespace Assets
 	void OBJFile::loadMTLFile(const string& path) const throw(...)
 	{
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] [loadMTLFile(const string& path) throw(...)] load..."<<endl;
+        cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw(...)] load..."<<endl;
 #endif
 		vector<string> filename = split(path, '.');
 		if (filename[filename.size() - 1] != "mtl")
-			throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] can't read " + filename[filename.size() - 1] + " extension");
-		string symbol = "[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] unexpected symbol at the end of the line ";
-		string invalideData = "[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] missing value(s) at the line ";
-		string cmd = "[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] invalide commande at the line ";
-		string noexiste = "[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] set value to non existe material at line ";
-		string commande = "[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] unknow commande at line ";
-		string lineError = "[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] Unexpected symbol at the line ";
+            throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] can't read " + filename[filename.size() - 1] + " extension");
+        string symbol = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] unexpected symbol at the end of the line ";
+        string invalideData = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] missing value(s) at the line ";
+        string cmd = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] invalide commande at the line ";
+        string noexiste = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] set value to non existe material at line ";
+        string commande = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] unknow commande at line ";
+        string lineError = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] Unexpected symbol at the line ";
 		int lineNumber = 0;
 		ifstream file(path, ios::in);
 		if (!file)
-			throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile(const string& path) throw(...)] can't open mtl file " + path);
+            throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] can't open mtl file " + path);
 		vector<Material*> materials;
 		string line;
 		filename = split(filename[0], '/');
@@ -126,7 +126,7 @@ namespace Assets
 						materials = findMaterial(data[1]);
 						if (materials.size() == 0)
 						{
-							cerr << "\t[OBJFile " << _name << "][loadMTLFile(const string& path) throw(...)] material " << data[1] << " not used" << endl;
+                            cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw(...)] material " << data[1] << " not used" << endl;
 							bool b = true;
 							while (b && getline(file, line, '\n'))
 							{
@@ -138,7 +138,7 @@ namespace Assets
 									if (materials.size() != 0)
 										b = false;
 									else
-										cerr << "\t[OBJFile " << _name << "][loadMTLFile(const string& path) throw(...)] material " << data[1] << " not used" << endl;
+                                        cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw(...)] material " << data[1] << " not used" << endl;
 								}
 							}
 						}
@@ -357,7 +357,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getKamap());
@@ -370,7 +370,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getKdmap());
@@ -383,7 +383,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getKsmap());
@@ -396,7 +396,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getKsmap());
@@ -409,7 +409,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getdmap());
@@ -422,7 +422,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getDispmap());
@@ -435,7 +435,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getDecalmap());
@@ -448,7 +448,7 @@ namespace Assets
 							}
 							catch (invalid_argument e)
 							{
-								throw invalid_argument("[OBJFile " + _name + "] [loadMTLFile] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
 							}
 							for (Material* ma : materials)
 								map.push_back(ma->getBumpmap());
@@ -570,59 +570,59 @@ namespace Assets
 		}
 		file.close();
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] [loadMTLFile(const string& path) throw(...)] file success" << endl;
+        cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw(...)] file success" << endl;
 #endif
 	}
 
 	OBJFile::OBJFile()
-		:	_loadTime(0),
-			_name(""),
-			_objects()
+        :	m_loadTime(0),
+            m_name(""),
+            m_objects()
 	{
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] [OBJFile()]..." << endl;
-		cout << "[OBJFile " << _name << "] [OBJFile()]...\tsuccess" << endl;
+        cout << "[OBJFile " << m_name << "] [OBJFile()]..." << endl;
+        cout << "[OBJFile " << m_name << "] [OBJFile()]...\tsuccess" << endl;
 #endif
 	}
 
 	OBJFile::~OBJFile()
 	{
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] [~OBJFile()]...\n";
+        cout << "[OBJFile " << m_name << "] [~OBJFile()]...\n";
 #endif
-		for (Object* m : _objects)
+        for (Object* m : m_objects)
 			if (m) delete m;
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] [~OBJFile()]...\tsuccess" << endl;
+        cout << "[OBJFile " << m_name << "] [~OBJFile()]...\tsuccess" << endl;
 #endif
 	}
 
 	void OBJFile::load(const string& path) throw(...)
 	{
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] load...\n";
+        cout << "[OBJFile " << m_name << "] load...\n";
 #endif
 		// calcule pour le temps de chargement
 		milliseconds begin = duration_cast< milliseconds >(	system_clock::now().time_since_epoch());
 
 		//netoyage des donnees
-		for (Object* m : _objects)
+        for (Object* m : m_objects)
 			if (m) delete m;
 
 		//ouverture du fichier
 		vector<string> filename = split(path, '.');
 		if (filename[filename.size() - 1] != "obj")
-			throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] can't read : " + filename[filename.size() - 1] + " extension");
-		_name = removenullptr(split(filename[filename.size() - 2],'/')).back();
+            throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] can't read : " + filename[filename.size() - 1] + " extension");
+        m_name = removenullptr(split(filename[filename.size() - 2],'/')).back();
 		ifstream file(path, ios::in);
 		if (!file)
-			throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] can't open file : " + path);
+            throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] can't open file : " + path);
 
 		//code d'erreurs
-		string symbol = "[OBJFile " + _name + "] [load(const string& path) throw(...)] Unexpected symbol at the end of the line ";
-		string value = "[OBJFile " + _name + "] [load(const string& path) throw(...)] Wrong value at the line ";
-		string invalideData = "[OBJFile " + _name + "] [load(const string& path) throw(...) Missing value(s) at the line ";
-		string lineError = "[OBJFile " + _name + "] [load(const string& path) throw(...)] Unexpected symbol at the line ";
+        string symbol = "[OBJFile " + m_name + "] [load(const string& path) throw(...)] Unexpected symbol at the end of the line ";
+        string value = "[OBJFile " + m_name + "] [load(const string& path) throw(...)] Wrong value at the line ";
+        string invalideData = "[OBJFile " + m_name + "] [load(const string& path) throw(...) Missing value(s) at the line ";
+        string lineError = "[OBJFile " + m_name + "] [load(const string& path) throw(...)] Unexpected symbol at the line ";
 
 		//donneees
 		vector<vec3> vertex(0);
@@ -773,50 +773,50 @@ namespace Assets
 						throw invalid_argument(symbol + to_string(lineNumber));
 					if (index.size() != 0)
 					{
-						if (_objects.size() > 0)
+                        if (m_objects.size() > 0)
 						{
-							if (_objects.back()->getGroups().size() > 0)
+                            if (m_objects.back()->getGroups().size() > 0)
 							{
 								try {
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-									throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 								}
 							}
 							else
 							{
-								_objects.back()->addGroup("default_group");
+                                m_objects.back()->addGroup("default_group");
 								try {
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-									throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 								}
 							}
 						}
 						if (index.size() != 0)
 						{
-							_objects.push_back(new Object("default_object"));
-							_objects.back()->addGroup("default_group");
+                            m_objects.push_back(new Object("default_object"));
+                            m_objects.back()->addGroup("default_group");
 							try {
 								push(&vertex, &normal, &textCoord, &index, &usemtl);
 							}
 							catch (invalid_argument e) {
-								throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 							}
 						}
 					}
-					_objects.push_back(new Object(data[1]));
+                    m_objects.push_back(new Object(data[1]));
 				}
 				else if (dat0 == "g")
 				{
 					if (data.size() > 2)
 						throw invalid_argument(symbol + to_string(lineNumber));
 					if (data.size() == 2) {
-						if (_objects.size() > 0)
+                        if (m_objects.size() > 0)
 						{
-							if (_objects.back()->getGroups().size() > 0)
+                            if (m_objects.back()->getGroups().size() > 0)
 							{
 								if (index.size() != 0)
 								{
@@ -824,41 +824,41 @@ namespace Assets
 										push(&vertex, &normal, &textCoord, &index, &usemtl);
 									}
 									catch (invalid_argument e) {
-										throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 									}
 								}
-								_objects.back()->addGroup(data[1]);
+                                m_objects.back()->addGroup(data[1]);
 							}
 							else
 							{
 								if (index.size() != 0)
 								{
-									_objects.back()->addGroup("default_group");
+                                    m_objects.back()->addGroup("default_group");
 									try {
 										push(&vertex, &normal, &textCoord, &index, &usemtl);
 									}
 									catch (invalid_argument e) {
-										throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 									}
 								}
-								_objects.back()->addGroup(data[1]);
+                                m_objects.back()->addGroup(data[1]);
 							}
 						}
 						else
 						{
 							if (index.size() != 0)
 							{
-								_objects.push_back(new Object("default_object"));
-								_objects.back()->addGroup("default_group");
+                                m_objects.push_back(new Object("default_object"));
+                                m_objects.back()->addGroup("default_group");
 								try {
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-									throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 								}
 							}
-							_objects.push_back(new Object("default_object"));
-							_objects.back()->addGroup(data[1]);
+                            m_objects.push_back(new Object("default_object"));
+                            m_objects.back()->addGroup(data[1]);
 						}
 					}
 				}
@@ -871,7 +871,7 @@ namespace Assets
 					mtllib = data[1];
 					vector<string> lib = split(mtllib, '.');
 					if (lib.back() != "mtl")
-						throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
+                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
 				}
 				else if (dat0 == "usemtl")
 				{
@@ -881,36 +881,36 @@ namespace Assets
 						throw invalid_argument(symbol + to_string(lineNumber));
 					if (index.size() > 0)
 					{
-						if (_objects.size() > 0)
+                        if (m_objects.size() > 0)
 						{
-							if (_objects.back()->getGroups().size() > 0)
+                            if (m_objects.back()->getGroups().size() > 0)
 							{
 								try {
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-									throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 								}
 							}
 							else
 							{
-								_objects.back()->addGroup("default_group");
+                                m_objects.back()->addGroup("default_group");
 								try {
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 							}
 								catch (invalid_argument e) {
-									throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 								}
 							}
 						}
 						else {
-							_objects.push_back(new Object("default_object"));
-							_objects.back()->addGroup("default_group");
+                            m_objects.push_back(new Object("default_object"));
+                            m_objects.back()->addGroup("default_group");
 							try {
 								push(&vertex, &normal, &textCoord, &index, &usemtl);
 							}
 							catch (invalid_argument e) {
-								throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 							}
 						}
 					}
@@ -922,37 +922,37 @@ namespace Assets
 		//si rien n'a été push, on le fait ici
 		if (index.size() > 0)
 		{
-			if (_objects.size() > 0)
+            if (m_objects.size() > 0)
 			{
-				if (_objects.back()->getGroups().size() > 0)
+                if (m_objects.back()->getGroups().size() > 0)
 				{
 					try {
 						push(&vertex, &normal, &textCoord, &index, &usemtl);
 					}
 					catch (invalid_argument e) {
-						throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 					}
 				}
 				else
 				{
-					_objects.back()->addGroup("default_group");
+                    m_objects.back()->addGroup("default_group");
 					try {
 						push(&vertex, &normal, &textCoord, &index, &usemtl);
 					}
 					catch (invalid_argument e) {
-						throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 					}
 				}
 			}
 			else 
 			{
-				_objects.push_back(new Object("default_group"));
-				_objects.back()->addGroup("default_group");
+                m_objects.push_back(new Object("default_group"));
+                m_objects.back()->addGroup("default_group");
 				try {
 					push(&vertex, &normal, &textCoord, &index, &usemtl);
 				}
 				catch (invalid_argument e) {
-					throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 				}
 			}
 		}
@@ -961,7 +961,7 @@ namespace Assets
 		file.close();
 
 #ifdef _DEBUG
-		cout << "[OBJFile " << _name << "] [load(const string& path) throw(...)]...\tsuccess" << endl;
+        cout << "[OBJFile " << m_name << "] [load(const string& path) throw(...)]...\tsuccess" << endl;
 #endif
 		//chargement du fichier mtl
 		if (mtllib != "")
@@ -974,32 +974,32 @@ namespace Assets
 				loadMTLFile(res + mtllib);
 			}
 			catch (invalid_argument e) {
-				throw invalid_argument("[OBJFile " + _name + "] [load(const string& path) throw(...)] " + e.what());
+                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
 			}
 		}
 
 		//temp de chargement du fichier
 		milliseconds end = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
-		_loadTime = (end - begin).count();
+        m_loadTime = (end - begin).count();
 	}
 
 	ostream& OBJFile::print(ostream& o) const
 	{
-		o << "[OBJFile " << _name << "]";
-		for (Object* ob : _objects)
+        o << "[OBJFile " << m_name << "]";
+        for (Object* ob : m_objects)
 			o << "\t" << ob;
 		return o;
 	}
 
 	const vector<Object*>& OBJFile::getObjects() const
 	{
-		return _objects;
+        return m_objects;
 	}
 
 	long long OBJFile::getLoadTime() const
 	{
-		return _loadTime;
+        return m_loadTime;
 	}
 
 	ostream& operator<<(ostream& o, const OBJFile& m)

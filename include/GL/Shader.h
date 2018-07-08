@@ -1,41 +1,44 @@
 #pragma once
+
 #include <GL\glew.h>
-#include <string>
-#include <vector>
+
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <vector>
 
-namespace GL {
+namespace GL
+{
 
-	enum shaderType
-	{
-		VERTEX = GL_VERTEX_SHADER,
-		FRAGMENT = GL_FRAGMENT_SHADER
-	};
+enum SHADER_TYPE
+{
+    VERTEX = GL_VERTEX_SHADER,
+    FRAGMENT = GL_FRAGMENT_SHADER
+};
 
-	class Shader
-	{
+class Shader
+{
 
-	private:
+public:
 
-		GLuint _id;
-		shaderType _type;
-		std::string _sources;
+    Shader(SHADER_TYPE);
+    ~Shader();
+    Shader(const Shader&);
+    Shader& operator=(const Shader&);
 
-	public:
+    void compile() const throw(...);
 
-		Shader(shaderType);
-		~Shader();
-		Shader(const Shader&);
-		Shader& operator=(const Shader&);
+    GLenum getType() const;
+    GLuint getId() const;
 
-		void compile() const throw(...);
+    void setSource(const std::string&);
+    void setSourceFromFile(const std::string&) throw(...);
 
-		GLenum getType() const;
-		GLuint getId() const;
+private:
 
-		void setSource(const std::string&);
-		void setSourceFromFile(const std::string&) throw(...);
-	};
+    GLuint m_id;
+    SHADER_TYPE m_type;
+    std::string m_sources;
+};
 
 }

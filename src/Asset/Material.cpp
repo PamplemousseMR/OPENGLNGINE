@@ -7,30 +7,30 @@ using namespace glm;
 namespace Assets
 {
 	Material::Material(const string& name)
-		: _name(name),
-		_NS_specularExponent(90.0f),
-		_Ka_ambient(1, 1, 1),
-		_Kd_diffuse(1, 1, 1),
-		_Ks_specular(1, 1, 1),
-		_Tf_transmissionFilter(1, 1, 1),
-		_Ni_opticalDensity(1.0f),
-		_Ke(0, 0, 0),
-		_d_dissolve(1.0f),
-		_halo(false),
-		_illum_illumination(2),
-		_sharpness_sharpness(60.0f),
-		_Ka_map(nullptr),
-		_Kd_map(nullptr),
-		_Ks_map(nullptr),
-		_Ns_map(nullptr),
-		_d_map(nullptr),
-		_disp_map(nullptr),
-		_decal_map(nullptr),
-		_bump_map(nullptr)
+		: m_name(name),
+        m_nsSpecularexponent(90.0f),
+		m_kaAmbient(1, 1, 1),
+		m_kdDiffuse(1, 1, 1),
+		m_ksSpecular(1, 1, 1),
+		m_tfTransmissionfilter(1, 1, 1),
+        m_niOpticaldensity(1.0f),
+        m_Ke(0, 0, 0),
+		m_dDissolve(1.0f),
+		m_halo(false),
+		m_illumIllumination(2),
+        m_sharpnessSharpness(60.0f),
+        m_kaMap(nullptr),
+        m_kdMap(nullptr),
+        m_ksMap(nullptr),
+        m_nsMap(nullptr),
+        m_dMap(nullptr),
+        m_dispMap(nullptr),
+        m_decalMap(nullptr),
+        m_bumpMap(nullptr)
 	{
 #ifdef _DEBUG
-		cout << "[Material " << _name << "] [Material(const string& name)]..." << endl;
-		cout << "[Material " << _name << "] [Material(const string& name)]...\tsuccess" << endl;
+        cout << "[Material " << m_name << "] [Material(const string& name)]..." << endl;
+        cout << "[Material " << m_name << "] [Material(const string& name)]...\tsuccess" << endl;
 #endif
 	}
 
@@ -38,34 +38,34 @@ namespace Assets
 	Material::~Material()
 	{
 #ifdef _DEBUG
-		cout << "[Material " << _name << "] [~Material()]..." << endl;
+        cout << "[Material " << m_name << "] [~Material()]..." << endl;
 #endif
-		if (_Ka_map)delete _Ka_map;
-		if (_Kd_map)delete _Kd_map;
-		if (_Ks_map)delete _Ks_map;
-		if (_Ns_map)delete _Ns_map;
-		if (_d_map)delete _d_map;
-		if (_disp_map)delete _disp_map;
-		if (_decal_map)delete _decal_map;
-		if (_bump_map)delete _bump_map;
+        if (m_kaMap)delete m_kaMap;
+        if (m_kdMap)delete m_kdMap;
+        if (m_ksMap)delete m_ksMap;
+        if (m_nsMap)delete m_nsMap;
+        if (m_dMap)delete m_dMap;
+        if (m_dispMap)delete m_dispMap;
+        if (m_decalMap)delete m_decalMap;
+        if (m_bumpMap)delete m_bumpMap;
 #ifdef _DEBUG
-		cout << "[Material " << _name << "] [~Material()]...\tsuccess" << endl;
+        cout << "[Material " << m_name << "] [~Material()]...\tsuccess" << endl;
 #endif
 	}
 
 	ostream& Material::print(ostream& o) const
 	{
-		o << "[Material " << _name << "]\n";
+		o << "[Material " << m_name << "]\n";
 		o << "\tMaterial color & illumination statements :\n";
-		o << "\t\tKa " << _Ka_ambient[0] << " " << _Ka_ambient[1] << " " << _Ka_ambient[2] << "\n";
-		o << "\t\tKd " << _Kd_diffuse[0] << " " << _Kd_diffuse[1] << " " << _Kd_diffuse[2] << "\n";
-		o << "\t\tKs " << _Ks_specular[0] << " " << _Ks_specular[1] << " " << _Ks_specular[2] << "\n";
-		o << "\t\tTf " << _Tf_transmissionFilter[0] << " " << _Tf_transmissionFilter[1] << " " << _Tf_transmissionFilter[2] << "\n";
-		o << "\t\tilum " << _illum_illumination << "\n";
-		o << "\t\td " << _d_dissolve << "\n";
-		o << "\t\tNs " << _NS_specularExponent << "\n";
-		o << "\t\tsharpness " << _sharpness_sharpness << "\n";
-		o << "\t\tNi " << _Ni_opticalDensity << "\n";
+		o << "\t\tKa " << m_kaAmbient[0] << " " << m_kaAmbient[1] << " " << m_kaAmbient[2] << "\n";
+		o << "\t\tKd " << m_kdDiffuse[0] << " " << m_kdDiffuse[1] << " " << m_kdDiffuse[2] << "\n";
+		o << "\t\tKs " << m_ksSpecular[0] << " " << m_ksSpecular[1] << " " << m_ksSpecular[2] << "\n";
+		o << "\t\tTf " << m_tfTransmissionfilter[0] << " " << m_tfTransmissionfilter[1] << " " << m_tfTransmissionfilter[2] << "\n";
+		o << "\t\tilum " << m_illumIllumination << "\n";
+		o << "\t\td " << m_dDissolve << "\n";
+        o << "\t\tNs " << m_nsSpecularexponent << "\n";
+        o << "\t\tsharpness " << m_sharpnessSharpness << "\n";
+        o << "\t\tNi " << m_niOpticaldensity << "\n";
 		o << "\treflection map statement :\n";
 		o << "\ttodo\n";
 		return o;
@@ -73,241 +73,241 @@ namespace Assets
 
 	const string& Material::getName() const
 	{
-		return _name;
+		return m_name;
 	}
 
 	const vec3& Material::getAmbient() const
 	{
-		return _Ka_ambient;
+		return m_kaAmbient;
 	}
 
 	const vec3& Material::getDiffuse() const
 	{
-		return _Kd_diffuse;
+		return m_kdDiffuse;
 	}
 
 	const vec3& Material::getSpecular() const
 	{
-		return _Ks_specular;
+		return m_ksSpecular;
 	}
 
 	const vec3& Material::getTransmissionFilter() const
 	{
-		return _Tf_transmissionFilter;
+		return m_tfTransmissionfilter;
 	}
 
 	int Material::getIllumination() const
 	{
-		return _illum_illumination;
+		return m_illumIllumination;
 	}
 
 	float Material::getDissolve() const
 	{
-		return _d_dissolve;
+		return m_dDissolve;
 	}
 
 	bool Material::getHalo() const
 	{
-		return _halo;
+		return m_halo;
 	}
 
 	float Material::getSpecularExponent() const
 	{
-		return _NS_specularExponent;
+        return m_nsSpecularexponent;
 	}
 
 	float Material::getSharpness() const
 	{
-		return _sharpness_sharpness;
+        return m_sharpnessSharpness;
 	}
 
 	float Material::getopticalDensity() const
 	{
-		return _Ni_opticalDensity;
+        return m_niOpticaldensity;
 	}
 
 
 	Map* Material::getKamap() const
 	{
-		return _Ka_map;
+        return m_kaMap;
 	}
 
 	Map* Material::getKdmap() const
 	{
-		return _Kd_map;
+        return m_kdMap;
 	}
 
 	Map* Material::getKsmap() const
 	{
-		return _Ks_map;
+        return m_ksMap;
 	}
 
 	Map* Material::getNsmap() const
 	{
-		return _Ns_map;
+        return m_nsMap;
 	}
 
 	Map* Material::getdmap() const
 	{
-		return _d_map;
+        return m_dMap;
 	}
 
 	Map* Material::getDispmap() const
 	{
-		return _disp_map;
+        return m_dispMap;
 	}
 
 	Map* Material::getDecalmap() const
 	{
-		return _decal_map;
+        return m_decalMap;
 	}
 
 	Map* Material::getBumpmap() const
 	{
-		return _bump_map;
+        return m_bumpMap;
 	}
 
 	void Material::setAmbient(const vec3& ka)
 	{
-		_Ka_ambient = ka;
+		m_kaAmbient = ka;
 	}
 
 	void Material::setDiffuse(const vec3& kd)
 	{
-		_Kd_diffuse = kd;
+		m_kdDiffuse = kd;
 	}
 
 	void Material::setSpecular(const vec3& ks)
 	{
-		_Ks_specular = ks;
+		m_ksSpecular = ks;
 	}
 
 	void Material::setTransmissionFilter(const vec3& tf)
 	{
-		_Tf_transmissionFilter = tf;
+		m_tfTransmissionfilter = tf;
 	}
 
 	void Material::setIllumination(int illum)
 	{
-		_illum_illumination = illum;
+		m_illumIllumination = illum;
 	}
 
 	void Material::setDissolve(float d)
 	{
-		_d_dissolve = d;
+		m_dDissolve = d;
 	}
 
 	void Material::setHalo(bool h)
 	{
-		_halo = h;
+		m_halo = h;
 	}
 
 	void Material::setSpecularExponent(float ns)
 	{
-		_NS_specularExponent = ns;
+        m_nsSpecularexponent = ns;
 	}
 
 	void Material::setSharpness(float sharp)
 	{
-		_sharpness_sharpness = sharp;
+        m_sharpnessSharpness = sharp;
 	}
 
 	void Material::setopticalDensity(float ni)
 	{
-		_Ni_opticalDensity = ni;
+        m_niOpticaldensity = ni;
 	}
 
 	void Material::setEmissiveCoeficient(const vec3& ke)
 	{
-		_Ke = ke;
+        m_Ke = ke;
 	}
 
 
 	void Material::setKamap(const string& path) throw(...)
 	{
-		if (_Ka_map)delete _Ka_map;
+        if (m_kaMap)delete m_kaMap;
 		try {
-			_Ka_map = new Map(mapType::Ka, path);
+            m_kaMap = new Map(MAP_TYPE::Ka, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setKamap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setKamap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setKdmap(const string& path) throw(...)
 	{
-		if (_Kd_map)delete _Kd_map;
+        if (m_kdMap)delete m_kdMap;
 		try {
-			_Kd_map = new Map(mapType::Kd, path);
+            m_kdMap = new Map(MAP_TYPE::Kd, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setKdmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setKdmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setKsmap(const string& path) throw(...)
 	{
-		if (_Ks_map)delete _Ks_map;
+        if (m_ksMap)delete m_ksMap;
 		try {
-			_Ks_map = new Map(mapType::Ks, path);
+            m_ksMap = new Map(MAP_TYPE::Ks, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setKsmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setKsmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setNsmap(const string& path) throw(...)
 	{
-		if (_Ns_map)delete _Ns_map;
+        if (m_nsMap)delete m_nsMap;
 		try {
-			_Ns_map = new Map(mapType::Ns, path);
+            m_nsMap = new Map(MAP_TYPE::Ns, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setNsmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setNsmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setdmap(const string& path) throw(...)
 	{
-		if (_d_map)delete _d_map;
+        if (m_dMap)delete m_dMap;
 		try {
-			_d_map = new Map(mapType::d, path);
+            m_dMap = new Map(MAP_TYPE::d, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setdmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setdmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setDispmap(const string& path) throw(...)
 	{
-		if (_disp_map)delete _disp_map;
+        if (m_dispMap)delete m_dispMap;
 		try {
-			_disp_map = new Map(mapType::disp, path);
+            m_dispMap = new Map(MAP_TYPE::disp, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setDispmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setDispmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setDecalmap(const string& path) throw(...)
 	{
-		if (_decal_map)delete _decal_map;
+        if (m_decalMap)delete m_decalMap;
 		try {
-			_decal_map = new Map(mapType::decal, path);
+            m_decalMap = new Map(MAP_TYPE::decal, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setDecalmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setDecalmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 
 	void Material::setBumpmap(const string& path) throw(...)
 	{
-		if (_bump_map)delete _bump_map;
+        if (m_bumpMap)delete m_bumpMap;
 		try {
-			_bump_map = new Map(mapType::bump, path);
+            m_bumpMap = new Map(MAP_TYPE::bump, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + _name + "] [setBumpmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setBumpmap(const string& path) throw(...)] " + e.what());
 		}
 	}
 

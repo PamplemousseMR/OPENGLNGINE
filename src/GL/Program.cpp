@@ -7,7 +7,7 @@ namespace GL
 {
 
 	Program::Program()
-		: _id(glCreateProgram()), _toggled(false)
+		: m_id(glCreateProgram()), m_toggled(false)
 	{
 #ifdef _DEBUG
 		cout << "[Program] [Program()]..." << endl;
@@ -21,7 +21,7 @@ namespace GL
 		cout << "[Program] [~Program()]..." << endl;
 #endif
 		detachAll();
-		glDeleteProgram(_id);
+        glDeleteProgram(m_id);
 #ifdef _DEBUG
 		cout << "[Program] [~Program()]...\tsuccess" << endl;
 #endif
@@ -32,8 +32,8 @@ namespace GL
 #ifdef _DEBUG
 		cout << "[Program] [attach(Shader* shader)]..." << endl;
 #endif
-		_shaders.push_back(shader);
-		glAttachShader(_id, shader->getId());
+		m_shaders.push_back(shader);
+		glAttachShader(m_id, shader->getId());
 #ifdef _DEBUG
 		cout << "[Program] [attach(Shader* shader)]...\tsuccess" << endl;
 #endif
@@ -44,11 +44,11 @@ namespace GL
 #ifdef _DEBUG
 		cout << "[Program] [detach(Shader* shader)]..." << endl;
 #endif
-		auto p = find(_shaders.begin(), _shaders.end(), shader);
-		if (p != _shaders.end())
+		auto p = find(m_shaders.begin(), m_shaders.end(), shader);
+		if (p != m_shaders.end())
 		{
-			glDetachShader(_id, shader->getId());
-			_shaders.erase(p);
+			glDetachShader(m_id, shader->getId());
+			m_shaders.erase(p);
 		}
 #ifdef _DEBUG
 		cout << "[Program] [detach(Shader* shader)]...\tsuccess" << endl;
@@ -57,7 +57,7 @@ namespace GL
 
 	void Program::detachAll()
 	{
-		vector<Shader*> shaderList = _shaders;
+		vector<Shader*> shaderList = m_shaders;
 		for (Shader* s : shaderList)
 			detach(s);
 	}
@@ -68,13 +68,13 @@ namespace GL
 		cout << "[Program] [link() const throw(...)]..." << endl;
 #endif
 		GLint Result = GL_FALSE;
-		glLinkProgram(_id);
-		glGetProgramiv(_id, GL_LINK_STATUS, &Result);
+		glLinkProgram(m_id);
+		glGetProgramiv(m_id, GL_LINK_STATUS, &Result);
 		int InfoLogLength;
-		glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &InfoLogLength);
+		glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &InfoLogLength);
 		if (InfoLogLength > 0) {
 			vector<char> ProgramErrorMessage(InfoLogLength + 1);
-			glGetProgramInfoLog(_id, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
+			glGetProgramInfoLog(m_id, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
 			throw invalid_argument("[Program] [link] " + ProgramErrorMessage[0]);
 		}
 #ifdef _DEBUG
@@ -84,25 +84,25 @@ namespace GL
 
 	void Program::toggle()
 	{
-		if (!_toggled)
+		if (!m_toggled)
 		{
-			glUseProgram(_id);
-			_toggled = true;
+			glUseProgram(m_id);
+			m_toggled = true;
 		}
 		else
 		{
 			glUseProgram(0);
-			_toggled = false;
+			m_toggled = false;
 		}
 	}
 
 	bool Program::isActive() const
 	{
-		return _toggled;
+		return m_toggled;
 	}
 
 	GLuint Program::getId() const
 	{
-		return _id;
+		return m_id;
 	}
 }

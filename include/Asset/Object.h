@@ -1,34 +1,37 @@
 #pragma once
+
+#include<iostream>
 #include<string>
 #include<vector>
-#include<iostream>
 
 namespace Assets
 {
-	class Group;
-	class Object
-	{
+class Group;
 
-		private:
+class Object
+{
 
-			std::string _name;
-			std::vector<Group*> _groups;
+public:
 
-		public:
+    Object(const std::string&);
+    ~Object();
 
-			Object(const std::string&);
-			~Object();
+    void addGroup(const std::string&);
 
-			void addGroup(const std::string&);
+    const std::vector<Group*>& getGroups() const;
+    Group* getLastGroup() const;
+    const std::string& getName() const;
 
-			const std::vector<Group*>& getGroups() const;
-			Group* getLastGroup() const;
-			const std::string& getName() const;
+    std::ostream& print(std::ostream&) const;
 
-			std::ostream& print(std::ostream&) const;
-	};
+private:
 
-	std::ostream& operator<<(std::ostream&, const Object&);
+    std::string m_name;
+    std::vector<Group*> m_groups;
+
+};
+
+std::ostream& operator<<(std::ostream&, const Object&);
 
 }
 

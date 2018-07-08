@@ -4,25 +4,25 @@ using namespace std;
 
 namespace GL
 {
-	Buffer::Buffer(bufferType type)
-		: _type(type)
+    Buffer::Buffer(BUFFER_TYPE type)
+        : m_type(type)
 	{
 #ifdef _DEBUG
 		cout << "[Buffer] [Buffer(bufferType type)]..." << endl;
 #endif
 		switch (type)
 		{
-		case bufferType::VAO:
-			glGenVertexArrays(1, &_id);
+        case BUFFER_TYPE::VAO:
+            glGenVertexArrays(1, &m_id);
 			break;
-		case bufferType::VBO:
-			glGenBuffers(1, &_id);
+        case BUFFER_TYPE::VBO:
+            glGenBuffers(1, &m_id);
 			break;
-		case bufferType::EBO:
-			glGenBuffers(1, &_id);
+        case BUFFER_TYPE::EBO:
+            glGenBuffers(1, &m_id);
 			break;
 		default:
-			glGenBuffers(1, &_id);
+            glGenBuffers(1, &m_id);
 			break;
 		}
 #ifdef _DEBUG
@@ -35,31 +35,31 @@ namespace GL
 #ifdef _DEBUG
 		cout << "[Buffer] [~Buffer()]..." << endl;
 #endif
-		glDeleteBuffers(1, &_id);
+        glDeleteBuffers(1, &m_id);
 #ifdef _DEBUG
 		cout << "[Buffer] [~Buffer()]...\tsuccess" << endl;
 #endif
 	}
 
 	Buffer::Buffer(const Buffer& buffer) throw(...)
-		: _type(buffer.type())
+        : m_type(buffer.getType())
 	{
 #ifdef _DEBUG
 		cout << "[Buffer] [Buffer(const Buffer& buffer) throw(...)]..." << endl;
 #endif
-		switch (_type)
+        switch (m_type)
 		{
-		case bufferType::VAO:
+        case BUFFER_TYPE::VAO:
 			throw invalid_argument("[Buffer] [Buffer(const Buffer& buffer)] can't copying VAO");
 			break;
-		case bufferType::VBO:
-			glGenBuffers(1, &_id);
+        case BUFFER_TYPE::VBO:
+            glGenBuffers(1, &m_id);
 			break;
-		case bufferType::EBO:
-			glGenBuffers(1, &_id);
+        case BUFFER_TYPE::EBO:
+            glGenBuffers(1, &m_id);
 			break;
 		default:
-			glGenBuffers(1, &_id);
+            glGenBuffers(1, &m_id);
 			break;
 		}
 
@@ -88,21 +88,21 @@ namespace GL
 #endif
 		if (this != &buffer)
 		{
-			glDeleteBuffers(1, &_id);
-			_type = buffer.type();
-			switch (_type)
+            glDeleteBuffers(1, &m_id);
+            m_type = buffer.getType();
+            switch (m_type)
 			{
-			case bufferType::VAO:
+            case BUFFER_TYPE::VAO:
 				throw invalid_argument("[Buffer] [operator=(const Buffer& buffer) throw(...)] can't copying VAO");
 				break;
-			case bufferType::VBO:
-				glGenBuffers(1, &_id);
+            case BUFFER_TYPE::VBO:
+                glGenBuffers(1, &m_id);
 				break;
-			case bufferType::EBO:
-				glGenBuffers(1, &_id);
+            case BUFFER_TYPE::EBO:
+                glGenBuffers(1, &m_id);
 				break;
 			default:
-				glGenBuffers(1, &_id);
+                glGenBuffers(1, &m_id);
 				break;
 			}
 
@@ -126,38 +126,38 @@ namespace GL
 #endif
 	}
 
-	bufferType Buffer::type() const
+    BUFFER_TYPE Buffer::getType() const
 	{
-		return _type;
+        return m_type;
 	}
 
 	GLuint Buffer::getId() const
 	{
-		return _id;
+        return m_id;
 	}
 
 	void Buffer::bind() const
 	{
-		switch (_type)
+        switch (m_type)
 		{
 		case VAO:
-			glBindVertexArray(_id);
+            glBindVertexArray(m_id);
 			break;
 		case VBO:
-			glBindBuffer(GL_ARRAY_BUFFER, _id);
+            glBindBuffer(GL_ARRAY_BUFFER, m_id);
 			break;
 		case EBO:
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _id);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
 			break;
 		default:
-			glBindBuffer(GL_ARRAY_BUFFER, _id);
+            glBindBuffer(GL_ARRAY_BUFFER, m_id);
 			break;
 		}
 	}
 
 	void Buffer::unbind() const
 	{
-		switch (_type)
+        switch (m_type)
 		{
 		case VAO:
 			glBindVertexArray(0);

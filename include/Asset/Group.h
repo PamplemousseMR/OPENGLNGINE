@@ -1,8 +1,10 @@
 #pragma once
+
+#include<glm/glm.hpp>
+
+#include<iostream>
 #include<string>
 #include<vector>
-#include<glm/glm.hpp>
-#include<iostream>
 
 namespace Component
 {
@@ -11,32 +13,33 @@ namespace Component
 
 namespace Assets
 {
-	class Material;
+class Material;
 
-	class Group
-	{
+class Group
+{
 
-		private :
+public:
 
-			std::string _name;
-			std::vector<Component::Mesh*> _meshs;
-			std::vector<Material*> _materials;
+    Group(const std::string&);
+    ~Group();
 
-		public:
+    void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*) throw(...);
 
-			Group(const std::string&);
-			~Group();
+    const std::string& getName() const;
+    const std::vector<Component::Mesh*>& getMeshs() const;
+    Material* getLastMaterial() const;
+    const std::vector<Material*>& getMaterials() const;
 
-			void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*) throw(...);
+    std::ostream& print(std::ostream& o) const;
 
-			const std::string& getName() const;
-			const std::vector<Component::Mesh*>& getMeshs() const;
-			Material* getLastMaterial() const;
-			const std::vector<Material*>& getMaterials() const;
+private :
 
-			std::ostream& print(std::ostream& o) const;
-	};
+    std::string m_name;
+    std::vector<Component::Mesh*> m_meshs;
+    std::vector<Material*> m_materials;
 
-	std::ostream& operator<<(std::ostream& o, const Group& m);
+};
+
+std::ostream& operator<<(std::ostream& o, const Group& m);
 
 }

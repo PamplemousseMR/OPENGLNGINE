@@ -7,18 +7,18 @@ namespace Assets
 {
 
 	Object::Object(const string& name)
-		: _name(name)
+		: m_name(name)
 	{
 #ifdef _DEBUG
-		cout << "[Object " << _name << "] [Object(const string& name)]..." << endl;
-		cout << "[Object " << _name << "] [Object(const string& name)]...\tsuccess" << endl;
+        cout << "[Object " << m_name << "] [Object(const string& name)]..." << endl;
+        cout << "[Object " << m_name << "] [Object(const string& name)]...\tsuccess" << endl;
 #endif
 	}
 
 	ostream& Object::print(ostream& o) const
 	{
-		o << "[Object " << _name << "]" << endl;
-		for (Group* g : _groups)
+		o << "[Object " << m_name << "]" << endl;
+		for (Group* g : m_groups)
 			cout << "\t" << *g << "\n";
 		return o;
 	}
@@ -26,33 +26,33 @@ namespace Assets
 	Object::~Object()
 	{
 #ifdef _DEBUG
-		cout << "[Object " << _name << "] [~Object()]..." << endl;
+        cout << "[Object " << m_name << "] [~Object()]..." << endl;
 #endif
-		for (Group* m : _groups)
+		for (Group* m : m_groups)
 			if (m) delete m;
 #ifdef _DEBUG
-		cout << "[Object " << _name << "] [~Object()]...\tsuccess"<<endl;
+        cout << "[Object " << m_name << "] [~Object()]...\tsuccess"<<endl;
 #endif
 	}
 
 	const vector<Group*>& Object::getGroups() const
 	{
-		return _groups;
+		return m_groups;
 	}
 
 	const string& Object::getName() const
 	{
-		return _name;
+		return m_name;
 	}
 
 	Group* Object::getLastGroup() const
 	{
-		return _groups.back();
+		return m_groups.back();
 	}
 
 	void Object::addGroup(const string& name)
 	{
-		_groups.push_back(new Group(name));
+		m_groups.push_back(new Group(name));
 	}
 
 	ostream& operator<<(ostream& o, const Object& m)

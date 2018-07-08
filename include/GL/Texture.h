@@ -1,50 +1,55 @@
 #pragma once
+
 #include <GL\glew.h>
-#include <vector>
+
 #include <iostream>
 #include <string>
-#include "SOIL\SOIL.h"
+#include <vector>
 
 namespace GL
 {
 
-	enum textureType
-	{
-		TEXTURE_1D = GL_TEXTURE_1D,
-		TEXTURE_2D = GL_TEXTURE_2D,
-	};
+enum textureType
+{
+    TEXTURE_1D = GL_TEXTURE_1D,
+    TEXTURE_2D = GL_TEXTURE_2D,
+};
 
-	class Texture
-	{
+class Texture
+{
 
-	private:
+public:
 
-		static std::vector<bool> s_location;
-		static bool s_first;
-		textureType _type;
-		std::string _name;
-		bool _hasAlpha;
-		GLuint _id;
-		int _location;
+    Texture(textureType);
+    ~Texture();
 
-	public:
+    int load(const char*) throw(...);
+    void generateMipmap() const;
+    void bind() throw(...);
+    void unbind();
 
-		Texture(textureType);
-		~Texture();
+    GLuint getId() const;
+    int getLocation() const;
+    textureType getType() const;
+    const std::string& getName() const;
 
-		int load(const char*) throw(...);
-		void generateMipmap() const;
-		void bind() throw(...);
-		void unbind();
+    void setParameter(GLenum, GLint) const;
 
-		GLuint getId() const;
-		int getLocation() const;
-		textureType getType() const;
-		const std::string& getName() const;
+private:
 
-		void setParameter(GLenum, GLint) const;
+    static std::vector<bool> s_location;
+    static bool s_first;
 
-	};
+private:
+
+    textureType m_type;
+    std::string m_name;
+    bool m_hasAlpha;
+    GLuint m_id;
+    int m_location;
+
+
+};
 
 }
 

@@ -1,5 +1,7 @@
 #include "GL/Texture.h"
 
+#include "SOIL/SOIL.h"
+
 using namespace std;
 
 namespace GL
@@ -8,10 +10,10 @@ namespace GL
 	bool Texture::s_first = false;
 
 	Texture::Texture(textureType type)
-		: _type(type), _location(-1), _hasAlpha(false)
+		: m_type(type), m_location(-1), m_hasAlpha(false)
 	{
 #ifdef _DEBUG
-		cout << "[Texture " << _name << "] [Texture(textureType type)]..." << endl;
+        cout << "[Texture " <<m_name << "] [Texture(textureType type)]..." << endl;
 #endif
 		if (!s_first)
 		{
@@ -21,9 +23,9 @@ namespace GL
 				s_location.push_back(false);
 			s_first = true;
 		}
-		glGenTextures(1, &_id);
+		glGenTextures(1, &m_id);
 #ifdef _DEBUG
-		cout << "[Texture " << _name << "] [Texture(textureType type)]...\tsuccess" << endl;
+        cout << "[Texture " << m_name << "] [Texture(textureType type)]...\tsuccess" << endl;
 #endif
 	}
 
@@ -31,45 +33,45 @@ namespace GL
 	Texture::~Texture()
 	{
 #ifdef _DEBUG
-		cout << "[Texture " << _name << "] [~Texture()]..." << endl;
+        cout << "[Texture " << m_name << "] [~Texture()]..." << endl;
 #endif
-		glDeleteTextures(1, &_id);
+		glDeleteTextures(1, &m_id);
 #ifdef _DEBUG
-		cout << "[Texture " << _name << "] [~Texture()]...\tsuccess" << endl;
+        cout << "[Texture " << m_name << "] [~Texture()]...\tsuccess" << endl;
 #endif
 	}
 
 	GLuint Texture::getId() const
 	{
-		return _id;
+		return m_id;
 	}
 
 	int Texture::getLocation() const
 	{
-		return _location;
+		return m_location;
 	}
 
 	textureType Texture::getType() const
 	{
-		return _type;
+		return m_type;
 	}
 
 	const string& Texture::getName() const
 	{
-		return _name;
+		return m_name;
 	}
 
 	int Texture::load(const char* imagepath) throw(...)
 	{
-		_name = imagepath;
+		m_name = imagepath;
 #ifdef _DEBUG
-		cout << "[Texture " << _name << "] [load(const char* imagepath) throw(...)]..." << endl;
+        cout << "[Texture " << m_name << "] [load(const char* imagepath) throw(...)]..." << endl;
 #endif
 		FILE * file;
 		fopen_s(&file,imagepath, "rb");
 		string name = imagepath;
 		if (!file)
-			throw invalid_argument("[Texture " + _name + "] [load(const char* imagepath) throw(...)] can't open file : " + name);
+			throw invalid_argument("[Texture " + m_name + "] [load(const char* imagepath) throw(...)] can't open file : " + name);
 
 		string path = imagepath;
 		string fileFormat = "";
@@ -82,39 +84,39 @@ namespace GL
 		}
 		reverse(fileFormat.begin(), fileFormat.end());
 		if (fileFormat == "bmp" || fileFormat == "jpg" || fileFormat == "jpeg")
-			_hasAlpha = false;
+			m_hasAlpha = false;
 		else if (fileFormat == "png" || fileFormat == "tga" || fileFormat == "psd" || fileFormat == "DDS")
-			_hasAlpha = true;
+			m_hasAlpha = true;
 		else if (fileFormat == "hdr")
-			throw invalid_argument("[Texture " + _name + "] [load(const char* imagepath) throw(...)] TODO HDR");
+			throw invalid_argument("[Texture " + m_name + "] [load(const char* imagepath) throw(...)] TODO HDR");
 		else
-			throw invalid_argument("[Texture " + _name + "] [load(const char* imagepath) throw(...)] can't load : " + fileFormat + " file");
+			throw invalid_argument("[Texture " + m_name + "] [load(const char* imagepath) throw(...)] can't load : " + fileFormat + " file");
 		int width, height, chanel;
 		unsigned char* data;
 		int soilFormat = SOIL_LOAD_RGB;
 		GLuint internalFormat = GL_RGB;
 		GLenum format = GL_RGB;
-		if (_hasAlpha)
+		if (m_hasAlpha)
 		{
 			soilFormat = SOIL_LOAD_RGBA;
 			internalFormat = GL_RGBA;
 			format = GL_RGBA;
 		}
 		data = SOIL_load_image(imagepath, &width, &height, &chanel, soilFormat);
-		switch (_type)
+		switch (m_type)
 		{
 			case TEXTURE_1D :
 				if (height != 0)
-					throw invalid_argument("[Texture " + _name + "] [load(const char* imagepath) throw(...)] not a 1D texture");
-				glTexImage1D(_type, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, data);
+					throw invalid_argument("[Texture " + m_name + "] [load(const char* imagepath) throw(...)] not a 1D texture");
+				glTexImage1D(m_type, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, data);
 			break;
 			case TEXTURE_2D :
-				glTexImage2D(_type, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+				glTexImage2D(m_type, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 			break;
 		}
 		SOIL_free_image_data(data);
 #ifdef _DEBUG
-		cout << "[Texture " << _name << "] [load(const char* imagepath) throw(...)]...\tsuccess" << endl;
+        cout << "[Texture " << m_name << "] [load(const char* imagepath) throw(...)]...\tsuccess" << endl;
 #endif
 		return width;
 	}
@@ -122,12 +124,12 @@ namespace GL
 
 	void Texture::setParameter(GLenum pname, GLint param) const
 	{
-		glTexParameteri(_type, pname, param);
+		glTexParameteri(m_type, pname, param);
 	}
 
 	void Texture::generateMipmap() const
 	{
-		glGenerateMipmap(_type);
+		glGenerateMipmap(m_type);
 	}
 
 	void Texture::bind() throw(...)
@@ -135,21 +137,21 @@ namespace GL
 		for (int i(0); i < s_location.size(); i++)
 			if (s_location[i] == false)
 			{
-				_location = i;
+				m_location = i;
 				s_location[i] = true;
 				break;
 			}
-		if (_location == -1)
-			throw invalid_argument("[Texture " + _name + "] [bind() throw(...)] too much bind texture");
-		glActiveTexture(GL_TEXTURE0 + _location);
-		glBindTexture(_type, _id);
+		if (m_location == -1)
+			throw invalid_argument("[Texture " + m_name + "] [bind() throw(...)] too much bind texture");
+		glActiveTexture(GL_TEXTURE0 + m_location);
+		glBindTexture(m_type, m_id);
 	}
 
 	void Texture::unbind()
 	{
-		s_location[_location] = false;
-		_location = -1;
-		glBindTexture(_type, 0);
+		s_location[m_location] = false;
+		m_location = -1;
+		glBindTexture(m_type, 0);
 	}
 
 }

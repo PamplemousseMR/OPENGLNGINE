@@ -1,45 +1,50 @@
 #pragma once
-#include<vector>
-#include<iostream>
-#include<string>
-#include<fstream>
-#include<glm\glm.hpp>
+
+#include <glm\glm.hpp>
+
 #include <chrono>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 namespace Assets
 {
-	class Material;
-	class Object;
-	class OBJFile
-	{
+class Material;
+class Object;
 
-		private:
+class OBJFile
+{
 
+public:
 
-			std::vector<Object*> _objects;
-			std::string _name;
-			long long _loadTime;
+    OBJFile();
+    ~OBJFile();
 
-			std::vector<std::string> split(const std::string & str, char splitter) const;
-			std::vector<std::string> removenullptr(const std::vector<std::string> & str) const;
-			void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const throw(...);
-			std::vector<Material*> findMaterial(const std::string&) const;
-			void loadMTLFile(const std::string&) const throw(...);
+    void load(const std::string&) throw(...);
 
-		public:
+    const std::vector<Object*>& getObjects() const;
+    long long getLoadTime() const;
 
-			OBJFile();
-			~OBJFile();
+    std::ostream& print(std::ostream&) const;
 
-			void load(const std::string&) throw(...);
+private:
 
-			const std::vector<Object*>& getObjects() const;
-			long long getLoadTime() const;
+    std::vector<std::string> split(const std::string & str, char splitter) const;
+    std::vector<std::string> removenullptr(const std::vector<std::string> & str) const;
+    void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const throw(...);
+    std::vector<Material*> findMaterial(const std::string&) const;
+    void loadMTLFile(const std::string&) const throw(...);
 
-			std::ostream& print(std::ostream&) const;
-	};
+private:
 
-	std::ostream& operator<<(std::ostream& o, const OBJFile&);
+    std::vector<Object*> m_objects;
+    std::string m_name;
+    long long m_loadTime;
+
+};
+
+std::ostream& operator<<(std::ostream& o, const OBJFile&);
 
 }
 

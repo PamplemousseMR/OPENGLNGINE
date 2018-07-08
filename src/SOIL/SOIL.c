@@ -97,7 +97,7 @@ unsigned int SOIL_direct_load_DDS(
 		int loading_as_cubemap );
 unsigned int SOIL_direct_load_DDS_from_memory(
 		const unsigned char *const buffer,
-		int buffer_length,
+        unsigned int buffer_length,
 		unsigned int reuse_texture_ID,
 		int flags,
 		int loading_as_cubemap );
@@ -223,7 +223,7 @@ unsigned int
 	SOIL_load_OGL_texture_from_memory
 	(
 		const unsigned char *const buffer,
-		int buffer_length,
+        unsigned int buffer_length,
 		int force_channels,
 		unsigned int reuse_texture_ID,
 		unsigned int flags
@@ -1540,7 +1540,7 @@ const char*
 
 unsigned int SOIL_direct_load_DDS_from_memory(
 		const unsigned char *const buffer,
-		int buffer_length,
+        unsigned int buffer_length,
 		unsigned int reuse_texture_ID,
 		int flags,
 		int loading_as_cubemap )
@@ -1553,13 +1553,13 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 	unsigned int S3TC_type = 0;
 	unsigned char *DDS_data;
 	unsigned int DDS_main_size;
-	unsigned int DDS_full_size;
+    unsigned int DDS_full_size;
 	unsigned int width, height;
 	int mipmaps, cubemap, uncompressed, block_size = 16;
 	unsigned int flag;
 	unsigned int cf_target, ogl_target_start, ogl_target_end;
 	unsigned int opengl_texture_type;
-	int i;
+    unsigned int i;
 	/*	1st off, does the filename even exist?	*/
 	if( NULL == buffer )
 	{
@@ -1693,7 +1693,7 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 			/*	compressed DDS, MIPmap size calculation is block based	*/
 			shift_offset = 2;
 		}
-		for( i = 1; i <= mipmaps; ++ i )
+        for( i = 1; (int)i <= mipmaps; ++ i )
 		{
 			int w, h;
 			w = width >> (shift_offset + i);
@@ -1753,7 +1753,7 @@ unsigned int SOIL_direct_load_DDS_from_memory(
 					DDS_main_size, DDS_data );
 			}
 			/*	upload the mipmaps, if we have them	*/
-			for( i = 1; i <= mipmaps; ++i )
+            for( i = 1; (int)i <= mipmaps; ++i )
 			{
 				int w, h, mip_size;
 				w = width >> i;
@@ -1872,7 +1872,7 @@ unsigned int SOIL_direct_load_DDS(
 	}
 	/*	now try to do the loading	*/
 	tex_ID = SOIL_direct_load_DDS_from_memory(
-		(const unsigned char *const)buffer, buffer_length,
+        (const unsigned char *const)buffer, (unsigned int)buffer_length,
 		reuse_texture_ID, flags, loading_as_cubemap );
 	SOIL_free_image_data( buffer );
 	return tex_ID;

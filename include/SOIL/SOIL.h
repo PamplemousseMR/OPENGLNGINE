@@ -235,7 +235,7 @@ unsigned int
 	SOIL_load_OGL_texture_from_memory
 	(
 		const unsigned char *const buffer,
-		int buffer_length,
+        unsigned int buffer_length,
 		int force_channels,
 		unsigned int reuse_texture_ID,
 		unsigned int flags

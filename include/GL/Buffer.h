@@ -1,38 +1,41 @@
 #pragma once
+
 #include <GL/glew.h>
+
 #include <iostream>
 
 namespace GL 
 {
-	enum bufferType
-	{
-		VAO,
-		VBO,
-		EBO
-	};
 
-	class Buffer
-	{
+enum BUFFER_TYPE
+{
+    VAO,
+    VBO,
+    EBO
+};
 
-	private:
+class Buffer
+{
 
-		GLuint _id;
-		bufferType _type;
+public:
 
-	public:
+    Buffer(BUFFER_TYPE);
+    ~Buffer();
+    Buffer(const Buffer&) throw(...);
+    Buffer& operator=(const Buffer&) throw(...);
 
-		Buffer(bufferType);
-		~Buffer();
-		Buffer(const Buffer&) throw(...);
-		Buffer& operator=(const Buffer&) throw(...);
+    void bind() const;
+    void unbind() const;
 
-		void bind() const;
-		void unbind() const;
+    BUFFER_TYPE getType() const;
+    GLuint getId() const;
 
-		bufferType type() const;
-		GLuint getId() const;
+private:
 
-	};
+    GLuint m_id;
+    BUFFER_TYPE m_type;
+
+};
 
 }
 

@@ -1,35 +1,38 @@
 #pragma once
-#include <vector>
+
 #include <GL/glew.h>
+
 #include <iostream>
+#include <vector>
 
-namespace GL {
+namespace GL
+{
 
-	class Shader;
+class Shader;
 
-	class Program
-	{
+class Program
+{
 
-	private:
+public:
 
-		GLuint _id;
-		bool _toggled;
-		std::vector<Shader*> _shaders;
+    Program();
+    ~Program();
 
-	public:
+    void attach(Shader* shader);
+    void detach(Shader* shader);
+    void detachAll();
+    void link() const throw(...);
+    void toggle();
 
-		Program();
-		~Program();
+    bool isActive() const;
+    GLuint getId() const;
 
-		void attach(Shader* shader);
-		void detach(Shader* shader);
-		void detachAll();
-		void link() const throw(...);
-		void toggle();
+private:
 
-		bool isActive() const;
-		GLuint getId() const;
+    GLuint m_id;
+    bool m_toggled;
+    std::vector<Shader*> m_shaders;
 
-	};
+};
 
 }

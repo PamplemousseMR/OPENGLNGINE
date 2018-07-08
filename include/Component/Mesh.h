@@ -1,11 +1,14 @@
 #pragma once
-#include <vector>
+
 #include <GL/glew.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
-#include <string>
+
 #include <iostream>
 #include <map>
+#include <string>
+#include <vector>
 
 namespace GL
 {
@@ -14,65 +17,67 @@ namespace GL
 
 namespace Component
 {
-	class Mesh
-	{
+class Mesh
+{
 
-	private:
+public:
 
-		int _dataSize;
-		GL::Buffer* _vboVertex;
-		GL::Buffer* _vboNormal;
-		GL::Buffer* _vboTextCoord;
-		GL::Buffer* _vboTangent;
-		GL::Buffer* _vboBitangent;
-		GL::Buffer* _ebo;
-		GL::Buffer* _vao;
-		std::string _name;
-		bool _normal;
-		bool _textCoord;
+    static const int S_VERTEXLOCATION;
+    static const int S_TEXTCOORDLOCATION;
+    static const int S_NORMALLOCATION;
 
-		struct PackedVertex 
-		{
-			glm::vec3 position;
-			glm::vec2 uv;
-			glm::vec3 normal;
-			bool operator<(const PackedVertex that) const 
-			{
-				return memcmp((void*)this, (void*)&that, sizeof(PackedVertex))>0;
-			};
-		};
+public:
 
-		bool getSimilarVertexIndex(const PackedVertex&, const std::map<PackedVertex, unsigned int>&, unsigned int&);
-		void Mesh::indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&);
-	
-	public:
+    Mesh(const std::string&);
+    ~Mesh();
 
-		static const int S_VERTEXLOCATION;
-		static const int S_TEXTCOORDLOCATION;
-		static const int S_NORMALLOCATION;
+    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw(...);
+    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw(...);
+    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw(...);
+    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw(...);
+    void bind() const;
+    void unbind() const;
+    void draw() const;
 
-		Mesh(const std::string&);
-		~Mesh();
+    GL::Buffer* getArrayBuffer() const;
+    const std::string& getName() const;
+    int getVertexLocation() const;
+    int getTextureCoordLocation() const;
+    int getNormalLocation() const;
+    bool hasTextureCoord() const;
+    bool hasNormal() const;
 
-		void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw(...);
-		void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw(...);
-		void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw(...);
-		void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw(...);
-		void bind() const;
-		void unbind() const;
-		void draw() const;
+    std::ostream& print(std::ostream&) const;
 
-		GL::Buffer* getArrayBuffer() const;
-		const std::string& getName() const;
-		int getVertexLocation() const;
-		int getTextureCoordLocation() const;
-		int getNormalLocation() const;
-		bool hasTextureCoord() const;
-		bool hasNormal() const;
+private:
 
-		std::ostream& print(std::ostream&) const;
+    int m_dataSize;
+    GL::Buffer* m_vboVertex;
+    GL::Buffer* m_vboNormal;
+    GL::Buffer* m_vboTextCoord;
+    GL::Buffer* m_ebo;
+    GL::Buffer* m_vao;
+    std::string m_name;
+    bool m_normal;
+    bool m_textCoord;
 
-	};
+    struct PackedVertex
+    {
+        glm::vec3 position;
+        glm::vec2 uv;
+        glm::vec3 normal;
+        bool operator<(const PackedVertex that) const
+        {
+            return memcmp((void*)this, (void*)&that, sizeof(PackedVertex))>0;
+        }
+    };
 
-	std::ostream& operator<<(std::ostream&, const Mesh&);
+    bool getSimilarVertexIndex(const PackedVertex&, const std::map<PackedVertex, unsigned int>&, unsigned int&);
+    void Mesh::indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&);
+
+
+};
+
+std::ostream& operator<<(std::ostream&, const Mesh&);
+
 }

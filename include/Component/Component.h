@@ -1,43 +1,45 @@
 #pragma once
 
-#include <iostream>
 #include <glm\glm.hpp>
-#include <string>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <iostream>
+#include <string>
 
 namespace Component
 {
+class Component
+{
 
-	class Component
-	{
-		private:
+public :
 
-			std::string _name;
-			glm::mat4 _positionMatrix;
-			glm::vec3 _positionData;
-			glm::mat4 _rotationMatrix;
-			glm::vec3 _rotationData;
-			glm::mat4 _scaleMatrix;
-			glm::vec3 _scaleData;
+    Component(const std::string&);
+    ~Component();
 
-		public :
+    const glm::mat4& getPositionMatrix() const;
+    const glm::mat4& getRotationMatrix() const;
+    const glm::mat4& getScaleMatrix() const;
+    const glm::vec3& getPositionData() const;
+    const glm::vec3& getRotationData() const;
+    const glm::vec3& getScaleData() const;
 
-			Component(const std::string&);
-			~Component();
+    void setPosition(const glm::vec3&);
+    void setRotation(const glm::vec3&);
+    void setScale(const glm::vec3&);
 
-			const glm::mat4& getPositionMatrix() const;
-			const glm::mat4& getRotationMatrix() const;
-			const glm::mat4& getScaleMatrix() const;
-			const glm::vec3& getPositionData() const;
-			const glm::vec3& getRotationData() const;
-			const glm::vec3& getScaleData() const;
+    void addPosition(const glm::vec3&);
+    void addRotation(const glm::vec3&);
+    void addScale(const glm::vec3&);
 
-			void setPosition(const glm::vec3&);
-			void setRotation(const glm::vec3&);
-			void setScale(const glm::vec3&);
+private:
 
-			void addPosition(const glm::vec3&);
-			void addRotation(const glm::vec3&);
-			void addScale(const glm::vec3&);
-	};
+    std::string m_name;
+    glm::mat4 m_positionMatrix;
+    glm::vec3 m_positionData;
+    glm::mat4 m_rotationMatrix;
+    glm::vec3 m_rotationData;
+    glm::mat4 m_scaleMatrix;
+    glm::vec3 m_scaleData;
+
+};
 }
