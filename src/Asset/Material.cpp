@@ -223,91 +223,91 @@ namespace Assets
 	}
 
 
-	void Material::setKamap(const string& path) throw(...)
+	void Material::setKamap(const string& path) throw()
 	{
         if (m_kaMap)delete m_kaMap;
 		try {
             m_kaMap = new Map(MAP_TYPE::Ka, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setKamap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setKamap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setKdmap(const string& path) throw(...)
+	void Material::setKdmap(const string& path) throw()
 	{
         if (m_kdMap)delete m_kdMap;
 		try {
             m_kdMap = new Map(MAP_TYPE::Kd, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setKdmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setKdmap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setKsmap(const string& path) throw(...)
+	void Material::setKsmap(const string& path) throw()
 	{
         if (m_ksMap)delete m_ksMap;
 		try {
             m_ksMap = new Map(MAP_TYPE::Ks, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setKsmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setKsmap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setNsmap(const string& path) throw(...)
+	void Material::setNsmap(const string& path) throw()
 	{
         if (m_nsMap)delete m_nsMap;
 		try {
             m_nsMap = new Map(MAP_TYPE::Ns, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setNsmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setNsmap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setdmap(const string& path) throw(...)
+	void Material::setdmap(const string& path) throw()
 	{
         if (m_dMap)delete m_dMap;
 		try {
             m_dMap = new Map(MAP_TYPE::d, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setdmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setdmap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setDispmap(const string& path) throw(...)
+	void Material::setDispmap(const string& path) throw()
 	{
         if (m_dispMap)delete m_dispMap;
 		try {
             m_dispMap = new Map(MAP_TYPE::disp, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setDispmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setDispmap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setDecalmap(const string& path) throw(...)
+	void Material::setDecalmap(const string& path) throw()
 	{
         if (m_decalMap)delete m_decalMap;
 		try {
             m_decalMap = new Map(MAP_TYPE::decal, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setDecalmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setDecalmap(const string& path) throw()] " + e.what());
 		}
 	}
 
-	void Material::setBumpmap(const string& path) throw(...)
+	void Material::setBumpmap(const string& path) throw()
 	{
         if (m_bumpMap)delete m_bumpMap;
 		try {
             m_bumpMap = new Map(MAP_TYPE::bump, path);
 		}
 		catch (exception e) {
-			throw invalid_argument("[Material " + m_name + "] [setBumpmap(const string& path) throw(...)] " + e.what());
+			throw invalid_argument("[Material " + m_name + "] [setBumpmap(const string& path) throw()] " + e.what());
 		}
 	}
 

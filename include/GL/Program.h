@@ -21,7 +21,7 @@ public:
     void attach(Shader* shader);
     void detach(Shader* shader);
     void detachAll();
-    void link() const throw(...);
+	void link() const throw();
     void toggle();
 
     bool isActive() const;

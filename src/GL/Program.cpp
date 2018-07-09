@@ -1,6 +1,8 @@
 #include "GL/Program.h"
 #include "GL/Shader.h"
 
+#include <algorithm>
+
 using namespace std;
 
 namespace GL
@@ -62,10 +64,10 @@ namespace GL
 			detach(s);
 	}
 
-	void Program::link() const throw(...)
+	void Program::link() const throw()
 	{
 #ifdef _DEBUG
-		cout << "[Program] [link() const throw(...)]..." << endl;
+		cout << "[Program] [link() const throw()]..." << endl;
 #endif
 		GLint Result = GL_FALSE;
 		glLinkProgram(m_id);
@@ -78,7 +80,7 @@ namespace GL
 			throw invalid_argument("[Program] [link] " + ProgramErrorMessage[0]);
 		}
 #ifdef _DEBUG
-		cout << "[Program] [link() const throw(...)]...\tsuccess" << endl;
+		cout << "[Program] [link() const throw()]...\tsuccess" << endl;
 #endif
 	}
 

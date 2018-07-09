@@ -21,8 +21,8 @@ public:
 
     Buffer(BUFFER_TYPE);
     ~Buffer();
-    Buffer(const Buffer&) throw(...);
-    Buffer& operator=(const Buffer&) throw(...);
+    Buffer(const Buffer&) throw();
+    Buffer& operator=(const Buffer&) throw();
 
     void bind() const;
     void unbind() const;

@@ -32,7 +32,7 @@ namespace Assets
 #endif
 	}
 
-	void Group::add(const vector<vec3>& vertex, const vector<vec3>* normal, const vector<vec2>* textCoord, const vector<vec3>& index, const string* name) throw(...)
+	void Group::add(const vector<vec3>& vertex, const vector<vec3>* normal, const vector<vec2>* textCoord, const vector<vec3>& index, const string* name) throw()
 	{
 		if (name)
 			m_materials.push_back(new Material(*name));
@@ -52,7 +52,7 @@ namespace Assets
 				mesh->loadMesh(vertex, index);
 		}
 		catch (invalid_argument e){
-			throw invalid_argument("[Group " + m_name  + "] [add(const vector<vec3>& vertex, const vector<vec3>* normal, const vector<vec2>* textCoord, const vector<vec3>& index, const string* name) throw(...)] " + e.what());
+			throw invalid_argument("[Group " + m_name  + "] [add(const vector<vec3>& vertex, const vector<vec3>* normal, const vector<vec2>* textCoord, const vector<vec3>& index, const string* name) throw()] " + e.what());
 		}
 	}
 

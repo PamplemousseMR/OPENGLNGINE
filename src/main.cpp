@@ -86,11 +86,11 @@ int main()
 		glfwSetWindowSizeCallback(window, window_size_callback);
 
 		GL::Shader standarShader(GL::SHADER_TYPE::VERTEX);
-		standarShader.setSourceFromFile("glsl/standarVertex.glsl");
+		standarShader.setSourceFromFile("GLSL/standarVertex.glsl");
 		standarShader.compile();
 
 		GL::Shader standarFragment(GL::SHADER_TYPE::FRAGMENT);
-		standarFragment.setSourceFromFile("glsl/standarFragment.glsl");
+		standarFragment.setSourceFromFile("GLSL/standarFragment.glsl");
 		standarFragment.compile();
 
 		GL::Program standarProgram;

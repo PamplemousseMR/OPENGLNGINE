@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 
 #include <chrono>
 #include <fstream>
@@ -21,7 +21,7 @@ public:
     OBJFile();
     ~OBJFile();
 
-    void load(const std::string&) throw(...);
+    void load(const std::string&) throw();
 
     const std::vector<Object*>& getObjects() const;
     long long getLoadTime() const;
@@ -32,9 +32,9 @@ private:
 
     std::vector<std::string> split(const std::string & str, char splitter) const;
     std::vector<std::string> removenullptr(const std::vector<std::string> & str) const;
-    void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const throw(...);
+    void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const throw();
     std::vector<Material*> findMaterial(const std::string&) const;
-    void loadMTLFile(const std::string&) const throw(...);
+    void loadMTLFile(const std::string&) const throw();
 
 private:
 

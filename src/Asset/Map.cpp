@@ -8,7 +8,7 @@ using namespace GL;
 namespace Assets
 {
 
-    Map::Map(MAP_TYPE mapType, const string& path) throw(...)
+    Map::Map(MAP_TYPE mapType, const string& path) throw()
         : m_name(path),
         m_mapType(mapType),
         m_blendu(true),
@@ -27,7 +27,7 @@ namespace Assets
         m_mapAat(true)
 	{
 #ifdef _DEBUG
-        cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw(...)]..." << endl;
+        cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw()]..." << endl;
 #endif
         m_texture = new Texture(textureType::TEXTURE_2D);
         m_texture->bind();
@@ -35,14 +35,14 @@ namespace Assets
             m_textres = m_texture->load(path.c_str());
 		}
 		catch (exception e) {
-            throw invalid_argument("[Map " + m_name + "] [Map(mapType mapType, const tring& path) throw(...)] " + e.what());
+            throw invalid_argument("[Map " + m_name + "] [Map(mapType mapType, const tring& path) throw()] " + e.what());
 		}
         m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
         m_texture->unbind();
 #ifdef _DEBUG
-        cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw(...)]...\tsuccess" << endl;
+        cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw()]...\tsuccess" << endl;
 #endif
 	}
 
@@ -91,20 +91,20 @@ namespace Assets
         m_blendv = blendv;
 	}
 
-	void Map::setCc(bool cc) throw(...)
+	void Map::setCc(bool cc) throw()
 	{
         if (m_mapType == Ka || m_mapType == Kd || m_mapType == Ks)
             m_cc = cc;
 		else
-            throw invalid_argument("[Map " + m_name + "] [setCc(bool cc) throw(...)] can't set cc for this mapType");
+            throw invalid_argument("[Map " + m_name + "] [setCc(bool cc) throw()] can't set cc for this mapType");
 	}
 
-	void Map::setClamp(bool clamp) throw(...)
+	void Map::setClamp(bool clamp) throw()
 	{
         if (m_mapType == Ns || m_mapType == d || m_mapType == decal || m_mapType == disp)
             m_clamp = clamp;
 		else
-            throw invalid_argument("[Map " + m_name + "] [setClamp(bool clamp) throw(...)] can't set clamp for this mapType");
+            throw invalid_argument("[Map " + m_name + "] [setClamp(bool clamp) throw()] can't set clamp for this mapType");
 	}
 
 	void Map::setImfchanrgb(const vec3& rgb)
@@ -177,20 +177,20 @@ namespace Assets
         return m_blendv;
 	}
 
-	bool Map::getCc() const throw(...)
+	bool Map::getCc() const throw()
 	{
         if (m_mapType == Ka || m_mapType == Kd || m_mapType == Ks)
             return m_cc;
 		else
-            throw invalid_argument("[Map " + m_name + "] [getCc() const throw(...)] can't get cc for this mapType");
+            throw invalid_argument("[Map " + m_name + "] [getCc() const throw()] can't get cc for this mapType");
 	}
 
-	bool Map::getClamp() const throw(...)
+	bool Map::getClamp() const throw()
 	{
         if (m_mapType == Ns || m_mapType == d || m_mapType == decal || m_mapType == disp)
             return m_clamp;
 		else
-            throw invalid_argument("[Map " + m_name + "] [getClamp() const throw(...)] can't get clamp for this mapType");
+            throw invalid_argument("[Map " + m_name + "] [getClamp() const throw()] can't get clamp for this mapType");
 	}
 
 	const vec3& Map::getImfchanrgb() const

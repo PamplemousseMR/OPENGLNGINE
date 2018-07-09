@@ -61,7 +61,7 @@ namespace GL
 		m_sources = src;
 	}
 
-	void Shader::setSourceFromFile(const std::string& path) throw(...)
+	void Shader::setSourceFromFile(const std::string& path) throw()
 	{
 #ifdef _DEBUG
         cout << "[Shader " << m_type << "] [setSource(const std::string& src)]..." << endl;
@@ -82,10 +82,10 @@ namespace GL
 #endif
 	}
 
-	void GL::Shader::compile() const throw(...)
+	void GL::Shader::compile() const throw()
 	{
 #ifdef _DEBUG
-        cout << "[Shader " << m_type << "] [compile() const throw(...)]..." << endl;
+		cout << "[Shader " << m_type << "] [compile() const throw()]..." << endl;
 #endif
 		GLint Result = GL_FALSE;
 		int InfoLogLength;
@@ -110,10 +110,10 @@ namespace GL
 				break;
 			}
 			string str(shaderErrorMessage.begin(), shaderErrorMessage.end());
-			throw invalid_argument("[Shader " + ty + "] [compile() const throw(...)] " + str);
+			throw invalid_argument("[Shader " + ty + "] [compile() const throw()] " + str);
 		}
 #ifdef _DEBUG
-        cout << "[Shader " << m_type << "] [compile() const throw(...)]...\tsuccess" << endl;
+		cout << "[Shader " << m_type << "] [compile() const throw()]...\tsuccess" << endl;
 #endif
 	}
 

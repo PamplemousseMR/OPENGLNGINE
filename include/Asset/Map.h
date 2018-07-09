@@ -1,9 +1,9 @@
 #pragma once
 
-#include<glm\glm.hpp>
+#include <glm/glm.hpp>
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 
 namespace GL
 {
@@ -30,15 +30,15 @@ class Map
 
 public:
 
-    Map(MAP_TYPE, const std::string&) throw(...);
+	Map(MAP_TYPE, const std::string&) throw();
     ~Map();
 
     GL::Texture* getTexture() const;
     const std::string& getName() const;
     bool getBlendu() const;
     bool getBlendv() const;
-    bool getCc() const throw(...);
-    bool getClamp() const throw(...);
+	bool getCc() const throw();
+	bool getClamp() const throw();
     const glm::vec3& getImfchanrgb() const;
     const glm::vec3& getImfchanmlz() const;
     float getBase() const;
@@ -53,8 +53,8 @@ public:
 
     void setBlendu(bool);
     void setBlendv(bool);
-    void setCc(bool) throw(...);
-    void setClamp(bool) throw(...);
+	void setCc(bool) throw();
+	void setClamp(bool) throw();
     void setImfchanrgb(const glm::vec3&);
     void setImfchanmlz(const glm::vec3&);
     void setBase(float);

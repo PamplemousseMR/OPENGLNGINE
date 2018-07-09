@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 #include <iostream>
 #include <string>
@@ -23,9 +23,9 @@ public:
     Texture(textureType);
     ~Texture();
 
-    int load(const char*) throw(...);
+	int load(const char*) throw();
     void generateMipmap() const;
-    void bind() throw(...);
+	void bind() throw();
     void unbind();
 
     GLuint getId() const;

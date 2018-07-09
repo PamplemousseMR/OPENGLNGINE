@@ -11,6 +11,9 @@ SET(openglngine_project_name "openglngine")
 SET(openglngine_glsl_files "${openglngine_bin_dir}/GLSL")
 SET(openglngine_obj_files "${openglngine_bin_dir}/obj")
 
+#------------ cmake variables ------------
+SET(CMAKE_CXX_FLAGS "-std=c++14 ")
+
 #------------ find files ------------
 FILE(GLOB_RECURSE openglngine_src_files ${openglngine_src_dir}/*)
 FILE(GLOB_RECURSE openglngine_header_files ${openglngine_header_dir}/*)
@@ -24,7 +27,7 @@ INCLUDE_DIRECTORIES(${openglngine_header_dir})
 ADD_EXECUTABLE(${openglngine_project_name}  ${openglngine_src_files} ${openglngine_header_files})
 
 #------------ find opengl ------------
-FIND_PACKAGE("OPENGL")
+FIND_PACKAGE("OpenGL")
 
 IF(NOT ${OPENGL_FOUND})
     MESSAGE(FATAL_ERROR "Can't find OpenGL")

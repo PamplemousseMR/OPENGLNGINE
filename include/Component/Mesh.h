@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <map>
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -31,10 +32,10 @@ public:
     Mesh(const std::string&);
     ~Mesh();
 
-    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw(...);
-    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw(...);
-    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw(...);
-    void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw(...);
+	void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw();
+	void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw();
+	void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&) throw();
+	void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec3>&) throw();
     void bind() const;
     void unbind() const;
     void draw() const;
@@ -73,7 +74,7 @@ private:
     };
 
     bool getSimilarVertexIndex(const PackedVertex&, const std::map<PackedVertex, unsigned int>&, unsigned int&);
-    void Mesh::indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&);
+	void indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&);
 
 
 };

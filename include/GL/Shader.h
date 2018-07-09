@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 #include <fstream>
 #include <iostream>
@@ -26,13 +26,13 @@ public:
     Shader(const Shader&);
     Shader& operator=(const Shader&);
 
-    void compile() const throw(...);
+	void compile() const throw();
 
     GLenum getType() const;
     GLuint getId() const;
 
     void setSource(const std::string&);
-    void setSourceFromFile(const std::string&) throw(...);
+	void setSourceFromFile(const std::string&) throw();
 
 private:
 

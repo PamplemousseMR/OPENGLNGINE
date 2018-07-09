@@ -1,9 +1,9 @@
 #pragma once
 
-#include<glm\glm.hpp>
+#include <glm/glm.hpp>
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 
 namespace GL
 {
@@ -53,14 +53,14 @@ public:
     void setSharpness(float);
     void setopticalDensity(float);
     void setEmissiveCoeficient(const glm::vec3&);
-    void setKamap(const std::string&) throw(...);
-    void setKdmap(const std::string&) throw(...);
-    void setKsmap(const std::string&) throw(...);
-    void setNsmap(const std::string&) throw(...);
-    void setdmap(const std::string&) throw(...);
-    void setDecalmap(const std::string&) throw(...);
-    void setDispmap(const std::string&) throw(...);
-    void setBumpmap(const std::string&) throw(...);
+    void setKamap(const std::string&) throw();
+    void setKdmap(const std::string&) throw();
+    void setKsmap(const std::string&) throw();
+    void setNsmap(const std::string&) throw();
+    void setdmap(const std::string&) throw();
+    void setDecalmap(const std::string&) throw();
+    void setDispmap(const std::string&) throw();
+    void setBumpmap(const std::string&) throw();
 
     std::ostream& print(std::ostream&) const;
 

@@ -41,11 +41,11 @@ namespace GL
 #endif
 	}
 
-	Buffer::Buffer(const Buffer& buffer) throw(...)
+	Buffer::Buffer(const Buffer& buffer) throw()
         : m_type(buffer.getType())
 	{
 #ifdef _DEBUG
-		cout << "[Buffer] [Buffer(const Buffer& buffer) throw(...)]..." << endl;
+		cout << "[Buffer] [Buffer(const Buffer& buffer) throw()]..." << endl;
 #endif
         switch (m_type)
 		{
@@ -77,14 +77,14 @@ namespace GL
 		glBindBuffer(GL_COPY_READ_BUFFER, 0);
 		glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
 #ifdef _DEBUG
-		cout << "[Buffer] [Buffer(const Buffer& buffer) throw(...)]...\tsuccess" << endl;
+		cout << "[Buffer] [Buffer(const Buffer& buffer) throw()]...\tsuccess" << endl;
 #endif
 	}
 
-	Buffer& Buffer::operator=(const Buffer& buffer) throw(...)
+	Buffer& Buffer::operator=(const Buffer& buffer) throw()
 	{
 #ifdef _DEBUG
-		cout << "[Buffer] [operator=(const Buffer& buffer) throw(...)]..." << endl;
+		cout << "[Buffer] [operator=(const Buffer& buffer) throw()]..." << endl;
 #endif
 		if (this != &buffer)
 		{
@@ -93,7 +93,7 @@ namespace GL
             switch (m_type)
 			{
             case BUFFER_TYPE::VAO:
-				throw invalid_argument("[Buffer] [operator=(const Buffer& buffer) throw(...)] can't copying VAO");
+				throw invalid_argument("[Buffer] [operator=(const Buffer& buffer) throw()] can't copying VAO");
 				break;
             case BUFFER_TYPE::VBO:
                 glGenBuffers(1, &m_id);
@@ -122,7 +122,7 @@ namespace GL
 		}
 		return *this;
 #ifdef _DEBUG
-		cout << "[Buffer] [operator=(const Buffer& buffer) throw(...)]...\tsuccess" << endl;
+		cout << "[Buffer] [operator=(const Buffer& buffer) throw()]...\tsuccess" << endl;
 #endif
 	}
 

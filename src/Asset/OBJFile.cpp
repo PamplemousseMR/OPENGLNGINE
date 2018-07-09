@@ -49,18 +49,18 @@ namespace Assets
 		return res;
 	}
 
-	void OBJFile::push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)
+	void OBJFile::push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()
 	{
-        if (usemtl == nullptr)throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] usemtl can`t be nullptr"));
+		if (usemtl == nullptr)throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] usemtl can`t be nullptr"));
 		if(index->size() < 0)
-            throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] push with no index"));
+			throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] push with no index"));
 		else
 		{
 			vec3 vec = index->back();
 			if(vec[1] != 0 && textCoord->size() == 0)
-                throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] use texture coord on faces with no texture coord define"));
+				throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] use texture coord on faces with no texture coord define"));
 			if (vec[2] != 0 && normal->size() == 0)
-                throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] use normal on faces with no normal define"));
+				throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] use normal on faces with no normal define"));
 		}
 		try {
 			if (*usemtl != "")
@@ -69,7 +69,7 @@ namespace Assets
                 m_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, nullptr);
 		}
 		catch(invalid_argument e){
-            throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw(...)] " + e.what()));
+			throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] " + e.what()));
 		}
 		index->clear();
 		*usemtl = "";
@@ -86,24 +86,24 @@ namespace Assets
 		return m;
 	}
 
-	void OBJFile::loadMTLFile(const string& path) const throw(...)
+	void OBJFile::loadMTLFile(const string& path) const throw()
 	{
 #ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw(...)] load..."<<endl;
+		cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw()] load..."<<endl;
 #endif
 		vector<string> filename = split(path, '.');
 		if (filename[filename.size() - 1] != "mtl")
-            throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] can't read " + filename[filename.size() - 1] + " extension");
-        string symbol = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] unexpected symbol at the end of the line ";
-        string invalideData = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] missing value(s) at the line ";
-        string cmd = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] invalide commande at the line ";
-        string noexiste = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] set value to non existe material at line ";
-        string commande = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] unknow commande at line ";
-        string lineError = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] Unexpected symbol at the line ";
+			throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] can't read " + filename[filename.size() - 1] + " extension");
+		string symbol = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] unexpected symbol at the end of the line ";
+		string invalideData = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] missing value(s) at the line ";
+		string cmd = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] invalide commande at the line ";
+		string noexiste = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] set value to non existe material at line ";
+		string commande = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] unknow commande at line ";
+		string lineError = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] Unexpected symbol at the line ";
 		int lineNumber = 0;
 		ifstream file(path, ios::in);
 		if (!file)
-            throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw(...)] can't open mtl file " + path);
+			throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] can't open mtl file " + path);
 		vector<Material*> materials;
 		string line;
 		filename = split(filename[0], '/');
@@ -126,7 +126,7 @@ namespace Assets
 						materials = findMaterial(data[1]);
 						if (materials.size() == 0)
 						{
-                            cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw(...)] material " << data[1] << " not used" << endl;
+							cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw()] material " << data[1] << " not used" << endl;
 							bool b = true;
 							while (b && getline(file, line, '\n'))
 							{
@@ -138,7 +138,7 @@ namespace Assets
 									if (materials.size() != 0)
 										b = false;
 									else
-                                        cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw(...)] material " << data[1] << " not used" << endl;
+										cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw()] material " << data[1] << " not used" << endl;
 								}
 							}
 						}
@@ -570,7 +570,7 @@ namespace Assets
 		}
 		file.close();
 #ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw(...)] file success" << endl;
+		cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw()] file success" << endl;
 #endif
 	}
 
@@ -597,7 +597,7 @@ namespace Assets
 #endif
 	}
 
-	void OBJFile::load(const string& path) throw(...)
+	void OBJFile::load(const string& path) throw()
 	{
 #ifdef _DEBUG
         cout << "[OBJFile " << m_name << "] load...\n";
@@ -612,17 +612,17 @@ namespace Assets
 		//ouverture du fichier
 		vector<string> filename = split(path, '.');
 		if (filename[filename.size() - 1] != "obj")
-            throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] can't read : " + filename[filename.size() - 1] + " extension");
+			throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] can't read : " + filename[filename.size() - 1] + " extension");
         m_name = removenullptr(split(filename[filename.size() - 2],'/')).back();
 		ifstream file(path, ios::in);
 		if (!file)
-            throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] can't open file : " + path);
+			throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] can't open file : " + path);
 
 		//code d'erreurs
-        string symbol = "[OBJFile " + m_name + "] [load(const string& path) throw(...)] Unexpected symbol at the end of the line ";
-        string value = "[OBJFile " + m_name + "] [load(const string& path) throw(...)] Wrong value at the line ";
-        string invalideData = "[OBJFile " + m_name + "] [load(const string& path) throw(...) Missing value(s) at the line ";
-        string lineError = "[OBJFile " + m_name + "] [load(const string& path) throw(...)] Unexpected symbol at the line ";
+		string symbol = "[OBJFile " + m_name + "] [load(const string& path) throw()] Unexpected symbol at the end of the line ";
+		string value = "[OBJFile " + m_name + "] [load(const string& path) throw()] Wrong value at the line ";
+		string invalideData = "[OBJFile " + m_name + "] [load(const string& path) throw() Missing value(s) at the line ";
+		string lineError = "[OBJFile " + m_name + "] [load(const string& path) throw()] Unexpected symbol at the line ";
 
 		//donneees
 		vector<vec3> vertex(0);
@@ -781,7 +781,7 @@ namespace Assets
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+									throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 								}
 							}
 							else
@@ -791,7 +791,7 @@ namespace Assets
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+									throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 								}
 							}
 						}
@@ -803,7 +803,7 @@ namespace Assets
 								push(&vertex, &normal, &textCoord, &index, &usemtl);
 							}
 							catch (invalid_argument e) {
-                                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+								throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 							}
 						}
 					}
@@ -824,7 +824,7 @@ namespace Assets
 										push(&vertex, &normal, &textCoord, &index, &usemtl);
 									}
 									catch (invalid_argument e) {
-                                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+										throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 									}
 								}
                                 m_objects.back()->addGroup(data[1]);
@@ -838,7 +838,7 @@ namespace Assets
 										push(&vertex, &normal, &textCoord, &index, &usemtl);
 									}
 									catch (invalid_argument e) {
-                                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+										throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 									}
 								}
                                 m_objects.back()->addGroup(data[1]);
@@ -854,7 +854,7 @@ namespace Assets
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+									throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 								}
 							}
                             m_objects.push_back(new Object("default_object"));
@@ -871,7 +871,7 @@ namespace Assets
 					mtllib = data[1];
 					vector<string> lib = split(mtllib, '.');
 					if (lib.back() != "mtl")
-                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
+						throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
 				}
 				else if (dat0 == "usemtl")
 				{
@@ -889,7 +889,7 @@ namespace Assets
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 								}
 								catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+									throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 								}
 							}
 							else
@@ -899,7 +899,7 @@ namespace Assets
 									push(&vertex, &normal, &textCoord, &index, &usemtl);
 							}
 								catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+									throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 								}
 							}
 						}
@@ -910,7 +910,7 @@ namespace Assets
 								push(&vertex, &normal, &textCoord, &index, &usemtl);
 							}
 							catch (invalid_argument e) {
-                                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+								throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 							}
 						}
 					}
@@ -919,7 +919,7 @@ namespace Assets
 			}
 		}
 
-		//si rien n'a été push, on le fait ici
+		//si rien n'a ï¿½tï¿½ push, on le fait ici
 		if (index.size() > 0)
 		{
             if (m_objects.size() > 0)
@@ -930,7 +930,7 @@ namespace Assets
 						push(&vertex, &normal, &textCoord, &index, &usemtl);
 					}
 					catch (invalid_argument e) {
-                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+						throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 					}
 				}
 				else
@@ -940,7 +940,7 @@ namespace Assets
 						push(&vertex, &normal, &textCoord, &index, &usemtl);
 					}
 					catch (invalid_argument e) {
-                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+						throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 					}
 				}
 			}
@@ -952,7 +952,7 @@ namespace Assets
 					push(&vertex, &normal, &textCoord, &index, &usemtl);
 				}
 				catch (invalid_argument e) {
-                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+					throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 				}
 			}
 		}
@@ -961,7 +961,7 @@ namespace Assets
 		file.close();
 
 #ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [load(const string& path) throw(...)]...\tsuccess" << endl;
+		cout << "[OBJFile " << m_name << "] [load(const string& path) throw()]...\tsuccess" << endl;
 #endif
 		//chargement du fichier mtl
 		if (mtllib != "")
@@ -974,7 +974,7 @@ namespace Assets
 				loadMTLFile(res + mtllib);
 			}
 			catch (invalid_argument e) {
-                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw(...)] " + e.what());
+				throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
 			}
 		}
 
