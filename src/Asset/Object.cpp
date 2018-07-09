@@ -1,5 +1,5 @@
-#include "Asset/Object.h"
-#include "Asset/Group.h"
+#include "Asset/Object.hpp"
+#include "Asset/Group.hpp"
 
 using namespace std;
 

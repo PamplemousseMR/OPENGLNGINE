@@ -1,8 +1,8 @@
-#include "Asset/OBJFile.h"
-#include "Asset/Object.h"
-#include "Asset/Group.h"
-#include "Asset/Material.h"
-#include "Asset/Map.h"
+#include "Asset/OBJFile.hpp"
+#include "Asset/Object.hpp"
+#include "Asset/Group.hpp"
+#include "Asset/Material.hpp"
+#include "Asset/Map.hpp"
 
 using namespace std;
 using namespace glm;

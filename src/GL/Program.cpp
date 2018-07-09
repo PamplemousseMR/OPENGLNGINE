@@ -1,5 +1,5 @@
-#include "GL/Program.h"
-#include "GL/Shader.h"
+#include "GL/Program.hpp"
+#include "GL/Shader.hpp"
 
 #include <algorithm>
 

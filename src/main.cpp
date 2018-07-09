@@ -6,18 +6,18 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-#include "Component/Mesh.h"
-#include "GL/Buffer.h"
-#include "GL/Shader.h"
-#include "GL/Program.h"
-#include "GL/Uniform.h"
-#include "GL/Texture.h"
-#include "Asset/Group.h"
-#include "Asset/Material.h"
-#include "Asset/Map.h"
-#include "Asset/Object.h"
-#include "Asset/OBJFile.h"
-#include "Component/Component.h"
+#include "Component/Mesh.hpp"
+#include "GL/Buffer.hpp"
+#include "GL/Shader.hpp"
+#include "GL/Program.hpp"
+#include "GL/Uniform.hpp"
+#include "GL/Texture.hpp"
+#include "Asset/Group.hpp"
+#include "Asset/Material.hpp"
+#include "Asset/Map.hpp"
+#include "Asset/Object.hpp"
+#include "Asset/OBJFile.hpp"
+#include "Component/Component.hpp"
 
 using namespace std;
 

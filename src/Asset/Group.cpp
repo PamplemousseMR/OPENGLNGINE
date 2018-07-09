@@ -1,6 +1,6 @@
-#include "Asset/Group.h"
-#include "Component/Mesh.h"
-#include "Asset/Material.h"
+#include "Asset/Group.hpp"
+#include "Component/Mesh.hpp"
+#include "Asset/Material.hpp"
 
 using namespace std;
 using namespace glm;

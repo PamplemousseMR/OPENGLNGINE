@@ -1,4 +1,4 @@
-#include "GL/Shader.h"
+#include "GL/Shader.hpp"
 
 using namespace std;
 

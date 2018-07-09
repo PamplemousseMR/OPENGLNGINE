@@ -1,4 +1,4 @@
-#include "GL/Buffer.h"
+#include "GL/Buffer.hpp"
 
 using namespace std;
 
