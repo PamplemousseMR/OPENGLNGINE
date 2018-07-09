@@ -12,7 +12,7 @@ SET(openglngine_glsl_files "${openglngine_bin_dir}/GLSL")
 SET(openglngine_obj_files "${openglngine_bin_dir}/obj")
 
 #------------ cmake variables ------------
-SET(CMAKE_CXX_FLAGS "-std=c++14 ")
+SET(CMAKE_CXX_STANDARD 14)
 
 #------------ find files ------------
 FILE(GLOB_RECURSE openglngine_src_files ${openglngine_src_dir}/*)
@@ -40,5 +40,5 @@ TARGET_LINK_LIBRARIES(${openglngine_project_name} ${OPENGL_LIBRARY})
 TARGET_LINK_LIBRARIES(${openglngine_project_name} ${CONAN_LIBS})
 
 #------ copy binary files ------
-file(COPY ${openglngine_glsl_files} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-file(COPY ${openglngine_obj_files} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+FILE(COPY ${openglngine_glsl_files} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+FILE(COPY ${openglngine_obj_files} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
