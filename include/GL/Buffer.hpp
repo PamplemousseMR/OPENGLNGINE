@@ -19,23 +19,33 @@ class Buffer
 
 public:
 
-    Buffer(BUFFER_TYPE);
-    ~Buffer();
-    Buffer(const Buffer&) throw();
-    Buffer& operator=(const Buffer&) throw();
+    Buffer(BUFFER_TYPE) noexcept;
+    ~Buffer() noexcept;
+    Buffer(const Buffer&);
+    Buffer& operator=(const Buffer&);
 
-    void bind() const;
-    void unbind() const;
+    void bind() const noexcept;
+    void unbind() const noexcept;
 
-    BUFFER_TYPE getType() const;
-    GLuint getId() const;
+    inline BUFFER_TYPE getType() const noexcept;
+    inline GLuint getId() const noexcept;
 
 private:
 
-    GLuint m_id;
-    BUFFER_TYPE m_type;
+    GLuint m_id {0};
+    BUFFER_TYPE m_type {VBO};
 
 };
+
+BUFFER_TYPE Buffer::getType() const noexcept
+{
+    return m_type;
+}
+
+GLuint Buffer::getId() const noexcept
+{
+    return m_id;
+}
 
 }
 
