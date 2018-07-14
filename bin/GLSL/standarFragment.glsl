@@ -1,5 +1,4 @@
 #version 440 core
-out vec4 color;
 
 in vec2 v_textCoord;
 in vec3 v_normal_cameraspace;
@@ -21,54 +20,60 @@ uniform vec3 u_ambient;
 uniform vec3 u_specular;
 uniform vec3 u_diffuse;
 
+out vec4 v_color;
+
 void main()
 {
-	vec3 lightColor = vec3(1,1,1);
+    vec3 lightColor = vec3(1,1,1);
 
-	vec3 ambient = vec3(0.25,0.25,0.25);
-	vec3 diffuse = vec3(0.25,0.25,0.25);
-	vec3 specular = vec3(0.25,0.25,0.25);
-	float alpha = 1.0f;
+    vec3 ambient = vec3(0.25,0.25,0.25);
+    vec3 diffuse = vec3(0.25,0.25,0.25);
+    vec3 specular = vec3(0.25,0.25,0.25);
+    float alpha = 1.0f;
 
-	// ambient
+    // ambient
 
-	if(u_hasAmbientTexture)
-	{
-		ambient = texture( u_ambientTexture, vec2(v_textCoord.x, 1 - v_textCoord.y)).rgb;
-	}
+    if(u_hasAmbientTexture)
+    {
+        ambient = texture( u_ambientTexture, vec2(v_textCoord.x, 1 - v_textCoord.y)).rgb;
+    }
 
-	// diffuse
+    // diffuse
 
-	vec3 n = normalize( v_normal_cameraspace );
-	vec3 l = normalize( v_lightDirection_cameraspace );
-	float cosTheta = clamp( dot( n,l ), 0,1 );
+    vec3 n = normalize( v_normal_cameraspace );
+    vec3 l = normalize( v_lightDirection_cameraspace );
+    float cosTheta = clamp( dot( n,l ), 0,1 );
 
-	if(u_hasDiffuseTexture)
-	{
-		vec4 materialDiffuseColor = texture( u_diffuseTexture, vec2(v_textCoord.x, 1 - v_textCoord.y));
-		diffuse = materialDiffuseColor.rgb * lightColor * cosTheta;
-		alpha = materialDiffuseColor.a;
-	}
-	else
-		diffuse = diffuse * lightColor * cosTheta;
+    if(u_hasDiffuseTexture)
+    {
+        vec4 materialDiffuseColor = texture( u_diffuseTexture, vec2(v_textCoord.x, 1 - v_textCoord.y));
+        diffuse = materialDiffuseColor.rgb * lightColor * cosTheta;
+        alpha = materialDiffuseColor.a;
+    }
+    else
+    {
+        diffuse = diffuse * lightColor * cosTheta;
+    }
 
-	// specular
+    // specular
 
-	vec3 E = normalize(v_eyeDirection_cameraspace);
-	vec3 R = reflect(-l,n);
-	float cosAlpha = clamp( dot( E,R ), 0,1 );
+    vec3 E = normalize(v_eyeDirection_cameraspace);
+    vec3 R = reflect(-l,n);
+    float cosAlpha = clamp( dot( E,R ), 0,1 );
 
-	if(u_hasSpecularTexture)
-	{
-		vec3 materialSpecularColor = texture( u_specularTexture, vec2(v_textCoord.x, 1 - v_textCoord.y)).xyz;
-		specular = materialSpecularColor * lightColor * pow(cosAlpha,u_specularExponent);
-	}
-	else
-		specular = specular * lightColor * pow(cosAlpha,u_specularExponent);
+    if(u_hasSpecularTexture)
+    {
+        vec3 materialSpecularColor = texture( u_specularTexture, vec2(v_textCoord.x, 1 - v_textCoord.y)).xyz;
+        specular = materialSpecularColor * lightColor * pow(cosAlpha,u_specularExponent);
+    }
+    else
+    {
+        specular = specular * lightColor * pow(cosAlpha,u_specularExponent);
+    }
 
-	/*color = vec4(v_normal_cameraspace,1);*/
+    /*color = vec4(v_normal_cameraspace,1);*/
 
-	color = vec4(u_ambient*ambient + u_diffuse*diffuse + u_specular*specular ,alpha);
+    v_color = vec4(u_ambient*ambient + u_diffuse*diffuse + u_specular*specular ,alpha);
 
-	/*color = vec4(materialDiffuseColor.rgb, materialDiffuseColor.a);*/
+    /*color = vec4(materialDiffuseColor.rgb, materialDiffuseColor.a);*/
 }
