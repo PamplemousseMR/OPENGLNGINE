@@ -1098,11 +1098,6 @@ void OBJFile::load(const filesystem::path& _path)
                     throw invalid_argument(symbol + to_string(lineNumber));
                 }
                 mtllib = data[1];
-                vector<string> lib = split(mtllib, '.');
-                if (lib.back() != "mtl")
-                {
-                    throw invalid_argument("[OBJFile] Can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
-                }
             }
             else if (dat0 == "usemtl")
             {
