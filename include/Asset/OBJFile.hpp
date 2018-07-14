@@ -2,9 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <chrono>
-#include <fstream>
-#include <iostream>
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -18,23 +16,23 @@ class OBJFile
 
 public:
 
-    OBJFile();
-    ~OBJFile();
+    OBJFile() noexcept;
+    ~OBJFile() noexcept;
 
-    void load(const std::string&) throw();
+    void load(const std::filesystem::path&);
 
-    const std::vector<Object*>& getObjects() const;
-    long long getLoadTime() const;
+    const std::vector<Object*>& getObjects() const noexcept;
+    long long getLoadTime() const noexcept;
 
-    std::ostream& print(std::ostream&) const;
+    std::ostream& print(std::ostream&) const noexcept;
 
 private:
 
-    std::vector<std::string> split(const std::string & str, char splitter) const;
-    std::vector<std::string> removenullptr(const std::vector<std::string> & str) const;
-    void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const throw();
-    std::vector<Material*> findMaterial(const std::string&) const;
-    void loadMTLFile(const std::string&) const throw();
+    std::vector<std::string> split(const std::string & str, char splitter) const noexcept;
+    std::vector<std::string> removeNullptr(const std::vector<std::string> & str) const noexcept;
+    void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const;
+    std::vector<Material*> findMaterial(const std::string&) const noexcept;
+    void loadMTLFile(const std::filesystem::path&) const;
 
 private:
 
@@ -44,7 +42,7 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream& o, const OBJFile&);
+std::ostream& operator<<(std::ostream& o, const OBJFile&) noexcept;
 
 }
 

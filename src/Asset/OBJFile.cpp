@@ -4,6 +4,9 @@
 #include "Asset/Material.hpp"
 #include "Asset/Map.hpp"
 
+#include <chrono>
+#include <fstream>
+
 using namespace std;
 using namespace glm;
 using namespace std::chrono;
@@ -12,1000 +15,1239 @@ using namespace Component;
 namespace Assets
 {
 
-    vector<string> OBJFile::split(const string & str, char splitter) const
+vector<string> OBJFile::split(const string& _str, char _splitter) const noexcept
+{
+    if (_str == "")
     {
-        if (str == "") return vector<string>(0);
-        vector<int> semicolons;
-        vector<string> tokens;
-        for (size_t i = 0; i < str.length(); i++)
+        return vector<string>(0);
+    }
+    vector<int> semicolons;
+    vector<string> tokens;
+    for(size_t i = 0; i < _str.length(); ++i)
+    {
+        if (_str[i] == _splitter)
         {
-            if (str[i] == splitter)
-                semicolons.push_back((int)i);
+            semicolons.push_back((int)i);
         }
+    }
 
-        if (semicolons.size() == 0)
-        {
-            tokens.push_back(str);
-            return tokens;
-        }
-
-        for (size_t i = 0; i<semicolons.size() + 1; i++) {
-            if (i == 0)
-                tokens.push_back(str.substr(0, semicolons[i]));
-            else if (i == semicolons.size())
-                tokens.push_back(str.substr(semicolons[i - 1] + 1));
-            else
-                tokens.push_back(str.substr(semicolons[i - 1] + 1, semicolons[i] - semicolons[i - 1] - 1));
-        }
+    if (semicolons.size() == 0)
+    {
+        tokens.push_back(_str);
         return tokens;
     }
 
-    vector<string> OBJFile::removenullptr(const vector<string> & str) const
+    for(size_t i = 0; i<semicolons.size() + 1; ++i)
     {
-        vector<string> res;
-        for (unsigned int i(0); i < str.size(); i++)
-            if (str[i] != "")
-                res.push_back(str[i]);
-        return res;
-    }
-
-    void OBJFile::push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()
-    {
-        if (usemtl == nullptr)throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] usemtl can`t be nullptr"));
-        if(index->size() < 0)
-            throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] push with no index"));
+        if (i == 0)
+        {
+            tokens.push_back(_str.substr(0, semicolons[i]));
+        }
+        else if (i == semicolons.size())
+        {
+            tokens.push_back(_str.substr(semicolons[i - 1] + 1));
+        }
         else
         {
-            vec3 vec = index->back();
-            if(vec[1] != 0 && textCoord->size() == 0)
-                throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] use texture coord on faces with no texture coord define"));
-            if (vec[2] != 0 && normal->size() == 0)
-                throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] use normal on faces with no normal define"));
+            tokens.push_back(_str.substr(semicolons[i - 1] + 1, semicolons[i] - semicolons[i - 1] - 1));
         }
-        try {
-            if (*usemtl != "")
-                m_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, usemtl);
-            else
-                m_objects.back()->getLastGroup()->add(*vertex, normal->size() > 0 ? normal : nullptr, textCoord->size() > 0 ? textCoord : nullptr, *index, nullptr);
-        }
-        catch(invalid_argument e){
-            throw(invalid_argument("[OBJFile " + m_name + "] [push(vector<vec3>* vertex, vector<vec3>* normal, vector<vec2>* textCoord, vector<vec3>* index, string* usemtl) const throw()] " + e.what()));
-        }
-        index->clear();
-        *usemtl = "";
     }
+    return tokens;
+}
 
-    vector<Material*> OBJFile::findMaterial(const string& mtl) const
+vector<string> OBJFile::removeNullptr(const vector<string>& _str) const noexcept
+{
+    vector<string> res;
+    for(unsigned int i(0); i < _str.size(); ++i)
     {
-        vector<Material*> m;
-        for (Object* ob : m_objects)
-            for (Group* gp : ob->getGroups())
-                for (Material* ma : gp->getMaterials())
-                    if (ma && ma->getName() == mtl)
-                        m.push_back(ma);
-        return m;
-    }
-
-    void OBJFile::loadMTLFile(const string& path) const throw()
-    {
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw()] load..."<<endl;
-#endif
-        vector<string> filename = split(path, '.');
-        if (filename[filename.size() - 1] != "mtl")
-            throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] can't read " + filename[filename.size() - 1] + " extension");
-        string symbol = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] unexpected symbol at the end of the line ";
-        string invalideData = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] missing value(s) at the line ";
-        string cmd = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] invalide commande at the line ";
-        string noexiste = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] set value to non existe material at line ";
-        string commande = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] unknow commande at line ";
-        string lineError = "[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] Unexpected symbol at the line ";
-        int lineNumber = 0;
-        ifstream file(path, ios::in);
-        if (!file)
-            throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile(const string& path) throw()] can't open mtl file " + path);
-        vector<Material*> materials;
-        string line;
-        filename = split(filename[0], '/');
-        string res = "";
-        for (int i(0); i < filename.size() - 1; i++)
-            res += filename[i] + "/";
-        while (getline(file, line, '\n'))
+        if (_str[i] != "")
         {
-            lineNumber++;
-            vector<string> data = removenullptr(split(line, ' '));
-            if (data.size() > 0)
+            res.push_back(_str[i]);
+        }
+    }
+    return res;
+}
+
+void OBJFile::push(vector<vec3>* _vertex, vector<vec3>* _normal, vector<vec2>* _textCoord, vector<vec3>* _index, string* _usemtl) const
+{
+    if (_usemtl == nullptr)
+    {
+        throw(invalid_argument("[OBJFile] usemtl can`t be nullptr"));
+    }
+
+    if(_index->size() < 0)
+    {
+        throw(invalid_argument("[OBJFile] push with no index"));
+    }
+    else
+    {
+        vec3 vec = _index->back();
+        if(vec[1] != 0 && _textCoord->size() == 0)
+        {
+            throw(invalid_argument("[OBJFile] use texture coord on faces with no texture coord define"));
+        }
+        if (vec[2] != 0 && _normal->size() == 0)
+        {
+            throw(invalid_argument("[OBJFile] use normal on faces with no normal define"));
+        }
+    }
+    try
+    {
+        if (*_usemtl != "")
+        {
+            m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, _usemtl);
+        }
+        else
+        {
+            m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, nullptr);
+        }
+    }
+    catch(const invalid_argument& _e)
+    {
+        throw(invalid_argument("[OBJFile] " + string(string(_e.what()))));
+    }
+    _index->clear();
+    *_usemtl = "";
+}
+
+vector<Material*> OBJFile::findMaterial(const string& _mtl) const noexcept
+{
+    vector<Material*> m;
+    for(Object* ob : m_objects)
+    {
+        for(Group* gp : ob->getGroups())
+        {
+            for(Material* ma : gp->getMaterials())
             {
-                string dat0 = data[0];
-                if (dat0 == "newmtl")
+                if (ma && ma->getName() == _mtl)
+                {
+                    m.push_back(ma);
+                }
+            }
+        }
+    }
+    return m;
+}
+
+void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
+{
+    if(!filesystem::exists(_path) || !filesystem::is_regular_file(_path))
+    {
+        throw invalid_argument("[OBJFile] path doesn't exists : " + _path.string());
+    }
+
+    if(_path.extension() != ".mtl")
+    {
+        throw invalid_argument("[OBJFile] can't read '" + _path.extension().string() + "' extension");
+    }
+
+    string symbol = "[OBJFile] unexpected symbol at the end of the line ";
+    string invalideData = "[OBJFile] missing value(s) at the line ";
+    string cmd = "[OBJFile] invalide commande at the line ";
+    string noexiste = "[OBJFile] set value to non existe material at line ";
+    string commande = "[OBJFile] unknow commande at line ";
+    string lineError = "[OBJFile] Unexpected symbol at the line ";
+    int lineNumber = 0;
+
+    ifstream file(_path, ios::in);
+    if (!file)
+    {
+        throw invalid_argument("[OBJFile] can't open mtl file : " + _path.string());
+    }
+    vector<Material*> materials;
+    string line;
+
+    while (getline(file, line, '\n'))
+    {
+        lineNumber++;
+        vector<string> data = removeNullptr(split(line, ' '));
+        if (data.size() > 0)
+        {
+            string dat0 = data[0];
+            if (dat0 == "newmtl")
+            {
+                if (data.size() < 2)
+                {
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 2)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                materials = findMaterial(data[1]);
+                if (materials.size() == 0)
+                {
+                    throw invalid_argument("[OBJFile] Material " + data[1] + " not used at the line " + to_string(lineNumber));
+                }
+            }
+            else if(dat0 != "#")
+            {
+                if (materials.size() == 0)
+                {
+                    throw invalid_argument(noexiste + to_string(lineNumber));
+                }
+                if (dat0 == "\tKa" || dat0 == "Ka" || dat0 == "\tka" || dat0 == "ka")
+                {
+                    if (data.size() < 4)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 4)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setAmbient(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tKd" || dat0 == "Kd" || dat0 == "\tkd" || dat0 == "kd")
+                {
+                    if (data.size() < 4)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 4)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setDiffuse(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tKs" || dat0 == "Ks" || dat0 == "\tks" || dat0 == "ks")
+                {
+                    if (data.size() < 4)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 4)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setSpecular(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tKe" || dat0 == "Ke" || dat0 == "\tke" || dat0 == "ke")
+                {
+                    if (data.size() < 4)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 4)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setEmissiveCoeficient(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tTf" || dat0 == "Tf" || dat0 == "\ttf" || dat0 == "tf")
+                {
+                    if (data.size() < 4)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 4)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setTransmissionFilter(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tillum" || dat0 == "illum")
                 {
                     if (data.size() < 2)
+                    {
                         throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
                     if (data.size() > 2)
+                    {
                         throw invalid_argument(symbol + to_string(lineNumber));
-                        materials = findMaterial(data[1]);
-                        if (materials.size() == 0)
-                        {
-                            cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw()] material " << data[1] << " not used" << endl;
-                            bool b = true;
-                            while (b && getline(file, line, '\n'))
-                            {
-                                lineNumber++;
-                                vector<string> data = removenullptr(split(line, ' '));
-                                if (data.size()>0 && data[0] == "newmtl")
-                                {
-                                    materials = findMaterial(data[1]);
-                                    if (materials.size() != 0)
-                                        b = false;
-                                    else
-                                        cerr << "\t[OBJFile " << m_name << "][loadMTLFile(const string& path) throw()] material " << data[1] << " not used" << endl;
-                                }
-                            }
-                        }
-                }
-                else if(dat0 != "#"){
+                    }
                     if (materials.size() == 0)
+                    {
                         throw invalid_argument(noexiste + to_string(lineNumber));
-                    if (dat0 == "\tKa" || dat0 == "Ka" || dat0 == "\tka" || dat0 == "ka")
+                    }
+                    for(Material* ma : materials)
                     {
-                        if (data.size() < 4)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 4)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        for (Material* ma : materials)
+                        try
                         {
-                            try {
-                                ma->setAmbient(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
+                            ma->setIllumination(stoi(data[1]));
                         }
-                    }
-                    else if (dat0 == "\tKd" || dat0 == "Kd" || dat0 == "\tkd" || dat0 == "kd")
-                    {
-                        if (data.size() < 4)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 4)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials) {
-                            try{
-                                ma->setDiffuse(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
-                        }
-                    }
-                    else if (dat0 == "\tKs" || dat0 == "Ks" || dat0 == "\tks" || dat0 == "ks")
-                    {
-                        if (data.size() < 4)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 4)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials)
+                        catch(const exception&)
                         {
-                            try{
-                                ma->setSpecular(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
+                            throw invalid_argument(lineError + to_string(lineNumber));
                         }
                     }
-                    else if (dat0 == "\tKe" || dat0 == "Ke" || dat0 == "\tke" || dat0 == "ke")
+                }
+                else if (dat0 == "\td" || dat0 == "d")
+                {
+                    if (data.size() < 2)
                     {
-                        if (data.size() < 4)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 4)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials) {
-                            try {
-                                ma->setEmissiveCoeficient(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
-                        }
+                        throw invalid_argument(invalideData + to_string(lineNumber));
                     }
-                    else if (dat0 == "\tTf" || dat0 == "Tf" || dat0 == "\ttf" || dat0 == "tf")
+                    if (data.size() > 3)
                     {
-                        if (data.size() < 4)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 4)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials)
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    if (data.size() == 2)
+                    {
+                        for(Material* ma : materials)
                         {
-                            try{
-                                ma->setTransmissionFilter(vec3(stof(data[1]), stof(data[2]), stof(data[3])));
+                            try
+                            {
+                                ma->setDissolve(stof(data[1]));
                             }
-                            catch (exception e) 
+                            catch(const exception&)
                             {
                                 throw invalid_argument(lineError + to_string(lineNumber));
                             }
                         }
                     }
-                    else if (dat0 == "\tillum" || dat0 == "illum")
+                    else
                     {
-                        if (data.size() < 2)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 2)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials)
+                        for(Material* ma : materials)
                         {
-                            try{
-                                ma->setIllumination(stoi(data[1]));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
+                            ma->setDissolve(stof(data[2]));
+                        }
+                        string com = data[1];
+                        if (com != "-halo")
+                        {
+                            throw invalid_argument(commande + to_string(lineNumber));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            ma->setHalo(true);
                         }
                     }
-                    else if (dat0 == "\td" || dat0 == "d")
+                }
+                else if (dat0 == "\tNs" || dat0 == "Ns" || dat0 == "\tns" || dat0 == "ns")
+                {
+                    if (data.size() < 2)
                     {
-                        if (data.size() < 2)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 3)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        if (data.size() == 2)
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 2)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
                         {
-                            for (Material* ma : materials)
+                            ma->setSpecularExponent(stof(data[1]));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tsharpness" || dat0 == "sharpness")
+                {
+                    if (data.size() < 2)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 2)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setSharpness(stof(data[1]));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else if (dat0 == "\tNi" || dat0 == "Ni" || dat0 == "\tni" || dat0 == "ni")
+                {
+                    if (data.size() < 2)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    if (data.size() > 2)
+                    {
+                        throw invalid_argument(symbol + to_string(lineNumber));
+                    }
+                    if (materials.size() == 0)
+                    {
+                        throw invalid_argument(noexiste + to_string(lineNumber));
+                    }
+                    for(Material* ma : materials)
+                    {
+                        try
+                        {
+                            ma->setopticalDensity(stof(data[1]));
+                        }
+                        catch(const exception&)
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                    }
+                }
+                else
+                {
+                    if (data.size() < 2)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                    vector<Map*> map;
+                    if (dat0 == "\tmap_Ka" || dat0 == "map_Ka" || dat0 == "\tmap_ka" || dat0 == "map_ka")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
                             {
-                                try{
-                                    ma->setDissolve(stof(data[1]));
-                                }
-                                catch (exception e) 
+                                ma->setKamap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getKamap());
+                        }
+                    }
+                    else if (dat0 == "\tmap_Kd" || dat0 == "map_Kd" || dat0 == "\tmap_kd" || dat0 == "map_kd")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setKdmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getKdmap());
+                        }
+                    }
+                    else if (dat0 == "\tmap_Ks" || dat0 == "map_Ks" || dat0 == "\tmap_ks" || dat0 == "map_ks")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setKsmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getKsmap());
+                        }
+                    }
+                    else if (dat0 == "\tmap_Ns" || dat0 == "map_Ns" || dat0 == "\tmap_ns" || dat0 == "map_ns")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setNsmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getKsmap());
+                        }
+                    }
+                    else if (dat0 == "\tmap_d" || dat0 == "map_d")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setdmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getdmap());
+                        }
+                    }
+                    else if (dat0 == "\tdisp" || dat0 == "disp" || dat0 == "\tmap_Disp" || dat0 == "map_Disp")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setDispmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getDispmap());
+                        }
+                    }
+                    else if (dat0 == "\tdecal" || dat0 == "decal")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setDecalmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getDecalmap());
+                        }
+                    }
+                    else if (dat0 == "\tbump" || dat0 == "bump" || dat0 == "\tmap_bump" || dat0 == "map_bump")
+                    {
+                        try
+                        {
+                            for(Material* ma : materials)
+                            {
+                                ma->setBumpmap(_path.parent_path() / data[data.size() - 1]);
+                            }
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                        }
+                        for(Material* ma : materials)
+                        {
+                            map.push_back(ma->getBumpmap());
+                        }
+                    }
+                    else
+                    {
+                        throw invalid_argument(lineError + to_string(lineNumber) + " : \"" + dat0 + "\"");
+                    }
+                    if (map.size() != 0)
+                    {
+                        for(int i(1); i < data.size() - 1; ++i)
+                        {
+                            if (data[i] == "-bm")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    throw invalid_argument(lineError + to_string(lineNumber));
+                                    umap->setMult(stof(data[i+1]));
                                 }
+                                ++i;
                             }
-                        }
-                        else
-                        {
-                            for (Material* ma : materials)
-                                ma->setDissolve(stof(data[2]));
-                            string com = data[1];
-                            if (com != "-halo")
-                                throw invalid_argument(commande + to_string(lineNumber));
-                            for (Material* ma : materials)
-                                ma->setHalo(true);
-                        }
-                    }
-                    else if (dat0 == "\tNs" || dat0 == "Ns" || dat0 == "\tns" || dat0 == "ns")
-                    {
-                        if (data.size() < 2)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 2)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials)
-                        {
-                            try {
-                                ma->setSpecularExponent(stof(data[1]));
-                            }
-                            catch (exception e) 
+                            else if (data[i] == "-clamp")
                             {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
-                        }
-                    }
-                    else if (dat0 == "\tsharpness" || dat0 == "sharpness")
-                    {
-                        if (data.size() < 2)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 2)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials)
-                        {
-                            try{
-                                ma->setSharpness(stof(data[1]));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
-                        }
-                    }
-                    else if (dat0 == "\tNi" || dat0 == "Ni" || dat0 == "\tni" || dat0 == "ni")
-                    {
-                        if (data.size() < 2)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        if (data.size() > 2)
-                            throw invalid_argument(symbol + to_string(lineNumber));
-                        if (materials.size() == 0)
-                            throw invalid_argument(noexiste + to_string(lineNumber));
-                        for (Material* ma : materials)
-                        {
-                            try{
-                                ma->setopticalDensity(stof(data[1]));
-                            }
-                            catch (exception e) 
-                            {
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            }
-                        }
-                    }
-                    else {
-                        if (data.size() < 2)
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        vector<Map*> map;
-                        if (dat0 == "\tmap_Ka" || dat0 == "map_Ka" || dat0 == "\tmap_ka" || dat0 == "map_ka")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setKamap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getKamap());
-                        }
-                        else if (dat0 == "\tmap_Kd" || dat0 == "map_Kd" || dat0 == "\tmap_kd" || dat0 == "map_kd")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setKdmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getKdmap());
-                        }
-                        else if (dat0 == "\tmap_Ks" || dat0 == "map_Ks" || dat0 == "\tmap_ks" || dat0 == "map_ks")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setKsmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getKsmap());
-                        }
-                        else if (dat0 == "\tmap_Ns" || dat0 == "map_Ns" || dat0 == "\tmap_ns" || dat0 == "map_ns")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setNsmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getKsmap());
-                        }
-                        else if (dat0 == "\tmap_d" || dat0 == "map_d")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setdmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getdmap());
-                        }
-                        else if (dat0 == "\tdisp" || dat0 == "disp" || dat0 == "\tmap_Disp" || dat0 == "map_Disp")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setDispmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getDispmap());
-                        }
-                        else if (dat0 == "\tdecal" || dat0 == "decal")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setDecalmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getDecalmap());
-                        }
-                        else if (dat0 == "\tbump" || dat0 == "bump" || dat0 == "\tmap_bump" || dat0 == "map_bump")
-                        {
-                            try {
-                                for (Material* ma : materials)
-                                    ma->setBumpmap(res + data[data.size() - 1]);
-                            }
-                            catch (invalid_argument e)
-                            {
-                                throw invalid_argument("[OBJFile " + m_name + "] [loadMTLFile] " + e.what());
-                            }
-                            for (Material* ma : materials)
-                                map.push_back(ma->getBumpmap());
-                        }
-                        else 
-                        {
-                            throw invalid_argument(lineError + to_string(lineNumber) + " : \"" + dat0 + "\"");
-                        }
-                        if (map.size() != 0)
-                        {
-                            for (int i(1); i < data.size() - 1; i++)
-                            {
-                                if (data[i] == "-bm")
+                                if (data[i + 1] != "on" && data[i + 1] != "off")
                                 {
-                                    for(Map* umap : map)
-                                        umap->setMult(stof(data[i+1]));
-                                    i++;
+                                    throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
                                 }
-                                else if (data[i] == "-clamp")
+                                for(Map* umap : map)
                                 {
-                                    if (data[i + 1] != "on" && data[i + 1] != "off")
-                                        throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
+                                    umap->setClamp(data[i + 1] == "on" ? true : false);
+                                }
+                                ++i;
+                            }
+                            else if (data[i] == "-blendu")
+                            {
+                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                {
+                                    throw invalid_argument(lineError + to_string(lineNumber) + " for blendu value");
+                                }
+                                for(Map* umap : map)
+                                    umap->setBlendu(data[i + 1] == "on" ? true : false);
+                                ++i;
+                            }
+                            else if (data[i] == "-blendv")
+                            {
+                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                {
+                                    throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
+                                }
+                                for(Map* umap : map)
+                                {
+                                    umap->setBlendv(data[i + 1] == "on" ? true : false);
+                                }
+                                ++i;
+                            }
+                            else if (data[i] == "-blendv")
+                            {
+                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                {
+                                    throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
+                                }
+                                for(Map* umap : map)
+                                {
+                                    umap->setBlendv(data[i + 1] == "on" ? true : false);
+                                }
+                                ++i;
+                            }
+                            else if (data[i] == "-mm")
+                            {
+                                for(Map* umap : map)
+                                {
+                                    umap->setBase(stof(data[i + 1]));
+                                    umap->setGain(stof(data[i + 2]));
+                                }
 
-                                    for (Map* umap : map)
-                                    {
-                                        
-                                        umap->setClamp(data[i + 1] == "on" ? true : false);
-                                    }
-                                    i++;
-                                }
-                                else if (data[i] == "-blendu")
+                            }
+                            else if (data[i] == "-o")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    if (data[i + 1] != "on" && data[i + 1] != "off")
-                                        throw invalid_argument(lineError + to_string(lineNumber) + " for blendu value");
-                                    for (Map* umap : map)
-                                        umap->setBlendu(data[i + 1] == "on" ? true : false);
-                                    i++;
+                                    umap->setO(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
                                 }
-                                else if (data[i] == "-blendv")
+                                i += 3;
+                            }
+                            else if (data[i] == "-s")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    if (data[i + 1] != "on" && data[i + 1] != "off")
-                                        throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
-                                    for (Map* umap : map)
-                                        umap->setBlendv(data[i + 1] == "on" ? true : false);
-                                    i++;
+                                    umap->setS(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
                                 }
-                                else if (data[i] == "-blendv")
+                                i += 3;
+                            }
+                            else if (data[i] == "-t")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    if (data[i + 1] != "on" && data[i + 1] != "off")
-                                        throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
-                                    for (Map* umap : map)
-                                        umap->setBlendv(data[i + 1] == "on" ? true : false);
-                                    i++;
+                                    umap->setT(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
                                 }
-                                else if (data[i] == "-mm")
+                                i += 3;
+                            }
+                            else if (data[i] == "-textres")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    for (Map* umap : map)
-                                    {
-                                        umap->setBase(stof(data[i + 1]));
-                                        umap->setGain(stof(data[i + 2]));
-                                    }
-
+                                    umap->setTextres(stoi(data[i + 1]));
                                 }
-                                else if (data[i] == "-o")
+                                ++i;
+                            }
+                            else if (data[i] == "-cc")
+                            {
+                                if (data[i + 1] != "on" && data[i + 1] != "off")
                                 {
-                                    for (Map* umap : map)
-                                        umap->setO(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
-                                    i += 3;
+                                    throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
                                 }
-                                else if (data[i] == "-s")
+                                for(Map* umap : map)
                                 {
-                                    for (Map* umap : map)
-                                        umap->setS(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
-                                    i += 3;
+                                    umap->setCc(data[i + 1] == "on" ? true : false);
                                 }
-                                else if (data[i] == "-t")
+                                ++i;
+                            }
+                            else if (data[i] == "-boost")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    for (Map* umap : map)
-                                        umap->setT(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
-                                    i += 3;
+                                    umap->setBoost(stof(data[i + 1]));
                                 }
-                                else if (data[i] == "-textres")
+                                ++i;
+                            }
+                            else if (data[i] == "-imfchan")
+                            {
+                                for(Map* umap : map)
                                 {
-                                    for (Map* umap : map)
-                                        umap->setTextres(stoi(data[i + 1]));
-                                    i++;
+                                    umap->setImfchanrgb(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
+                                    umap->setImfchanmlz(vec3(stof(data[i + 4]), stof(data[i + 5]), stof(data[i + 6])));
                                 }
-                                else if (data[i] == "-cc")
-                                {
-                                    if (data[i + 1] != "on" && data[i + 1] != "off")
-                                        throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
-
-                                    for (Map* umap : map)
-                                        umap->setCc(data[i + 1] == "on" ? true : false);
-                                    i++;
-                                }
-                                else if (data[i] == "-boost")
-                                {
-                                    for (Map* umap : map)
-                                        umap->setBoost(stof(data[i + 1]));
-                                    i++;
-                                }
-                                else if (data[i] == "-imfchan")
-                                {
-                                    for (Map* umap : map)
-                                    {
-                                        umap->setImfchanrgb(vec3(stof(data[i + 1]), stof(data[i + 2]), stof(data[i + 3])));
-                                        umap->setImfchanmlz(vec3(stof(data[i + 4]), stof(data[i + 5]), stof(data[i + 6])));
-                                    }
-                                    i += 6;
-                                }
-                                else
-                                    throw invalid_argument(cmd + to_string(lineNumber) + " : " + dat0);
+                                i += 6;
+                            }
+                            else
+                            {
+                                throw invalid_argument(cmd + to_string(lineNumber) + " : " + dat0);
                             }
                         }
                     }
                 }
             }
         }
-        file.close();
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [loadMTLFile(const string& path) throw()] file success" << endl;
-#endif
+    }
+    file.close();
+}
+
+OBJFile::OBJFile() noexcept :
+    m_loadTime(0),
+    m_name(""),
+    m_objects()
+{
+}
+
+OBJFile::~OBJFile() noexcept
+{
+    for(Object* m : m_objects)
+    {
+        delete m;
+    }
+}
+
+void OBJFile::load(const filesystem::path& _path)
+{
+    milliseconds begin = duration_cast< milliseconds >(    system_clock::now().time_since_epoch());
+
+    for(Object* m : m_objects)
+    {
+        delete m;
     }
 
-    OBJFile::OBJFile()
-        :    m_loadTime(0),
-            m_name(""),
-            m_objects()
+    if(!filesystem::exists(_path) || !filesystem::is_regular_file(_path))
     {
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [OBJFile()]..." << endl;
-        cout << "[OBJFile " << m_name << "] [OBJFile()]...\tsuccess" << endl;
-#endif
+        throw invalid_argument("[OBJFile] path doesn't exists : " + _path.string());
     }
 
-    OBJFile::~OBJFile()
+    if(_path.extension() != ".obj")
     {
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [~OBJFile()]...\n";
-#endif
-        for (Object* m : m_objects)
-            if (m) delete m;
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [~OBJFile()]...\tsuccess" << endl;
-#endif
+        throw invalid_argument("[OBJFile] can't read '" + _path.extension().string() + "' extension");
     }
 
-    void OBJFile::load(const string& path) throw()
+    m_name = _path.filename().string();
+    ifstream file(_path, ios::in);
+    if (!file)
     {
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] load...\n";
-#endif
-        // calcule pour le temps de chargement
-        milliseconds begin = duration_cast< milliseconds >(    system_clock::now().time_since_epoch());
+        throw invalid_argument("[OBJFile] Can't open file : " + _path.string());
+    }
 
-        //netoyage des donnees
-        for (Object* m : m_objects)
-            if (m) delete m;
+    string symbol = "[OBJFile] Unexpected symbol at the end of the line ";
+    string invalideData = "[OBJFile] Missing value(s) at the line ";
+    string lineError = "[OBJFile] Unexpected symbol at the line ";
 
-        //ouverture du fichier
-        vector<string> filename = split(path, '.');
-        if (filename[filename.size() - 1] != "obj")
-            throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] can't read : " + filename[filename.size() - 1] + " extension");
-        m_name = removenullptr(split(filename[filename.size() - 2],'/')).back();
-        ifstream file(path, ios::in);
-        if (!file)
-            throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] can't open file : " + path);
+    vector<vec3> vertex(0);
+    vector<vec3> normal(0);
+    vector<vec2> textCoord(0);
+    vector<vec3> index;
+    string line;
+    string mtllib = "";
+    string usemtl = "";
+    int lineNumber = 0;
 
-        //code d'erreurs
-        string symbol = "[OBJFile " + m_name + "] [load(const string& path) throw()] Unexpected symbol at the end of the line ";
-        string value = "[OBJFile " + m_name + "] [load(const string& path) throw()] Wrong value at the line ";
-        string invalideData = "[OBJFile " + m_name + "] [load(const string& path) throw() Missing value(s) at the line ";
-        string lineError = "[OBJFile " + m_name + "] [load(const string& path) throw()] Unexpected symbol at the line ";
-
-        //donneees
-        vector<vec3> vertex(0);
-        vector<vec3> normal(0);
-        vector<vec2> textCoord(0);
-        vector<vec3> index;
-        string line;
-        string mtllib = "";
-        string usemtl = "";
-        int lineNumber = 0;
-
-        //parcourt du fichier
-        while (getline(file, line, '\n'))
+    while (getline(file, line, '\n'))
+    {
+        ++lineNumber;
+        vector<string> data = removeNullptr(split(line, ' '));
+        if (data.size() > 0)
         {
-            ++lineNumber;
-            vector<string> data = removenullptr(split(line, ' '));
-            if (data.size() > 0)
+            string dat0 = data[0];
+            if (dat0 != "v" && dat0 != "vn" && dat0 != "vt" && dat0 != "f" && dat0 != "o" && dat0 != "g" && dat0 != "#" && dat0 != "usemtl" && dat0 != "mtllib" && dat0 != "s")
             {
-                string dat0 = data[0];
-                if (dat0 != "v" && dat0 != "vn" && dat0 != "vt" && dat0 != "f" && dat0 != "o" && dat0 != "g" && dat0 != "#" && dat0 != "usemtl" && dat0 != "mtllib" && dat0 != "s")
-                    throw invalid_argument(lineError + to_string(lineNumber));
-                if (dat0 == "v" || dat0 == "vn")
+                throw invalid_argument(lineError + to_string(lineNumber));
+            }
+            if (dat0 == "v" || dat0 == "vn")
+            {
+                if (data.size() < 4)
                 {
-                    if (data.size() < 4)
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 4)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                vec3 val;
+                for(short i(1);i<=3; ++i)
+                {
+                    try
+                    {
+                        val[i - 1] = stof(data[i]);
+                    }
+                    catch(const invalid_argument&)
+                    {
                         throw invalid_argument(invalideData + to_string(lineNumber));
-                    if (data.size() > 4)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    vec3 val;
-                    for(short i(1);i<=3; ++i)
-                    {
-                        try {
-                            val[i - 1] = stof(data[i]);
-                        }
-                        catch (invalid_argument e){
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        }
-                    }
-                    if (dat0 == "vn")
-                    {
-                        normal.push_back(val);
-                    }
-                    else if (dat0 == "v")
-                    {
-                        vertex.push_back(val);
                     }
                 }
-                else if (dat0 == "vt")
+                if (dat0 == "vn")
                 {
-                    if (data.size() < 3)
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    if (data.size() > 4)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    vec2 val;
-                    for (short i(1); i <= 2; ++i)
-                    {
-                        try {
-                            val[i - 1] = stof(data[i]);
-                        }
-                        catch (invalid_argument e) {
-                            throw invalid_argument(invalideData + to_string(lineNumber));
-                        }
-                    }
-                    textCoord.push_back(val);
+                    normal.push_back(val);
                 }
-                else if (dat0 == "f")
+                else if (dat0 == "v")
                 {
-                    if (data.size() < 4)
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    if (data.size() > 5)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    vec3 val;
-                    short end = data.size() == 4 ? 1 : 3;
-                    for (short k=0 ; k<end ; k+=2)
+                    vertex.push_back(val);
+                }
+            }
+            else if (dat0 == "vt")
+            {
+                if (data.size() < 3)
+                {
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 4)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                vec2 val;
+                for(short i(1); i <= 2; ++i)
+                {
+                    try
                     {
-                        for (short i=0+k ; i<=2+k ; ++i)
+                        val[i - 1] = stof(data[i]);
+                    }
+                    catch(const invalid_argument&)
+                    {
+                        throw invalid_argument(invalideData + to_string(lineNumber));
+                    }
+                }
+                textCoord.push_back(val);
+            }
+            else if (dat0 == "f")
+            {
+                if (data.size() < 4)
+                {
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 5)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                vec3 val;
+                short end = data.size() == 4 ? 1 : 3;
+                for(short k=0 ; k<end ; k+=2)
+                {
+                    for(short i=0+k ; i<=2+k ; ++i)
+                    {
+                        vector<string> d = split(data[i%4+1], '/');
+                        if (d.size() > 3)
                         {
-                            vector<string> d = split(data[i%4+1], '/');
-                            if (d.size() > 3)
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            if (d.size() == 1)
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                        if (d.size() == 1)
+                        {
+                            try
                             {
-                                try {
-                                    val[0] = stof(d[0]);
-                                }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument(invalideData + to_string(lineNumber));
-                                }
-                                val[1] = 0;
+                                val[0] = stof(d[0]);
+                            }
+                            catch(const invalid_argument&)
+                            {
+                                throw invalid_argument(invalideData + to_string(lineNumber));
+                            }
+                            val[1] = 0;
+                            val[2] = 0;
+                        }
+                        else if (d.size() == 2)
+                        {
+                            try
+                            {
+                                float temp = stof(d[0]);
+                                val[0] = temp;
+                                temp = stof(d[1]);
+                                val[1] = temp;
                                 val[2] = 0;
                             }
-                            else if (d.size() == 2)
+                            catch(const invalid_argument&)
                             {
-                                try {
-                                    float temp = stof(d[0]);
-                                    val[0] = temp;
+                                throw invalid_argument(invalideData + to_string(lineNumber));
+                            }
+                        }
+                        else if (d.size() == 3)
+                        {
+                            float temp;
+                            try
+                            {
+                                temp = stof(d[0]);
+                            }
+                            catch(const invalid_argument&)
+                            {
+                                throw invalid_argument(invalideData + to_string(lineNumber));
+                            }
+                            val[0] = temp;
+
+                            if (d[1] == "")
+                            {
+                                val[1] = 0;
+                            }
+                            else
+                            {
+                                try
+                                {
                                     temp = stof(d[1]);
                                     val[1] = temp;
-                                    val[2] = 0;
                                 }
-                                catch (invalid_argument e) {
+                                catch(const invalid_argument&)
+                                {
                                     throw invalid_argument(invalideData + to_string(lineNumber));
                                 }
                             }
-                            else if (d.size() == 3)
+
+                            try
                             {
-                                float temp;
-                                try {
-                                    temp = stof(d[0]);
-                                }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument(invalideData + to_string(lineNumber));
-                                }
-                                val[0] = temp;
-
-                                if (d[1] == "")
-                                    val[1] = 0;
-                                else
-                                {
-                                    try {
-                                        temp = stof(d[1]);
-                                        val[1] = temp;
-                                    }
-                                    catch (invalid_argument e) {
-                                        throw invalid_argument(invalideData + to_string(lineNumber));
-                                    }
-                                }
-
-                                try {
-                                    temp = stof(d[2]);
-                                }
-                                catch (invalid_argument e)
-                                {
-                                    throw invalid_argument(invalideData + to_string(lineNumber));
-                                }
-                                val[2] = temp;
+                                temp = stof(d[2]);
                             }
-                            else
-                                throw invalid_argument(lineError + to_string(lineNumber));
-                            index.push_back(val);
+                            catch(const invalid_argument&)
+                            {
+                                throw invalid_argument(invalideData + to_string(lineNumber));
+                            }
+                            val[2] = temp;
                         }
+                        else
+                        {
+                            throw invalid_argument(lineError + to_string(lineNumber));
+                        }
+                        index.push_back(val);
                     }
                 }
-                else if (dat0 == "o")
+            }
+            else if (dat0 == "o")
+            {
+                if (data.size() < 2)
                 {
-                    if (data.size() < 2)
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    if (data.size() > 2)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    if (index.size() != 0)
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 2)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                if (index.size() != 0)
+                {
+                    if (m_objects.size() > 0)
                     {
-                        if (m_objects.size() > 0)
+                        if (m_objects.back()->getGroups().size() > 0)
                         {
-                            if (m_objects.back()->getGroups().size() > 0)
+                            try
                             {
-                                try {
-                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                                }
-                            }
-                            else
-                            {
-                                m_objects.back()->addGroup("default_group");
-                                try {
-                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                                }
-                            }
-                        }
-                        if (index.size() != 0)
-                        {
-                            m_objects.push_back(new Object("default_object"));
-                            m_objects.back()->addGroup("default_group");
-                            try {
                                 push(&vertex, &normal, &textCoord, &index, &usemtl);
                             }
-                            catch (invalid_argument e) {
-                                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
+                            catch(const invalid_argument& _e)
+                            {
+                                throw invalid_argument("[OBJFile] " + string(_e.what()));
+                            }
+                        }
+                        else
+                        {
+                            m_objects.back()->addGroup("default_group");
+                            try
+                            {
+                                push(&vertex, &normal, &textCoord, &index, &usemtl);
+                            }
+                            catch(const invalid_argument& _e)
+                            {
+                                throw invalid_argument("[OBJFile] " + string(_e.what()));
                             }
                         }
                     }
-                    m_objects.push_back(new Object(data[1]));
-                }
-                else if (dat0 == "g")
-                {
-                    if (data.size() > 2)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    if (data.size() == 2) {
-                        if (m_objects.size() > 0)
+                    if (index.size() != 0)
+                    {
+                        m_objects.push_back(new Object("default_object"));
+                        m_objects.back()->addGroup("default_group");
+                        try
                         {
-                            if (m_objects.back()->getGroups().size() > 0)
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] " + string(_e.what()));
+                        }
+                    }
+                }
+                m_objects.push_back(new Object(data[1]));
+            }
+            else if (dat0 == "g")
+            {
+                if (data.size() > 2)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                if (data.size() == 2)
+                {
+                    if (m_objects.size() > 0)
+                    {
+                        if (m_objects.back()->getGroups().size() > 0)
+                        {
+                            if (index.size() != 0)
                             {
-                                if (index.size() != 0)
+                                try
                                 {
-                                    try {
-                                        push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                    }
-                                    catch (invalid_argument e) {
-                                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                                    }
+                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
                                 }
-                                m_objects.back()->addGroup(data[1]);
-                            }
-                            else
-                            {
-                                if (index.size() != 0)
+                                catch(const invalid_argument& _e)
                                 {
-                                    m_objects.back()->addGroup("default_group");
-                                    try {
-                                        push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                    }
-                                    catch (invalid_argument e) {
-                                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                                    }
+                                    throw invalid_argument("[OBJFile] " + string(_e.what()));
                                 }
-                                m_objects.back()->addGroup(data[1]);
                             }
+                            m_objects.back()->addGroup(data[1]);
                         }
                         else
                         {
                             if (index.size() != 0)
                             {
-                                m_objects.push_back(new Object("default_object"));
                                 m_objects.back()->addGroup("default_group");
-                                try {
+                                try
+                                {
                                     push(&vertex, &normal, &textCoord, &index, &usemtl);
                                 }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
+                                catch(const invalid_argument& _e)
+                                {
+                                    throw invalid_argument("[OBJFile] " + string(_e.what()));
                                 }
                             }
-                            m_objects.push_back(new Object("default_object"));
                             m_objects.back()->addGroup(data[1]);
                         }
                     }
-                }
-                else if (dat0 == "mtllib")
-                {
-                    if (data.size() < 2)
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    if (data.size() > 2)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    mtllib = data[1];
-                    vector<string> lib = split(mtllib, '.');
-                    if (lib.back() != "mtl")
-                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
-                }
-                else if (dat0 == "usemtl")
-                {
-                    if (data.size() < 2)
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    if (data.size() > 2)
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    if (index.size() > 0)
+                    else
                     {
-                        if (m_objects.size() > 0)
+                        if (index.size() != 0)
                         {
-                            if (m_objects.back()->getGroups().size() > 0)
-                            {
-                                try {
-                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                                }
-                            }
-                            else
-                            {
-                                m_objects.back()->addGroup("default_group");
-                                try {
-                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                            }
-                                catch (invalid_argument e) {
-                                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                                }
-                            }
-                        }
-                        else {
                             m_objects.push_back(new Object("default_object"));
                             m_objects.back()->addGroup("default_group");
-                            try {
+                            try
+                            {
                                 push(&vertex, &normal, &textCoord, &index, &usemtl);
                             }
-                            catch (invalid_argument e) {
-                                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
+                            catch(const invalid_argument& _e)
+                            {
+                                throw invalid_argument("[OBJFile] " + string(_e.what()));
+                            }
+                        }
+                        m_objects.push_back(new Object("default_object"));
+                        m_objects.back()->addGroup(data[1]);
+                    }
+                }
+            }
+            else if (dat0 == "mtllib")
+            {
+                if (data.size() < 2)
+                {
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 2)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                mtllib = data[1];
+                vector<string> lib = split(mtllib, '.');
+                if (lib.back() != "mtl")
+                {
+                    throw invalid_argument("[OBJFile] Can't read " + lib[lib.size() - 1] + " extension for mtllib at line " + to_string(lineNumber));
+                }
+            }
+            else if (dat0 == "usemtl")
+            {
+                if (data.size() < 2)
+                {
+                    throw invalid_argument(invalideData + to_string(lineNumber));
+                }
+                if (data.size() > 2)
+                {
+                    throw invalid_argument(symbol + to_string(lineNumber));
+                }
+                if (index.size() > 0)
+                {
+                    if (m_objects.size() > 0)
+                    {
+                        if (m_objects.back()->getGroups().size() > 0)
+                        {
+                            try
+                            {
+                                push(&vertex, &normal, &textCoord, &index, &usemtl);
+                            }
+                            catch(const invalid_argument& _e)
+                            {
+                                throw invalid_argument("[OBJFile] " + string(_e.what()));
+                            }
+                        }
+                        else
+                        {
+                            m_objects.back()->addGroup("default_group");
+                            try
+                            {
+                                push(&vertex, &normal, &textCoord, &index, &usemtl);
+                            }
+                            catch(const invalid_argument& _e)
+                            {
+                                throw invalid_argument("[OBJFile] " + string(_e.what()));
                             }
                         }
                     }
-                    usemtl = data[1];
+                    else {
+                        m_objects.push_back(new Object("default_object"));
+                        m_objects.back()->addGroup("default_group");
+                        try
+                        {
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
+                        }
+                        catch(const invalid_argument& _e)
+                        {
+                            throw invalid_argument("[OBJFile] " + string(_e.what()));
+                        }
+                    }
                 }
+                usemtl = data[1];
             }
         }
+    }
 
-        //si rien n'a �t� push, on le fait ici
-        if (index.size() > 0)
+    if (index.size() > 0)
+    {
+        if (m_objects.size() > 0)
         {
-            if (m_objects.size() > 0)
+            if (m_objects.back()->getGroups().size() > 0)
             {
-                if (m_objects.back()->getGroups().size() > 0)
+                try
                 {
-                    try {
-                        push(&vertex, &normal, &textCoord, &index, &usemtl);
-                    }
-                    catch (invalid_argument e) {
-                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                    }
-                }
-                else
-                {
-                    m_objects.back()->addGroup("default_group");
-                    try {
-                        push(&vertex, &normal, &textCoord, &index, &usemtl);
-                    }
-                    catch (invalid_argument e) {
-                        throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
-                    }
-                }
-            }
-            else 
-            {
-                m_objects.push_back(new Object("default_group"));
-                m_objects.back()->addGroup("default_group");
-                try {
                     push(&vertex, &normal, &textCoord, &index, &usemtl);
                 }
-                catch (invalid_argument e) {
-                    throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
+                catch(const invalid_argument& _e)
+                {
+                    throw invalid_argument("[OBJFile] " + string(_e.what()));
+                }
+            }
+            else
+            {
+                m_objects.back()->addGroup("default_group");
+                try
+                {
+                    push(&vertex, &normal, &textCoord, &index, &usemtl);
+                }
+                catch(const invalid_argument& _e)
+                {
+                    throw invalid_argument("[OBJFile] " + string(_e.what()));
                 }
             }
         }
-
-        //fermeture du fichier
-        file.close();
-
-#ifdef _DEBUG
-        cout << "[OBJFile " << m_name << "] [load(const string& path) throw()]...\tsuccess" << endl;
-#endif
-        //chargement du fichier mtl
-        if (mtllib != "")
+        else
         {
-            filename = split(filename[0], '/');
-            string res = "";
-            for (int i(0); i < filename.size() - 1; i++)
-                res += filename[i] + "/";
-            try {
-                loadMTLFile(res + mtllib);
+            m_objects.push_back(new Object("default_group"));
+            m_objects.back()->addGroup("default_group");
+            try
+            {
+                push(&vertex, &normal, &textCoord, &index, &usemtl);
             }
-            catch (invalid_argument e) {
-                throw invalid_argument("[OBJFile " + m_name + "] [load(const string& path) throw()] " + e.what());
+            catch(const invalid_argument& _e)
+            {
+                throw invalid_argument("[OBJFile] " + string(_e.what()));
             }
         }
-
-        //temp de chargement du fichier
-        milliseconds end = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-
-        m_loadTime = (end - begin).count();
     }
 
-    ostream& OBJFile::print(ostream& o) const
+
+    file.close();
+    if (mtllib != "")
     {
-        o << "[OBJFile " << m_name << "]";
-        for (Object* ob : m_objects)
-            o << "\t" << ob;
-        return o;
+        try
+        {
+            loadMTLFile(_path.parent_path() / mtllib);
+        }
+        catch(invalid_argument e) {
+            throw invalid_argument("[OBJFile] [load(const string& path) throw()] " + string(e.what()));
+        }
     }
 
-    const vector<Object*>& OBJFile::getObjects() const
-    {
-        return m_objects;
-    }
+    milliseconds end = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
-    long long OBJFile::getLoadTime() const
-    {
-        return m_loadTime;
-    }
+    m_loadTime = (end - begin).count();
+}
 
-    ostream& operator<<(ostream& o, const OBJFile& m)
+ostream& OBJFile::print(ostream& _o) const noexcept
+{
+    _o << "[OBJFile " << m_name << "]";
+    for(const Object* ob : m_objects)
     {
-        m.print(o);
-        return o;
+        _o << "\t" << ob;
     }
+    return _o;
+}
+
+const vector<Object*>& OBJFile::getObjects() const noexcept
+{
+    return m_objects;
+}
+
+long long OBJFile::getLoadTime() const noexcept
+{
+    return m_loadTime;
+}
+
+ostream& operator<<(ostream& o, const OBJFile& m) noexcept
+{
+    m.print(o);
+    return o;
+}
 
 }
