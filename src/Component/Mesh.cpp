@@ -166,19 +166,19 @@ namespace Component
         m_dataSize = (int)indexedIndex.size();
 
         m_vboVertex->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedVertex.size() * sizeof(vec3), &indexedVertex[0], GL_STATIC_DRAW);
+        m_vboVertex->setData(indexedVertex);
         m_vboVertex->unbind();
 
         m_vboNormal->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedNormal.size() * sizeof(vec3), &indexedNormal[0], GL_STATIC_DRAW);
+        m_vboNormal->setData(indexedNormal);
         m_vboNormal->unbind();
 
         m_vboTextCoord->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedTextCoord.size() * sizeof(vec2), &indexedTextCoord[0], GL_STATIC_DRAW);
+        m_vboTextCoord->setData(indexedTextCoord);
         m_vboTextCoord->unbind();
 
         m_ebo->bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexedIndex.size() * sizeof(unsigned int), &indexedIndex[0], GL_STATIC_DRAW);
+        m_ebo->setData(indexedIndex);
         m_ebo->unbind();
 
         m_vao->bind();
@@ -265,15 +265,15 @@ namespace Component
         m_dataSize = (int)indexedIndex.size();
 
         m_vboVertex->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedVertex.size() * sizeof(vec3), &indexedVertex[0], GL_STATIC_DRAW);
+        m_vboVertex->setData(indexedVertex);
         m_vboVertex->unbind();
 
         m_vboNormal->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedNormal.size() * sizeof(vec3), &indexedNormal[0], GL_STATIC_DRAW);
+        m_vboNormal->setData(indexedNormal);
         m_vboNormal->unbind();
 
         m_ebo->bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexedIndex.size() * sizeof(unsigned int), &indexedIndex[0], GL_STATIC_DRAW);
+        m_ebo->setData(indexedIndex);
         m_ebo->unbind();
 
         m_vao->bind();
@@ -378,19 +378,19 @@ namespace Component
         m_dataSize = (int)indexedIndex.size();
 
         m_vboVertex->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedVertex.size() * sizeof(vec3), &indexedVertex[0], GL_STATIC_DRAW);
+        m_vboVertex->setData(indexedVertex);
         m_vboVertex->unbind();
 
         m_vboNormal->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedNormal.size() * sizeof(vec3), &indexedNormal[0], GL_STATIC_DRAW);
+        m_vboNormal->setData(indexedNormal);
         m_vboNormal->unbind();
 
         m_vboTextCoord->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedTextCoord.size() * sizeof(vec2), &indexedTextCoord[0], GL_STATIC_DRAW);
+        m_vboTextCoord->setData(indexedTextCoord);
         m_vboTextCoord->unbind();
 
         m_ebo->bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexedIndex.size() * sizeof(unsigned int), &indexedIndex[0], GL_STATIC_DRAW);
+        m_ebo->setData(indexedIndex);
         m_ebo->unbind();
 
         m_vao->bind();
@@ -481,15 +481,15 @@ namespace Component
         m_dataSize = (int)indexedIndex.size();
 
         m_vboVertex->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedVertex.size() * sizeof(vec3), &indexedVertex[0], GL_STATIC_DRAW);
+        m_vboVertex->setData(indexedVertex);
         m_vboVertex->unbind();
 
         m_vboNormal->bind();
-        glBufferData(GL_ARRAY_BUFFER, indexedNormal.size() * sizeof(vec3), &indexedNormal[0], GL_STATIC_DRAW);
+        m_vboNormal->setData(indexedNormal);
         m_vboNormal->unbind();
 
         m_ebo->bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexedIndex.size() * sizeof(unsigned int), &indexedIndex[0], GL_STATIC_DRAW);
+        m_ebo->setData(indexedIndex);
         m_ebo->unbind();
 
         m_vao->bind();
