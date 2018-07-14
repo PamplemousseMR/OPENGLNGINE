@@ -1,5 +1,6 @@
 #include "GL/Buffer.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 #define BUFFER_OFFSET(i) ((GLfloat*)nullptr + (i))
@@ -20,12 +21,31 @@ namespace GL
         case BUFFER_TYPE::EBO:
             glGenBuffers(1, &m_id);
             break;
+        case BUFFER_TYPE::FBO:
+            glGenFramebuffers(1, &m_id);
+            break;
+        case BUFFER_TYPE::RBO:
+            glGenRenderbuffers(1, &m_id);
+            break;
         }
     }
 
     Buffer::~Buffer() noexcept
     {
-        glDeleteBuffers(1, &m_id);
+        switch(m_type)
+        {
+        case BUFFER_TYPE::VAO:
+        case BUFFER_TYPE::VBO:
+        case BUFFER_TYPE::EBO:
+            glDeleteBuffers(1, &m_id);
+            break;
+        case BUFFER_TYPE::FBO:
+            glDeleteFramebuffers(1, &m_id);
+            break;
+        case BUFFER_TYPE::RBO:
+            glDeleteRenderbuffers(1, &m_id);
+            break;
+        }
     }
 
     Buffer::Buffer(const Buffer& _buffer) :
@@ -39,6 +59,10 @@ namespace GL
         case BUFFER_TYPE::VBO:
         case BUFFER_TYPE::EBO:
             glGenBuffers(1, &m_id);
+            break;
+        case BUFFER_TYPE::FBO:
+        case BUFFER_TYPE::RBO:
+            std::cerr << "TODO";
             break;
         }
 
@@ -76,6 +100,10 @@ namespace GL
             case BUFFER_TYPE::EBO:
                 glGenBuffers(1, &m_id);
                 break;
+            case BUFFER_TYPE::FBO:
+            case BUFFER_TYPE::RBO:
+                std::cerr << "TODO";
+                break;
             }
 
             glBindBuffer(GL_COPY_READ_BUFFER, _buffer.getId());
@@ -99,16 +127,37 @@ namespace GL
         return *this;
     }
 
-    void Buffer::setLocation(GLuint _location) const noexcept
+    void Buffer::setLocation(GLuint _location) const
     {
+        switch(m_type)
+        {
+        case BUFFER_TYPE::VAO:
+        case BUFFER_TYPE::EBO:
+        case BUFFER_TYPE::FBO:
+        case BUFFER_TYPE::RBO:
+            throw bad_function_call();
+            break;
+        case BUFFER_TYPE::VBO:
+            break;
+        }
         glEnableVertexAttribArray(_location);
     }
 
-    void Buffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset)
+    void Buffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset) const
     {
+        switch(m_type)
+        {
+        case BUFFER_TYPE::VAO:
+        case BUFFER_TYPE::EBO:
+        case BUFFER_TYPE::FBO:
+        case BUFFER_TYPE::RBO:
+            throw bad_function_call();
+            break;
+        case BUFFER_TYPE::VBO:
+            break;
+        }
         glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
     }
-
 
     void Buffer::bind() const noexcept
     {
@@ -122,6 +171,12 @@ namespace GL
             break;
         case EBO:
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+            break;
+        case BUFFER_TYPE::FBO:
+            glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+            break;
+        case BUFFER_TYPE::RBO:
+            glBindRenderbuffer(GL_RENDERBUFFER, m_id);
             break;
         }
     }
@@ -138,6 +193,12 @@ namespace GL
             break;
         case EBO:
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            break;
+        case BUFFER_TYPE::FBO:
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            break;
+        case BUFFER_TYPE::RBO:
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
             break;
         }
     }

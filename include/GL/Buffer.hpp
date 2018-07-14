@@ -10,9 +10,11 @@ namespace GL
 
 enum BUFFER_TYPE
 {
-    VAO,
     VBO,
-    EBO
+    VAO,
+    EBO,
+    FBO,
+    RBO,
 };
 
 class Buffer
@@ -27,8 +29,8 @@ public:
 
     template<typename T>
     void setData(const std::vector<T>&) const;
-    void setLocation(GLuint) const noexcept;
-    void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint);
+    void setLocation(GLuint) const;
+    void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint) const;
 
     void bind() const noexcept;
     void unbind() const noexcept;
@@ -59,7 +61,9 @@ void Buffer::setData(const std::vector<T>& _arr) const
     GLenum target;
     switch(m_type)
     {
+    case FBO:
     case VAO:
+    case RBO:
         throw bad_function_call();
         break;
     case VBO:
