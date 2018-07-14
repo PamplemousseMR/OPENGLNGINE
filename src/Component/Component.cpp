@@ -5,27 +5,19 @@ using namespace glm;
 
 namespace Component
 {
-    Component::Component(const string& name)
-        :    m_name(name),
-            m_positionMatrix(),
-            m_positionData(0,0,0),
-            m_rotationMatrix(),
-            m_rotationData(0,0,0),
-            m_scaleMatrix(),
-            m_scaleData(1,1,1)
+    Component::Component(const string& name) :
+        m_name(name),
+        m_positionMatrix(),
+        m_positionData(0,0,0),
+        m_rotationMatrix(),
+        m_rotationData(0,0,0),
+        m_scaleMatrix(),
+        m_scaleData(1,1,1)
     {
-#ifdef _DEBUG
-        cout << "[Component " << m_name << "] [Component(string name)]..." << endl;
-        cout << "[Component " << m_name << "] [Component(string name)]...\tsuccess" << endl;
-#endif
     }
 
     Component::~Component()
     {
-#ifdef _DEBUG
-        cout << "[Component " << m_name << "] [~Component()]..." << endl;
-        cout << "[Component " << m_name << "] [~Component()]...\tsuccess" << endl;
-#endif
     }
 
     const mat4& Component::getPositionMatrix() const
