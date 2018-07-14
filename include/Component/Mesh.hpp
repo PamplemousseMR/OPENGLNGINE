@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Component.hpp"
+
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>
@@ -18,7 +20,7 @@ namespace GL
 
 namespace Component
 {
-class Mesh
+class Mesh : public Component
 {
 
 public:

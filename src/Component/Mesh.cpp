@@ -14,6 +14,7 @@ namespace Component
     const GLuint Mesh::S_NORMALLOCATION = 2;
 
     Mesh::Mesh(const string& _name) noexcept :
+        Component(_name),
         m_name(_name)
     {
         m_vboVertex = new Buffer(BUFFER_TYPE::VBO);

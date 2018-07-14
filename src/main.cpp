@@ -137,21 +137,6 @@ int main()
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        for (int a((int)file.getObjects().size() - 1); a >= 0; a--)
-        {
-            Assets::Object* ob = file.getObjects()[a];
-            std::cout << *ob << std::endl;
-            for (int b((int)ob->getGroups().size() - 1); b >= 0; b--)
-            {
-                Assets::Group* gp = ob->getGroups()[b];
-                for (int c((int)gp->getMeshs().size() - 1); c >= 0; c--)
-                {
-                    Component::Mesh* me = gp->getMeshs()[c];
-                    Assets::Material* material = gp->getMaterials()[c];
-                }
-            }
-        }
-
         GL::Texture* ambient = NULL;
         GL::Texture* diffuse = NULL;
         GL::Texture* specular = NULL;
@@ -162,7 +147,6 @@ int main()
         bool hasSpecular = false;
         bool hasNormal = false;
 
-        Component::Component M("model");
         glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
@@ -173,11 +157,8 @@ int main()
 
             standarProgram.toggle();
 
-            standarModel = M.getPositionMatrix() * M.getRotationMatrix();
             standarView = V;
             standarProjection = P;
-
-            M.setRotation(glm::vec3(0,M.getRotationData().y+0.01,0));
 
             for (int a((int)file.getObjects().size()-1) ; a >= 0 ; a--)
             {
@@ -188,6 +169,10 @@ int main()
                     for (int c((int)gp->getMeshs().size() - 1); c >= 0; c--)
                     {
                         Component::Mesh* me = gp->getMeshs()[c];
+
+                        standarModel = me->getPositionMatrix() * me->getRotationMatrix();
+                        me->setRotation(glm::vec3(0, me->getRotationData().y+0.01, 0));
+
                         Assets::Material* material = gp->getMaterials()[c];
 
                         Assets::Map* map = material->getKamap();
