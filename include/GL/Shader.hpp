@@ -19,10 +19,10 @@ class Shader
 
 public:
 
-    Shader(SHADER_TYPE) noexcept;
+    Shader(SHADER_TYPE);
     ~Shader() noexcept;
-    Shader(const Shader&) noexcept;
-    Shader& operator=(const Shader&) noexcept;
+    Shader(const Shader&);
+    Shader& operator=(const Shader&);
 
     void compile() const;
 

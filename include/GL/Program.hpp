@@ -14,10 +14,10 @@ class Program
 
 public:
 
-    Program() noexcept;
+    Program();
     ~Program() noexcept;
-    Program(const Program&) noexcept;
-    Program& operator=(const Program&) noexcept;
+    Program(const Program&);
+    Program& operator=(const Program&);
 
     void attach(Shader& shader);
     void detach(const Shader& shader);

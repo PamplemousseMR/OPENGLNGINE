@@ -7,9 +7,13 @@ using namespace std;
 
 namespace GL
 {
-    Program::Program() noexcept :
+    Program::Program() :
         m_id(glCreateProgram())
     {
+        if(m_id == 0)
+        {
+            throw overflow_error("[Program] Out of memory");
+        }
     }
 
     Program::~Program() noexcept
@@ -18,20 +22,30 @@ namespace GL
         glDeleteProgram(m_id);
     }
 
-    Program::Program(const Program& _program) noexcept :
+    Program::Program(const Program& _program) :
         m_id(glCreateProgram())
     {
+        if(m_id == 0)
+        {
+            throw overflow_error("[Program] Out of memory");
+        }
         for (Shader* const s : _program.m_shaders)
         {
             attach(*s);
         }
     }
 
-    Program& Program::operator=(const Program& _program) noexcept
+    Program& Program::operator=(const Program& _program)
     {
         if(this != &_program)
         {
             detachAll();
+            glDeleteProgram(m_id);
+            m_id = glCreateProgram();
+            if(m_id == 0)
+            {
+                throw overflow_error("[Program] Out of memory");
+            }
             for (Shader* const s : _program.m_shaders)
             {
                 attach(*s);

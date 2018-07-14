@@ -8,10 +8,14 @@ using namespace std;
 namespace GL
 {
 
-    Shader::Shader(SHADER_TYPE type) noexcept :
+    Shader::Shader(SHADER_TYPE type) :
         m_type(type),
         m_id(glCreateShader(type))
     {
+        if(m_id == 0)
+        {
+            throw overflow_error("[Shader] Out of memory");
+        }
     }
 
     Shader::~Shader() noexcept
@@ -19,20 +23,28 @@ namespace GL
         glDeleteShader(m_id);
     }
 
-    Shader::Shader(const Shader& _shader) noexcept :
+    Shader::Shader(const Shader& _shader) :
         m_type(_shader.m_type),
         m_id(glCreateShader(_shader.m_type)),
         m_sources(_shader.m_sources)
     {
+        if(m_id == 0)
+        {
+            throw overflow_error("[Shader] Out of memory");
+        }
     }
 
-    Shader& Shader::operator=(const Shader& _shader) noexcept
+    Shader& Shader::operator=(const Shader& _shader)
     {
         if (this != &_shader)
         {
             glDeleteShader(m_id);
             m_type = _shader.m_type;
             m_id = glCreateShader(_shader.m_type);
+            if(m_id == 0)
+            {
+                throw overflow_error("[Shader] Out of memory");
+            }
             m_sources = _shader.m_sources;
         }
         return *this;
