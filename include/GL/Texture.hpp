@@ -2,14 +2,14 @@
 
 #include <GL/glew.h>
 
-#include <iostream>
+#include <filesystem>
 #include <string>
 #include <vector>
 
 namespace GL
 {
 
-enum textureType
+enum TEXTURE_TYPE
 {
     TEXTURE_1D = GL_TEXTURE_1D,
     TEXTURE_2D = GL_TEXTURE_2D,
@@ -20,20 +20,21 @@ class Texture
 
 public:
 
-    Texture(textureType);
-    ~Texture();
+    Texture(TEXTURE_TYPE) noexcept;
+    ~Texture() noexcept;
+    Texture(const Texture&) = delete;
+    Texture& operator=(const Texture&) = delete;
 
-    int load(const char*) throw();
-    void generateMipmap() const;
-    void bind() throw();
-    void unbind();
+    int load(const std::filesystem::path&);
+    void generateMipmap() const noexcept;
+    void bind();
+    void unbind() noexcept;
 
-    GLuint getId() const;
-    int getLocation() const;
-    textureType getType() const;
-    const std::string& getName() const;
+    inline GLuint getId() const noexcept;
+    inline int getLocation() const noexcept;
+    inline TEXTURE_TYPE getType() const noexcept;
 
-    void setParameter(GLenum, GLint) const;
+    void setParameter(GLenum, GLint) const noexcept;
 
 private:
 
@@ -42,14 +43,27 @@ private:
 
 private:
 
-    textureType m_type;
-    std::string m_name;
-    bool m_hasAlpha;
-    GLuint m_id;
-    int m_location;
-
+    TEXTURE_TYPE m_type {TEXTURE_1D};
+    bool m_hasAlpha {false};
+    GLuint m_id {0};
+    int m_location {-1};
 
 };
+
+GLuint Texture::getId() const noexcept
+{
+    return m_id;
+}
+
+int Texture::getLocation() const noexcept
+{
+    return m_location;
+}
+
+TEXTURE_TYPE Texture::getType() const noexcept
+{
+    return m_type;
+}
 
 }
 

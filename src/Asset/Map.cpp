@@ -29,7 +29,7 @@ namespace Assets
 #ifdef _DEBUG
         cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw()]..." << endl;
 #endif
-        m_texture = new Texture(textureType::TEXTURE_2D);
+        m_texture = new Texture(TEXTURE_TYPE::TEXTURE_2D);
         m_texture->bind();
         try {
             m_textres = m_texture->load(path.c_str());
