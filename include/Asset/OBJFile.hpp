@@ -28,8 +28,12 @@ public:
 
 private:
 
-    std::vector<std::string> split(const std::string & str, char splitter) const noexcept;
-    std::vector<std::string> removeNullptr(const std::vector<std::string> & str) const noexcept;
+    static std::vector<std::string> split(const std::string & str, char splitter) noexcept;
+    static std::vector<std::string> removeNullptr(const std::vector<std::string> & str) noexcept;
+    static void checkSize(const std::vector<std::string>&, int, int, int);
+
+private:
+
     void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const;
     std::vector<Material*> findMaterial(const std::string&) const noexcept;
     void loadMTLFile(const std::filesystem::path&) const;

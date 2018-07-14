@@ -15,7 +15,7 @@ using namespace Component;
 namespace Assets
 {
 
-vector<string> OBJFile::split(const string& _str, char _splitter) const noexcept
+vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
 {
     if (_str == "")
     {
@@ -55,7 +55,7 @@ vector<string> OBJFile::split(const string& _str, char _splitter) const noexcept
     return tokens;
 }
 
-vector<string> OBJFile::removeNullptr(const vector<string>& _str) const noexcept
+vector<string> OBJFile::removeNullptr(const vector<string>& _str) noexcept
 {
     vector<string> res;
     for(unsigned int i(0); i < _str.size(); ++i)
@@ -129,6 +129,20 @@ vector<Material*> OBJFile::findMaterial(const string& _mtl) const noexcept
     return m;
 }
 
+void OBJFile::checkSize(const vector<string>& _vec, int _min, int _max, int _linuNumber)
+{
+    const string symbol = "[OBJFile] unexpected symbol at the end of the line ";
+    const string invalidData = "[OBJFile] missing value(s) at the line ";
+    if (_vec.size() < _min)
+    {
+        throw invalid_argument(invalidData + to_string(_linuNumber));
+    }
+    if (_vec.size() > _max)
+    {
+        throw invalid_argument(symbol + to_string(_linuNumber));
+    }
+}
+
 void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
 {
     if(!filesystem::exists(_path) || !filesystem::is_regular_file(_path))
@@ -141,12 +155,11 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
         throw invalid_argument("[OBJFile] can't read '" + _path.extension().string() + "' extension");
     }
 
-    string symbol = "[OBJFile] unexpected symbol at the end of the line ";
-    string invalideData = "[OBJFile] missing value(s) at the line ";
-    string cmd = "[OBJFile] invalide commande at the line ";
-    string noexiste = "[OBJFile] set value to non existe material at line ";
-    string commande = "[OBJFile] unknow commande at line ";
-    string lineError = "[OBJFile] Unexpected symbol at the line ";
+    const string invalidData = "[OBJFile] missing value(s) at the line ";
+    const string cmd = "[OBJFile] invalide commande at the line ";
+    const string noexiste = "[OBJFile] set value to non existe material at line ";
+    const string commande = "[OBJFile] unknow commande at line ";
+    const string lineError = "[OBJFile] Unexpected symbol at the line ";
     int lineNumber = 0;
 
     ifstream file(_path, ios::in);
@@ -166,14 +179,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
             string dat0 = data[0];
             if (dat0 == "newmtl")
             {
-                if (data.size() < 2)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 2)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 2, 2, lineNumber);
                 materials = findMaterial(data[1]);
                 if (materials.size() == 0)
                 {
@@ -188,14 +194,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 if (dat0 == "\tKa" || dat0 == "Ka" || dat0 == "\tka" || dat0 == "ka")
                 {
-                    if (data.size() < 4)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 4)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
+                    checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -210,18 +209,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tKd" || dat0 == "Kd" || dat0 == "\tkd" || dat0 == "kd")
                 {
-                    if (data.size() < 4)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 4)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -236,18 +224,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tKs" || dat0 == "Ks" || dat0 == "\tks" || dat0 == "ks")
                 {
-                    if (data.size() < 4)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 4)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -262,18 +239,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tKe" || dat0 == "Ke" || dat0 == "\tke" || dat0 == "ke")
                 {
-                    if (data.size() < 4)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 4)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -288,18 +254,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tTf" || dat0 == "Tf" || dat0 == "\ttf" || dat0 == "tf")
                 {
-                    if (data.size() < 4)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 4)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -314,18 +269,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tillum" || dat0 == "illum")
                 {
-                    if (data.size() < 2)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 2)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -340,18 +284,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\td" || dat0 == "d")
                 {
-                    if (data.size() < 2)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 3)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 2, 3, lineNumber);
                     if (data.size() == 2)
                     {
                         for(Material* ma : materials)
@@ -385,18 +318,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tNs" || dat0 == "Ns" || dat0 == "\tns" || dat0 == "ns")
                 {
-                    if (data.size() < 2)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 2)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -411,18 +333,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tsharpness" || dat0 == "sharpness")
                 {
-                    if (data.size() < 2)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 2)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -437,18 +348,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else if (dat0 == "\tNi" || dat0 == "Ni" || dat0 == "\tni" || dat0 == "ni")
                 {
-                    if (data.size() < 2)
-                    {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
-                    }
-                    if (data.size() > 2)
-                    {
-                        throw invalid_argument(symbol + to_string(lineNumber));
-                    }
-                    if (materials.size() == 0)
-                    {
-                        throw invalid_argument(noexiste + to_string(lineNumber));
-                    }
+                    checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
                     {
                         try
@@ -465,7 +365,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 {
                     if (data.size() < 2)
                     {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
+                        throw invalid_argument(invalidData + to_string(lineNumber));
                     }
                     vector<Map*> map;
                     if (dat0 == "\tmap_Ka" || dat0 == "map_Ka" || dat0 == "\tmap_ka" || dat0 == "map_ka")
@@ -795,9 +695,9 @@ void OBJFile::load(const filesystem::path& _path)
         throw invalid_argument("[OBJFile] Can't open file : " + _path.string());
     }
 
-    string symbol = "[OBJFile] Unexpected symbol at the end of the line ";
-    string invalideData = "[OBJFile] Missing value(s) at the line ";
-    string lineError = "[OBJFile] Unexpected symbol at the line ";
+    const string symbol = "[OBJFile] Unexpected symbol at the end of the line ";
+    const string invalidData = "[OBJFile] Missing value(s) at the line ";
+    const string lineError = "[OBJFile] Unexpected symbol at the line ";
 
     vector<vec3> vertex(0);
     vector<vec3> normal(0);
@@ -821,14 +721,7 @@ void OBJFile::load(const filesystem::path& _path)
             }
             if (dat0 == "v" || dat0 == "vn")
             {
-                if (data.size() < 4)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 4)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 4, 4, lineNumber);
                 vec3 val;
                 for(short i(1);i<=3; ++i)
                 {
@@ -838,7 +731,7 @@ void OBJFile::load(const filesystem::path& _path)
                     }
                     catch(const invalid_argument&)
                     {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
+                        throw invalid_argument(invalidData + to_string(lineNumber));
                     }
                 }
                 if (dat0 == "vn")
@@ -852,14 +745,7 @@ void OBJFile::load(const filesystem::path& _path)
             }
             else if (dat0 == "vt")
             {
-                if (data.size() < 3)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 4)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 3, 4, lineNumber);
                 vec2 val;
                 for(short i(1); i <= 2; ++i)
                 {
@@ -869,21 +755,14 @@ void OBJFile::load(const filesystem::path& _path)
                     }
                     catch(const invalid_argument&)
                     {
-                        throw invalid_argument(invalideData + to_string(lineNumber));
+                        throw invalid_argument(invalidData + to_string(lineNumber));
                     }
                 }
                 textCoord.push_back(val);
             }
             else if (dat0 == "f")
             {
-                if (data.size() < 4)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 5)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 4, 5, lineNumber);
                 vec3 val;
                 short end = data.size() == 4 ? 1 : 3;
                 for(short k=0 ; k<end ; k+=2)
@@ -903,7 +782,7 @@ void OBJFile::load(const filesystem::path& _path)
                             }
                             catch(const invalid_argument&)
                             {
-                                throw invalid_argument(invalideData + to_string(lineNumber));
+                                throw invalid_argument(invalidData + to_string(lineNumber));
                             }
                             val[1] = 0;
                             val[2] = 0;
@@ -920,7 +799,7 @@ void OBJFile::load(const filesystem::path& _path)
                             }
                             catch(const invalid_argument&)
                             {
-                                throw invalid_argument(invalideData + to_string(lineNumber));
+                                throw invalid_argument(invalidData + to_string(lineNumber));
                             }
                         }
                         else if (d.size() == 3)
@@ -932,7 +811,7 @@ void OBJFile::load(const filesystem::path& _path)
                             }
                             catch(const invalid_argument&)
                             {
-                                throw invalid_argument(invalideData + to_string(lineNumber));
+                                throw invalid_argument(invalidData + to_string(lineNumber));
                             }
                             val[0] = temp;
 
@@ -949,7 +828,7 @@ void OBJFile::load(const filesystem::path& _path)
                                 }
                                 catch(const invalid_argument&)
                                 {
-                                    throw invalid_argument(invalideData + to_string(lineNumber));
+                                    throw invalid_argument(invalidData + to_string(lineNumber));
                                 }
                             }
 
@@ -959,7 +838,7 @@ void OBJFile::load(const filesystem::path& _path)
                             }
                             catch(const invalid_argument&)
                             {
-                                throw invalid_argument(invalideData + to_string(lineNumber));
+                                throw invalid_argument(invalidData + to_string(lineNumber));
                             }
                             val[2] = temp;
                         }
@@ -973,14 +852,7 @@ void OBJFile::load(const filesystem::path& _path)
             }
             else if (dat0 == "o")
             {
-                if (data.size() < 2)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 2)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 2, 2, lineNumber);
                 if (index.size() != 0)
                 {
                     if (m_objects.size() > 0)
@@ -1089,26 +961,12 @@ void OBJFile::load(const filesystem::path& _path)
             }
             else if (dat0 == "mtllib")
             {
-                if (data.size() < 2)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 2)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 2, 2, lineNumber);
                 mtllib = data[1];
             }
             else if (dat0 == "usemtl")
             {
-                if (data.size() < 2)
-                {
-                    throw invalid_argument(invalideData + to_string(lineNumber));
-                }
-                if (data.size() > 2)
-                {
-                    throw invalid_argument(symbol + to_string(lineNumber));
-                }
+                checkSize(data, 2, 2, lineNumber);
                 if (index.size() > 0)
                 {
                     if (m_objects.size() > 0)
@@ -1137,7 +995,8 @@ void OBJFile::load(const filesystem::path& _path)
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         m_objects.push_back(new Object("default_object"));
                         m_objects.back()->addGroup("default_group");
                         try
@@ -1206,7 +1065,8 @@ void OBJFile::load(const filesystem::path& _path)
         {
             loadMTLFile(_path.parent_path() / mtllib);
         }
-        catch(invalid_argument e) {
+        catch(invalid_argument e)
+        {
             throw invalid_argument("[OBJFile] [load(const string& path) throw()] " + string(e.what()));
         }
     }
