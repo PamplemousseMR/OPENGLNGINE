@@ -6,59 +6,53 @@ using namespace std;
 namespace Assets
 {
 
-    Object::Object(const string& name)
-        : m_name(name)
+    Object::Object(const string& _name) noexcept :
+        m_name(_name)
     {
-#ifdef _DEBUG
-        cout << "[Object " << m_name << "] [Object(const string& name)]..." << endl;
-        cout << "[Object " << m_name << "] [Object(const string& name)]...\tsuccess" << endl;
-#endif
     }
 
-    ostream& Object::print(ostream& o) const
+    ostream& Object::print(ostream& _o) const noexcept
     {
-        o << "[Object " << m_name << "]" << endl;
+        _o << "[Object " << m_name << "]" << endl;
         for (Group* g : m_groups)
+        {
             cout << "\t" << *g << "\n";
-        return o;
+        }
+        return _o;
     }
 
-    Object::~Object()
+    Object::~Object() noexcept
     {
-#ifdef _DEBUG
-        cout << "[Object " << m_name << "] [~Object()]..." << endl;
-#endif
         for (Group* m : m_groups)
-            if (m) delete m;
-#ifdef _DEBUG
-        cout << "[Object " << m_name << "] [~Object()]...\tsuccess"<<endl;
-#endif
+        {
+            delete m;
+        }
     }
 
-    const vector<Group*>& Object::getGroups() const
+    const vector<Group*>& Object::getGroups() const noexcept
     {
         return m_groups;
     }
 
-    const string& Object::getName() const
+    const string& Object::getName() const noexcept
     {
         return m_name;
     }
 
-    Group* Object::getLastGroup() const
+    Group* Object::getLastGroup() const noexcept
     {
         return m_groups.back();
     }
 
-    void Object::addGroup(const string& name)
+    void Object::addGroup(const string& _name) noexcept
     {
-        m_groups.push_back(new Group(name));
+        m_groups.push_back(new Group(_name));
     }
 
-    ostream& operator<<(ostream& o, const Object& m)
+    ostream& operator<<(ostream& _o, const Object& _m) noexcept
     {
-        m.print(o);
-        return o;
+        _m.print(_o);
+        return _o;
     }
 
 }

@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -19,50 +20,50 @@ class Material
 
 public:
 
-    Material(const std::string&);
-    ~Material();
+    Material(const std::string&) noexcept;
+    ~Material() noexcept;
 
-    const std::string& getName() const;
-    const glm::vec3& getAmbient() const;
-    const glm::vec3& getDiffuse() const;
-    const glm::vec3& getSpecular() const;
-    const glm::vec3& getTransmissionFilter() const;
-    int getIllumination() const;
-    float getDissolve() const;
-    bool getHalo() const;
-    float getSpecularExponent() const;
-    float getSharpness() const;
-    float getopticalDensity() const;
-    Map* getKamap() const;
-    Map* getKdmap() const;
-    Map* getKsmap() const;
-    Map* getNsmap() const;
-    Map* getdmap() const;
-    Map* getDecalmap() const;
-    Map* getDispmap() const;
-    Map* getBumpmap() const;
+    const std::string& getName() const noexcept;
+    const glm::vec3& getAmbient() const noexcept;
+    const glm::vec3& getDiffuse() const noexcept;
+    const glm::vec3& getSpecular() const noexcept;
+    const glm::vec3& getTransmissionFilter() const noexcept;
+    int getIllumination() const noexcept;
+    float getDissolve() const noexcept;
+    bool getHalo() const noexcept;
+    float getSpecularExponent() const noexcept;
+    float getSharpness() const noexcept;
+    float getopticalDensity() const noexcept;
+    Map* getKamap() const noexcept;
+    Map* getKdmap() const noexcept;
+    Map* getKsmap() const noexcept;
+    Map* getNsmap() const noexcept;
+    Map* getdmap() const noexcept;
+    Map* getDecalmap() const noexcept;
+    Map* getDispmap() const noexcept;
+    Map* getBumpmap() const noexcept;
 
-    void setAmbient(const glm::vec3&);
-    void setDiffuse(const glm::vec3&);
-    void setSpecular(const glm::vec3&);
-    void setTransmissionFilter(const glm::vec3&);
-    void setIllumination(int);
-    void setDissolve(float);
-    void setHalo(bool);
-    void setSpecularExponent(float);
-    void setSharpness(float);
-    void setopticalDensity(float);
-    void setEmissiveCoeficient(const glm::vec3&);
-    void setKamap(const std::string&) throw();
-    void setKdmap(const std::string&) throw();
-    void setKsmap(const std::string&) throw();
-    void setNsmap(const std::string&) throw();
-    void setdmap(const std::string&) throw();
-    void setDecalmap(const std::string&) throw();
-    void setDispmap(const std::string&) throw();
-    void setBumpmap(const std::string&) throw();
+    void setAmbient(const glm::vec3&) noexcept;
+    void setDiffuse(const glm::vec3&) noexcept;
+    void setSpecular(const glm::vec3&) noexcept;
+    void setTransmissionFilter(const glm::vec3&) noexcept;
+    void setIllumination(int) noexcept;
+    void setDissolve(float) noexcept;
+    void setHalo(bool) noexcept;
+    void setSpecularExponent(float) noexcept;
+    void setSharpness(float) noexcept;
+    void setopticalDensity(float) noexcept;
+    void setEmissiveCoeficient(const glm::vec3&) noexcept;
+    void setKamap(const std::filesystem::path&);
+    void setKdmap(const std::filesystem::path&);
+    void setKsmap(const std::filesystem::path&);
+    void setNsmap(const std::filesystem::path&);
+    void setdmap(const std::filesystem::path&);
+    void setDecalmap(const std::filesystem::path&);
+    void setDispmap(const std::filesystem::path&);
+    void setBumpmap(const std::filesystem::path&);
 
-    std::ostream& print(std::ostream&) const;
+    std::ostream& print(std::ostream&) const noexcept;
 
 private :
 
@@ -89,7 +90,7 @@ private :
 
 };
 
-std::ostream& operator<<(std::ostream&, const Material&);
+std::ostream& operator<<(std::ostream&, const Material&) noexcept;
 
 }
 

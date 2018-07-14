@@ -6,8 +6,8 @@ using namespace glm;
 
 namespace Assets
 {
-    Material::Material(const string& name)
-        : m_name(name),
+    Material::Material(const string& _name) noexcept :
+        m_name(_name),
         m_nsSpecularexponent(90.0f),
         m_kaAmbient(1, 1, 1),
         m_kdDiffuse(1, 1, 1),
@@ -28,18 +28,10 @@ namespace Assets
         m_decalMap(nullptr),
         m_bumpMap(nullptr)
     {
-#ifdef _DEBUG
-        cout << "[Material " << m_name << "] [Material(const string& name)]..." << endl;
-        cout << "[Material " << m_name << "] [Material(const string& name)]...\tsuccess" << endl;
-#endif
     }
 
-
-    Material::~Material()
+    Material::~Material() noexcept
     {
-#ifdef _DEBUG
-        cout << "[Material " << m_name << "] [~Material()]..." << endl;
-#endif
         if (m_kaMap)delete m_kaMap;
         if (m_kdMap)delete m_kdMap;
         if (m_ksMap)delete m_ksMap;
@@ -48,274 +40,310 @@ namespace Assets
         if (m_dispMap)delete m_dispMap;
         if (m_decalMap)delete m_decalMap;
         if (m_bumpMap)delete m_bumpMap;
-#ifdef _DEBUG
-        cout << "[Material " << m_name << "] [~Material()]...\tsuccess" << endl;
-#endif
     }
 
-    ostream& Material::print(ostream& o) const
+    ostream& Material::print(ostream& _o) const noexcept
     {
-        o << "[Material " << m_name << "]\n";
-        o << "\tMaterial color & illumination statements :\n";
-        o << "\t\tKa " << m_kaAmbient[0] << " " << m_kaAmbient[1] << " " << m_kaAmbient[2] << "\n";
-        o << "\t\tKd " << m_kdDiffuse[0] << " " << m_kdDiffuse[1] << " " << m_kdDiffuse[2] << "\n";
-        o << "\t\tKs " << m_ksSpecular[0] << " " << m_ksSpecular[1] << " " << m_ksSpecular[2] << "\n";
-        o << "\t\tTf " << m_tfTransmissionfilter[0] << " " << m_tfTransmissionfilter[1] << " " << m_tfTransmissionfilter[2] << "\n";
-        o << "\t\tilum " << m_illumIllumination << "\n";
-        o << "\t\td " << m_dDissolve << "\n";
-        o << "\t\tNs " << m_nsSpecularexponent << "\n";
-        o << "\t\tsharpness " << m_sharpnessSharpness << "\n";
-        o << "\t\tNi " << m_niOpticaldensity << "\n";
-        o << "\treflection map statement :\n";
-        o << "\ttodo\n";
-        return o;
+        _o << "[Material " << m_name << "]\n";
+        _o << "\tMaterial color & illumination statements :\n";
+        _o << "\t\tKa " << m_kaAmbient[0] << " " << m_kaAmbient[1] << " " << m_kaAmbient[2] << "\n";
+        _o << "\t\tKd " << m_kdDiffuse[0] << " " << m_kdDiffuse[1] << " " << m_kdDiffuse[2] << "\n";
+        _o << "\t\tKs " << m_ksSpecular[0] << " " << m_ksSpecular[1] << " " << m_ksSpecular[2] << "\n";
+        _o << "\t\tTf " << m_tfTransmissionfilter[0] << " " << m_tfTransmissionfilter[1] << " " << m_tfTransmissionfilter[2] << "\n";
+        _o << "\t\tilum " << m_illumIllumination << "\n";
+        _o << "\t\td " << m_dDissolve << "\n";
+        _o << "\t\tNs " << m_nsSpecularexponent << "\n";
+        _o << "\t\tsharpness " << m_sharpnessSharpness << "\n";
+        _o << "\t\tNi " << m_niOpticaldensity << "\n";
+        _o << "\treflection map statement :\n";
+        _o << "\ttodo\n";
+        return _o;
     }
 
-    const string& Material::getName() const
+    const string& Material::getName() const noexcept
     {
         return m_name;
     }
 
-    const vec3& Material::getAmbient() const
+    const vec3& Material::getAmbient() const noexcept
     {
         return m_kaAmbient;
     }
 
-    const vec3& Material::getDiffuse() const
+    const vec3& Material::getDiffuse() const noexcept
     {
         return m_kdDiffuse;
     }
 
-    const vec3& Material::getSpecular() const
+    const vec3& Material::getSpecular() const noexcept
     {
         return m_ksSpecular;
     }
 
-    const vec3& Material::getTransmissionFilter() const
+    const vec3& Material::getTransmissionFilter() const noexcept
     {
         return m_tfTransmissionfilter;
     }
 
-    int Material::getIllumination() const
+    int Material::getIllumination() const noexcept
     {
         return m_illumIllumination;
     }
 
-    float Material::getDissolve() const
+    float Material::getDissolve() const noexcept
     {
         return m_dDissolve;
     }
 
-    bool Material::getHalo() const
+    bool Material::getHalo() const noexcept
     {
         return m_halo;
     }
 
-    float Material::getSpecularExponent() const
+    float Material::getSpecularExponent() const noexcept
     {
         return m_nsSpecularexponent;
     }
 
-    float Material::getSharpness() const
+    float Material::getSharpness() const noexcept
     {
         return m_sharpnessSharpness;
     }
 
-    float Material::getopticalDensity() const
+    float Material::getopticalDensity() const noexcept
     {
         return m_niOpticaldensity;
     }
 
 
-    Map* Material::getKamap() const
+    Map* Material::getKamap() const noexcept
     {
         return m_kaMap;
     }
 
-    Map* Material::getKdmap() const
+    Map* Material::getKdmap() const noexcept
     {
         return m_kdMap;
     }
 
-    Map* Material::getKsmap() const
+    Map* Material::getKsmap() const noexcept
     {
         return m_ksMap;
     }
 
-    Map* Material::getNsmap() const
+    Map* Material::getNsmap() const noexcept
     {
         return m_nsMap;
     }
 
-    Map* Material::getdmap() const
+    Map* Material::getdmap() const noexcept
     {
         return m_dMap;
     }
 
-    Map* Material::getDispmap() const
+    Map* Material::getDispmap() const noexcept
     {
         return m_dispMap;
     }
 
-    Map* Material::getDecalmap() const
+    Map* Material::getDecalmap() const noexcept
     {
         return m_decalMap;
     }
 
-    Map* Material::getBumpmap() const
+    Map* Material::getBumpmap() const noexcept
     {
         return m_bumpMap;
     }
 
-    void Material::setAmbient(const vec3& ka)
+    void Material::setAmbient(const vec3& _ka) noexcept
     {
-        m_kaAmbient = ka;
+        m_kaAmbient = _ka;
     }
 
-    void Material::setDiffuse(const vec3& kd)
+    void Material::setDiffuse(const vec3& _kd) noexcept
     {
-        m_kdDiffuse = kd;
+        m_kdDiffuse = _kd;
     }
 
-    void Material::setSpecular(const vec3& ks)
+    void Material::setSpecular(const vec3& _ks) noexcept
     {
-        m_ksSpecular = ks;
+        m_ksSpecular = _ks;
     }
 
-    void Material::setTransmissionFilter(const vec3& tf)
+    void Material::setTransmissionFilter(const vec3& _tf) noexcept
     {
-        m_tfTransmissionfilter = tf;
+        m_tfTransmissionfilter = _tf;
     }
 
-    void Material::setIllumination(int illum)
+    void Material::setIllumination(int _illum) noexcept
     {
-        m_illumIllumination = illum;
+        m_illumIllumination = _illum;
     }
 
-    void Material::setDissolve(float d)
+    void Material::setDissolve(float _d) noexcept
     {
-        m_dDissolve = d;
+        m_dDissolve = _d;
     }
 
-    void Material::setHalo(bool h)
+    void Material::setHalo(bool _h) noexcept
     {
-        m_halo = h;
+        m_halo = _h;
     }
 
-    void Material::setSpecularExponent(float ns)
+    void Material::setSpecularExponent(float _ns) noexcept
     {
-        m_nsSpecularexponent = ns;
+        m_nsSpecularexponent = _ns;
     }
 
-    void Material::setSharpness(float sharp)
+    void Material::setSharpness(float _sharp) noexcept
     {
-        m_sharpnessSharpness = sharp;
+        m_sharpnessSharpness = _sharp;
     }
 
-    void Material::setopticalDensity(float ni)
+    void Material::setopticalDensity(float _ni) noexcept
     {
-        m_niOpticaldensity = ni;
+        m_niOpticaldensity = _ni;
     }
 
-    void Material::setEmissiveCoeficient(const vec3& ke)
+    void Material::setEmissiveCoeficient(const vec3& _ke) noexcept
     {
-        m_Ke = ke;
+        m_Ke = _ke;
     }
 
-
-    void Material::setKamap(const string& path) throw()
+    void Material::setKamap(const std::filesystem::path& _path)
     {
-        if (m_kaMap)delete m_kaMap;
-        try {
-            m_kaMap = new Map(MAP_TYPE::Ka, path);
+        if (m_kaMap)
+        {
+            delete m_kaMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setKamap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_kaMap = new Map(MAP_TYPE::Ka, _path);
         }
-    }
-
-    void Material::setKdmap(const string& path) throw()
-    {
-        if (m_kdMap)delete m_kdMap;
-        try {
-            m_kdMap = new Map(MAP_TYPE::Kd, path);
-        }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setKdmap(const string& path) throw()] " + e.what());
+        catch (const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
-    void Material::setKsmap(const string& path) throw()
+    void Material::setKdmap(const std::filesystem::path& _path)
     {
-        if (m_ksMap)delete m_ksMap;
-        try {
-            m_ksMap = new Map(MAP_TYPE::Ks, path);
+        if (m_kdMap)
+        {
+            delete m_kdMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setKsmap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_kdMap = new Map(MAP_TYPE::Kd, _path);
+        }
+        catch (const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
-    void Material::setNsmap(const string& path) throw()
+    void Material::setKsmap(const std::filesystem::path& _path)
     {
-        if (m_nsMap)delete m_nsMap;
-        try {
-            m_nsMap = new Map(MAP_TYPE::Ns, path);
+        if (m_ksMap)
+        {
+            delete m_ksMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setNsmap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_ksMap = new Map(MAP_TYPE::Ks, _path);
+        }
+        catch (const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
-    void Material::setdmap(const string& path) throw()
+    void Material::setNsmap(const std::filesystem::path& _path)
     {
-        if (m_dMap)delete m_dMap;
-        try {
-            m_dMap = new Map(MAP_TYPE::d, path);
+        if (m_nsMap)
+        {
+            delete m_nsMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setdmap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_nsMap = new Map(MAP_TYPE::Ns, _path);
+        }
+        catch (const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
-    void Material::setDispmap(const string& path) throw()
+    void Material::setdmap(const std::filesystem::path& _path)
     {
-        if (m_dispMap)delete m_dispMap;
-        try {
-            m_dispMap = new Map(MAP_TYPE::disp, path);
+        if (m_dMap)
+        {
+            delete m_dMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setDispmap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_dMap = new Map(MAP_TYPE::d, _path);
+        }
+        catch (const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
-    void Material::setDecalmap(const string& path) throw()
+    void Material::setDispmap(const std::filesystem::path& _path)
     {
-        if (m_decalMap)delete m_decalMap;
-        try {
-            m_decalMap = new Map(MAP_TYPE::decal, path);
+        if (m_dispMap)
+        {
+            delete m_dispMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setDecalmap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_dispMap = new Map(MAP_TYPE::disp, _path);
+        }
+        catch(const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
-    void Material::setBumpmap(const string& path) throw()
+    void Material::setDecalmap(const std::filesystem::path& _path)
     {
-        if (m_bumpMap)delete m_bumpMap;
-        try {
-            m_bumpMap = new Map(MAP_TYPE::bump, path);
+        if (m_decalMap)
+        {
+            delete m_decalMap;
         }
-        catch (exception e) {
-            throw invalid_argument("[Material " + m_name + "] [setBumpmap(const string& path) throw()] " + e.what());
+        try
+        {
+            m_decalMap = new Map(MAP_TYPE::decal, _path);
+        }
+        catch(const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
+        }
+    }
+
+    void Material::setBumpmap(const std::filesystem::path& _path)
+    {
+        if (m_bumpMap)
+        {
+            delete m_bumpMap;
+        }
+        try
+        {
+            m_bumpMap = new Map(MAP_TYPE::bump, _path);
+        }
+        catch (const exception& _e)
+        {
+            throw invalid_argument("[Material] " + string(_e.what()));
         }
     }
 
 
-    ostream& operator<<(ostream& o, const Material& m)
+    ostream& operator<<(ostream& _o, const Material& _m) noexcept
     {
-        m.print(o);
-        return o;
+        _m.print(_o);
+        return _o;
     }
 
 }
