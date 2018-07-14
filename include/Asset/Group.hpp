@@ -20,17 +20,17 @@ class Group
 
 public:
 
-    Group(const std::string&);
-    ~Group();
+    Group(const std::string&) noexcept;
+    ~Group() noexcept;
 
-    void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*) throw();
+    void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*);
 
-    const std::string& getName() const;
-    const std::vector<Component::Mesh*>& getMeshs() const;
-    Material* getLastMaterial() const;
-    const std::vector<Material*>& getMaterials() const;
+    const std::string& getName() const noexcept;
+    const std::vector<Component::Mesh*>& getMeshs() const noexcept;
+    Material* getLastMaterial() const noexcept;
+    const std::vector<Material*>& getMaterials() const noexcept;
 
-    std::ostream& print(std::ostream& o) const;
+    std::ostream& print(std::ostream& o) const noexcept;
 
 private :
 
@@ -40,6 +40,6 @@ private :
 
 };
 
-std::ostream& operator<<(std::ostream& o, const Group& m);
+std::ostream& operator<<(std::ostream& o, const Group& m) noexcept;
 
 }
