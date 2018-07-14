@@ -80,7 +80,7 @@ namespace GL
             glGetShaderInfoLog(m_id, infoLogLength, nullptr, &shaderErrorMessage[0]);
 
             string str(shaderErrorMessage.begin(), shaderErrorMessage.end());
-            throw invalid_argument("[Shade] can't compile : " + str);
+            throw invalid_argument("[Shader] can't compile : " + str);
         }
     }
 
