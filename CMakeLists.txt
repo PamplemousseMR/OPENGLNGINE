@@ -12,7 +12,7 @@ SET(openglngine_glsl_files "${openglngine_bin_dir}/GLSL")
 SET(openglngine_obj_files "${openglngine_bin_dir}/obj")
 
 #------------ cmake variables ------------
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 17)
 
 #------------ find files ------------
 FILE(GLOB_RECURSE openglngine_src_files ${openglngine_src_dir}/*)

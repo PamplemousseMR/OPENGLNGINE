@@ -1,5 +1,7 @@
 #include "GL/Buffer.hpp"
 
+#include <stdexcept>
+
 using namespace std;
 
 namespace GL

@@ -2,8 +2,6 @@
 
 #include <GL/glew.h>
 
-#include <iostream>
-
 namespace GL 
 {
 

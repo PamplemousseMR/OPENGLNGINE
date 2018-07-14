@@ -2,10 +2,8 @@
 
 #include <GL/glew.h>
 
-#include <fstream>
-#include <iostream>
+#include <filesystem>
 #include <string>
-#include <vector>
 
 namespace GL
 {
@@ -21,24 +19,40 @@ class Shader
 
 public:
 
-    Shader(SHADER_TYPE);
-    ~Shader();
-    Shader(const Shader&);
-    Shader& operator=(const Shader&);
+    Shader(SHADER_TYPE) noexcept;
+    ~Shader() noexcept;
+    Shader(const Shader&) noexcept;
+    Shader& operator=(const Shader&) noexcept;
 
-    void compile() const throw();
+    void compile() const;
 
-    GLenum getType() const;
-    GLuint getId() const;
+    inline GLenum getType() const noexcept;
+    inline GLuint getId() const noexcept;
 
-    void setSource(const std::string&);
-    void setSourceFromFile(const std::string&) throw();
+    inline void setSource(const std::string&) noexcept;
+    void setSourceFromFile(const std::filesystem::path&);
 
 private:
 
-    GLuint m_id;
-    SHADER_TYPE m_type;
-    std::string m_sources;
+    GLuint m_id {0};
+    SHADER_TYPE m_type {VERTEX};
+    std::string m_sources {};
+
 };
+
+GLenum Shader::getType() const noexcept
+{
+    return m_type;
+}
+
+GLuint Shader::getId() const noexcept
+{
+    return m_id;
+}
+
+void Shader::setSource(const std::string& src) noexcept
+{
+    m_sources = src;
+}
 
 }
