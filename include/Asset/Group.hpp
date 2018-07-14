@@ -8,7 +8,7 @@
 
 namespace Component
 {
-	class Mesh;
+    class Mesh;
 }
 
 namespace Assets
@@ -23,7 +23,7 @@ public:
     Group(const std::string&);
     ~Group();
 
-	void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*) throw();
+    void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*) throw();
 
     const std::string& getName() const;
     const std::vector<Component::Mesh*>& getMeshs() const;

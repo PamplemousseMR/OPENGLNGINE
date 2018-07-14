@@ -7,7 +7,7 @@
 
 namespace GL
 {
-	class Texture;
+    class Texture;
 }
 
 namespace Assets

@@ -25,18 +25,18 @@ namespace Assets
         m_mult(1),
         m_boost(1),
         m_mapAat(true)
-	{
+    {
 #ifdef _DEBUG
         cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw()]..." << endl;
 #endif
         m_texture = new Texture(textureType::TEXTURE_2D);
         m_texture->bind();
-		try {
+        try {
             m_textres = m_texture->load(path.c_str());
-		}
-		catch (exception e) {
+        }
+        catch (exception e) {
             throw invalid_argument("[Map " + m_name + "] [Map(mapType mapType, const tring& path) throw()] " + e.what());
-		}
+        }
         m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
@@ -44,10 +44,10 @@ namespace Assets
 #ifdef _DEBUG
         cout << "[Map " << m_name << "] [Map(mapType mapType, const tring& path) throw()]...\tsuccess" << endl;
 #endif
-	}
+    }
 
-	Map::~Map()
-	{
+    Map::~Map()
+    {
 #ifdef _DEBUG
         cout << "[Map " << m_name << "] [~Map()]..." << endl;
 #endif
@@ -55,10 +55,10 @@ namespace Assets
 #ifdef _DEBUG
         cout << "[Map " << m_name << "] [~Map()]...\tsuccess" << endl;
 #endif
-	}
+    }
 
-	ostream& Map::print(ostream& o) const
-	{
+    ostream& Map::print(ostream& o) const
+    {
         o << "[Map " << m_name << "] " << m_mapType << "\n";
         o << "\t" << "blendu " << m_blendu << "\n";
         o << "\t" << "blendv " << m_blendv << "\n";
@@ -73,184 +73,184 @@ namespace Assets
         o << "\t" << "mult " << m_mult << "\n";
         o << "\t" << "boost " << m_boost << "\n";
         o << "\t" << "map_aat " << m_mapAat << "\n";
-		return o;
-	}
+        return o;
+    }
 
-	const string& Map::getName() const
-	{
+    const string& Map::getName() const
+    {
         return m_name;
-	}
+    }
 
-	void Map::setBlendu(bool blendu)
-	{
+    void Map::setBlendu(bool blendu)
+    {
         m_blendu = blendu;
-	}
+    }
 
-	void Map::setBlendv(bool blendv)
-	{
+    void Map::setBlendv(bool blendv)
+    {
         m_blendv = blendv;
-	}
+    }
 
-	void Map::setCc(bool cc) throw()
-	{
+    void Map::setCc(bool cc) throw()
+    {
         if (m_mapType == Ka || m_mapType == Kd || m_mapType == Ks)
             m_cc = cc;
-		else
+        else
             throw invalid_argument("[Map " + m_name + "] [setCc(bool cc) throw()] can't set cc for this mapType");
-	}
+    }
 
-	void Map::setClamp(bool clamp) throw()
-	{
+    void Map::setClamp(bool clamp) throw()
+    {
         if (m_mapType == Ns || m_mapType == d || m_mapType == decal || m_mapType == disp)
             m_clamp = clamp;
-		else
+        else
             throw invalid_argument("[Map " + m_name + "] [setClamp(bool clamp) throw()] can't set clamp for this mapType");
-	}
+    }
 
-	void Map::setImfchanrgb(const vec3& rgb)
-	{
+    void Map::setImfchanrgb(const vec3& rgb)
+    {
         m_imfchanrgb = rgb;
-	}
+    }
 
-	void Map::setImfchanmlz(const vec3& mlz)
-	{
+    void Map::setImfchanmlz(const vec3& mlz)
+    {
         m_imfchanmlz = mlz;
-	}
+    }
 
-	void Map::setBase(float base)
-	{
+    void Map::setBase(float base)
+    {
         m_base = base;
-	}
+    }
 
-	void Map::setGain(float gain)
-	{
+    void Map::setGain(float gain)
+    {
         m_gain = gain;
-	}
+    }
 
-	void Map::setO(const vec3& o)
-	{
+    void Map::setO(const vec3& o)
+    {
         m_o = o;
-	}
+    }
 
-	void Map::setS(const vec3& s)
-	{
+    void Map::setS(const vec3& s)
+    {
         m_s = s;
-	}
+    }
 
-	void Map::setT(const vec3& t)
-	{
+    void Map::setT(const vec3& t)
+    {
         m_t = t;
-	}
+    }
 
-	void Map::setTextres(int textres)
-	{
+    void Map::setTextres(int textres)
+    {
         m_textres = textres;
-	}
+    }
 
-	void Map::setMult(float mult)
-	{
+    void Map::setMult(float mult)
+    {
         m_mult = mult;
-	}
+    }
 
-	void Map::setBoost(float boost)
-	{
+    void Map::setBoost(float boost)
+    {
         m_boost = boost;
-	}
+    }
 
-	void Map::setMapaat(bool aat)
-	{
+    void Map::setMapaat(bool aat)
+    {
         m_mapAat = aat;
-	}
+    }
 
-	Texture* Map::getTexture() const
-	{
+    Texture* Map::getTexture() const
+    {
         return m_texture;
-	}
+    }
 
-	bool Map::getBlendu() const
-	{
+    bool Map::getBlendu() const
+    {
         return m_blendu;
-	}
+    }
 
-	bool Map::getBlendv() const
-	{
+    bool Map::getBlendv() const
+    {
         return m_blendv;
-	}
+    }
 
-	bool Map::getCc() const throw()
-	{
+    bool Map::getCc() const throw()
+    {
         if (m_mapType == Ka || m_mapType == Kd || m_mapType == Ks)
             return m_cc;
-		else
+        else
             throw invalid_argument("[Map " + m_name + "] [getCc() const throw()] can't get cc for this mapType");
-	}
+    }
 
-	bool Map::getClamp() const throw()
-	{
+    bool Map::getClamp() const throw()
+    {
         if (m_mapType == Ns || m_mapType == d || m_mapType == decal || m_mapType == disp)
             return m_clamp;
-		else
+        else
             throw invalid_argument("[Map " + m_name + "] [getClamp() const throw()] can't get clamp for this mapType");
-	}
+    }
 
-	const vec3& Map::getImfchanrgb() const
-	{
+    const vec3& Map::getImfchanrgb() const
+    {
         return m_imfchanrgb;
-	}
+    }
 
-	const vec3& Map::getImfchanmlz() const
-	{
+    const vec3& Map::getImfchanmlz() const
+    {
         return m_imfchanmlz;
-	}
+    }
 
-	float Map::getBase() const
-	{
+    float Map::getBase() const
+    {
         return m_base;
-	}
+    }
 
-	float Map::getGain() const
-	{
+    float Map::getGain() const
+    {
         return m_gain;
-	}
+    }
 
-	const vec3& Map::getO() const
-	{
+    const vec3& Map::getO() const
+    {
         return m_o;
-	}
+    }
 
-	const vec3& Map::getS() const
-	{
+    const vec3& Map::getS() const
+    {
         return m_s;
-	}
+    }
 
-	const vec3& Map::getT() const
-	{
+    const vec3& Map::getT() const
+    {
         return m_t;
-	}
+    }
 
-	int Map::getTextres() const
-	{
+    int Map::getTextres() const
+    {
         return m_textres;
-	}
+    }
 
-	float Map::getMult() const
-	{
+    float Map::getMult() const
+    {
         return m_mult;
-	}
+    }
 
-	float Map::getBoost() const
-	{
+    float Map::getBoost() const
+    {
         return m_boost;
-	}
+    }
 
-	float Map::getMapaat() const
-	{
+    float Map::getMapaat() const
+    {
         return m_mapAat;
-	}
+    }
 
-	ostream& operator<<(ostream& o, const Map& m)
-	{
-		m.print(o);
-		return o;
-	}
+    ostream& operator<<(ostream& o, const Map& m)
+    {
+        m.print(o);
+        return o;
+    }
 }
