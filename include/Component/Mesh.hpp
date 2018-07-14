@@ -23,9 +23,9 @@ class Mesh
 
 public:
 
-    static const int S_VERTEXLOCATION;
-    static const int S_TEXTCOORDLOCATION;
-    static const int S_NORMALLOCATION;
+    static const GLuint S_VERTEXLOCATION;
+    static const GLuint S_TEXTCOORDLOCATION;
+    static const GLuint S_NORMALLOCATION;
 
 public:
 

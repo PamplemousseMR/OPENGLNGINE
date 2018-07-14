@@ -27,6 +27,8 @@ public:
 
     template<typename T>
     void setData(const std::vector<T>&) const;
+    void setLocation(GLuint) const noexcept;
+    void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint);
 
     void bind() const noexcept;
     void unbind() const noexcept;

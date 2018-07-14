@@ -1,7 +1,7 @@
 #include "Component/Mesh.hpp"
 #include "GL/Buffer.hpp"
 
-#define BUFFER_OFFSET(i) ((GLfloat *)nullptr + (i))
+#define BUFFER_OFFSET(i) ((GLuint*)nullptr + (i))
 
 using namespace std;
 using namespace glm;
@@ -9,9 +9,9 @@ using namespace GL;
 
 namespace Component
 {
-    const int Mesh::S_VERTEXLOCATION = 0;
-    const int Mesh::S_TEXTCOORDLOCATION = 1;
-    const int Mesh::S_NORMALLOCATION = 2;
+    const GLuint Mesh::S_VERTEXLOCATION = 0;
+    const GLuint Mesh::S_TEXTCOORDLOCATION = 1;
+    const GLuint Mesh::S_NORMALLOCATION = 2;
 
     Mesh::Mesh(const string& name) noexcept :
         m_name(name),
@@ -184,16 +184,16 @@ namespace Component
         m_vao->bind();
         {
             m_vboVertex->bind();
-            glEnableVertexAttribArray(S_VERTEXLOCATION);
-            glVertexAttribPointer(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboVertex->setLocation(S_VERTEXLOCATION);
+            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_vboTextCoord->bind();
-            glEnableVertexAttribArray(S_TEXTCOORDLOCATION);
-            glVertexAttribPointer(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
+            m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_vboNormal->bind();
-            glEnableVertexAttribArray(S_NORMALLOCATION);
-            glVertexAttribPointer(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboNormal->setLocation(S_NORMALLOCATION);
+            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_ebo->bind();
         }
@@ -279,12 +279,12 @@ namespace Component
         m_vao->bind();
         {
             m_vboVertex->bind();
-            glEnableVertexAttribArray(S_VERTEXLOCATION);
-            glVertexAttribPointer(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboVertex->setLocation(S_VERTEXLOCATION);
+            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_vboNormal->bind();
-            glEnableVertexAttribArray(S_NORMALLOCATION);
-            glVertexAttribPointer(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboNormal->setLocation(S_NORMALLOCATION);
+            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_ebo->bind();
         }
@@ -396,16 +396,16 @@ namespace Component
         m_vao->bind();
         {
             m_vboVertex->bind();
-            glEnableVertexAttribArray(S_VERTEXLOCATION);
-            glVertexAttribPointer(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboVertex->setLocation(S_VERTEXLOCATION);
+            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_vboTextCoord->bind();
-            glEnableVertexAttribArray(S_TEXTCOORDLOCATION);
-            glVertexAttribPointer(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
+            m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_vboNormal->bind();
-            glEnableVertexAttribArray(S_NORMALLOCATION);
-            glVertexAttribPointer(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboNormal->setLocation(S_NORMALLOCATION);
+            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_ebo->bind();
         }
@@ -495,12 +495,12 @@ namespace Component
         m_vao->bind();
         {
             m_vboVertex->bind();
-            glEnableVertexAttribArray(S_VERTEXLOCATION);
-            glVertexAttribPointer(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboVertex->setLocation(S_VERTEXLOCATION);
+            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_vboNormal->bind();
-            glEnableVertexAttribArray(S_NORMALLOCATION);
-            glVertexAttribPointer(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+            m_vboNormal->setLocation(S_NORMALLOCATION);
+            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
             m_ebo->bind();
         }

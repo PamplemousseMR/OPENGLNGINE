@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#define BUFFER_OFFSET(i) ((GLfloat*)nullptr + (i))
+
 using namespace std;
 
 namespace GL
@@ -88,6 +90,17 @@ namespace GL
         }
         return *this;
     }
+
+    void Buffer::setLocation(GLuint _location) const noexcept
+    {
+        glEnableVertexAttribArray(_location);
+    }
+
+    void Buffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset)
+    {
+        glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
+    }
+
 
     void Buffer::bind() const noexcept
     {
