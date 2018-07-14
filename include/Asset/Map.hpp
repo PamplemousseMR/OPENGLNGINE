@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -30,69 +31,69 @@ class Map
 
 public:
 
-    Map(MAP_TYPE, const std::string&) throw();
-    ~Map();
+    Map(MAP_TYPE, const std::filesystem::path&);
+    ~Map() noexcept;
 
-    GL::Texture* getTexture() const;
-    const std::string& getName() const;
-    bool getBlendu() const;
-    bool getBlendv() const;
-    bool getCc() const throw();
-    bool getClamp() const throw();
-    const glm::vec3& getImfchanrgb() const;
-    const glm::vec3& getImfchanmlz() const;
-    float getBase() const;
-    float getGain() const;
-    const glm::vec3& getO() const;
-    const glm::vec3& getS() const;
-    const glm::vec3& getT() const;
-    int getTextres() const;
-    float getMult() const;
-    float getBoost() const;
-    float getMapaat() const;
+    GL::Texture* getTexture() const noexcept;
+    const std::string& getName() const noexcept;
+    bool getBlendu() const noexcept;
+    bool getBlendv() const noexcept;
+    bool getCc() const;
+    bool getClamp() const;
+    const glm::vec3& getImfchanrgb() const noexcept;
+    const glm::vec3& getImfchanmlz() const noexcept;
+    float getBase() const noexcept;
+    float getGain() const noexcept;
+    const glm::vec3& getO() const noexcept;
+    const glm::vec3& getS() const noexcept;
+    const glm::vec3& getT() const noexcept;
+    int getTextres() const noexcept;
+    float getMult() const noexcept;
+    float getBoost() const noexcept;
+    float getMapaat() const noexcept;
 
-    void setBlendu(bool);
-    void setBlendv(bool);
-    void setCc(bool) throw();
-    void setClamp(bool) throw();
-    void setImfchanrgb(const glm::vec3&);
-    void setImfchanmlz(const glm::vec3&);
-    void setBase(float);
-    void setGain(float);
-    void setO(const glm::vec3&);
-    void setS(const glm::vec3&);
-    void setT(const glm::vec3&);
-    void setTextres(int);
-    void setMult(float);
-    void setBoost(float);
-    void setMapaat(bool);
+    void setBlendu(bool) noexcept;
+    void setBlendv(bool) noexcept;
+    void setCc(bool);
+    void setClamp(bool);
+    void setImfchanrgb(const glm::vec3&) noexcept;
+    void setImfchanmlz(const glm::vec3&) noexcept;
+    void setBase(float) noexcept;
+    void setGain(float) noexcept;
+    void setO(const glm::vec3&) noexcept;
+    void setS(const glm::vec3&) noexcept;
+    void setT(const glm::vec3&) noexcept;
+    void setTextres(int) noexcept;
+    void setMult(float) noexcept;
+    void setBoost(float) noexcept;
+    void setMapaat(bool) noexcept;
 
-    std::ostream& print(std::ostream&) const;
+    std::ostream& print(std::ostream&) const noexcept;
 
 private:
 
-    std::string m_name;
-    MAP_TYPE m_mapType;
-    GL::Texture* m_texture;
-    bool m_blendu;
-    bool m_blendv;
-    bool m_cc;
-    bool m_clamp;
-    glm::vec3 m_imfchanrgb;
-    glm::vec3 m_imfchanmlz;
-    float m_base;
-    float m_gain;
-    glm::vec3 m_o;
-    glm::vec3 m_s;
-    glm::vec3 m_t;
-    int m_textres;
-    float m_mult;
-    float m_boost;
-    bool m_mapAat;
+    std::string m_name {};
+    MAP_TYPE m_mapType {};
+    GL::Texture* m_texture {};
+    bool m_blendu {true};
+    bool m_blendv {true};
+    bool m_cc {false};
+    bool m_clamp {false};
+    glm::vec3 m_imfchanrgb {0, 0, 0};
+    glm::vec3 m_imfchanmlz {0, 0, 0};
+    float m_base {0};
+    float m_gain {1};
+    glm::vec3 m_o {0, 0, 0};
+    glm::vec3 m_s {1, 1, 1};
+    glm::vec3 m_t {0, 0, 0};
+    int m_textres {0};
+    float m_mult {1};
+    float m_boost {1};
+    bool m_mapAat {true};
 
 };
 
-std::ostream& operator<<(std::ostream&, const Map&);
+std::ostream& operator<<(std::ostream&, const Map&) noexcept;
 
 }
 
