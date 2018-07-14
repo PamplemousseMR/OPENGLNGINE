@@ -13,11 +13,8 @@ namespace Component
     const GLuint Mesh::S_TEXTCOORDLOCATION = 1;
     const GLuint Mesh::S_NORMALLOCATION = 2;
 
-    Mesh::Mesh(const string& name) noexcept :
-        m_name(name),
-        m_normal(false),
-        m_textCoord(false),
-        m_dataSize(0)
+    Mesh::Mesh(const string& _name) noexcept :
+        m_name(_name)
     {
         m_vboVertex = new Buffer(BUFFER_TYPE::VBO);
         m_vboNormal = new Buffer(BUFFER_TYPE::VBO);
@@ -35,54 +32,54 @@ namespace Component
         delete m_vboTextCoord;
     }
 
-    bool Mesh::getSimilarVertexIndex(const PackedVertex& packed, const map<PackedVertex, unsigned int>& VertexToOutIndex, unsigned int& result) const noexcept
+    bool Mesh::getSimilarVertexIndex(const PackedVertex& _packed, const map<PackedVertex, unsigned int>& _vertexToOutIndex, unsigned int& _result) const noexcept
     {
-        std::map<PackedVertex, unsigned int>::const_iterator it = VertexToOutIndex.find(packed);
-        if (it == VertexToOutIndex.end())
+        std::map<PackedVertex, unsigned int>::const_iterator it = _vertexToOutIndex.find(_packed);
+        if (it == _vertexToOutIndex.end())
         {
             return false;
         }
         else
         {
-            result = it->second;
+            _result = it->second;
             return true;
         }
     }
 
-    void Mesh::indexVBO(const vector<vec3>& in_vertices, const vector<vec2>& in_uvs, const vector<vec3>& in_normals, vector<unsigned int>& out_indices, vector<vec3>& out_vertices, vector<vec2>& out_uvs, vector<vec3>& out_normals) const noexcept
+    void Mesh::indexVBO(const vector<vec3>& _in_vertices, const vector<vec2>& _in_uvs, const vector<vec3>& _in_normals, vector<unsigned int>& _out_indices, vector<vec3>& _out_vertices, vector<vec2>& _out_uvs, vector<vec3>& _out_normals) const noexcept
     {
-        map<PackedVertex, unsigned int> VertexToOutIndex;
+        map<PackedVertex, unsigned int> vertexToOutIndex;
 
-        for (unsigned int i = 0; i<in_vertices.size(); i++)
+        for (unsigned int i = 0; i<_in_vertices.size(); i++)
         {
-            PackedVertex packed = { in_vertices[i], in_uvs[i], in_normals[i] };
+            PackedVertex packed = { _in_vertices[i], _in_uvs[i], _in_normals[i] };
 
             unsigned int index;
-            bool found = getSimilarVertexIndex(packed, VertexToOutIndex, index);
+            bool found = getSimilarVertexIndex(packed, vertexToOutIndex, index);
 
             if (found)
             {
-                out_indices.push_back(index);
+                _out_indices.push_back(index);
             }
             else
             {
-                out_vertices.push_back(in_vertices[i]);
-                out_uvs.push_back(in_uvs[i]);
-                out_normals.push_back(in_normals[i]);
-                unsigned int newindex = (unsigned int)out_vertices.size() - 1;
-                out_indices.push_back(newindex);
-                VertexToOutIndex[packed] = newindex;
+                _out_vertices.push_back(_in_vertices[i]);
+                _out_uvs.push_back(_in_uvs[i]);
+                _out_normals.push_back(_in_normals[i]);
+                unsigned int newindex = (unsigned int)_out_vertices.size() - 1;
+                _out_indices.push_back(newindex);
+                vertexToOutIndex[packed] = newindex;
             }
         }
     }
 
-    void Mesh::loadMesh(const vector<vec3>& vertex, const vector<vec3>& normal, const vector<vec2>& textCoord, const vector<vec3>& index)
+    void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec3>& _normal, const vector<vec2>& _textCoord, const vector<vec3>& _index)
     {
         vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
-        for (vec3 elem : index)
+        for (vec3 elem : _index)
         {
             int pos = (int)elem[0];
 
@@ -92,19 +89,19 @@ namespace Component
             }
             else if (pos < 0)
             {
-                pos = (int)vertex.size() + pos;
+                pos = (int)_vertex.size() + pos;
             }
             else
             {
                 pos -= 1;
             }
 
-            if (pos >= vertex.size())
+            if (pos >= _vertex.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for vertex doesn't exist");
             }
 
-            vec3 posi = vertex[pos];
+            vec3 posi = _vertex[pos];
             int coord = (int)elem[1];
 
             if (coord == 0)
@@ -113,19 +110,19 @@ namespace Component
             }
             else if (coord < 0)
             {
-                coord = (int)textCoord.size() + coord;
+                coord = (int)_textCoord.size() + coord;
             }
             else
             {
                 coord -= 1;
             }
 
-            if (coord >= (int)textCoord.size())
+            if (coord >= (int)_textCoord.size())
             {
                 throw invalid_argument("[Mesh ] value " + to_string(elem[0]) + " for texture coord doesn't exist");
             }
 
-            vec2 coordo = textCoord[coord];
+            vec2 coordo = _textCoord[coord];
 
             int norm = (int)elem[2];
 
@@ -135,19 +132,19 @@ namespace Component
             }
             else if (norm < 0)
             {
-                norm = (int)normal.size() + norm;
+                norm = (int)_normal.size() + norm;
             }
             else
             {
                 norm -= 1;
             }
 
-            if (norm >= (int)normal.size())
+            if (norm >= (int)_normal.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for texture coord doesn't exist");
             }
 
-            vec3 norma = normal[norm];
+            vec3 norma = _normal[norm];
 
             newVertex.push_back(posi);
             newTextCoord.push_back(coordo);
@@ -201,13 +198,13 @@ namespace Component
 
     }
 
-    void Mesh::loadMesh(const vector<vec3>& vertex, const vector<vec3>& index)
+    void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec3>& _index)
     {
         vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
-        for (vec3 elem : index)
+        for (vec3 elem : _index)
         {
             int pos = (int)elem[0];
 
@@ -217,19 +214,19 @@ namespace Component
             }
             else if (pos < 0)
             {
-                pos = (int)vertex.size() + pos;
+                pos = (int)_vertex.size() + pos;
             }
             else
             {
                 pos -= 1;
             }
 
-            if (pos >= vertex.size())
+            if (pos >= _vertex.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for vertex doesn't exist");
             }
 
-            vec3 posi = vertex[pos];
+            vec3 posi = _vertex[pos];
 
             newVertex.push_back(posi);
             newTextCoord.push_back(vec2(0, 0));
@@ -292,13 +289,13 @@ namespace Component
 
     }
 
-    void Mesh::loadMesh(const vector<vec3>& vertex, const vector<vec2>& textCoord, const vector<vec3>& index)
+    void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec2>& _textCoord, const vector<vec3>& _index)
     {
         vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
-        for (vec3 elem : index)
+        for (vec3 elem : _index)
         {
             int pos = (int)elem[0];
 
@@ -308,19 +305,19 @@ namespace Component
             }
             else if (pos < 0)
             {
-                pos = (int)vertex.size() + pos;
+                pos = (int)_vertex.size() + pos;
             }
             else
             {
                 pos -= 1;
             }
 
-            if (pos >= vertex.size())
+            if (pos >= _vertex.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for vertex doesn't exist");
             }
 
-            vec3 posi = vertex[pos];
+            vec3 posi = _vertex[pos];
 
             int coord = (int)elem[1];
 
@@ -330,25 +327,24 @@ namespace Component
             }
             else if (coord < 0)
             {
-                coord = (int)textCoord.size() + coord;
+                coord = (int)_textCoord.size() + coord;
             }
             else
             {
                 coord -= 1;
             }
 
-            if (coord >= (int)textCoord.size())
+            if (coord >= (int)_textCoord.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for texture coord doesn't exist");
             }
 
-            vec2 coordo = textCoord[coord];
+            vec2 coordo = _textCoord[coord];
 
             newVertex.push_back(posi);
             newTextCoord.push_back(coordo);
         }
 
-        //calcules des normales
         for (int i = 0; i < newVertex.size(); i += 3)
         {
             vec3 A = newVertex[i];
@@ -364,7 +360,6 @@ namespace Component
             newNormal.push_back(normal);
             newNormal.push_back(normal);
         }
-        // fin des calcules
 
         vector<vec3> indexedVertex;
         vector<vec2> indexedTextCoord;
@@ -412,13 +407,13 @@ namespace Component
         m_vao->unbind();
     }
 
-    void Mesh::loadMesh(const vector<vec3>& vertex, const vector<vec3>& normal, const std::vector<vec3>& index)
+    void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec3>& _normal, const std::vector<vec3>& _index)
     {
         vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
-        for (vec3 elem : index)
+        for (vec3 elem : _index)
         {
             int pos = (int)elem[0];
 
@@ -428,19 +423,19 @@ namespace Component
             }
             else if (pos < 0)
             {
-                pos = (int)vertex.size() + pos;
+                pos = (int)_vertex.size() + pos;
             }
             else
             {
                 pos -= 1;
             }
 
-            if (pos >= vertex.size())
+            if (pos >= _vertex.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for vertex doesn't exist");
             }
 
-            vec3 posi = vertex[pos];
+            vec3 posi = _vertex[pos];
 
             int norm = (int)elem[2];
 
@@ -450,19 +445,19 @@ namespace Component
             }
             else if (norm < 0)
             {
-                norm = (int)normal.size() + norm;
+                norm = (int)_normal.size() + norm;
             }
             else
             {
                 norm -= 1;
             }
 
-            if (norm >= (int)normal.size())
+            if (norm >= (int)_normal.size())
             {
                 throw invalid_argument("[Mesh] value " + to_string(elem[0]) + " for texture coord doesn't exist");
             }
 
-            vec3 norma = normal[norm];
+            vec3 norma = _normal[norm];
 
             newVertex.push_back(posi);
             newTextCoord.push_back(vec2(0,0));
@@ -537,12 +532,12 @@ namespace Component
         return m_normal;
     }
 
-    ostream& Mesh::print(ostream& o) const noexcept
+    ostream& Mesh::print(ostream& _o) const noexcept
     {
-        o << "[Mesh " << m_name << "]\n";
-        o << "\tnormal : " << m_normal << "\n";
-        o << "\ttextCoord : " << m_textCoord << "\n";
-        return o;
+        _o << "[Mesh " << m_name << "]\n";
+        _o << "\tnormal : " << m_normal << "\n";
+        _o << "\ttextCoord : " << m_textCoord << "\n";
+        return _o;
     }
 
     void Mesh::bind() const noexcept
@@ -560,9 +555,9 @@ namespace Component
         glDrawElements(GL_TRIANGLES, m_dataSize, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
     }
 
-    ostream& operator<<(ostream& o, const Mesh& m) noexcept
+    ostream& operator<<(ostream& _o, const Mesh& _m) noexcept
     {
-        m.print(o);
-        return o;
+        _m.print(_o);
+        return _o;
     }
 }

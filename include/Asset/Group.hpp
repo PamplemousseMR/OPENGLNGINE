@@ -34,9 +34,9 @@ public:
 
 private :
 
-    std::string m_name;
-    std::vector<Component::Mesh*> m_meshs;
-    std::vector<Material*> m_materials;
+    std::string m_name {};
+    std::vector<Component::Mesh*> m_meshs {};
+    std::vector<Material*> m_materials {};
 
 };
 

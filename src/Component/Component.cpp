@@ -5,14 +5,8 @@ using namespace glm;
 
 namespace Component
 {
-    Component::Component(const string& name) :
-        m_name(name),
-        m_positionMatrix(),
-        m_positionData(0,0,0),
-        m_rotationMatrix(),
-        m_rotationData(0,0,0),
-        m_scaleMatrix(),
-        m_scaleData(1,1,1)
+    Component::Component(const string& _name) :
+        m_name(_name)
     {
     }
 
@@ -50,9 +44,9 @@ namespace Component
         return m_scaleData;
     }
 
-    void Component::setPosition(const vec3& position)
+    void Component::setPosition(const vec3& _position)
     {
-        m_positionData = position;
+        m_positionData = _position;
         m_positionMatrix = glm::translate(mat4(), m_positionData);
     }
 
@@ -63,28 +57,28 @@ namespace Component
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.y, vec3(0, 1, 0));
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.z, vec3(0, 0, 1));
     }
-    void Component::setScale(const vec3& scaleData)
+    void Component::setScale(const vec3& _scaleData)
     {
-        m_scaleData = scaleData;
+        m_scaleData = _scaleData;
         m_scaleMatrix = scale(mat4(), m_scaleData);
     }
 
-    void Component::addPosition(const vec3& position)
+    void Component::addPosition(const vec3& _position)
     {
-        m_positionData += position;
+        m_positionData += _position;
         m_positionMatrix = glm::translate(m_positionMatrix, m_positionData);
     }
 
-    void Component::addRotation(const vec3& rotation)
+    void Component::addRotation(const vec3& _rotation)
     {
-        m_rotationData = rotation;
+        m_rotationData = _rotation;
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.x, vec3(1, 0, 0));
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.y, vec3(0, 1, 0));
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.z, vec3(0, 0, 1));
     }
-    void Component::addScale(const vec3& scaleData)
+    void Component::addScale(const vec3& _scaleData)
     {
-        m_scaleData += scaleData;
+        m_scaleData += _scaleData;
         m_scaleMatrix = scale(m_scaleMatrix, m_scaleData);
     }
 }

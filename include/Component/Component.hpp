@@ -33,13 +33,13 @@ public :
 
 private:
 
-    std::string m_name;
-    glm::mat4 m_positionMatrix;
-    glm::vec3 m_positionData;
-    glm::mat4 m_rotationMatrix;
-    glm::vec3 m_rotationData;
-    glm::mat4 m_scaleMatrix;
-    glm::vec3 m_scaleData;
+    std::string m_name {};
+    glm::mat4 m_positionMatrix {};
+    glm::vec3 m_positionData {0, 0, 0};
+    glm::mat4 m_rotationMatrix {};
+    glm::vec3 m_rotationData {0, 0, 0};
+    glm::mat4 m_scaleMatrix {};
+    glm::vec3 m_scaleData {1, 1, 1};
 
 };
 }

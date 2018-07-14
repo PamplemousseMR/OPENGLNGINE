@@ -68,15 +68,15 @@ private:
 
 private:
 
-    int m_dataSize;
-    GL::Buffer* m_vboVertex;
-    GL::Buffer* m_vboNormal;
-    GL::Buffer* m_vboTextCoord;
-    GL::Buffer* m_ebo;
-    GL::Buffer* m_vao;
-    std::string m_name;
-    bool m_normal;
-    bool m_textCoord;
+    int m_dataSize {0};
+    GL::Buffer* m_vboVertex {nullptr};
+    GL::Buffer* m_vboNormal {nullptr};
+    GL::Buffer* m_vboTextCoord {nullptr};
+    GL::Buffer* m_ebo {nullptr};
+    GL::Buffer* m_vao {nullptr};
+    std::string m_name {};
+    bool m_normal {false};
+    bool m_textCoord {false};
 
 };
 
