@@ -757,10 +757,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
     file.close();
 }
 
-OBJFile::OBJFile() noexcept :
-    m_loadTime(0),
-    m_name(""),
-    m_objects()
+OBJFile::OBJFile() noexcept
 {
 }
 

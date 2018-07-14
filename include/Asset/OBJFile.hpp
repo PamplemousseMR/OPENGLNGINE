@@ -36,9 +36,9 @@ private:
 
 private:
 
-    std::vector<Object*> m_objects;
-    std::string m_name;
-    long long m_loadTime;
+    std::vector<Object*> m_objects{};
+    std::string m_name {};
+    long long m_loadTime {0};
 
 };
 
