@@ -7,104 +7,94 @@ using namespace std;
 
 namespace GL
 {
+    Program::Program() noexcept :
+        m_id(glCreateProgram())
+    {
+    }
 
-	Program::Program()
-		: m_id(glCreateProgram()), m_toggled(false)
-	{
-#ifdef _DEBUG
-		cout << "[Program] [Program()]..." << endl;
-		cout << "[Program] [Program()]...\tsuccess" << endl;
-#endif
-	}
-
-	GL::Program::~Program()
-	{
-#ifdef _DEBUG
-		cout << "[Program] [~Program()]..." << endl;
-#endif
-		detachAll();
+    Program::~Program() noexcept
+    {
+        detachAll();
         glDeleteProgram(m_id);
-#ifdef _DEBUG
-		cout << "[Program] [~Program()]...\tsuccess" << endl;
-#endif
-	}
+    }
 
-	void Program::attach(Shader* shader)
-	{
-#ifdef _DEBUG
-		cout << "[Program] [attach(Shader* shader)]..." << endl;
-#endif
-		m_shaders.push_back(shader);
-		glAttachShader(m_id, shader->getId());
-#ifdef _DEBUG
-		cout << "[Program] [attach(Shader* shader)]...\tsuccess" << endl;
-#endif
-	}
+    Program::Program(const Program& _program) noexcept :
+        m_id(glCreateProgram())
+    {
+        for (Shader* const s : _program.m_shaders)
+        {
+            attach(*s);
+        }
+    }
 
-	void Program::detach(Shader* shader)
-	{
-#ifdef _DEBUG
-		cout << "[Program] [detach(Shader* shader)]..." << endl;
-#endif
-		auto p = find(m_shaders.begin(), m_shaders.end(), shader);
-		if (p != m_shaders.end())
-		{
-			glDetachShader(m_id, shader->getId());
-			m_shaders.erase(p);
-		}
-#ifdef _DEBUG
-		cout << "[Program] [detach(Shader* shader)]...\tsuccess" << endl;
-#endif
-	}
+    Program& Program::operator=(const Program& _program) noexcept
+    {
+        if(this != &_program)
+        {
+            detachAll();
+            for (Shader* const s : _program.m_shaders)
+            {
+                attach(*s);
+            }
+        }
+        return *this;
+    }
 
-	void Program::detachAll()
-	{
-		vector<Shader*> shaderList = m_shaders;
-		for (Shader* s : shaderList)
-			detach(s);
-	}
+    void Program::attach(Shader& _shader)
+    {
+        auto p = find(m_shaders.begin(), m_shaders.end(), &_shader);
+        if (p != m_shaders.end())
+        {
+            throw invalid_argument("[Program] shader already attached ");
+        }
+        m_shaders.push_back(&_shader);
+        glAttachShader(m_id, _shader.getId());
+    }
 
-	void Program::link() const throw()
-	{
-#ifdef _DEBUG
-		cout << "[Program] [link() const throw()]..." << endl;
-#endif
-		GLint Result = GL_FALSE;
-		glLinkProgram(m_id);
-		glGetProgramiv(m_id, GL_LINK_STATUS, &Result);
-		int InfoLogLength;
-		glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &InfoLogLength);
-		if (InfoLogLength > 0) {
-			vector<char> ProgramErrorMessage(InfoLogLength + 1);
-			glGetProgramInfoLog(m_id, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
-			throw invalid_argument("[Program] [link] " + ProgramErrorMessage[0]);
-		}
-#ifdef _DEBUG
-		cout << "[Program] [link() const throw()]...\tsuccess" << endl;
-#endif
-	}
+    void Program::detach(const Shader& _shader)
+    {
+        auto p = find(m_shaders.begin(), m_shaders.end(), &_shader);
+        if (p == m_shaders.end())
+        {
+            throw invalid_argument("[Program] shader not attached ");
+        }
+        glDetachShader(m_id, _shader.getId());
+        m_shaders.erase(p);
+    }
 
-	void Program::toggle()
-	{
-		if (!m_toggled)
-		{
-			glUseProgram(m_id);
-			m_toggled = true;
-		}
-		else
-		{
-			glUseProgram(0);
-			m_toggled = false;
-		}
-	}
+    void Program::detachAll() noexcept
+    {
+        for (const Shader* const s : m_shaders)
+        {
+            detach(*s);
+        }
+    }
 
-	bool Program::isActive() const
-	{
-		return m_toggled;
-	}
+    void Program::link() const
+    {
+        glLinkProgram(m_id);
+        GLint result = GL_FALSE;
+        glGetProgramiv(m_id, GL_LINK_STATUS, &result);
+        if (!result)
+        {
+            int infoLogLength;
+            glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);
+            vector<char> programErrorMessage(infoLogLength + 1);
+            glGetProgramInfoLog(m_id, infoLogLength, nullptr, &programErrorMessage[0]);
+            throw invalid_argument("[Program] " + programErrorMessage[0]);
+        }
+    }
 
-	GLuint Program::getId() const
-	{
-		return m_id;
-	}
+    void Program::toggle() noexcept
+    {
+        if (!m_toggled)
+        {
+            glUseProgram(m_id);
+        }
+        else
+        {
+            glUseProgram(0);
+        }
+        m_toggled = !m_toggled;
+    }
 }

@@ -94,8 +94,8 @@ int main()
 		standarFragment.compile();
 
 		GL::Program standarProgram;
-		standarProgram.attach(&standarShader);
-		standarProgram.attach(&standarFragment);
+        standarProgram.attach(standarShader);
+        standarProgram.attach(standarFragment);
 		standarProgram.link();
 
 		Assets::OBJFile file;
