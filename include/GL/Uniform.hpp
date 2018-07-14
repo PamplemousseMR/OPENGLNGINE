@@ -16,8 +16,10 @@ class Uniform
 
 public:
 
-    Uniform(const std::string &, GLuint);
+    Uniform(const std::string&, GLuint);
     ~Uniform();
+    Uniform(const Uniform&);
+    Uniform& operator=(const Uniform&);
 
     void operator=(bool);
     void operator=(int);
@@ -33,8 +35,9 @@ public:
 
 private:
 
-    GLuint m_location;
-    std::string m_name;
+    GLuint m_program {0};
+    GLuint m_location {0};
+    std::string m_name {};
 
 };
 
