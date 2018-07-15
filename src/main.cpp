@@ -44,7 +44,7 @@ int main()
 
         if (!glfwInit())
         {
-            cout << "[GLFW] cant't initialize glfw."<< endl;
+            cout << "[GLFW] Can't initialize glfw."<< endl;
             int i;
             cin >> i;
             return -1;
@@ -63,7 +63,7 @@ int main()
         window = glfwCreateWindow(800, 450, "3DNIGINE", NULL, NULL);
         if (window == NULL)
         {
-            cout << "[GLFW] cant't create Window." << endl;
+            cout << "[GLFW] Can't create Window." << endl;
             glfwTerminate();
             int i;
             cin >> i;
@@ -75,7 +75,7 @@ int main()
 
         if (glewInit() != GLEW_OK)
         {
-            cout << "[GLEW] cant't initialize glew." << endl;
+            cout << "[GLEW] Can't initialize glew." << endl;
             int i;
             cin >> i;
             return -1;
@@ -107,12 +107,11 @@ int main()
         {
             cerr << e.what() << endl;
             char var = 0;
-            cout << endl << "Probleme : appuyer sur une touche pour continuer..." << endl;
             cin >> var;
             return -1;
         }
 
-        cout << "temps de chargement : " << file.getLoadTime() << endl;
+        cout << "Loading time : " << file.getLoadTime() << endl;
         cout << file << endl;
 
         GL::Uniform standarProjection("u_projection", standarProgram.getId());
@@ -137,6 +136,7 @@ int main()
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
 
         GL::Texture* ambient = NULL;
         GL::Texture* diffuse = NULL;
@@ -153,7 +153,6 @@ int main()
 
         while (!glfwWindowShouldClose(window))
         {
-            glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             standarProgram.toggle();
