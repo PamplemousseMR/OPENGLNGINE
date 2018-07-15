@@ -1,31 +1,34 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <fstream>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/transform.hpp>
-
-#include "Component/Mesh.hpp"
 #include "GL/Buffer.hpp"
-#include "GL/Shader.hpp"
 #include "GL/Program.hpp"
-#include "GL/Uniform.hpp"
+#include "GL/Shader.hpp"
 #include "GL/Texture.hpp"
+#include "GL/Uniform.hpp"
+
 #include "Asset/Group.hpp"
-#include "Asset/Material.hpp"
 #include "Asset/Map.hpp"
+#include "Asset/Material.hpp"
 #include "Asset/Object.hpp"
 #include "Asset/OBJFile.hpp"
+
 #include "Component/Component.hpp"
+#include "Component/Mesh.hpp"
+
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <GL/glew.h>
+
+#include <GLFW/glfw3.h>
+
+#include <iostream>
 
 using namespace std;
-
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, GL_TRUE);
+    }
 }
 
 void window_size_callback(GLFWwindow* window, int width, int height)

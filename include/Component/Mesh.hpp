@@ -4,8 +4,7 @@
 
 #include <GL/glew.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtx/norm.hpp>
+#include <glm/vec3.hpp>
 
 #include <iostream>
 #include <map>

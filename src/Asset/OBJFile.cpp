@@ -4,6 +4,8 @@
 #include "Asset/Material.hpp"
 #include "Asset/Map.hpp"
 
+#include <glm/vec2.hpp>
+
 #include <chrono>
 #include <fstream>
 

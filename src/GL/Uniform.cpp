@@ -1,5 +1,7 @@
 #include "GL/Uniform.hpp"
 
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace std;
 using namespace glm;
 
