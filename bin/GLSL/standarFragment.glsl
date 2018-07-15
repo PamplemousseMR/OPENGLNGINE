@@ -1,4 +1,4 @@
-#version 440 core
+#version 460 core
 
 in vec2 v_textCoord;
 in vec3 v_normal_cameraspace;
