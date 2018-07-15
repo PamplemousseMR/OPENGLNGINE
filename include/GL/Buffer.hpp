@@ -8,17 +8,19 @@
 namespace GL 
 {
 
-enum BUFFER_TYPE
-{
-    VBO,
-    VAO,
-    EBO,
-    FBO,
-    RBO,
-};
-
 class Buffer
 {
+
+public:
+
+    enum BUFFER_TYPE
+    {
+        VBO,
+        VAO,
+        EBO,
+        FBO,
+        RBO,
+    };
 
 public:
 
@@ -45,7 +47,7 @@ private:
 
 };
 
-BUFFER_TYPE Buffer::getType() const noexcept
+Buffer::BUFFER_TYPE Buffer::getType() const noexcept
 {
     return m_type;
 }

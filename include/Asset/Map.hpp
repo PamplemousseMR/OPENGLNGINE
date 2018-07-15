@@ -14,20 +14,22 @@ namespace GL
 namespace Assets
 {
 
-enum MAP_TYPE
-{
-    Ka,
-    Kd,
-    Ks,
-    Ns,
-    d,
-    decal,
-    disp,
-    bump
-};
-
 class Map
 {
+
+public:
+
+    enum MAP_TYPE
+    {
+        KA,
+        KD,
+        KS,
+        NS,
+        D,
+        DECAL,
+        DISP,
+        BUMP
+    };
 
 public:
 

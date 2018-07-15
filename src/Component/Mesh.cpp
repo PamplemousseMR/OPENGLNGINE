@@ -17,11 +17,11 @@ namespace Component
         Component(_name),
         m_name(_name)
     {
-        m_vboVertex = new Buffer(BUFFER_TYPE::VBO);
-        m_vboNormal = new Buffer(BUFFER_TYPE::VBO);
-        m_vboTextCoord = new Buffer(BUFFER_TYPE::VBO);
-        m_ebo = new Buffer(BUFFER_TYPE::EBO);
-        m_vao = new Buffer(BUFFER_TYPE::VAO);
+        m_vboVertex = new Buffer(Buffer::VBO);
+        m_vboNormal = new Buffer(Buffer::VBO);
+        m_vboTextCoord = new Buffer(Buffer::VBO);
+        m_ebo = new Buffer(Buffer::EBO);
+        m_vao = new Buffer(Buffer::VAO);
     }
 
     Mesh::~Mesh() noexcept

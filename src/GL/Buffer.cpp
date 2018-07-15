@@ -14,17 +14,17 @@ namespace GL
     {
         switch(m_type)
         {
-        case BUFFER_TYPE::VAO:
+        case VAO:
             glGenVertexArrays(1, &m_id);
             break;
-        case BUFFER_TYPE::VBO:
-        case BUFFER_TYPE::EBO:
+        case VBO:
+        case EBO:
             glGenBuffers(1, &m_id);
             break;
-        case BUFFER_TYPE::FBO:
+        case FBO:
             glGenFramebuffers(1, &m_id);
             break;
-        case BUFFER_TYPE::RBO:
+        case RBO:
             glGenRenderbuffers(1, &m_id);
             break;
         }
@@ -34,15 +34,15 @@ namespace GL
     {
         switch(m_type)
         {
-        case BUFFER_TYPE::VAO:
-        case BUFFER_TYPE::VBO:
-        case BUFFER_TYPE::EBO:
+        case VAO:
+        case VBO:
+        case EBO:
             glDeleteBuffers(1, &m_id);
             break;
-        case BUFFER_TYPE::FBO:
+        case FBO:
             glDeleteFramebuffers(1, &m_id);
             break;
-        case BUFFER_TYPE::RBO:
+        case RBO:
             glDeleteRenderbuffers(1, &m_id);
             break;
         }
@@ -56,12 +56,12 @@ namespace GL
         case BUFFER_TYPE::VAO:
             throw invalid_argument("[Buffer] can't copying VAO");
             break;
-        case BUFFER_TYPE::VBO:
-        case BUFFER_TYPE::EBO:
+        case VBO:
+        case EBO:
             glGenBuffers(1, &m_id);
             break;
-        case BUFFER_TYPE::FBO:
-        case BUFFER_TYPE::RBO:
+        case FBO:
+        case RBO:
             std::cerr << "TODO";
             break;
         }
@@ -93,15 +93,15 @@ namespace GL
             m_type = _buffer.getType();
             switch(m_type)
             {
-            case BUFFER_TYPE::VAO:
+            case VAO:
                 throw invalid_argument("[Buffer] can't copying VAO");
                 break;
-            case BUFFER_TYPE::VBO:
-            case BUFFER_TYPE::EBO:
+            case VBO:
+            case EBO:
                 glGenBuffers(1, &m_id);
                 break;
-            case BUFFER_TYPE::FBO:
-            case BUFFER_TYPE::RBO:
+            case FBO:
+            case RBO:
                 std::cerr << "TODO";
                 break;
             }
@@ -131,32 +131,32 @@ namespace GL
     {
         switch(m_type)
         {
-        case BUFFER_TYPE::VAO:
-        case BUFFER_TYPE::EBO:
-        case BUFFER_TYPE::FBO:
-        case BUFFER_TYPE::RBO:
+        case VAO:
+        case EBO:
+        case FBO:
+        case RBO:
             throw bad_function_call();
             break;
-        case BUFFER_TYPE::VBO:
+        case VBO:
+            glEnableVertexAttribArray(_location);
             break;
         }
-        glEnableVertexAttribArray(_location);
     }
 
     void Buffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset) const
     {
         switch(m_type)
         {
-        case BUFFER_TYPE::VAO:
-        case BUFFER_TYPE::EBO:
-        case BUFFER_TYPE::FBO:
-        case BUFFER_TYPE::RBO:
+        case VAO:
+        case EBO:
+        case FBO:
+        case RBO:
             throw bad_function_call();
             break;
-        case BUFFER_TYPE::VBO:
+        case VBO:
+            glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
             break;
         }
-        glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
     }
 
     void Buffer::bind() const noexcept
@@ -172,10 +172,10 @@ namespace GL
         case EBO:
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
             break;
-        case BUFFER_TYPE::FBO:
+        case FBO:
             glBindFramebuffer(GL_FRAMEBUFFER, m_id);
             break;
-        case BUFFER_TYPE::RBO:
+        case RBO:
             glBindRenderbuffer(GL_RENDERBUFFER, m_id);
             break;
         }
@@ -194,10 +194,10 @@ namespace GL
         case EBO:
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             break;
-        case BUFFER_TYPE::FBO:
+        case FBO:
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             break;
-        case BUFFER_TYPE::RBO:
+        case RBO:
             glBindRenderbuffer(GL_RENDERBUFFER, 0);
             break;
         }

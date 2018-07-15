@@ -9,14 +9,16 @@
 namespace GL
 {
 
-enum TEXTURE_TYPE
-{
-    TEXTURE_1D = GL_TEXTURE_1D,
-    TEXTURE_2D = GL_TEXTURE_2D,
-};
-
 class Texture
 {
+
+public:
+
+    enum TEXTURE_TYPE
+    {
+        TEXTURE_1D = GL_TEXTURE_1D,
+        TEXTURE_2D = GL_TEXTURE_2D,
+    };
 
 public:
 
@@ -60,7 +62,7 @@ int Texture::getLocation() const noexcept
     return m_location;
 }
 
-TEXTURE_TYPE Texture::getType() const noexcept
+Texture::TEXTURE_TYPE Texture::getType() const noexcept
 {
     return m_type;
 }

@@ -219,7 +219,7 @@ namespace Assets
         }
         try
         {
-            m_kaMap = new Map(MAP_TYPE::Ka, _path);
+            m_kaMap = new Map(Map::KA, _path);
         }
         catch (const exception& _e)
         {
@@ -235,7 +235,7 @@ namespace Assets
         }
         try
         {
-            m_kdMap = new Map(MAP_TYPE::Kd, _path);
+            m_kdMap = new Map(Map::KD, _path);
         }
         catch (const exception& _e)
         {
@@ -251,7 +251,7 @@ namespace Assets
         }
         try
         {
-            m_ksMap = new Map(MAP_TYPE::Ks, _path);
+            m_ksMap = new Map(Map::KS, _path);
         }
         catch (const exception& _e)
         {
@@ -267,7 +267,7 @@ namespace Assets
         }
         try
         {
-            m_nsMap = new Map(MAP_TYPE::Ns, _path);
+            m_nsMap = new Map(Map::NS, _path);
         }
         catch (const exception& _e)
         {
@@ -283,7 +283,7 @@ namespace Assets
         }
         try
         {
-            m_dMap = new Map(MAP_TYPE::d, _path);
+            m_dMap = new Map(Map::D, _path);
         }
         catch (const exception& _e)
         {
@@ -299,7 +299,7 @@ namespace Assets
         }
         try
         {
-            m_dispMap = new Map(MAP_TYPE::disp, _path);
+            m_dispMap = new Map(Map::DISP, _path);
         }
         catch(const exception& _e)
         {
@@ -315,7 +315,7 @@ namespace Assets
         }
         try
         {
-            m_decalMap = new Map(MAP_TYPE::decal, _path);
+            m_decalMap = new Map(Map::DECAL, _path);
         }
         catch(const exception& _e)
         {
@@ -331,7 +331,7 @@ namespace Assets
         }
         try
         {
-            m_bumpMap = new Map(MAP_TYPE::bump, _path);
+            m_bumpMap = new Map(Map::BUMP, _path);
         }
         catch (const exception& _e)
         {

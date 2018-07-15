@@ -85,11 +85,11 @@ int main()
         glfwSetKeyCallback(window, key_callback);
         glfwSetWindowSizeCallback(window, window_size_callback);
 
-        GL::Shader standarShader(GL::SHADER_TYPE::VERTEX);
+        GL::Shader standarShader(GL::Shader::VERTEX);
         standarShader.setSourceFromFile("GLSL/standarVertex.glsl");
         standarShader.compile();
 
-        GL::Shader standarFragment(GL::SHADER_TYPE::FRAGMENT);
+        GL::Shader standarFragment(GL::Shader::FRAGMENT);
         standarFragment.setSourceFromFile("GLSL/standarFragment.glsl");
         standarFragment.compile();
 
