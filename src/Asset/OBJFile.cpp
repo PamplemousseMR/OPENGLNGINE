@@ -1081,7 +1081,7 @@ ostream& OBJFile::print(ostream& _o) const noexcept
     _o << "[OBJFile " << m_name << "]";
     for(const Object* ob : m_objects)
     {
-        _o << "\t" << ob;
+        _o << "\t" << *ob;
     }
     return _o;
 }

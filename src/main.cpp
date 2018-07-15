@@ -113,6 +113,7 @@ int main()
         }
 
         cout << "temps de chargement : " << file.getLoadTime() << endl;
+        cout << file << endl;
 
         GL::Uniform standarProjection("u_projection", standarProgram.getId());
         GL::Uniform standarModel("u_model", standarProgram.getId());
