@@ -1,8 +1,9 @@
-#include "Asset/OBJFile.hpp"
-#include "Asset/Object.hpp"
-#include "Asset/Group.hpp"
-#include "Asset/Material.hpp"
-#include "Asset/Map.hpp"
+#include "Assets/OBJFile.hpp"
+#include "Assets/Object.hpp"
+#include "Assets/Group.hpp"
+#include "Assets/Material.hpp"
+#include "Assets/Map.hpp"
+#include "Component/Mesh.hpp"
 
 #include <glm/vec2.hpp>
 
@@ -112,8 +113,9 @@ vector<Material*> OBJFile::findMaterial(const string& _mtl) const noexcept
     {
         for(Group* gp : ob->getGroups())
         {
-            for(Material* ma : gp->getMaterials())
+            for(Mesh* ms : gp->getMeshs())
             {
+                Material* ma = ms->getMaterial();
                 if (ma && ma->getName() == _mtl)
                 {
                     m.push_back(ma);

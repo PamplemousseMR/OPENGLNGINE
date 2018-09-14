@@ -1,5 +1,6 @@
 #include "Component/Mesh.hpp"
 #include "GL/Buffer.hpp"
+#include "Assets/Material.hpp"
 
 #define BUFFER_OFFSET(i) (static_cast< GLuint* >(nullptr) + (i))
 
@@ -21,6 +22,7 @@ namespace Component
         m_vboTextCoord = new Buffer(Buffer::VBO);
         m_ebo = new Buffer(Buffer::EBO);
         m_vao = new Buffer(Buffer::VAO);
+        m_material = new Assets::Material(_name);
     }
 
     Mesh::~Mesh() noexcept
@@ -30,6 +32,7 @@ namespace Component
         delete m_vboVertex;
         delete m_vboNormal;
         delete m_vboTextCoord;
+        delete m_material;
     }
 
     bool Mesh::getSimilarVertexIndex(const PackedVertex& _packed, const map<PackedVertex, unsigned int>& _vertexToOutIndex, unsigned int& _result) const noexcept
@@ -521,6 +524,12 @@ namespace Component
     {
         return S_NORMALLOCATION;
     }
+
+    Assets::Material* Mesh::getMaterial() const noexcept
+    {
+        return m_material;
+    }
+
 
     bool Mesh::hasTextureCoord() const noexcept
     {

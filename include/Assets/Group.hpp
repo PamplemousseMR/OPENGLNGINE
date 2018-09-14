@@ -28,7 +28,6 @@ public:
     const std::string& getName() const noexcept;
     const std::vector<Component::Mesh*>& getMeshs() const noexcept;
     Material* getLastMaterial() const noexcept;
-    const std::vector<Material*>& getMaterials() const noexcept;
 
     std::ostream& print(std::ostream& o) const noexcept;
 
@@ -36,7 +35,6 @@ private :
 
     std::string m_name {};
     std::vector<Component::Mesh*> m_meshs {};
-    std::vector<Material*> m_materials {};
 
 };
 

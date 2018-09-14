@@ -4,11 +4,11 @@
 #include "GL/Texture.hpp"
 #include "GL/Uniform.hpp"
 
-#include "Asset/Group.hpp"
-#include "Asset/Map.hpp"
-#include "Asset/Material.hpp"
-#include "Asset/Object.hpp"
-#include "Asset/OBJFile.hpp"
+#include "Assets/Group.hpp"
+#include "Assets/Map.hpp"
+#include "Assets/Material.hpp"
+#include "Assets/Object.hpp"
+#include "Assets/OBJFile.hpp"
 
 #include "Component/Component.hpp"
 #include "Component/Mesh.hpp"
@@ -182,7 +182,7 @@ int main()
                         standarModel = me->getPositionMatrix() * me->getRotationMatrix();
                         me->setRotation(glm::vec3(0, me->getRotationData().y+0.01f, 0));
 
-                        Assets::Material* material = gp->getMaterials()[c];
+                        Assets::Material* material = me->getMaterial();
 
                         Assets::Map* map = material->getKamap();
                         if (map && map->getTexture())

@@ -12,6 +12,11 @@
 #include <string>
 #include <vector>
 
+namespace Assets
+{
+    class Material;
+}
+
 namespace GL
 {
     class Buffer;
@@ -45,6 +50,7 @@ public:
     int getVertexLocation() const noexcept;
     int getTextureCoordLocation() const noexcept;
     int getNormalLocation() const noexcept;
+    Assets::Material* getMaterial() const noexcept;
     bool hasTextureCoord() const noexcept;
     bool hasNormal() const noexcept;
 
@@ -77,6 +83,7 @@ private:
     GL::Buffer* m_vao {nullptr};
     bool m_normal {false};
     bool m_textCoord {false};
+    Assets::Material* m_material {nullptr};
 
 };
 

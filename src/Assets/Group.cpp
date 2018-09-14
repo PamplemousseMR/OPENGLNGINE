@@ -1,6 +1,6 @@
-#include "Asset/Group.hpp"
+#include "Assets/Group.hpp"
 #include "Component/Mesh.hpp"
-#include "Asset/Material.hpp"
+#include "Assets/Material.hpp"
 
 using namespace std;
 using namespace glm;
@@ -20,15 +20,10 @@ namespace Assets
         {
             delete m;
         }
-        for (Material* m : m_materials)
-        {
-            delete m;
-        }
     }
 
     void Group::add(const vector<vec3>& _vertex, const vector<vec3>* _normal, const vector<vec2>* _textCoord, const vector<vec3>& _index, const string* _name)
     {
-        m_materials.push_back(new Material(_name ? *_name : m_name));
         m_meshs.push_back(new Mesh(_name ? *_name : m_name));
         Mesh* mesh = m_meshs.back();
         try {
@@ -67,12 +62,7 @@ namespace Assets
 
     Material* Group::getLastMaterial() const noexcept
     {
-        return m_materials.back();
-    }
-
-    const vector<Material*>& Group::getMaterials() const noexcept
-    {
-        return m_materials;
+        return m_meshs.back()->getMaterial();
     }
 
     ostream& Group::print(ostream& _o) const noexcept
@@ -84,8 +74,7 @@ namespace Assets
             {
                 _o << "\n";
             }
-            string mat = m_materials[i]->getName();
-            _o << "\t\t mesh : " << m_meshs[i]->getName() << " [normal->" << m_meshs[i]->hasNormal() << " textCoord->" << m_meshs[i]->hasTextureCoord() << "] , material : " << mat;
+            _o << "\t\t mesh : " << m_meshs[i]->getName() << " [normal->" << m_meshs[i]->hasNormal() << " textCoord->" << m_meshs[i]->hasTextureCoord() << "]";
         }
         return _o;
     }

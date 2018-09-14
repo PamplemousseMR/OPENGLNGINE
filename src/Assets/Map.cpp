@@ -1,4 +1,4 @@
-#include "Asset/Map.hpp"
+#include "Assets/Map.hpp"
 #include "GL/Texture.hpp"
 
 using namespace glm;
