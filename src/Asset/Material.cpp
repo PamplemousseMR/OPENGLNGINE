@@ -7,26 +7,7 @@ using namespace glm;
 namespace Assets
 {
     Material::Material(const string& _name) noexcept :
-        m_name(_name),
-        m_nsSpecularexponent(90.0f),
-        m_kaAmbient(1, 1, 1),
-        m_kdDiffuse(1, 1, 1),
-        m_ksSpecular(1, 1, 1),
-        m_tfTransmissionfilter(1, 1, 1),
-        m_niOpticaldensity(1.0f),
-        m_Ke(0, 0, 0),
-        m_dDissolve(1.0f),
-        m_halo(false),
-        m_illumIllumination(2),
-        m_sharpnessSharpness(60.0f),
-        m_kaMap(nullptr),
-        m_kdMap(nullptr),
-        m_ksMap(nullptr),
-        m_nsMap(nullptr),
-        m_dMap(nullptr),
-        m_dispMap(nullptr),
-        m_decalMap(nullptr),
-        m_bumpMap(nullptr)
+        m_name(_name)
     {
     }
 

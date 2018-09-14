@@ -13,7 +13,7 @@ class Shader
 
 public:
 
-    enum SHADER_TYPE
+    enum SHADER_TYPE : GLenum
     {
         VERTEX = GL_VERTEX_SHADER,
         FRAGMENT = GL_FRAGMENT_SHADER
@@ -28,7 +28,7 @@ public:
 
     void compile() const;
 
-    inline GLenum getType() const noexcept;
+    inline SHADER_TYPE getType() const noexcept;
     inline GLuint getId() const noexcept;
 
     inline void setSource(const std::string&) noexcept;
@@ -42,7 +42,7 @@ private:
 
 };
 
-GLenum Shader::getType() const noexcept
+Shader::SHADER_TYPE Shader::getType() const noexcept
 {
     return m_type;
 }

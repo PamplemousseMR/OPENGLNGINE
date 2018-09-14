@@ -30,14 +30,14 @@ public:
     void operator=(const glm::mat4&);
     void operator=(const glm::mat3&);
 
-    GLuint getLocation() const;
+    GLint getLocation() const;
     const std::string& getName() const;
 
 private:
 
-    GLuint m_program {0};
-    GLuint m_location {0};
     std::string m_name {};
+    GLuint m_program {0};
+    GLint m_location {0};
 
 };
 

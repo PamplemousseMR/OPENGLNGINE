@@ -14,7 +14,7 @@ class Texture
 
 public:
 
-    enum TEXTURE_TYPE
+    enum TEXTURE_TYPE : GLenum
     {
         TEXTURE_1D = GL_TEXTURE_1D,
         TEXTURE_2D = GL_TEXTURE_2D,
@@ -22,7 +22,7 @@ public:
 
 public:
 
-    Texture(TEXTURE_TYPE) noexcept;
+    Texture(TEXTURE_TYPE);
     ~Texture() noexcept;
     Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;

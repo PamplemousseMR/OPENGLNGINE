@@ -12,20 +12,24 @@ namespace GL
     vector<bool> Texture::s_location;
     bool Texture::s_first = false;
 
-    Texture::Texture(TEXTURE_TYPE type) noexcept :
+    Texture::Texture(TEXTURE_TYPE type) :
         m_type(type)
     {
         if (!s_first)
         {
             GLint size;
             glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &size);
-            for (int i(0); i < size; i++)
+            for (int i(0); i < size; ++i)
             {
                 s_location.push_back(false);
             }
             s_first = true;
         }
         glGenTextures(1, &m_id);
+        if(m_id == 0)
+        {
+            throw overflow_error("[Texture] Out of memory");
+        }
     }
 
 
@@ -62,7 +66,7 @@ namespace GL
         int width, height, chanel;
         unsigned char* data;
         int soilFormat = SOIL_LOAD_RGB;
-        GLuint internalFormat = GL_RGB;
+        GLint internalFormat = GL_RGB;
         GLenum format = GL_RGB;
         if (m_hasAlpha)
         {
@@ -101,11 +105,11 @@ namespace GL
 
     void Texture::bind()
     {
-        for (int i=0 ; i<s_location.size() ; ++i)
+        for (size_t i=0 ; i<s_location.size() ; ++i)
         {
             if (s_location[i] == false)
             {
-                m_location = i;
+                m_location = int(i);
                 s_location[i] = true;
                 break;
             }
@@ -114,13 +118,13 @@ namespace GL
         {
             throw overflow_error("[Texture] too much bind texture");
         }
-        glActiveTexture(GL_TEXTURE0 + m_location);
+        glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
         glBindTexture(m_type, m_id);
     }
 
     void Texture::unbind() noexcept
     {
-        s_location[m_location] = false;
+        s_location[size_t(m_location)] = false;
         m_location = -1;
         glBindTexture(m_type, 0);
     }

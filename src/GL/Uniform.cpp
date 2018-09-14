@@ -34,7 +34,7 @@ namespace GL
         return *this;
     }
 
-    GLuint Uniform::getLocation() const
+    GLint Uniform::getLocation() const
     {
         return m_location;
     }

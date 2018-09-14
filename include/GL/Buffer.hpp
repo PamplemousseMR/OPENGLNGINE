@@ -24,7 +24,7 @@ public:
 
 public:
 
-    Buffer(BUFFER_TYPE) noexcept;
+    Buffer(BUFFER_TYPE);
     ~Buffer() noexcept;
     Buffer(const Buffer&);
     Buffer& operator=(const Buffer&);

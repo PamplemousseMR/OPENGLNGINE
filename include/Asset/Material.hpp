@@ -67,26 +67,26 @@ public:
 
 private :
 
-    std::string m_name;
-    glm::vec3 m_kaAmbient;
-    glm::vec3 m_kdDiffuse;
-    glm::vec3 m_ksSpecular;
-    glm::vec3 m_tfTransmissionfilter;
-    int m_illumIllumination;
-    float m_dDissolve;
-    bool m_halo;
-    float m_nsSpecularexponent;
-    float m_sharpnessSharpness;
-    float m_niOpticaldensity;
-    glm::vec3 m_Ke;
-    Map *m_kaMap;
-    Map *m_kdMap;
-    Map* m_ksMap;
-    Map* m_nsMap;
-    Map* m_dMap;
-    Map* m_dispMap;
-    Map* m_decalMap;
-    Map* m_bumpMap;
+    std::string m_name {};
+    glm::vec3 m_kaAmbient {1, 1, 1};
+    glm::vec3 m_kdDiffuse {1, 1, 1};
+    glm::vec3 m_ksSpecular {1, 1, 1};
+    glm::vec3 m_tfTransmissionfilter {1, 1, 1};
+    int m_illumIllumination {2};
+    float m_dDissolve {1.0f};
+    bool m_halo {false};
+    float m_nsSpecularexponent {90.0f};
+    float m_sharpnessSharpness {60.0f};
+    float m_niOpticaldensity {1.0f};
+    glm::vec3 m_Ke {0, 0, 0};
+    Map *m_kaMap {nullptr};
+    Map *m_kdMap {nullptr};
+    Map* m_ksMap {nullptr};
+    Map* m_nsMap {nullptr};
+    Map* m_dMap {nullptr};
+    Map* m_dispMap {nullptr};
+    Map* m_decalMap {nullptr};
+    Map* m_bumpMap {nullptr};
 
 };
 

@@ -23,7 +23,7 @@
 
 using namespace std;
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWwindow* window, int key, int, int action, int)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
@@ -31,7 +31,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 }
 
-void window_size_callback(GLFWwindow* window, int width, int height)
+void window_size_callback(GLFWwindow*, int width, int height)
 {
     glViewport(0,0,width,height);
 }
@@ -63,8 +63,8 @@ int main()
         monitors = glfwGetMonitors(&nmonitors);
         mode = glfwGetVideoMode(*monitors);
         //window = glfwCreateWindow(mode->width, mode->height, "3DNIGINE", *monitors, NULL);
-        window = glfwCreateWindow(800, 450, "3DNIGINE", NULL, NULL);
-        if (window == NULL)
+        window = glfwCreateWindow(800, 450, "3DNIGINE", nullptr, nullptr);
+        if (window == nullptr)
         {
             cout << "[GLFW] Can't create Window." << endl;
             glfwTerminate();
@@ -141,10 +141,10 @@ int main()
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
 
-        GL::Texture* ambient = NULL;
-        GL::Texture* diffuse = NULL;
-        GL::Texture* specular = NULL;
-        GL::Texture* normal = NULL;
+        GL::Texture* ambient = nullptr;
+        GL::Texture* diffuse = nullptr;
+        GL::Texture* specular = nullptr;
+        GL::Texture* normal = nullptr;
 
         bool hasAmbient = false;
         bool hasDiffuse = false;
@@ -163,18 +163,18 @@ int main()
             standarView = V;
             standarProjection = P;
 
-            for (int a((int)file.getObjects().size()-1) ; a >= 0 ; a--)
+            for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
             {
                 Assets::Object* ob = file.getObjects()[a];
-                for (int b((int)ob->getGroups().size()-1); b >= 0; b--)
+                for (size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
                 {
                     Assets::Group* gp = ob->getGroups()[b];
-                    for (int c((int)gp->getMeshs().size() - 1); c >= 0; c--)
+                    for (size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
                     {
                         Component::Mesh* me = gp->getMeshs()[c];
 
                         standarModel = me->getPositionMatrix() * me->getRotationMatrix();
-                        me->setRotation(glm::vec3(0, me->getRotationData().y+0.01, 0));
+                        me->setRotation(glm::vec3(0, me->getRotationData().y+0.01f, 0));
 
                         Assets::Material* material = gp->getMaterials()[c];
 

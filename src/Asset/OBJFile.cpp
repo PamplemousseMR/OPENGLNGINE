@@ -23,13 +23,13 @@ vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
     {
         return vector<string>(0);
     }
-    vector<int> semicolons;
+    vector<size_t> semicolons;
     vector<string> tokens;
     for(size_t i = 0; i < _str.length(); ++i)
     {
         if (_str[i] == _splitter)
         {
-            semicolons.push_back((int)i);
+            semicolons.push_back(i);
         }
     }
 
@@ -77,21 +77,14 @@ void OBJFile::push(vector<vec3>* _vertex, vector<vec3>* _normal, vector<vec2>* _
         throw(invalid_argument("[OBJFile] usemtl can`t be nullptr"));
     }
 
-    if(_index->size() < 0)
+    vec3 vec = _index->back();
+    if(long(vec[1]) != 0 && _textCoord->size() == 0)
     {
-        throw(invalid_argument("[OBJFile] push with no index"));
+        throw(invalid_argument("[OBJFile] use texture coord on faces with no texture coord define"));
     }
-    else
+    if (long(vec[2]) != 0 && _normal->size() == 0)
     {
-        vec3 vec = _index->back();
-        if(vec[1] != 0 && _textCoord->size() == 0)
-        {
-            throw(invalid_argument("[OBJFile] use texture coord on faces with no texture coord define"));
-        }
-        if (vec[2] != 0 && _normal->size() == 0)
-        {
-            throw(invalid_argument("[OBJFile] use normal on faces with no normal define"));
-        }
+        throw(invalid_argument("[OBJFile] use normal on faces with no normal define"));
     }
     try
     {
@@ -131,7 +124,7 @@ vector<Material*> OBJFile::findMaterial(const string& _mtl) const noexcept
     return m;
 }
 
-void OBJFile::checkSize(const vector<string>& _vec, int _min, int _max, int _linuNumber)
+void OBJFile::checkSize(const vector<string>& _vec, size_t _min, size_t _max, int _linuNumber)
 {
     const string symbol = "[OBJFile] unexpected symbol at the end of the line ";
     const string invalidData = "[OBJFile] missing value(s) at the line ";
@@ -520,7 +513,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     if (map.size() != 0)
                     {
-                        for(int i(1); i < data.size() - 1; ++i)
+                        for(size_t i = 1 ; i < data.size() - 1 ; ++i)
                         {
                             if (data[i] == "-bm")
                             {
@@ -725,11 +718,11 @@ void OBJFile::load(const filesystem::path& _path)
             {
                 checkSize(data, 4, 4, lineNumber);
                 vec3 val;
-                for(short i(1);i<=3; ++i)
+                for(size_t i = 1 ; i<=3 ; ++i)
                 {
                     try
                     {
-                        val[i - 1] = stof(data[i]);
+                        val[glm::vec3::length_type(i - 1)] = stof(data[i]);
                     }
                     catch(const invalid_argument&)
                     {
@@ -749,11 +742,11 @@ void OBJFile::load(const filesystem::path& _path)
             {
                 checkSize(data, 3, 4, lineNumber);
                 vec2 val;
-                for(short i(1); i <= 2; ++i)
+                for(size_t i = 1; i <= 2; ++i)
                 {
                     try
                     {
-                        val[i - 1] = stof(data[i]);
+                        val[glm::vec3::length_type(i - 1)] = stof(data[i]);
                     }
                     catch(const invalid_argument&)
                     {

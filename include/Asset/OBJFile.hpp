@@ -30,7 +30,7 @@ private:
 
     static std::vector<std::string> split(const std::string & str, char splitter) noexcept;
     static std::vector<std::string> removeNullptr(const std::vector<std::string> & str) noexcept;
-    static void checkSize(const std::vector<std::string>&, int, int, int);
+    static void checkSize(const std::vector<std::string>&, size_t, size_t, int);
 
 private:
 

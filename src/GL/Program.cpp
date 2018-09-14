@@ -2,6 +2,7 @@
 #include "GL/Shader.hpp"
 
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -93,9 +94,9 @@ namespace GL
         {
             int infoLogLength;
             glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);
-            vector<char> programErrorMessage(infoLogLength + 1);
+            vector<char> programErrorMessage(size_t(infoLogLength) + 1);
             glGetProgramInfoLog(m_id, infoLogLength, nullptr, &programErrorMessage[0]);
-            throw invalid_argument("[Program] " + programErrorMessage[0]);
+            throw invalid_argument("[Program] " + std::string(programErrorMessage.begin(), programErrorMessage.end()));
         }
     }
 

@@ -60,7 +60,7 @@ private:
 
         bool operator<(const PackedVertex _that) const
         {
-            return memcmp((void*)this, (void*)&_that, sizeof(PackedVertex))>0;
+            return std::memcmp(this, &_that, sizeof(PackedVertex))>0;
         }
     };
 

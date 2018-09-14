@@ -9,8 +9,8 @@ namespace GL
 {
 
     Shader::Shader(SHADER_TYPE type) :
-        m_type(type),
-        m_id(glCreateShader(type))
+        m_id(glCreateShader(type)),
+        m_type(type)
     {
         if(m_id == 0)
         {
@@ -24,8 +24,8 @@ namespace GL
     }
 
     Shader::Shader(const Shader& _shader) :
-        m_type(_shader.m_type),
         m_id(glCreateShader(_shader.m_type)),
+        m_type(_shader.m_type),
         m_sources(_shader.m_sources)
     {
         if(m_id == 0)
@@ -88,7 +88,7 @@ namespace GL
             int infoLogLength;
             glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-            vector<char> shaderErrorMessage(infoLogLength + 1);
+            vector<char> shaderErrorMessage(size_t(infoLogLength + 1));
             glGetShaderInfoLog(m_id, infoLogLength, nullptr, &shaderErrorMessage[0]);
 
             string str(shaderErrorMessage.begin(), shaderErrorMessage.end());

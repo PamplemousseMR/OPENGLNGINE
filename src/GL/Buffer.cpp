@@ -3,13 +3,13 @@
 #include <iostream>
 #include <stdexcept>
 
-#define BUFFER_OFFSET(i) ((GLfloat*)nullptr + (i))
+#define BUFFER_OFFSET(i) (static_cast< GLfloat* >(nullptr) + (i))
 
 using namespace std;
 
 namespace GL
 {
-    Buffer::Buffer(BUFFER_TYPE type) noexcept :
+    Buffer::Buffer(BUFFER_TYPE type) :
         m_type(type)
     {
         switch(m_type)
@@ -27,6 +27,10 @@ namespace GL
         case RBO:
             glGenRenderbuffers(1, &m_id);
             break;
+        }
+        if(m_id == 0)
+        {
+            throw overflow_error("[Buffer] Out of memory");
         }
     }
 

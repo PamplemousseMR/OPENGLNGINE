@@ -14,7 +14,7 @@ namespace Assets
     {
     }
 
-    Group::~Group()
+    Group::~Group() noexcept
     {
         for (Mesh* m : m_meshs)
         {
@@ -78,7 +78,7 @@ namespace Assets
     ostream& Group::print(ostream& _o) const noexcept
     {
         _o << "[Group " << m_name << "]\n";
-        for (int i(0); i < m_meshs.size(); i++)
+        for (size_t i = 0 ; i < m_meshs.size(); ++i)
         {
             if (i > 0)
             {
