@@ -31,9 +31,12 @@ public :
     void addRotation(const glm::vec3&);
     void addScale(const glm::vec3&);
 
-private:
+protected:
 
     std::string m_name {};
+
+private:
+
     glm::mat4 m_positionMatrix {};
     glm::vec3 m_positionData {0, 0, 0};
     glm::mat4 m_rotationMatrix {};

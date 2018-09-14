@@ -12,6 +12,7 @@
 
 #include "Component/Component.hpp"
 #include "Component/Mesh.hpp"
+#include "Component/Light.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -120,6 +121,8 @@ int main()
         GL::Uniform standarProjection("u_projection", standarProgram.getId());
         GL::Uniform standarModel("u_model", standarProgram.getId());
         GL::Uniform standarView("u_view", standarProgram.getId());
+        GL::Uniform lightPositionWorld("u_lightPosition_worldspace", standarProgram.getId());
+        GL::Uniform lightColor("u_lightColor", standarProgram.getId());
 
         GL::Uniform standarAmbientTexture("u_ambientTexture", standarProgram.getId());
         GL::Uniform standarDiffuseTexture("u_diffuseTexture", standarProgram.getId());
@@ -153,6 +156,8 @@ int main()
 
         glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+        Component::Light light("light");
+        light.setPosition(glm::vec3(0, 0, 100));
 
         while (!glfwWindowShouldClose(window))
         {
@@ -162,7 +167,8 @@ int main()
 
             standarView = V;
             standarProjection = P;
-
+            lightPositionWorld = light.getPositionData();
+            lightColor = light.getAmbient();
             for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
             {
                 Assets::Object* ob = file.getObjects()[a];

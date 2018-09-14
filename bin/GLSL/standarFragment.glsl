@@ -19,13 +19,12 @@ uniform float u_specularExponent;
 uniform vec3 u_ambient;
 uniform vec3 u_specular;
 uniform vec3 u_diffuse;
+uniform vec3 u_lightColor;
 
 out vec4 v_color;
 
 void main()
 {
-    vec3 lightColor = vec3(1,1,1);
-
     vec3 ambient = vec3(0.25,0.25,0.25);
     vec3 diffuse = vec3(0.25,0.25,0.25);
     vec3 specular = vec3(0.25,0.25,0.25);
@@ -47,12 +46,12 @@ void main()
     if(u_hasDiffuseTexture)
     {
         vec4 materialDiffuseColor = texture( u_diffuseTexture, vec2(v_textCoord.x, 1 - v_textCoord.y));
-        diffuse = materialDiffuseColor.rgb * lightColor * cosTheta;
+        diffuse = materialDiffuseColor.rgb * u_lightColor * cosTheta;
         alpha = materialDiffuseColor.a;
     }
     else
     {
-        diffuse = diffuse * lightColor * cosTheta;
+        diffuse = diffuse * u_lightColor * cosTheta;
     }
 
     // specular
@@ -64,11 +63,11 @@ void main()
     if(u_hasSpecularTexture)
     {
         vec3 materialSpecularColor = texture( u_specularTexture, vec2(v_textCoord.x, 1 - v_textCoord.y)).xyz;
-        specular = materialSpecularColor * lightColor * pow(cosAlpha,u_specularExponent);
+        specular = materialSpecularColor * u_lightColor * pow(cosAlpha,u_specularExponent);
     }
     else
     {
-        specular = specular * lightColor * pow(cosAlpha,u_specularExponent);
+        specular = specular * u_lightColor * pow(cosAlpha,u_specularExponent);
     }
 
     /*color = vec4(v_normal_cameraspace,1);*/

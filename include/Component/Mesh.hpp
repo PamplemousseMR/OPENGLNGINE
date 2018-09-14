@@ -75,7 +75,6 @@ private:
     GL::Buffer* m_vboTextCoord {nullptr};
     GL::Buffer* m_ebo {nullptr};
     GL::Buffer* m_vao {nullptr};
-    std::string m_name {};
     bool m_normal {false};
     bool m_textCoord {false};
 
