@@ -22,7 +22,7 @@ namespace Assets
         {
             throw invalid_argument("[Map] " + string(_e.what()));
         }
-        m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
         m_texture->unbind();

@@ -48,9 +48,7 @@ int main()
 
         if (!glfwInit())
         {
-            cout << "[GLFW] Can't initialize glfw."<< endl;
-            int i;
-            cin >> i;
+            cerr << "[GLFW] Can't initialize glfw."<< endl;
             return -1;
         }
 
@@ -67,10 +65,8 @@ int main()
         window = glfwCreateWindow(800, 450, "3DNIGINE", nullptr, nullptr);
         if (window == nullptr)
         {
-            cout << "[GLFW] Can't create Window." << endl;
+            cerr << "[GLFW] Can't create Window." << endl;
             glfwTerminate();
-            int i;
-            cin >> i;
             return -1;
         }
 
@@ -79,9 +75,7 @@ int main()
 
         if (glewInit() != GLEW_OK)
         {
-            cout << "[GLEW] Can't initialize glew." << endl;
-            int i;
-            cin >> i;
+            cerr << "[GLEW] Can't initialize glew." << endl;
             return -1;
         }
 
@@ -277,17 +271,22 @@ int main()
 
             standarProgram.toggle();
 
+            GLenum err;
+            while ((err = glGetError()) != GL_NO_ERROR)
+            {
+                    cerr << "OpenGL error: " << err << endl;
+            }
+
             glfwSwapBuffers(window);
             glfwPollEvents();
+
         }
         return 0;
     }
     catch (exception e)
     {
-        cout << e.what() << endl;
-        char var = 0;
-        cout << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
-        cin >> var;
+        cerr << e.what() << endl;
+        cerr << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
         return -1;
     }
 }
