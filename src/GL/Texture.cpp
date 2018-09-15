@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -25,6 +26,19 @@ namespace GL
             }
             s_first = true;
         }
+        for (size_t i=0 ; i<s_location.size() ; ++i)
+        {
+            if (s_location[i] == false)
+            {
+                m_location = int(i);
+                s_location[i] = true;
+                break;
+            }
+        }
+        if (m_location == -1)
+        {
+            throw overflow_error("[Texture] Too much active texture");
+        }
         glGenTextures(1, &m_id);
         if(m_id == 0)
         {
@@ -36,6 +50,7 @@ namespace GL
     Texture::~Texture() noexcept
     {
         glDeleteTextures(1, &m_id);
+        s_location[size_t(m_location)] = false;
     }
 
     int Texture::load(const std::filesystem::path& _path)
@@ -94,27 +109,12 @@ namespace GL
 
     void Texture::bind()
     {
-        for (size_t i=0 ; i<s_location.size() ; ++i)
-        {
-            if (s_location[i] == false)
-            {
-                m_location = int(i);
-                s_location[i] = true;
-                break;
-            }
-        }
-        if (m_location == -1)
-        {
-            throw overflow_error("[Texture] too much bind texture");
-        }
         glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
         glBindTexture(m_type, m_id);
     }
 
     void Texture::unbind() noexcept
     {
-        s_location[size_t(m_location)] = false;
-        m_location = -1;
         glBindTexture(m_type, 0);
     }
 

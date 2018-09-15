@@ -104,8 +104,6 @@ int main()
         catch (exception e)
         {
             cerr << e.what() << endl;
-            char var = 0;
-            cin >> var;
             return -1;
         }
 
@@ -279,7 +277,6 @@ int main()
 
             glfwSwapBuffers(window);
             glfwPollEvents();
-
         }
         return 0;
     }
