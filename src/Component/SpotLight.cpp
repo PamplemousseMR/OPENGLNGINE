@@ -24,7 +24,11 @@ namespace Component
         _o << "\tlinear : " << m_linear << "\n";
         _o << "\tquadratic : " << m_quadratic << "\n";
         _o << "\tdirection : " << m_direction[0] << " " << m_direction[1] << " " << m_direction[2] << "\n";
-        _o << "\tangle : " << m_angle << "\n";
+        _o << "\ttheta : " << m_theta << "\n";
+        _o << "\tphi : " << m_phi << "\n";
+        _o << "\tlamdba : " << m_lambda << "\n";
+        _o << "\tphiCutoff : " << m_phiCutoff << "\n";
+        _o << "\tlambdaCutoff : " << m_lambdaCutoff << "\n";
         return _o;
     }
 
