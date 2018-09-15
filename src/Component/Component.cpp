@@ -16,36 +16,6 @@ namespace Component
     {
     }
 
-    const mat4& Component::getPositionMatrix() const
-    {
-        return m_positionMatrix;
-    }
-
-    const mat4& Component::getRotationMatrix() const
-    {
-        return m_rotationMatrix;
-    }
-
-    const mat4& Component::getScaleMatrix() const
-    {
-        return m_scaleMatrix;
-    }
-
-    const vec3& Component::getPositionData() const
-    {
-        return m_positionData;
-    }
-
-    const vec3& Component::getRotationData() const
-    {
-        return m_rotationData;
-    }
-
-    const vec3& Component::getScaleData() const
-    {
-        return m_scaleData;
-    }
-
     void Component::setPosition(const vec3& _position)
     {
         m_positionData = _position;

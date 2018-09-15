@@ -2,8 +2,6 @@
 #include "GL/Buffer.hpp"
 #include "Assets/Material.hpp"
 
-#define BUFFER_OFFSET(i) (static_cast< GLuint* >(nullptr) + (i))
-
 using namespace std;
 using namespace glm;
 using namespace GL;
@@ -235,7 +233,7 @@ namespace Component
             newTextCoord.push_back(vec2(0, 0));
         }
 
-        //calcules des normales
+        //compute normals
         for (size_t i = 0; i < newVertex.size(); i += 3)
         {
             vec3 A = newVertex[i];
@@ -251,7 +249,7 @@ namespace Component
             newNormal.push_back(normal);
             newNormal.push_back(normal);
         }
-        // fin des calcules
+        //end
 
         vector<vec3> indexedVertex;
         vector<vec2> indexedTextCoord;
@@ -505,50 +503,6 @@ namespace Component
         m_vao->unbind();
     }
 
-    const string& Mesh::getName() const noexcept
-    {
-        return m_name;
-    }
-
-    int Mesh::getVertexLocation() const noexcept
-    {
-        return S_VERTEXLOCATION;
-    }
-
-    int Mesh::getTextureCoordLocation() const noexcept
-    {
-        return m_textCoord;
-    }
-
-    int Mesh::getNormalLocation() const noexcept
-    {
-        return S_NORMALLOCATION;
-    }
-
-    Assets::Material* Mesh::getMaterial() const noexcept
-    {
-        return m_material;
-    }
-
-
-    bool Mesh::hasTextureCoord() const noexcept
-    {
-        return m_textCoord;
-    }
-
-    bool Mesh::hasNormal() const noexcept
-    {
-        return m_normal;
-    }
-
-    ostream& Mesh::print(ostream& _o) const noexcept
-    {
-        _o << "[Mesh " << m_name << "]\n";
-        _o << "\tnormal : " << m_normal << "\n";
-        _o << "\ttextCoord : " << m_textCoord << "\n";
-        return _o;
-    }
-
     void Mesh::bind() const noexcept
     {
         m_vao->bind();
@@ -559,9 +513,12 @@ namespace Component
         m_vao->unbind();
     }
 
-    void Mesh::draw() const noexcept
+    ostream& Mesh::print(ostream& _o) const noexcept
     {
-        glDrawElements(GL_TRIANGLES, m_dataSize, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+        _o << "[Mesh " << m_name << "]\n";
+        _o << "\tnormal : " << m_normal << "\n";
+        _o << "\ttextCoord : " << m_textCoord << "\n";
+        return _o;
     }
 
     ostream& operator<<(ostream& _o, const Mesh& _m) noexcept

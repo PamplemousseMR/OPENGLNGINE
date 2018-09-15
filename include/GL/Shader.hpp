@@ -42,17 +42,17 @@ private:
 
 };
 
-Shader::SHADER_TYPE Shader::getType() const noexcept
+inline Shader::SHADER_TYPE Shader::getType() const noexcept
 {
     return m_type;
 }
 
-GLuint Shader::getId() const noexcept
+inline GLuint Shader::getId() const noexcept
 {
     return m_id;
 }
 
-void Shader::setSource(const std::string& src) noexcept
+inline void Shader::setSource(const std::string& src) noexcept
 {
     m_sources = src;
 }

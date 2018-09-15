@@ -28,16 +28,6 @@ namespace Component
         return _o;
     }
 
-    float SpotLight::getAngle() const noexcept
-    {
-        return m_angle;
-    }
-
-    void SpotLight::setAngle(float _angle) noexcept
-    {
-        m_angle = _angle;
-    }
-
     ostream& operator<<(ostream& _o, const SpotLight& _m) noexcept
     {
         _m.print(_o);

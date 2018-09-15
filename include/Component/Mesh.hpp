@@ -44,15 +44,15 @@ public:
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec3>&);
     void bind() const noexcept;
     void unbind() const noexcept;
-    void draw() const noexcept;
+    inline void draw() const noexcept;
 
-    const std::string& getName() const noexcept;
-    int getVertexLocation() const noexcept;
-    int getTextureCoordLocation() const noexcept;
-    int getNormalLocation() const noexcept;
-    Assets::Material* getMaterial() const noexcept;
-    bool hasTextureCoord() const noexcept;
-    bool hasNormal() const noexcept;
+    inline const std::string& getName() const noexcept;
+    inline GLuint getVertexLocation() const noexcept;
+    inline GLuint getTextureCoordLocation() const noexcept;
+    inline GLuint getNormalLocation() const noexcept;
+    inline Assets::Material* getMaterial() const noexcept;
+    inline bool hasTextureCoord() const noexcept;
+    inline bool hasNormal() const noexcept;
 
     std::ostream& print(std::ostream&) const noexcept;
 
@@ -69,6 +69,8 @@ private:
             return std::memcmp(this, &_that, sizeof(PackedVertex))>0;
         }
     };
+
+private:
 
     bool getSimilarVertexIndex(const PackedVertex&, const std::map<PackedVertex, unsigned int>&, unsigned int&) const noexcept;
     void indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&) const noexcept;
@@ -88,5 +90,45 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const Mesh&) noexcept;
+
+inline const std::string& Mesh::getName() const noexcept
+{
+    return m_name;
+}
+
+inline GLuint Mesh::getVertexLocation() const noexcept
+{
+    return S_VERTEXLOCATION;
+}
+
+inline GLuint Mesh::getTextureCoordLocation() const noexcept
+{
+    return m_textCoord;
+}
+
+inline GLuint Mesh::getNormalLocation() const noexcept
+{
+    return S_NORMALLOCATION;
+}
+
+inline Assets::Material* Mesh::getMaterial() const noexcept
+{
+    return m_material;
+}
+
+inline bool Mesh::hasTextureCoord() const noexcept
+{
+    return m_textCoord;
+}
+
+inline bool Mesh::hasNormal() const noexcept
+{
+    return m_normal;
+}
+
+inline void Mesh::draw() const noexcept
+{
+    glDrawElements(GL_TRIANGLES, m_dataSize, GL_UNSIGNED_INT, static_cast< void* >(nullptr));
+}
 
 }

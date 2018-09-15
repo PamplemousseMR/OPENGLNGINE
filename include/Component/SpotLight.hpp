@@ -15,9 +15,9 @@ public:
 
     std::ostream& print(std::ostream&) const noexcept;
 
-    float getAngle() const noexcept;
+    inline float getAngle() const noexcept;
 
-    void setAngle(float) noexcept;
+    inline void setAngle(float) noexcept;
 
 private:
 
@@ -26,5 +26,15 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const SpotLight&) noexcept;
+
+inline float SpotLight::getAngle() const noexcept
+{
+    return m_angle;
+}
+
+inline void SpotLight::setAngle(float _angle) noexcept
+{
+    m_angle = _angle;
+}
 
 }

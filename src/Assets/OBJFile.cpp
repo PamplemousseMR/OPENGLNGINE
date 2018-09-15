@@ -668,7 +668,7 @@ OBJFile::~OBJFile() noexcept
 
 void OBJFile::load(const filesystem::path& _path)
 {
-    milliseconds begin = duration_cast< milliseconds >(    system_clock::now().time_since_epoch());
+    milliseconds begin = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
     for(Object* m : m_objects)
     {
@@ -1086,11 +1086,6 @@ ostream& OBJFile::print(ostream& _o) const noexcept
 const vector<Object*>& OBJFile::getObjects() const noexcept
 {
     return m_objects;
-}
-
-long long OBJFile::getLoadTime() const noexcept
-{
-    return m_loadTime;
 }
 
 ostream& operator<<(ostream& o, const OBJFile& m) noexcept

@@ -36,12 +36,12 @@ private:
 
 };
 
-bool Program::isActive() const noexcept
+inline bool Program::isActive() const noexcept
 {
     return m_toggled;
 }
 
-GLuint Program::getId() const noexcept
+inline GLuint Program::getId() const noexcept
 {
     return m_id;
 }

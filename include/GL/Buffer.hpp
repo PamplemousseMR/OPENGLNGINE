@@ -47,12 +47,12 @@ private:
 
 };
 
-Buffer::BUFFER_TYPE Buffer::getType() const noexcept
+inline Buffer::BUFFER_TYPE Buffer::getType() const noexcept
 {
     return m_type;
 }
 
-GLuint Buffer::getId() const noexcept
+inline GLuint Buffer::getId() const noexcept
 {
     return m_id;
 }

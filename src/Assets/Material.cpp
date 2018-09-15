@@ -41,62 +41,6 @@ namespace Assets
         return _o;
     }
 
-    const string& Material::getName() const noexcept
-    {
-        return m_name;
-    }
-
-    const vec3& Material::getAmbient() const noexcept
-    {
-        return m_kaAmbient;
-    }
-
-    const vec3& Material::getDiffuse() const noexcept
-    {
-        return m_kdDiffuse;
-    }
-
-    const vec3& Material::getSpecular() const noexcept
-    {
-        return m_ksSpecular;
-    }
-
-    const vec3& Material::getTransmissionFilter() const noexcept
-    {
-        return m_tfTransmissionfilter;
-    }
-
-    int Material::getIllumination() const noexcept
-    {
-        return m_illumIllumination;
-    }
-
-    float Material::getDissolve() const noexcept
-    {
-        return m_dDissolve;
-    }
-
-    bool Material::getHalo() const noexcept
-    {
-        return m_halo;
-    }
-
-    float Material::getSpecularExponent() const noexcept
-    {
-        return m_nsSpecularexponent;
-    }
-
-    float Material::getSharpness() const noexcept
-    {
-        return m_sharpnessSharpness;
-    }
-
-    float Material::getopticalDensity() const noexcept
-    {
-        return m_niOpticaldensity;
-    }
-
-
     Map* Material::getKamap() const noexcept
     {
         return m_kaMap;
@@ -135,61 +79,6 @@ namespace Assets
     Map* Material::getBumpmap() const noexcept
     {
         return m_bumpMap;
-    }
-
-    void Material::setAmbient(const vec3& _ka) noexcept
-    {
-        m_kaAmbient = _ka;
-    }
-
-    void Material::setDiffuse(const vec3& _kd) noexcept
-    {
-        m_kdDiffuse = _kd;
-    }
-
-    void Material::setSpecular(const vec3& _ks) noexcept
-    {
-        m_ksSpecular = _ks;
-    }
-
-    void Material::setTransmissionFilter(const vec3& _tf) noexcept
-    {
-        m_tfTransmissionfilter = _tf;
-    }
-
-    void Material::setIllumination(int _illum) noexcept
-    {
-        m_illumIllumination = _illum;
-    }
-
-    void Material::setDissolve(float _d) noexcept
-    {
-        m_dDissolve = _d;
-    }
-
-    void Material::setHalo(bool _h) noexcept
-    {
-        m_halo = _h;
-    }
-
-    void Material::setSpecularExponent(float _ns) noexcept
-    {
-        m_nsSpecularexponent = _ns;
-    }
-
-    void Material::setSharpness(float _sharp) noexcept
-    {
-        m_sharpnessSharpness = _sharp;
-    }
-
-    void Material::setopticalDensity(float _ni) noexcept
-    {
-        m_niOpticaldensity = _ni;
-    }
-
-    void Material::setEmissiveCoeficient(const vec3& _ke) noexcept
-    {
-        m_Ke = _ke;
     }
 
     void Material::setKamap(const std::filesystem::path& _path)

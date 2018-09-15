@@ -27,66 +27,6 @@ namespace Component
         return _o;
     }
 
-    const vec3& Light::getAmbient() const noexcept
-    {
-        return m_ambient;
-    }
-
-    const vec3& Light::getDiffuse() const noexcept
-    {
-        return m_diffuse;
-    }
-
-    const vec3& Light::getSpecular() const noexcept
-    {
-        return m_specular;
-    }
-
-    float Light::getConstant() const noexcept
-    {
-        return m_constant;
-    }
-
-    float Light::getLinear() const noexcept
-    {
-        return m_linear;
-    }
-
-    float Light::getQuadratic() const noexcept
-    {
-        return m_quadratic;
-    }
-
-    void Light::setAmbient(const vec3& _ka) noexcept
-    {
-        m_ambient = _ka;
-    }
-
-    void Light::setDiffuse(const vec3& _kd) noexcept
-    {
-        m_diffuse = _kd;
-    }
-
-    void Light::setSpecular(const vec3& _ks) noexcept
-    {
-        m_specular = _ks;
-    }
-
-    void Light::setConstant(float _const) noexcept
-    {
-        m_constant = _const;
-    }
-
-    void Light::setLinear(float _linear) noexcept
-    {
-        m_linear = _linear;
-    }
-
-    void Light::setQuadratic(float _quadratic) noexcept
-    {
-        m_quadratic = _quadratic;
-    }
-
     ostream& operator<<(ostream& _o, const Light& _m) noexcept
     {
         _m.print(_o);

@@ -92,17 +92,6 @@ namespace GL
         return width;
     }
 
-
-    void Texture::setParameter(GLenum pname, GLint param) const noexcept
-    {
-        glTexParameteri(m_type, pname, param);
-    }
-
-    void Texture::generateMipmap() const noexcept
-    {
-        glGenerateMipmap(m_type);
-    }
-
     void Texture::bind()
     {
         for (size_t i=0 ; i<s_location.size() ; ++i)

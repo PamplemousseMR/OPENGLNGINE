@@ -20,7 +20,7 @@ public:
 
     const std::vector<Group*>& getGroups() const noexcept;
     Group* getLastGroup() const noexcept;
-    const std::string& getName() const noexcept;
+    inline const std::string& getName() const noexcept;
 
     std::ostream& print(std::ostream&) const noexcept;
 
@@ -32,6 +32,11 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const Object&) noexcept;
+
+inline const std::string& Object::getName() const noexcept
+{
+    return m_name;
+}
 
 }
 

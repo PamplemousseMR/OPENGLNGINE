@@ -34,11 +34,6 @@ namespace Assets
         return m_groups;
     }
 
-    const string& Object::getName() const noexcept
-    {
-        return m_name;
-    }
-
     Group* Object::getLastGroup() const noexcept
     {
         return m_groups.back();

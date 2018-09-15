@@ -15,9 +15,9 @@ public:
 
     std::ostream& print(std::ostream&) const noexcept;
 
-    const glm::vec3& getDirection() const noexcept;
+    inline const glm::vec3& getDirection() const noexcept;
 
-    void setDirection(const glm::vec3&) noexcept;
+    inline void setDirection(const glm::vec3&) noexcept;
 
 protected:
 
@@ -26,5 +26,15 @@ protected:
 };
 
 std::ostream& operator<<(std::ostream&, const DirectionalLight&) noexcept;
+
+inline const glm::vec3& DirectionalLight::getDirection() const noexcept
+{
+    return m_direction;
+}
+
+inline void DirectionalLight::setDirection(const glm::vec3& _direction) noexcept
+{
+    m_direction = _direction;
+}
 
 }

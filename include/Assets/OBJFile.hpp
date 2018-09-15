@@ -22,7 +22,7 @@ public:
     void load(const std::filesystem::path&);
 
     const std::vector<Object*>& getObjects() const noexcept;
-    long long getLoadTime() const noexcept;
+    inline long long getLoadTime() const noexcept;
 
     std::ostream& print(std::ostream&) const noexcept;
 
@@ -47,6 +47,11 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& o, const OBJFile&) noexcept;
+
+inline long long OBJFile::getLoadTime() const noexcept
+{
+    return m_loadTime;
+}
 
 }
 

@@ -28,7 +28,7 @@ public:
     Texture& operator=(const Texture&) = delete;
 
     int load(const std::filesystem::path&);
-    void generateMipmap() const noexcept;
+    inline void generateMipmap() const noexcept;
     void bind();
     void unbind() noexcept;
 
@@ -36,7 +36,7 @@ public:
     inline int getLocation() const noexcept;
     inline TEXTURE_TYPE getType() const noexcept;
 
-    void setParameter(GLenum, GLint) const noexcept;
+    inline void setParameter(GLenum, GLint) const noexcept;
 
 private:
 
@@ -52,19 +52,29 @@ private:
 
 };
 
-GLuint Texture::getId() const noexcept
+inline GLuint Texture::getId() const noexcept
 {
     return m_id;
 }
 
-int Texture::getLocation() const noexcept
+inline int Texture::getLocation() const noexcept
 {
     return m_location;
 }
 
-Texture::TEXTURE_TYPE Texture::getType() const noexcept
+inline Texture::TEXTURE_TYPE Texture::getType() const noexcept
 {
     return m_type;
+}
+
+inline void Texture::setParameter(GLenum pname, GLint param) const noexcept
+{
+    glTexParameteri(m_type, pname, param);
+}
+
+inline void Texture::generateMipmap() const noexcept
+{
+    glGenerateMipmap(m_type);
 }
 
 }

@@ -50,21 +50,6 @@ namespace Assets
         }
     }
 
-    const string& Group::getName() const noexcept
-    {
-        return m_name;
-    }
-
-    const vector<Mesh*>& Group::getMeshs() const noexcept
-    {
-        return m_meshs;
-    }
-
-    Material* Group::getLastMaterial() const noexcept
-    {
-        return m_meshs.back()->getMaterial();
-    }
-
     ostream& Group::print(ostream& _o) const noexcept
     {
         _o << "[Group " << m_name << "]\n";
@@ -77,6 +62,16 @@ namespace Assets
             _o << "\t\t mesh : " << m_meshs[i]->getName() << " [normal->" << m_meshs[i]->hasNormal() << " textCoord->" << m_meshs[i]->hasTextureCoord() << "]";
         }
         return _o;
+    }
+
+    const vector<Mesh*>& Group::getMeshs() const noexcept
+    {
+        return m_meshs;
+    }
+
+    Material* Group::getLastMaterial() const noexcept
+    {
+        return m_meshs.back()->getMaterial();
     }
 
     ostream& operator<<(ostream& _o, const Group& _m) noexcept

@@ -28,16 +28,6 @@ namespace Component
         return _o;
     }
 
-    const vec3& DirectionalLight::getDirection() const noexcept
-    {
-        return m_direction;
-    }
-
-    void DirectionalLight::setDirection(const vec3& _direction) noexcept
-    {
-        m_direction = _direction;
-    }
-
     ostream& operator<<(ostream& _o, const DirectionalLight& _m) noexcept
     {
         _m.print(_o);

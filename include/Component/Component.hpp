@@ -16,12 +16,12 @@ public :
     Component(const std::string&);
     ~Component();
 
-    const glm::mat4& getPositionMatrix() const;
-    const glm::mat4& getRotationMatrix() const;
-    const glm::mat4& getScaleMatrix() const;
-    const glm::vec3& getPositionData() const;
-    const glm::vec3& getRotationData() const;
-    const glm::vec3& getScaleData() const;
+    inline const glm::mat4& getPositionMatrix() const;
+    inline const glm::mat4& getRotationMatrix() const;
+    inline const glm::mat4& getScaleMatrix() const;
+    inline const glm::vec3& getPositionData() const;
+    inline const glm::vec3& getRotationData() const;
+    inline const glm::vec3& getScaleData() const;
 
     void setPosition(const glm::vec3&);
     void setRotation(const glm::vec3&);
@@ -45,4 +45,35 @@ private:
     glm::vec3 m_scaleData {1, 1, 1};
 
 };
+
+inline const glm::mat4& Component::getPositionMatrix() const
+{
+    return m_positionMatrix;
+}
+
+inline const glm::mat4& Component::getRotationMatrix() const
+{
+    return m_rotationMatrix;
+}
+
+inline const glm::mat4& Component::getScaleMatrix() const
+{
+    return m_scaleMatrix;
+}
+
+inline const glm::vec3& Component::getPositionData() const
+{
+    return m_positionData;
+}
+
+inline const glm::vec3& Component::getRotationData() const
+{
+    return m_rotationData;
+}
+
+inline const glm::vec3& Component::getScaleData() const
+{
+    return m_scaleData;
+}
+
 }

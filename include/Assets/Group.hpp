@@ -25,7 +25,7 @@ public:
 
     void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*);
 
-    const std::string& getName() const noexcept;
+    inline const std::string& getName() const noexcept;
     const std::vector<Component::Mesh*>& getMeshs() const noexcept;
     Material* getLastMaterial() const noexcept;
 
@@ -39,5 +39,10 @@ private :
 };
 
 std::ostream& operator<<(std::ostream& o, const Group& m) noexcept;
+
+inline const std::string& Group::getName() const noexcept
+{
+    return m_name;
+}
 
 }
