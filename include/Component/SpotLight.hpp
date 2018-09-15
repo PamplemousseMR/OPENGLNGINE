@@ -12,6 +12,8 @@ public:
 
     SpotLight(const std::string&) noexcept;
     ~SpotLight() noexcept;
+    SpotLight(const SpotLight&);
+    SpotLight& operator=(const SpotLight&);
 
     std::ostream& print(std::ostream&) const noexcept;
 

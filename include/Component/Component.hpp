@@ -15,6 +15,8 @@ public :
 
     Component(const std::string&);
     ~Component();
+    Component(const Component&);
+    Component& operator=(const Component&);
 
     inline const glm::mat4& getPositionMatrix() const;
     inline const glm::mat4& getRotationMatrix() const;

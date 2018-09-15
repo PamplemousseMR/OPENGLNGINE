@@ -15,6 +15,22 @@ namespace Component
     {
     }
 
+    DirectionalLight::DirectionalLight(const DirectionalLight& _light) :
+        Light(_light.m_name),
+        m_direction(_light.m_direction)
+    {
+    }
+
+    DirectionalLight& DirectionalLight::operator=(const DirectionalLight& _light)
+    {
+        if(this != &_light)
+        {
+            Light::operator=(_light);
+            m_direction = _light.m_direction;
+        }
+        return *this;
+    }
+
     ostream& DirectionalLight::print(ostream& _o) const noexcept
     {
         _o << "[DirectionalLight " << m_name << "]\n";

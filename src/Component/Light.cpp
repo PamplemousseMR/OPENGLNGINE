@@ -15,6 +15,32 @@ namespace Component
     {
     }
 
+    Light::Light(const Light& _light) :
+        Component(_light.m_name),
+        m_ambient(_light.m_ambient),
+        m_diffuse(_light.m_diffuse),
+        m_specular(_light.m_specular),
+        m_constant(_light.m_constant),
+        m_linear(_light.m_linear),
+        m_quadratic(_light.m_quadratic)
+    {
+    }
+
+    Light& Light::operator=(const Light& _light)
+    {
+        if(this != &_light)
+        {
+            Component::operator=(_light);
+            m_ambient = _light.m_ambient;
+            m_diffuse = _light.m_diffuse;
+            m_specular = _light.m_specular;
+            m_constant = _light.m_constant;
+            m_linear = _light.m_linear;
+            m_quadratic = _light.m_quadratic;
+        }
+        return *this;
+    }
+
     ostream& Light::print(ostream& _o) const noexcept
     {
         _o << "[Light " << m_name << "]\n";

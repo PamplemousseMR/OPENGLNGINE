@@ -14,6 +14,30 @@ namespace Component
     {
     }
 
+    SpotLight::SpotLight(const SpotLight& _light) :
+        DirectionalLight(_light.m_name),
+        m_theta(_light.m_theta),
+        m_phi(_light.m_phi),
+        m_phiCutoff(_light.m_phiCutoff),
+        m_lambda(_light.m_lambda),
+        m_lambdaCutoff(_light.m_lambdaCutoff)
+    {
+    }
+
+    SpotLight& SpotLight::operator=(const SpotLight& _light)
+    {
+        if(this != &_light)
+        {
+            DirectionalLight::operator=(_light);
+            m_theta = _light.m_theta;
+            m_phi = _light.m_phi;
+            m_phiCutoff = _light.m_phiCutoff;
+            m_lambda = _light.m_lambda;
+            m_lambdaCutoff = _light.m_lambdaCutoff;
+        }
+        return *this;
+    }
+
     ostream& SpotLight::print(ostream& _o) const noexcept
     {
         _o << "[SpotLight " << m_name << "]\n";

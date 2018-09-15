@@ -12,6 +12,8 @@ public:
 
     DirectionalLight(const std::string&) noexcept;
     ~DirectionalLight() noexcept;
+    DirectionalLight(const DirectionalLight&);
+    DirectionalLight& operator=(const DirectionalLight&);
 
     std::ostream& print(std::ostream&) const noexcept;
 

@@ -16,6 +16,32 @@ namespace Component
     {
     }
 
+    Component::Component(const Component& _component) :
+        m_name(_component.m_name),
+        m_positionMatrix(_component.m_positionMatrix),
+        m_positionData(_component.m_positionData),
+        m_rotationMatrix(_component.m_rotationMatrix),
+        m_rotationData(_component.m_rotationData),
+        m_scaleMatrix(_component.m_scaleMatrix),
+        m_scaleData(_component.m_scaleData)
+    {
+    }
+
+    Component& Component::operator=(const Component& _component)
+    {
+        if(this != &_component)
+        {
+            m_name = _component.m_name;
+            m_positionMatrix = _component.m_positionMatrix;
+            m_positionData = _component.m_positionData;
+            m_rotationMatrix = _component.m_rotationMatrix;
+            m_rotationData = _component.m_rotationData;
+            m_scaleMatrix = _component.m_scaleMatrix;
+            m_scaleData = _component.m_scaleData;
+        }
+        return *this;
+    }
+
     void Component::setPosition(const vec3& _position)
     {
         m_positionData = _position;
