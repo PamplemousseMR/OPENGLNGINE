@@ -66,7 +66,7 @@ namespace GL
             break;
         case FBO:
         case RBO:
-            std::cerr << "TODO";
+            throw invalid_argument("[Buffer] TODO");
             break;
         }
 
@@ -106,7 +106,7 @@ namespace GL
                 break;
             case FBO:
             case RBO:
-                std::cerr << "TODO";
+                throw invalid_argument("[Buffer] TODO");
                 break;
             }
 

@@ -37,7 +37,6 @@ namespace Assets
         _o << "\t\tsharpness " << m_sharpnessSharpness << "\n";
         _o << "\t\tNi " << m_niOpticaldensity << "\n";
         _o << "\treflection map statement :\n";
-        _o << "\ttodo\n";
         return _o;
     }
 
