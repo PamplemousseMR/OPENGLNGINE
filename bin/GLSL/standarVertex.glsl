@@ -1,31 +1,32 @@
 #version 460 core
 
-layout(location = 0) in vec3 a_position;
-layout(location = 1) in vec2 a_textCoord;
-layout(location = 2) in vec3 a_normal;
+layout(location = 0) in vec3 a_f3VertexPos_Ms;
+layout(location = 1) in vec2 a_f2TextCor_Fs;
+layout(location = 2) in vec3 a_f3NormalDir_Ms;
 
-uniform mat4 u_view;
-uniform mat4 u_model;
-uniform mat4 u_projection;
-uniform vec3 u_lightPosition_worldspace;
+uniform mat4 u_m4View;
+uniform mat4 u_m4Model;
+uniform mat4 u_m4Projection;
 
-out vec2 v_textCoord;
-out vec3 v_normal_cameraspace;
-out vec3 v_eyeDirection_cameraspace;
-out vec3 v_lightDirection_cameraspace;
+uniform vec3 u_f3LightPos_Ws;
+
+out vec2 v_f2TextCor_Fs;
+out vec3 v_f3NormalDir_Vs;
+out vec3 v_f3CamDir_Vs;
+out vec3 v_f3LightDir_Vs;
 
 void main(){ 
 
-    gl_Position = u_projection * u_view * u_model * vec4(a_position,1);
+    gl_Position = u_m4Projection * u_m4View * u_m4Model * vec4(a_f3VertexPos_Ms,1);
 
-    vec3 vertexPosition_cameraspace = ( u_view * u_model * vec4(a_position,1)).xyz;
-    v_eyeDirection_cameraspace = vec3(0,0,0) - vertexPosition_cameraspace;
+    vec3 vertexPos_Vs = ( u_m4View * u_m4Model * vec4(a_f3VertexPos_Ms,1)).xyz;
+    v_f3CamDir_Vs = vec3(0,0,0) - vertexPos_Vs;
 
-    vec3 lightPosition_cameraspace = ( u_view * vec4(u_lightPosition_worldspace,1)).xyz;
-    v_lightDirection_cameraspace = lightPosition_cameraspace-vertexPosition_cameraspace;
+    vec3 lightPos_Vs = ( u_m4View * vec4(u_f3LightPos_Ws,1)).xyz;
+    v_f3LightDir_Vs = lightPos_Vs-vertexPos_Vs;
 
-    v_normal_cameraspace = ( u_view * u_model * vec4(a_normal,0)).xyz;
+    v_f3NormalDir_Vs = ( u_m4View * u_m4Model * vec4(a_f3NormalDir_Ms,0)).xyz;
 
-    v_textCoord = a_textCoord;
+    v_f2TextCor_Fs = a_f2TextCor_Fs;
 }
 

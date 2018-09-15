@@ -110,26 +110,27 @@ int main()
         cout << "Loading time : " << file.getLoadTime() << endl;
         cout << file << endl;
 
-        GL::Uniform standarProjection("u_projection", standarProgram.getId());
-        GL::Uniform standarModel("u_model", standarProgram.getId());
-        GL::Uniform standarView("u_view", standarProgram.getId());
-        GL::Uniform lightPositionWorld("u_lightPosition_worldspace", standarProgram.getId());
-        GL::Uniform lightColor("u_lightColor", standarProgram.getId());
+        GL::Uniform standarProjection("u_m4Projection", standarProgram.getId());
+        GL::Uniform standarModel("u_m4Model", standarProgram.getId());
+        GL::Uniform standarView("u_m4View", standarProgram.getId());
 
-        GL::Uniform standarAmbientTexture("u_ambientTexture", standarProgram.getId());
-        GL::Uniform standarDiffuseTexture("u_diffuseTexture", standarProgram.getId());
-        GL::Uniform standarSpecularTexture("u_specularTexture", standarProgram.getId());
-        GL::Uniform standarNormalTexture("u_normalTexture", standarProgram.getId());
+        GL::Uniform lightPositionWorld("u_f3LightPos_Ws", standarProgram.getId());
+        GL::Uniform lightColor("u_f3LightCol", standarProgram.getId());
 
-        GL::Uniform standarHasAmbientTexture("u_hasAmbientTexture", standarProgram.getId());
-        GL::Uniform standarHasDiffuseTexture("u_hasDiffuseTexture", standarProgram.getId());
-        GL::Uniform standarHasSpecularTexture("u_hasSpecularTexture", standarProgram.getId());
-        GL::Uniform standarHasNormalTexture("u_hasNormalTexture", standarProgram.getId());
+        GL::Uniform standarAmbientTexture("u_tAmbient", standarProgram.getId());
+        GL::Uniform standarDiffuseTexture("u_tDiffuse", standarProgram.getId());
+        GL::Uniform standarSpecularTexture("u_tSpecular", standarProgram.getId());
+        GL::Uniform standarNormalTexture("u_tNormal", standarProgram.getId());
 
-        GL::Uniform standarSpecularExponent("u_specularExponent", standarProgram.getId());
-        GL::Uniform standarAmbient("u_ambient", standarProgram.getId());
-        GL::Uniform standarDiffuse("u_diffuse", standarProgram.getId());
-        GL::Uniform standarSpecular("u_specular", standarProgram.getId());
+        GL::Uniform standarHasAmbientTexture("u_bAmbient", standarProgram.getId());
+        GL::Uniform standarHasDiffuseTexture("u_bDiffuse", standarProgram.getId());
+        GL::Uniform standarHasSpecularTexture("u_bSpecular", standarProgram.getId());
+        GL::Uniform standarHasNormalTexture("u_bNormal", standarProgram.getId());
+
+        GL::Uniform standarSpecularExponent("u_fSpecularExponent", standarProgram.getId());
+        GL::Uniform standarAmbient("u_f3AmbientCol", standarProgram.getId());
+        GL::Uniform standarDiffuse("u_f3DiffuseCol", standarProgram.getId());
+        GL::Uniform standarSpecular("u_f3SpecularCol", standarProgram.getId());
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
