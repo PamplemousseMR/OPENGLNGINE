@@ -136,16 +136,6 @@ int main()
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
 
-        GL::Texture* ambient = nullptr;
-        GL::Texture* diffuse = nullptr;
-        GL::Texture* specular = nullptr;
-        GL::Texture* normal = nullptr;
-
-        bool hasAmbient = false;
-        bool hasDiffuse = false;
-        bool hasSpecular = false;
-        bool hasNormal = false;
-
         glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
         Component::Light light("light");
@@ -176,77 +166,57 @@ int main()
 
                         Assets::Material* material = me->getMaterial();
 
-                        Assets::Map* map = material->getKamap();
-                        if (map && map->getTexture())
+                        Assets::Map* kaMap = material->getKamap();
+                        if (kaMap)
                         {
-                            ambient = map->getTexture();
-                            hasAmbient = true;
-                        }
-                        else
-                            hasAmbient = false;
-
-                        map = material->getKdmap();
-                        if (map && map->getTexture())
-                        {
-                            diffuse = map->getTexture();
-                            hasDiffuse = true;
-                        }
-                        else
-                            hasDiffuse = false;
-
-                        map = material->getKsmap();
-                        if (map && map->getTexture())
-                        {
-                            specular = map->getTexture();
-                            hasSpecular = true;
-                        }
-                        else
-                            hasSpecular = false;
-
-                        map = material->getBumpmap();
-                        if (map && map->getTexture())
-                        {
-                            normal = map->getTexture();
-                            hasNormal = true;
-                        }
-                        else
-                            hasNormal = false;
-
-                        if (hasAmbient)
-                        {
+                            GL::Texture* ambient = kaMap->getTexture();
                             ambient->bind();
                             u_tAmbient = ambient->getLocation();
                             u_bAmbient = true;
                         }
                         else
-                            u_bAmbient = false;
-
-                        if (hasDiffuse)
                         {
+                            u_bAmbient = false;
+                        }
+
+                        Assets::Map* kdMap = material->getKdmap();
+                        if (kdMap)
+                        {
+                            GL::Texture* diffuse = kdMap->getTexture();
                             diffuse->bind();
                             u_tDiffuse = diffuse->getLocation();
                             u_bDiffuse = true;
                         }
                         else
-                            u_bDiffuse = false;
-
-                        if (hasSpecular)
                         {
+                            u_bDiffuse = false;
+                        }
+
+                        Assets::Map* ksMap = material->getKsmap();
+                        if (ksMap)
+                        {
+                            GL::Texture* specular = ksMap->getTexture();
                             specular->bind();
                             u_tSpecular = specular->getLocation();
                             u_bSpecular = true;
                         }
                         else
-                            u_bSpecular = false;
-
-                        if (hasNormal)
                         {
+                            u_bSpecular = false;
+                        }
+
+                        Assets::Map* bumpMap = material->getBumpmap();
+                        if (bumpMap)
+                        {
+                            GL::Texture* normal = bumpMap->getTexture();
                             normal->bind();
                             u_tNormal = normal->getLocation();
                             u_bNormal = true;
                         }
                         else
+                        {
                             u_bNormal = false;
+                        }
 
                         u_fSpecularExponent = material->getSpecularExponent();
                         u_f3SpecularCol = material->getSpecular();
@@ -257,12 +227,22 @@ int main()
                         me->draw();
                         me->unbind();
 
-                        if (hasSpecular)
-                            specular->unbind();
-                        if(hasDiffuse)
-                            diffuse->unbind();
-                        if(hasAmbient)
-                            ambient->unbind();
+                        if(material->getKamap() != nullptr)
+                        {
+                            material->getKamap()->getTexture()->unbind();
+                        }
+                        if(material->getKdmap() != nullptr)
+                        {
+                            material->getKdmap()->getTexture()->unbind();
+                        }
+                        if(material->getKsmap() != nullptr)
+                        {
+                            material->getKsmap()->getTexture()->unbind();
+                        }
+                        if(material->getBumpmap() != nullptr)
+                        {
+                            material->getBumpmap()->getTexture()->unbind();
+                        }
                     }
                 }
             }
