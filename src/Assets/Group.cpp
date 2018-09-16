@@ -22,6 +22,22 @@ namespace Assets
         }
     }
 
+    Group::Group(const Group& _group) :
+        m_name(_group.m_name),
+        m_meshs(_group.m_meshs)
+    {
+    }
+
+    Group& Group::operator=(const Group& _group)
+    {
+        if(this != &_group)
+        {
+            m_name = _group.m_name;
+            m_meshs = _group.m_meshs;
+        }
+        return *this;
+    }
+
     void Group::add(const vector<vec3>& _vertex, const vector<vec3>* _normal, const vector<vec2>* _textCoord, const vector<vec3>& _index, const string* _name)
     {
         m_meshs.push_back(new Mesh(_name ? *_name : m_name));
