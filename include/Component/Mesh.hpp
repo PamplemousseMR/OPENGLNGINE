@@ -19,7 +19,9 @@ namespace Assets
 
 namespace GL
 {
-    class Buffer;
+    class VertexBuffer;
+    class VertexArrayBuffer;
+    class ElementsBuffer;
 }
 
 namespace Component
@@ -81,11 +83,11 @@ private:
 private:
 
     int m_dataSize {0};
-    GL::Buffer* m_vboVertex {nullptr};
-    GL::Buffer* m_vboNormal {nullptr};
-    GL::Buffer* m_vboTextCoord {nullptr};
-    GL::Buffer* m_ebo {nullptr};
-    GL::Buffer* m_vao {nullptr};
+    GL::VertexBuffer* m_vboVertex {nullptr};
+    GL::VertexBuffer* m_vboNormal {nullptr};
+    GL::VertexBuffer* m_vboTextCoord {nullptr};
+    GL::ElementsBuffer* m_ebo {nullptr};
+    GL::VertexArrayBuffer* m_vao {nullptr};
     bool m_textCoord {false};
     Assets::Material* m_material {nullptr};
 

@@ -1,5 +1,7 @@
 #include "Component/Mesh.hpp"
-#include "GL/Buffer.hpp"
+#include "GL/VertexBuffer.hpp"
+#include "GL/VertexArrayBuffer.hpp"
+#include "GL/ElementsBuffer.hpp"
 #include "Assets/Material.hpp"
 
 using namespace std;
@@ -16,11 +18,11 @@ namespace Component
     Mesh::Mesh(const string& _name) noexcept :
         Component(_name)
     {
-        m_vboVertex = new Buffer(Buffer::VBO);
-        m_vboNormal = new Buffer(Buffer::VBO);
-        m_vboTextCoord = new Buffer(Buffer::VBO);
-        m_ebo = new Buffer(Buffer::EBO);
-        m_vao = new Buffer(Buffer::VAO);
+        m_vboVertex = new VertexBuffer();
+        m_vboNormal = new VertexBuffer();
+        m_vboTextCoord = new VertexBuffer();
+        m_ebo = new ElementsBuffer();
+        m_vao = new VertexArrayBuffer();
         m_material = new Assets::Material(_name);
     }
 
@@ -37,11 +39,11 @@ namespace Component
     Mesh::Mesh(const Mesh& _mesh) :
         Component(_mesh),
         m_dataSize(_mesh.m_dataSize),
-        m_vboVertex(new Buffer(*_mesh.m_vboVertex)),
-        m_vboNormal(new Buffer(*_mesh.m_vboNormal)),
-        m_vboTextCoord(new Buffer(*_mesh.m_vboTextCoord)),
-        m_ebo(new Buffer(*_mesh.m_ebo)),
-        m_vao(new Buffer(Buffer::VAO)),
+        m_vboVertex(new VertexBuffer(*_mesh.m_vboVertex)),
+        m_vboNormal(new VertexBuffer(*_mesh.m_vboNormal)),
+        m_vboTextCoord(new VertexBuffer(*_mesh.m_vboTextCoord)),
+        m_ebo(new ElementsBuffer(*_mesh.m_ebo)),
+        m_vao(new VertexArrayBuffer()),
         m_textCoord(_mesh.m_textCoord),
         m_material(new Material(*_mesh.m_material))
     {
@@ -99,11 +101,11 @@ namespace Component
 
             Component::operator=(_mesh);
             m_dataSize = _mesh.m_dataSize;
-            m_vboVertex = new Buffer(*_mesh.m_vboVertex);
-            m_vboNormal = new Buffer(*_mesh.m_vboNormal);
-            m_vboTextCoord = new Buffer(*_mesh.m_vboTextCoord);
-            m_ebo = new Buffer(*_mesh.m_ebo);
-            m_vao = new Buffer(Buffer::VAO);
+            m_vboVertex = new VertexBuffer(*_mesh.m_vboVertex);
+            m_vboNormal = new VertexBuffer(*_mesh.m_vboNormal);
+            m_vboTextCoord = new VertexBuffer(*_mesh.m_vboTextCoord);
+            m_ebo = new ElementsBuffer(*_mesh.m_ebo);
+            m_vao = new VertexArrayBuffer();
             m_textCoord = _mesh.m_textCoord;
             m_material = new Material(*_mesh.m_material);
 

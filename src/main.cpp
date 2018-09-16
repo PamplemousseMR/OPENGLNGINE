@@ -1,4 +1,3 @@
-#include "GL/Buffer.hpp"
 #include "GL/Program.hpp"
 #include "GL/Shader.hpp"
 #include "GL/Texture.hpp"
@@ -116,6 +115,7 @@ int main()
             cerr << e.what() << endl;
             return EXIT_FAILURE;
         }
+
 
         cout << file << endl;
 
