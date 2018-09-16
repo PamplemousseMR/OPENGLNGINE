@@ -666,6 +666,35 @@ OBJFile::~OBJFile() noexcept
     }
 }
 
+OBJFile::OBJFile(const OBJFile& _objfile) :
+    m_name(_objfile.m_name),
+    m_loadTime(_objfile.m_loadTime)
+{
+    for(Object* o : _objfile.m_objects)
+    {
+        m_objects.push_back(new Object(*o));
+    }
+}
+
+OBJFile& OBJFile::operator=(const OBJFile& _objfile)
+{
+    if(this != &_objfile)
+    {
+        for(Object* m : m_objects)
+        {
+            delete m;
+        }
+        m_objects.clear();
+        for(Object* o : _objfile.m_objects)
+        {
+            m_objects.push_back(new Object(*o));
+        }
+        m_name = _objfile.m_name;
+        m_loadTime = _objfile.m_loadTime;
+    }
+    return *this;
+}
+
 void OBJFile::load(const filesystem::path& _path)
 {
     milliseconds begin = duration_cast< milliseconds >(system_clock::now().time_since_epoch());

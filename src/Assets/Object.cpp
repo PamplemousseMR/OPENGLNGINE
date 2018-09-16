@@ -23,10 +23,37 @@ namespace Assets
 
     Object::~Object() noexcept
     {
-        for (Group* m : m_groups)
+        for (Group* g : m_groups)
         {
-            delete m;
+            delete g;
         }
+    }
+
+    Object::Object(const Object& _obj) :
+        m_name(_obj.m_name)
+    {
+        for (Group* g : _obj.m_groups)
+        {
+            m_groups.push_back(new Group(*g));
+        }
+    }
+
+    Object& Object::operator=(const Object& _obj)
+    {
+        if(this != &_obj)
+        {
+            for (Group* g : m_groups)
+            {
+                delete g;
+            }
+            m_groups.clear();
+            m_name = _obj.m_name;
+            for (Group* g : _obj.m_groups)
+            {
+                m_groups.push_back(new Group(*g));
+            }
+        }
+        return *this;
     }
 
     const vector<Group*>& Object::getGroups() const noexcept

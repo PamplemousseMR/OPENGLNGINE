@@ -64,6 +64,7 @@ namespace Assets
     {
         if(this != &_map)
         {
+            delete m_texture;
             m_name = _map.m_name;
             m_mapType = _map.m_mapType;
             m_texture = new Texture(*_map.m_texture);

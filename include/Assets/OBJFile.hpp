@@ -18,6 +18,8 @@ public:
 
     OBJFile() noexcept;
     ~OBJFile() noexcept;
+    OBJFile(const OBJFile&);
+    OBJFile& operator=(const OBJFile&);
 
     void load(const std::filesystem::path&);
 

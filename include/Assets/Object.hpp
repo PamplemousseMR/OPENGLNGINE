@@ -15,6 +15,8 @@ public:
 
     Object(const std::string&) noexcept;
     ~Object() noexcept;
+    Object(const Object&);
+    Object& operator=(const Object&);
 
     void addGroup(const std::string&) noexcept;
 

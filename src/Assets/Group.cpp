@@ -23,17 +23,28 @@ namespace Assets
     }
 
     Group::Group(const Group& _group) :
-        m_name(_group.m_name),
-        m_meshs(_group.m_meshs)
+        m_name(_group.m_name)
     {
+        for (Mesh* m : _group.m_meshs)
+        {
+            m_meshs.push_back(new Mesh(*m));
+        }
     }
 
     Group& Group::operator=(const Group& _group)
     {
         if(this != &_group)
         {
+            for (Mesh* m : m_meshs)
+            {
+                delete m;
+            }
+            m_meshs.clear();
             m_name = _group.m_name;
-            m_meshs = _group.m_meshs;
+            for (Mesh* m : _group.m_meshs)
+            {
+                m_meshs.push_back(new Mesh(*m));
+            }
         }
         return *this;
     }

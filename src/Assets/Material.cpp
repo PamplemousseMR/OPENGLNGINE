@@ -51,6 +51,14 @@ namespace Assets
     {
         if(this != &_mat)
         {
+            if (m_kaMap)delete m_kaMap;
+            if (m_kdMap)delete m_kdMap;
+            if (m_ksMap)delete m_ksMap;
+            if (m_nsMap)delete m_nsMap;
+            if (m_dMap)delete m_dMap;
+            if (m_dispMap)delete m_dispMap;
+            if (m_decalMap)delete m_decalMap;
+            if (m_bumpMap)delete m_bumpMap;
             m_name = _mat.m_name;
             m_kaAmbient = _mat.m_kaAmbient;
             m_kdDiffuse = _mat.m_kdDiffuse;
