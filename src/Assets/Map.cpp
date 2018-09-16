@@ -60,6 +60,29 @@ namespace Assets
         m_texture->unbind();
     }
 
+    Map::Map(Map&& _map) :
+        m_name(std::move(_map.m_name)),
+        m_mapType(std::move(_map.m_mapType)),
+        m_blendu(std::move(_map.m_blendu)),
+        m_blendv(std::move(_map.m_blendv)),
+        m_cc(std::move(_map.m_cc)),
+        m_clamp(std::move(_map.m_clamp)),
+        m_imfchanrgb(std::move(_map.m_imfchanrgb)),
+        m_imfchanmlz(std::move(_map.m_imfchanmlz)),
+        m_base(std::move(_map.m_base)),
+        m_gain(std::move(_map.m_gain)),
+        m_o(std::move(_map.m_o)),
+        m_s(std::move(_map.m_s)),
+        m_t(std::move(_map.m_t)),
+        m_textres(std::move(_map.m_textres)),
+        m_mult(std::move(_map.m_mult)),
+        m_boost(std::move(_map.m_boost)),
+        m_mapAat(std::move(_map.m_mapAat))
+    {
+        m_texture = _map.m_texture;
+        _map.m_texture = nullptr;
+    }
+
     Map& Map::operator=(const Map& _map)
     {
         if(this != &_map)
@@ -88,6 +111,35 @@ namespace Assets
             m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             m_texture->generateMipmap();
             m_texture->unbind();
+        }
+        return *this;
+    }
+
+    Map& Map::operator=(Map&& _map)
+    {
+        if(this != &_map)
+        {
+            delete m_texture;
+
+            m_name = std::move(_map.m_name);
+            m_mapType = std::move(_map.m_mapType);
+            m_blendu = std::move(_map.m_blendu);
+            m_blendv = std::move(_map.m_blendv);
+            m_cc = std::move(_map.m_cc);
+            m_clamp = std::move(_map.m_clamp);
+            m_imfchanrgb = std::move(_map.m_imfchanrgb);
+            m_imfchanmlz = std::move(_map.m_imfchanmlz);
+            m_base = std::move(_map.m_base);
+            m_gain = std::move(_map.m_gain);
+            m_o = std::move(_map.m_o);
+            m_s = std::move(_map.m_s);
+            m_t = std::move(_map.m_t);
+            m_textres = std::move(_map.m_textres);
+            m_mult = std::move(_map.m_mult);
+            m_boost = std::move(_map.m_boost);
+            m_mapAat = std::move(_map.m_mapAat);
+            m_texture = _map.m_texture;
+            _map.m_texture = nullptr;
         }
         return *this;
     }

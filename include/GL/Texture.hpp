@@ -25,7 +25,9 @@ public:
     Texture(TEXTURE_TYPE);
     ~Texture() noexcept;
     Texture(const Texture&);
+    Texture(Texture&&) = delete;
     Texture& operator=(const Texture&);
+    Texture& operator=(Texture&&) = delete;
 
     int load(const std::filesystem::path&);
     inline void generateMipmap() const noexcept;

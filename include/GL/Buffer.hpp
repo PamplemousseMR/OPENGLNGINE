@@ -27,7 +27,9 @@ public:
     Buffer(BUFFER_TYPE);
     ~Buffer() noexcept;
     Buffer(const Buffer&);
+    Buffer(Buffer&&) = delete;
     Buffer& operator=(const Buffer&);
+    Buffer& operator=(Buffer&&) = delete;
 
     template<typename T>
     void setData(const std::vector<T>&) const;

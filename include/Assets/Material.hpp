@@ -23,7 +23,9 @@ public:
     Material(const std::string&) noexcept;
     ~Material() noexcept;
     Material(const Material&);
+    Material(Material&&);
     Material& operator=(const Material&);
+    Material& operator=(Material&&);
 
     inline const std::string& getName() const noexcept;
     inline const glm::vec3& getAmbient() const noexcept;

@@ -35,7 +35,7 @@ namespace Component
     }
 
     Mesh::Mesh(const Mesh& _mesh) :
-        Component(_mesh.m_name),
+        Component(_mesh),
         m_dataSize(_mesh.m_dataSize),
         m_vboVertex(new Buffer(*_mesh.m_vboVertex)),
         m_vboNormal(new Buffer(*_mesh.m_vboNormal)),
@@ -67,10 +67,36 @@ namespace Component
         m_vao->unbind();
     }
 
+    Mesh::Mesh(Mesh&& _mesh) :
+        Component(std::move(_mesh)),
+        m_dataSize(std::move(_mesh.m_dataSize)),
+        m_textCoord(std::move(_mesh.m_textCoord))
+    {
+        m_vboVertex = _mesh.m_vboVertex;
+        _mesh.m_vboVertex = nullptr;
+        m_vboNormal = _mesh.m_vboNormal;
+        _mesh.m_vboNormal = nullptr;
+        m_vboTextCoord = _mesh.m_vboTextCoord;
+        _mesh.m_vboTextCoord = nullptr;
+        m_ebo = _mesh.m_ebo;
+        _mesh.m_ebo = nullptr;
+        m_vao = _mesh.m_vao;
+        _mesh.m_vao = nullptr;
+        m_material = _mesh.m_material;
+        _mesh.m_material = nullptr;
+    }
+
     Mesh& Mesh::operator=(const Mesh& _mesh)
     {
         if(this != &_mesh)
         {
+            delete m_vao;
+            delete m_ebo;
+            delete m_vboVertex;
+            delete m_vboNormal;
+            delete m_vboTextCoord;
+            delete m_material;
+
             Component::operator=(_mesh);
             m_dataSize = _mesh.m_dataSize;
             m_vboVertex = new Buffer(*_mesh.m_vboVertex);
@@ -100,6 +126,38 @@ namespace Component
 
                 m_ebo->bind();
             }
+            m_vao->unbind();
+        }
+        return *this;
+    }
+
+    Mesh& Mesh::operator=(Mesh&& _mesh)
+    {
+        if(this != &_mesh)
+        {
+            delete m_vao;
+            delete m_ebo;
+            delete m_vboVertex;
+            delete m_vboNormal;
+            delete m_vboTextCoord;
+            delete m_material;
+
+            Component::operator=(std::move(_mesh));
+            m_dataSize = std::move(_mesh.m_dataSize);
+            m_textCoord = std::move(_mesh.m_textCoord);
+
+            m_vboVertex = _mesh.m_vboVertex;
+            _mesh.m_vboVertex = nullptr;
+            m_vboNormal = _mesh.m_vboNormal;
+            _mesh.m_vboNormal = nullptr;
+            m_vboTextCoord = _mesh.m_vboTextCoord;
+            _mesh.m_vboTextCoord = nullptr;
+            m_ebo = _mesh.m_ebo;
+            _mesh.m_ebo = nullptr;
+            m_vao = _mesh.m_vao;
+            _mesh.m_vao = nullptr;
+            m_material = _mesh.m_material;
+            _mesh.m_material = nullptr;
             m_vao->unbind();
         }
         return *this;

@@ -15,7 +15,9 @@ public:
     Light(const std::string&) noexcept;
     ~Light() noexcept;
     Light(const Light&);
+    Light(Light&&);
     Light& operator=(const Light&);
+    Light& operator=(Light&&);
 
     std::ostream& print(std::ostream&) const noexcept;
 

@@ -17,7 +17,9 @@ public:
     Program();
     ~Program() noexcept;
     Program(const Program&);
+    Program(Program&&) = delete;
     Program& operator=(const Program&);
+    Program& operator=(Program&&) = delete;
 
     void attach(Shader& shader);
     void detach(const Shader& shader);

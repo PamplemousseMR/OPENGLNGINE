@@ -16,8 +16,14 @@ namespace Component
     }
 
     DirectionalLight::DirectionalLight(const DirectionalLight& _light) :
-        Light(_light.m_name),
+        Light(_light),
         m_direction(_light.m_direction)
+    {
+    }
+
+    DirectionalLight::DirectionalLight(DirectionalLight&& _light) :
+        Light(std::move(_light)),
+        m_direction(std::move(_light.m_direction))
     {
     }
 
@@ -27,6 +33,16 @@ namespace Component
         {
             Light::operator=(_light);
             m_direction = _light.m_direction;
+        }
+        return *this;
+    }
+
+    DirectionalLight& DirectionalLight::operator=(DirectionalLight&& _light)
+    {
+        if(this != &_light)
+        {
+            Light::operator=(std::move(_light));
+            m_direction = std::move(_light.m_direction);
         }
         return *this;
     }

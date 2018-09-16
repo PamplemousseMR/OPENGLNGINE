@@ -27,6 +27,17 @@ namespace Component
     {
     }
 
+    Component::Component(Component&& _component) :
+        m_name(std::move(_component.m_name)),
+        m_positionMatrix(std::move(_component.m_positionMatrix)),
+        m_positionData(std::move(_component.m_positionData)),
+        m_rotationMatrix(std::move(_component.m_rotationMatrix)),
+        m_rotationData(std::move(_component.m_rotationData)),
+        m_scaleMatrix(std::move(_component.m_scaleMatrix)),
+        m_scaleData(std::move(_component.m_scaleData))
+    {
+    }
+
     Component& Component::operator=(const Component& _component)
     {
         if(this != &_component)
@@ -38,6 +49,21 @@ namespace Component
             m_rotationData = _component.m_rotationData;
             m_scaleMatrix = _component.m_scaleMatrix;
             m_scaleData = _component.m_scaleData;
+        }
+        return *this;
+    }
+
+    Component& Component::operator=(Component&& _component)
+    {
+        if(this != &_component)
+        {
+            m_name = std::move(_component.m_name);
+            m_positionMatrix = std::move(_component.m_positionMatrix);
+            m_positionData = std::move(_component.m_positionData);
+            m_rotationMatrix = std::move(_component.m_rotationMatrix);
+            m_rotationData = std::move(_component.m_rotationData);
+            m_scaleMatrix = std::move(_component.m_scaleMatrix);
+            m_scaleData = std::move(_component.m_scaleData);
         }
         return *this;
     }

@@ -47,6 +47,38 @@ namespace Assets
     {
     }
 
+    Material::Material(Material&& _mat) :
+       m_name(std::move(_mat.m_name)),
+       m_kaAmbient(std::move(_mat.m_kaAmbient)),
+       m_kdDiffuse(std::move(_mat.m_kdDiffuse)),
+       m_ksSpecular(std::move(_mat.m_ksSpecular)),
+       m_tfTransmissionfilter(std::move(_mat.m_tfTransmissionfilter)),
+       m_illumIllumination(std::move(_mat.m_illumIllumination)),
+       m_dDissolve(std::move(_mat.m_dDissolve)),
+       m_halo(std::move(_mat.m_halo)),
+       m_nsSpecularexponent(std::move(_mat.m_nsSpecularexponent)),
+       m_sharpnessSharpness(std::move(_mat.m_sharpnessSharpness)),
+       m_niOpticaldensity(std::move(_mat.m_niOpticaldensity)),
+       m_Ke(std::move(_mat.m_Ke))
+   {
+       m_kaMap = _mat.m_kaMap;
+       _mat.m_kaMap = nullptr;
+       m_kdMap = _mat.m_kdMap;
+       _mat.m_kdMap = nullptr;
+       m_ksMap = _mat.m_ksMap;
+       _mat.m_ksMap = nullptr;
+       m_nsMap = _mat.m_nsMap;
+       _mat.m_nsMap = nullptr;
+       m_dMap = _mat.m_dMap;
+       _mat.m_dMap = nullptr;
+       m_dispMap = _mat.m_dispMap;
+       _mat.m_dispMap = nullptr;
+       m_decalMap = _mat.m_decalMap;
+       _mat.m_decalMap = nullptr;
+       m_bumpMap = _mat.m_bumpMap;
+       _mat.m_bumpMap = nullptr;
+   }
+
     Material& Material::operator=(const Material& _mat)
     {
         if(this != &_mat)
@@ -59,6 +91,7 @@ namespace Assets
             if (m_dispMap)delete m_dispMap;
             if (m_decalMap)delete m_decalMap;
             if (m_bumpMap)delete m_bumpMap;
+
             m_name = _mat.m_name;
             m_kaAmbient = _mat.m_kaAmbient;
             m_kdDiffuse = _mat.m_kdDiffuse;
@@ -79,6 +112,52 @@ namespace Assets
             m_dispMap = new Map(*_mat.m_dispMap);
             m_decalMap = new Map(*_mat.m_decalMap);
             m_bumpMap = new Map(*_mat.m_bumpMap);
+        }
+        return *this;
+    }
+
+    Material& Material::operator=(Material&& _mat)
+    {
+        if(this != &_mat)
+        {
+            if (m_kaMap)delete m_kaMap;
+            if (m_kdMap)delete m_kdMap;
+            if (m_ksMap)delete m_ksMap;
+            if (m_nsMap)delete m_nsMap;
+            if (m_dMap)delete m_dMap;
+            if (m_dispMap)delete m_dispMap;
+            if (m_decalMap)delete m_decalMap;
+            if (m_bumpMap)delete m_bumpMap;
+
+            m_name = std::move(_mat.m_name);
+            m_kaAmbient = std::move(_mat.m_kaAmbient);
+            m_kdDiffuse = std::move(_mat.m_kdDiffuse);
+            m_ksSpecular = std::move(_mat.m_ksSpecular);
+            m_tfTransmissionfilter = std::move(_mat.m_tfTransmissionfilter);
+            m_illumIllumination = std::move(_mat.m_illumIllumination);
+            m_dDissolve = std::move(_mat.m_dDissolve);
+            m_halo = std::move(_mat.m_halo);
+            m_nsSpecularexponent = std::move(_mat.m_nsSpecularexponent);
+            m_sharpnessSharpness = std::move(_mat.m_sharpnessSharpness);
+            m_niOpticaldensity = std::move(_mat.m_niOpticaldensity);
+            m_Ke = std::move(_mat.m_Ke);
+
+            m_kaMap = _mat.m_kaMap;
+            _mat.m_kaMap = nullptr;
+            m_kdMap = _mat.m_kdMap;
+            _mat.m_kdMap = nullptr;
+            m_ksMap = _mat.m_ksMap;
+            _mat.m_ksMap = nullptr;
+            m_nsMap = _mat.m_nsMap;
+            _mat.m_nsMap = nullptr;
+            m_dMap = _mat.m_dMap;
+            _mat.m_dMap = nullptr;
+            m_dispMap = _mat.m_dispMap;
+            _mat.m_dispMap = nullptr;
+            m_decalMap = _mat.m_decalMap;
+            _mat.m_decalMap = nullptr;
+            m_bumpMap = _mat.m_bumpMap;
+            _mat.m_bumpMap = nullptr;
         }
         return *this;
     }

@@ -23,7 +23,9 @@ public:
     Group(const std::string&) noexcept;
     ~Group() noexcept;
     Group(const Group&);
+    Group(Group&&);
     Group& operator=(const Group&);
+    Group& operator=(Group&&);
 
     void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*);
 

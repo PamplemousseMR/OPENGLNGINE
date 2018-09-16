@@ -16,13 +16,24 @@ namespace Component
     }
 
     Light::Light(const Light& _light) :
-        Component(_light.m_name),
+        Component(_light),
         m_ambient(_light.m_ambient),
         m_diffuse(_light.m_diffuse),
         m_specular(_light.m_specular),
         m_constant(_light.m_constant),
         m_linear(_light.m_linear),
         m_quadratic(_light.m_quadratic)
+    {
+    }
+
+    Light::Light(Light&& _light) :
+        Component(std::move(_light)),
+        m_ambient(std::move(_light.m_ambient)),
+        m_diffuse(std::move(_light.m_diffuse)),
+        m_specular(std::move(_light.m_specular)),
+        m_constant(std::move(_light.m_constant)),
+        m_linear(std::move(_light.m_linear)),
+        m_quadratic(std::move(_light.m_quadratic))
     {
     }
 
@@ -37,6 +48,21 @@ namespace Component
             m_constant = _light.m_constant;
             m_linear = _light.m_linear;
             m_quadratic = _light.m_quadratic;
+        }
+        return *this;
+    }
+
+    Light& Light::operator=(Light&& _light)
+    {
+        if(this != &_light)
+        {
+            Component::operator=(std::move(_light));
+            m_ambient = std::move(_light.m_ambient);
+            m_diffuse = std::move(_light.m_diffuse);
+            m_specular = std::move(_light.m_specular);
+            m_constant = std::move(_light.m_constant);
+            m_linear = std::move(_light.m_linear);
+            m_quadratic = std::move(_light.m_quadratic);
         }
         return *this;
     }

@@ -31,6 +31,16 @@ namespace Assets
         }
     }
 
+    Group::Group(Group&& _group) :
+        m_name(std::move(_group.m_name))
+    {
+        for (size_t i=0 ; i<_group.m_meshs.size() ; ++i)
+        {
+            m_meshs.push_back(_group.m_meshs[i]);
+            _group.m_meshs[i] = nullptr;
+        }
+    }
+
     Group& Group::operator=(const Group& _group)
     {
         if(this != &_group)
@@ -44,6 +54,25 @@ namespace Assets
             for (Mesh* m : _group.m_meshs)
             {
                 m_meshs.push_back(new Mesh(*m));
+            }
+        }
+        return *this;
+    }
+
+    Group& Group::operator=(Group&& _group)
+    {
+        if(this != &_group)
+        {
+            for (Mesh* m : m_meshs)
+            {
+                delete m;
+            }
+            m_meshs.clear();
+            m_name = std::move(_group.m_name);
+            for (size_t i=0 ; i<_group.m_meshs.size() ; ++i)
+            {
+                m_meshs.push_back(_group.m_meshs[i]);
+                _group.m_meshs[i] = nullptr;
             }
         }
         return *this;

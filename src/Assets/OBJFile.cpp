@@ -675,6 +675,16 @@ OBJFile::OBJFile(const OBJFile& _objfile) :
     }
 }
 
+OBJFile::OBJFile(OBJFile&& _objfile) :
+    m_name(std::move(_objfile.m_name))
+{
+    for (size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
+    {
+        m_objects.push_back(_objfile.m_objects[i]);
+        _objfile.m_objects[i] = nullptr;
+    }
+}
+
 OBJFile& OBJFile::operator=(const OBJFile& _objfile)
 {
     if(this != &_objfile)
@@ -689,6 +699,25 @@ OBJFile& OBJFile::operator=(const OBJFile& _objfile)
             m_objects.push_back(new Object(*o));
         }
         m_name = _objfile.m_name;
+    }
+    return *this;
+}
+
+OBJFile& OBJFile::operator=(OBJFile&& _objfile)
+{
+    if(this != &_objfile)
+    {
+        for(Object* m : m_objects)
+        {
+            delete m;
+        }
+        m_objects.clear();
+        m_name = std::move(_objfile.m_name);
+        for (size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
+        {
+            m_objects.push_back(_objfile.m_objects[i]);
+            _objfile.m_objects[i] = nullptr;
+        }
     }
     return *this;
 }

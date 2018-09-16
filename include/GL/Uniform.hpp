@@ -20,7 +20,9 @@ public:
     Uniform(const std::string&, GLuint);
     ~Uniform();
     Uniform(const Uniform&);
+    Uniform(Uniform&&) = delete;
     Uniform& operator=(const Uniform&);
+    Uniform& operator=(Uniform&&) = delete;
 
     inline void operator=(bool);
     inline void operator=(int);

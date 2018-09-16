@@ -24,7 +24,9 @@ public:
     Shader(SHADER_TYPE);
     ~Shader() noexcept;
     Shader(const Shader&);
+    Shader(Shader&&) = delete;
     Shader& operator=(const Shader&);
+    Shader& operator=(Shader&&) = delete;
 
     void compile() const;
 

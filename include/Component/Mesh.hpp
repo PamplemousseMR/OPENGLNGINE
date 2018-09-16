@@ -38,7 +38,9 @@ public:
     Mesh(const std::string&) noexcept;
     ~Mesh() noexcept;
     Mesh(const Mesh&);
+    Mesh(Mesh&&);
     Mesh& operator=(const Mesh&);
+    Mesh& operator=(Mesh&&);
 
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&);
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&);
