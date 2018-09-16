@@ -24,13 +24,13 @@ public:
 
     Texture(TEXTURE_TYPE);
     ~Texture() noexcept;
-    Texture(const Texture&) = delete;
-    Texture& operator=(const Texture&) = delete;
+    Texture(const Texture&);
+    Texture& operator=(const Texture&);
 
     int load(const std::filesystem::path&);
     inline void generateMipmap() const noexcept;
-    void bind();
-    void unbind() noexcept;
+    void bind() const noexcept;
+    void unbind() const noexcept;
 
     inline GLuint getId() const noexcept;
     inline int getLocation() const noexcept;

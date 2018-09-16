@@ -26,7 +26,7 @@ namespace GL
             }
             s_first = true;
         }
-        for (size_t i=0 ; i<s_location.size() ; ++i)
+        for(size_t i=0 ; i<s_location.size() ; ++i)
         {
             if (s_location[i] == false)
             {
@@ -35,7 +35,7 @@ namespace GL
                 break;
             }
         }
-        if (m_location == -1)
+        if(m_location == -1)
         {
             throw overflow_error("[Texture] Too much active texture");
         }
@@ -46,11 +46,143 @@ namespace GL
         }
     }
 
-
     Texture::~Texture() noexcept
     {
         glDeleteTextures(1, &m_id);
         s_location[size_t(m_location)] = false;
+    }
+
+    Texture::Texture(const Texture& _texture) :
+        m_type(_texture.m_type)
+    {
+        for(size_t i=0 ; i<s_location.size() ; ++i)
+        {
+            if (s_location[i] == false)
+            {
+                m_location = int(i);
+                s_location[i] = true;
+                break;
+            }
+        }
+        if(m_location == -1)
+        {
+            throw overflow_error("[Texture] Too much active texture");
+        }
+        glGenTextures(1, &m_id);
+        if(m_id == 0)
+        {
+            throw overflow_error("[Texture] Out of memory");
+        }
+
+        _texture.bind();
+
+        GLint width;
+        GLint height;
+        GLint internalFormat;
+        glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_COMPONENTS, &internalFormat); // get internal format type of GL texture
+        glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_WIDTH, &width);
+        glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_HEIGHT, &height);
+
+        size_t numBytes;
+        GLenum format;
+        switch(internalFormat)
+        {
+        case GL_RGB:
+            numBytes = size_t(width * height * 3);
+            format = GL_RGB;
+            break;
+        case GL_RGBA:
+            numBytes = size_t(width * height * 4);
+            format = GL_RGBA;
+            break;
+        default:
+            throw invalid_argument("[Texture] Unsuported format");
+            break;
+        }
+
+        if(numBytes > 0)
+        {
+            std::vector< unsigned char > data(numBytes);
+            glGetTexImage(m_type, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+
+            _texture.unbind();
+
+            bind();
+            switch (m_type)
+            {
+                case TEXTURE_1D :
+                    glTexImage1D(m_type, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                break;
+                case TEXTURE_2D :
+                    glTexImage2D(m_type, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                break;
+            }
+            unbind();
+        }
+        else
+        {
+            _texture.unbind();
+        }
+    }
+
+    Texture& Texture::operator=(const Texture& _texture)
+    {
+        if(this != &_texture)
+        {
+            m_type = _texture.m_type;
+
+            GLint width;
+            GLint height;
+            GLint internalFormat;
+            size_t numBytes;
+            GLenum format;
+
+            _texture.bind();
+
+            glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_COMPONENTS, &internalFormat); // get internal format type of GL texture
+            glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_WIDTH, &width);
+            glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_HEIGHT, &height);
+
+            switch(internalFormat)
+            {
+            case GL_RGB:
+                numBytes = size_t(width * height * 3);
+                format = GL_RGB;
+                break;
+            case GL_RGBA:
+                numBytes = size_t(width * height * 4);
+                format = GL_RGBA;
+                break;
+            default:
+                throw invalid_argument("[Texture] Unsuported format");
+                break;
+            }
+
+            if(numBytes > 0)
+            {
+                std::vector< unsigned char > data(numBytes);
+                glGetTexImage(m_type, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+
+                _texture.unbind();
+
+                bind();
+                switch (m_type)
+                {
+                    case TEXTURE_1D :
+                        glTexImage1D(m_type, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                    break;
+                    case TEXTURE_2D :
+                        glTexImage2D(m_type, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                    break;
+                }
+                unbind();
+            }
+            else
+            {
+                _texture.unbind();
+            }
+        }
+        return *this;
     }
 
     int Texture::load(const std::filesystem::path& _path)
@@ -107,13 +239,13 @@ namespace GL
         return width;
     }
 
-    void Texture::bind()
+    void Texture::bind() const noexcept
     {
         glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
         glBindTexture(m_type, m_id);
     }
 
-    void Texture::unbind() noexcept
+    void Texture::unbind() const noexcept
     {
         glBindTexture(m_type, 0);
     }
