@@ -110,27 +110,27 @@ int main()
         cout << "Loading time : " << file.getLoadTime() << endl;
         cout << file << endl;
 
-        GL::Uniform standarProjection("u_m4Projection", standarProgram.getId());
-        GL::Uniform standarModel("u_m4Model", standarProgram.getId());
-        GL::Uniform standarView("u_m4View", standarProgram.getId());
+        GL::Uniform u_m4Projection("u_m4Projection", standarProgram.getId());
+        GL::Uniform u_m4Model("u_m4Model", standarProgram.getId());
+        GL::Uniform u_m4View("u_m4View", standarProgram.getId());
 
-        GL::Uniform lightPositionWorld("u_f3LightPos_Ws", standarProgram.getId());
-        GL::Uniform lightColor("u_f3LightCol", standarProgram.getId());
+        GL::Uniform u_f3LightPos_Ws("u_f3LightPos_Ws", standarProgram.getId());
+        GL::Uniform u_f3LightCol("u_f3LightCol", standarProgram.getId());
 
-        GL::Uniform standarAmbientTexture("u_tAmbient", standarProgram.getId());
-        GL::Uniform standarDiffuseTexture("u_tDiffuse", standarProgram.getId());
-        GL::Uniform standarSpecularTexture("u_tSpecular", standarProgram.getId());
-        GL::Uniform standarNormalTexture("u_tNormal", standarProgram.getId());
+        GL::Uniform u_tAmbient("u_tAmbient", standarProgram.getId());
+        GL::Uniform u_tDiffuse("u_tDiffuse", standarProgram.getId());
+        GL::Uniform u_tSpecular("u_tSpecular", standarProgram.getId());
+        GL::Uniform u_tNormal("u_tNormal", standarProgram.getId());
 
-        GL::Uniform standarHasAmbientTexture("u_bAmbient", standarProgram.getId());
-        GL::Uniform standarHasDiffuseTexture("u_bDiffuse", standarProgram.getId());
-        GL::Uniform standarHasSpecularTexture("u_bSpecular", standarProgram.getId());
-        GL::Uniform standarHasNormalTexture("u_bNormal", standarProgram.getId());
+        GL::Uniform u_bAmbient("u_bAmbient", standarProgram.getId());
+        GL::Uniform u_bDiffuse("u_bDiffuse", standarProgram.getId());
+        GL::Uniform u_bSpecular("u_bSpecular", standarProgram.getId());
+        GL::Uniform u_bNormal("u_bNormal", standarProgram.getId());
 
-        GL::Uniform standarSpecularExponent("u_fSpecularExponent", standarProgram.getId());
-        GL::Uniform standarAmbient("u_f3AmbientCol", standarProgram.getId());
-        GL::Uniform standarDiffuse("u_f3DiffuseCol", standarProgram.getId());
-        GL::Uniform standarSpecular("u_f3SpecularCol", standarProgram.getId());
+        GL::Uniform u_fSpecularExponent("u_fSpecularExponent", standarProgram.getId());
+        GL::Uniform u_f3AmbientCol("u_f3AmbientCol", standarProgram.getId());
+        GL::Uniform u_f3DiffuseCol("u_f3DiffuseCol", standarProgram.getId());
+        GL::Uniform u_f3SpecularCol("u_f3SpecularCol", standarProgram.getId());
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
@@ -158,10 +158,10 @@ int main()
 
             standarProgram.toggle();
 
-            standarView = V;
-            standarProjection = P;
-            lightPositionWorld = light.getPositionData();
-            lightColor = light.getAmbient();
+            u_m4View = V;
+            u_m4Projection = P;
+            u_f3LightPos_Ws = light.getPositionData();
+            u_f3LightCol = light.getAmbient();
             for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
             {
                 Assets::Object* ob = file.getObjects()[a];
@@ -172,7 +172,7 @@ int main()
                     {
                         Component::Mesh* me = gp->getMeshs()[c];
 
-                        standarModel = me->getPositionMatrix() * me->getRotationMatrix();
+                        u_m4Model = me->getPositionMatrix() * me->getRotationMatrix();
                         me->setRotation(glm::vec3(0, me->getRotationData().y+0.01f, 0));
 
                         Assets::Material* material = me->getMaterial();
@@ -216,43 +216,43 @@ int main()
                         if (hasAmbient)
                         {
                             ambient->bind();
-                            standarAmbientTexture = ambient->getLocation();
-                            standarHasAmbientTexture = true;
+                            u_tAmbient = ambient->getLocation();
+                            u_bAmbient = true;
                         }
                         else
-                            standarHasAmbientTexture = false;
+                            u_bAmbient = false;
 
                         if (hasDiffuse)
                         {
                             diffuse->bind();
-                            standarDiffuseTexture = diffuse->getLocation();
-                            standarHasDiffuseTexture = true;
+                            u_tDiffuse = diffuse->getLocation();
+                            u_bDiffuse = true;
                         }
                         else
-                            standarHasDiffuseTexture = false;
+                            u_bDiffuse = false;
 
                         if (hasSpecular)
                         {
                             specular->bind();
-                            standarSpecularTexture = specular->getLocation();
-                            standarHasSpecularTexture = true;
+                            u_tSpecular = specular->getLocation();
+                            u_bSpecular = true;
                         }
                         else
-                            standarHasSpecularTexture = false;
+                            u_bSpecular = false;
 
                         if (hasNormal)
                         {
                             normal->bind();
-                            standarNormalTexture = normal->getLocation();
-                            standarHasNormalTexture = true;
+                            u_tNormal = normal->getLocation();
+                            u_bNormal = true;
                         }
                         else
-                            standarHasNormalTexture = false;
+                            u_bNormal = false;
 
-                        standarSpecularExponent = material->getSpecularExponent();
-                        standarSpecular = material->getSpecular();
-                        standarDiffuse = material->getDiffuse();
-                        standarAmbient = material->getAmbient();
+                        u_fSpecularExponent = material->getSpecularExponent();
+                        u_f3SpecularCol = material->getSpecular();
+                        u_f3DiffuseCol = material->getDiffuse();
+                        u_f3AmbientCol = material->getAmbient();
 
                         me->bind();
                         me->draw();
