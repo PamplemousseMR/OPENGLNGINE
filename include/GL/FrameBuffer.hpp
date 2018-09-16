@@ -7,6 +7,9 @@
 namespace GL
 {
 
+class Texture;
+class RenderBuffer;
+
 class FrameBuffer : public IBuffer
 {
 
@@ -18,6 +21,10 @@ public:
     FrameBuffer(FrameBuffer&&) = delete;
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;
+
+    void attachColorTexture2D(const GL::Texture* const, unsigned) const;
+    void attachDepthBuffer(const GL::RenderBuffer* const) const noexcept;
+    void checkStatus() const;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;

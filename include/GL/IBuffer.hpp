@@ -8,6 +8,13 @@ namespace GL
 class IBuffer
 {
 
+public:
+
+    virtual void bind() const noexcept = 0;
+    virtual void unbind() const noexcept = 0;
+
+    inline GLuint getId() const noexcept;
+
 protected:
 
     IBuffer();
@@ -16,11 +23,6 @@ protected:
     IBuffer(IBuffer&&);
     IBuffer& operator=(const IBuffer&);
     IBuffer& operator=(IBuffer&&);
-
-    virtual void bind() const noexcept = 0;
-    virtual void unbind() const noexcept = 0;
-
-    inline GLuint getId() const noexcept;
 
 protected:
 

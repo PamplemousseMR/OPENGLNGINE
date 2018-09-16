@@ -239,7 +239,7 @@ namespace GL
         return width;
     }
 
-    void Texture::load(int _width, int _height)
+    void Texture::loadRGBA(int _width, int _height)
     {
         switch (m_type)
         {
