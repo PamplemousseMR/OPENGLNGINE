@@ -53,6 +53,11 @@ namespace Assets
         m_boost(_map.m_boost),
         m_mapAat(_map.m_mapAat)
     {
+        m_texture->bind();
+        m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_texture->generateMipmap();
+        m_texture->unbind();
     }
 
     Map& Map::operator=(const Map& _map)
@@ -77,10 +82,14 @@ namespace Assets
             m_mult = _map.m_mult;
             m_boost = _map.m_boost;
             m_mapAat = _map.m_mapAat;
+            m_texture->bind();
+            m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            m_texture->generateMipmap();
+            m_texture->unbind();
         }
         return *this;
     }
-
 
     ostream& Map::print(ostream& _o) const noexcept
     {

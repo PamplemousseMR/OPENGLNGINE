@@ -36,14 +36,14 @@ namespace Assets
         m_sharpnessSharpness(_mat.m_sharpnessSharpness),
         m_niOpticaldensity(_mat.m_niOpticaldensity),
         m_Ke(_mat.m_Ke),
-        m_kaMap(new Map(*_mat.m_kaMap)),
-        m_kdMap(new Map(*_mat.m_kdMap)),
-        m_ksMap(new Map(*_mat.m_ksMap)),
-        m_nsMap(new Map(*_mat.m_nsMap)),
-        m_dMap(new Map(*_mat.m_dMap)),
-        m_dispMap(new Map(*_mat.m_dispMap)),
-        m_decalMap(new Map(*_mat.m_decalMap)),
-        m_bumpMap(new Map(*_mat.m_bumpMap))
+        m_kaMap(_mat.m_kaMap != nullptr ? new Map(*_mat.m_kaMap) : nullptr),
+        m_kdMap(_mat.m_kdMap != nullptr ? new Map(*_mat.m_kdMap) : nullptr),
+        m_ksMap(_mat.m_ksMap != nullptr ? new Map(*_mat.m_ksMap) : nullptr),
+        m_nsMap(_mat.m_nsMap != nullptr ? new Map(*_mat.m_nsMap) : nullptr),
+        m_dMap(_mat.m_dMap != nullptr ? new Map(*_mat.m_dMap) : nullptr),
+        m_dispMap(_mat.m_dispMap != nullptr ? new Map(*_mat.m_dispMap) : nullptr),
+        m_decalMap(_mat.m_decalMap != nullptr ? new Map(*_mat.m_decalMap) : nullptr),
+        m_bumpMap(_mat.m_bumpMap != nullptr ? new Map(*_mat.m_bumpMap) : nullptr)
     {
     }
 
