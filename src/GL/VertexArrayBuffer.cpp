@@ -9,7 +9,7 @@ namespace GL
         glGenVertexArrays(1, &m_id);
         if(m_id == 0)
         {
-            throw overflow_error("[VertexBuffer] Out of memory");
+            throw overflow_error("[VertexArrayBuffer] Out of memory");
         }
     }
 
