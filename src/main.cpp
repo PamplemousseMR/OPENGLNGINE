@@ -24,7 +24,7 @@
 
 using namespace std;
 
-static void key_callback(GLFWwindow* window, int key, int, int action, int)
+static void keyCallback(GLFWwindow* window, int key, int, int action, int)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
@@ -32,13 +32,24 @@ static void key_callback(GLFWwindow* window, int key, int, int action, int)
     }
 }
 
-void window_size_callback(GLFWwindow*, int width, int height)
+void windowSizeCallback(GLFWwindow*, int width, int height)
 {
     glViewport(0,0,width,height);
 }
 
+void exitHandler()
+{
+    glfwTerminate();
+}
+
 int main()
 {
+    if(std::atexit(exitHandler) != 0)
+    {
+        cerr << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
+        return EXIT_FAILURE;
+    }
+
     try
     {
         int nmonitors;
@@ -49,7 +60,7 @@ int main()
         if (!glfwInit())
         {
             cerr << "[GLFW] Can't initialize glfw."<< endl;
-            return -1;
+            return EXIT_FAILURE;
         }
 
         glfwWindowHint(GLFW_SAMPLES, 4);
@@ -66,8 +77,7 @@ int main()
         if (window == nullptr)
         {
             cerr << "[GLFW] Can't create Window." << endl;
-            glfwTerminate();
-            return -1;
+            return EXIT_FAILURE;
         }
 
         glfwMakeContextCurrent(window);
@@ -76,12 +86,12 @@ int main()
         if (glewInit() != GLEW_OK)
         {
             cerr << "[GLEW] Can't initialize glew." << endl;
-            return -1;
+            return EXIT_FAILURE;
         }
 
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-        glfwSetKeyCallback(window, key_callback);
-        glfwSetWindowSizeCallback(window, window_size_callback);
+        glfwSetKeyCallback(window, keyCallback);
+        glfwSetWindowSizeCallback(window, windowSizeCallback);
 
         GL::Shader standarShader(GL::Shader::VERTEX);
         standarShader.setSourceFromFile("GLSL/standarVertex.glsl");
@@ -104,7 +114,7 @@ int main()
         catch (exception e)
         {
             cerr << e.what() << endl;
-            return -1;
+            return EXIT_FAILURE;
         }
 
         cout << file << endl;
@@ -252,18 +262,19 @@ int main()
             GLenum err;
             while ((err = glGetError()) != GL_NO_ERROR)
             {
-                    cerr << "OpenGL error: " << err << endl;
+                    cerr << "[OpenGL] error: " << err << endl;
             }
 
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-        return 0;
+
+        return EXIT_SUCCESS;
     }
     catch (exception e)
     {
         cerr << e.what() << endl;
         cerr << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
-        return -1;
+        return EXIT_FAILURE;
     }
 }
