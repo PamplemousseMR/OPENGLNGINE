@@ -33,6 +33,55 @@ namespace Assets
         delete m_texture;
     }
 
+    Map::Map(const Map& _map) :
+        m_name(_map.m_name),
+        m_mapType(_map.m_mapType),
+        m_texture(new Texture(*_map.m_texture)),
+        m_blendu(_map.m_blendu),
+        m_blendv(_map.m_blendv),
+        m_cc(_map.m_cc),
+        m_clamp(_map.m_clamp),
+        m_imfchanrgb(_map.m_imfchanrgb),
+        m_imfchanmlz(_map.m_imfchanmlz),
+        m_base(_map.m_base),
+        m_gain(_map.m_gain),
+        m_o(_map.m_o),
+        m_s(_map.m_s),
+        m_t(_map.m_t),
+        m_textres(_map.m_textres),
+        m_mult(_map.m_mult),
+        m_boost(_map.m_boost),
+        m_mapAat(_map.m_mapAat)
+    {
+    }
+
+    Map& Map::operator=(const Map& _map)
+    {
+        if(this != &_map)
+        {
+            m_name = _map.m_name;
+            m_mapType = _map.m_mapType;
+            m_texture = new Texture(*_map.m_texture);
+            m_blendu = _map.m_blendu;
+            m_blendv = _map.m_blendv;
+            m_cc = _map.m_cc;
+            m_clamp = _map.m_clamp;
+            m_imfchanrgb = _map.m_imfchanrgb;
+            m_imfchanmlz = _map.m_imfchanmlz;
+            m_base = _map.m_base;
+            m_gain = _map.m_gain;
+            m_o = _map.m_o;
+            m_s = _map.m_s;
+            m_t = _map.m_t;
+            m_textres = _map.m_textres;
+            m_mult = _map.m_mult;
+            m_boost = _map.m_boost;
+            m_mapAat = _map.m_mapAat;
+        }
+        return *this;
+    }
+
+
     ostream& Map::print(ostream& _o) const noexcept
     {
         _o << "[Map " << m_name << "] " << m_mapType << "\n";
