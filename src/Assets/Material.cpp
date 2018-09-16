@@ -23,6 +23,58 @@ namespace Assets
         if (m_bumpMap)delete m_bumpMap;
     }
 
+    Material::Material(const Material& _mat) :
+        m_name(_mat.m_name),
+        m_kaAmbient(_mat.m_kaAmbient),
+        m_kdDiffuse(_mat.m_kdDiffuse),
+        m_ksSpecular(_mat.m_ksSpecular),
+        m_tfTransmissionfilter(_mat.m_tfTransmissionfilter),
+        m_illumIllumination(_mat.m_illumIllumination),
+        m_dDissolve(_mat.m_dDissolve),
+        m_halo(_mat.m_halo),
+        m_nsSpecularexponent(_mat.m_nsSpecularexponent),
+        m_sharpnessSharpness(_mat.m_sharpnessSharpness),
+        m_niOpticaldensity(_mat.m_niOpticaldensity),
+        m_Ke(_mat.m_Ke),
+        m_kaMap(new Map(*_mat.m_kaMap)),
+        m_kdMap(new Map(*_mat.m_kdMap)),
+        m_ksMap(new Map(*_mat.m_ksMap)),
+        m_nsMap(new Map(*_mat.m_nsMap)),
+        m_dMap(new Map(*_mat.m_dMap)),
+        m_dispMap(new Map(*_mat.m_dispMap)),
+        m_decalMap(new Map(*_mat.m_decalMap)),
+        m_bumpMap(new Map(*_mat.m_bumpMap))
+    {
+    }
+
+    Material& Material::operator=(const Material& _mat)
+    {
+        if(this != &_mat)
+        {
+            m_name = _mat.m_name;
+            m_kaAmbient = _mat.m_kaAmbient;
+            m_kdDiffuse = _mat.m_kdDiffuse;
+            m_ksSpecular = _mat.m_ksSpecular;
+            m_tfTransmissionfilter = _mat.m_tfTransmissionfilter;
+            m_illumIllumination = _mat.m_illumIllumination;
+            m_dDissolve = _mat.m_dDissolve;
+            m_halo = _mat.m_halo;
+            m_nsSpecularexponent = _mat.m_nsSpecularexponent;
+            m_sharpnessSharpness = _mat.m_sharpnessSharpness;
+            m_niOpticaldensity = _mat.m_niOpticaldensity;
+            m_Ke = _mat.m_Ke;
+            m_kaMap = new Map(*_mat.m_kaMap);
+            m_kdMap = new Map(*_mat.m_kdMap);
+            m_ksMap = new Map(*_mat.m_ksMap);
+            m_nsMap = new Map(*_mat.m_nsMap);
+            m_dMap = new Map(*_mat.m_dMap);
+            m_dispMap = new Map(*_mat.m_dispMap);
+            m_decalMap = new Map(*_mat.m_decalMap);
+            m_bumpMap = new Map(*_mat.m_bumpMap);
+        }
+        return *this;
+    }
+
     ostream& Material::print(ostream& _o) const noexcept
     {
         _o << "[Material " << m_name << "]\n";

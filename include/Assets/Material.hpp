@@ -22,6 +22,8 @@ public:
 
     Material(const std::string&) noexcept;
     ~Material() noexcept;
+    Material(const Material&);
+    Material& operator=(const Material&);
 
     inline const std::string& getName() const noexcept;
     inline const glm::vec3& getAmbient() const noexcept;
@@ -79,8 +81,8 @@ private :
     float m_sharpnessSharpness {60.0f};
     float m_niOpticaldensity {1.0f};
     glm::vec3 m_Ke {0, 0, 0};
-    Map *m_kaMap {nullptr};
-    Map *m_kdMap {nullptr};
+    Map* m_kaMap {nullptr};
+    Map* m_kdMap {nullptr};
     Map* m_ksMap {nullptr};
     Map* m_nsMap {nullptr};
     Map* m_dMap {nullptr};
