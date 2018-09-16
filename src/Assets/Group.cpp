@@ -59,7 +59,7 @@ namespace Assets
             {
                 _o << "\n";
             }
-            _o << "\t\t mesh : " << m_meshs[i]->getName() << " [normal->" << m_meshs[i]->hasNormal() << " textCoord->" << m_meshs[i]->hasTextureCoord() << "]";
+            _o << "\t\t mesh : " << m_meshs[i]->getName() << " [textCoord->" << m_meshs[i]->hasTextureCoord() << "]";
         }
         return _o;
     }

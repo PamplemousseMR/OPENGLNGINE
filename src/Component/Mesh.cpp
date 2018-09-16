@@ -5,6 +5,7 @@
 using namespace std;
 using namespace glm;
 using namespace GL;
+using namespace Assets;
 
 namespace Component
 {
@@ -31,6 +32,77 @@ namespace Component
         delete m_vboNormal;
         delete m_vboTextCoord;
         delete m_material;
+    }
+
+    Mesh::Mesh(const Mesh& _mesh) :
+        Component(_mesh.m_name),
+        m_dataSize(_mesh.m_dataSize),
+        m_vboVertex(new Buffer(*_mesh.m_vboVertex)),
+        m_vboNormal(new Buffer(*_mesh.m_vboNormal)),
+        m_vboTextCoord(new Buffer(*_mesh.m_vboTextCoord)),
+        m_ebo(new Buffer(*_mesh.m_ebo)),
+        m_vao(new Buffer(Buffer::VAO)),
+        m_textCoord(_mesh.m_textCoord),
+        m_material(new Material(*_mesh.m_material))
+    {
+        m_vao->bind();
+        {
+            m_vboVertex->bind();
+            m_vboVertex->setLocation(S_VERTEXLOCATION);
+            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+            if(m_textCoord)
+            {
+                m_vboTextCoord->bind();
+                m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
+                m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+            }
+
+            m_vboNormal->bind();
+            m_vboNormal->setLocation(S_NORMALLOCATION);
+            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+            m_ebo->bind();
+        }
+        m_vao->unbind();
+    }
+
+    Mesh& Mesh::operator=(const Mesh& _mesh)
+    {
+        if(this != &_mesh)
+        {
+            Component::operator=(_mesh);
+            m_dataSize = _mesh.m_dataSize;
+            m_vboVertex = new Buffer(*_mesh.m_vboVertex);
+            m_vboNormal = new Buffer(*_mesh.m_vboNormal);
+            m_vboTextCoord = new Buffer(*_mesh.m_vboTextCoord);
+            m_ebo = new Buffer(*_mesh.m_ebo);
+            m_vao = new Buffer(Buffer::VAO);
+            m_textCoord = _mesh.m_textCoord;
+            m_material = new Material(*_mesh.m_material);
+
+            m_vao->bind();
+            {
+                m_vboVertex->bind();
+                m_vboVertex->setLocation(S_VERTEXLOCATION);
+                m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+                if(m_textCoord)
+                {
+                    m_vboTextCoord->bind();
+                    m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
+                    m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+                }
+
+                m_vboNormal->bind();
+                m_vboNormal->setLocation(S_NORMALLOCATION);
+                m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+                m_ebo->bind();
+            }
+            m_vao->unbind();
+        }
+        return *this;
     }
 
     bool Mesh::getSimilarVertexIndex(const PackedVertex& _packed, const map<PackedVertex, unsigned int>& _vertexToOutIndex, unsigned int& _result) const noexcept
@@ -159,7 +231,6 @@ namespace Component
 
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
-        m_normal = true;
         m_textCoord = true;
         m_dataSize = int(indexedIndex.size());
 
@@ -258,7 +329,6 @@ namespace Component
 
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
-        m_normal = true;
         m_textCoord = false;
         m_dataSize = int(indexedIndex.size());
 
@@ -369,7 +439,6 @@ namespace Component
 
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
-        m_normal = true;
         m_textCoord = true;
         m_dataSize = int(indexedIndex.size());
 
@@ -472,7 +541,6 @@ namespace Component
 
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
-        m_normal = true;
         m_textCoord = false;
         m_dataSize = int(indexedIndex.size());
 
@@ -516,7 +584,6 @@ namespace Component
     ostream& Mesh::print(ostream& _o) const noexcept
     {
         _o << "[Mesh " << m_name << "]\n";
-        _o << "\tnormal : " << m_normal << "\n";
         _o << "\ttextCoord : " << m_textCoord << "\n";
         return _o;
     }
