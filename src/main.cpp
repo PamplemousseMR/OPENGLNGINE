@@ -107,7 +107,6 @@ int main()
             return -1;
         }
 
-        cout << "Loading time : " << file.getLoadTime() << endl;
         cout << file << endl;
 
         GL::Uniform u_m4Projection("u_m4Projection", standarProgram.getId());
