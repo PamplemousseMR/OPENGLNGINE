@@ -30,6 +30,7 @@ public:
     Texture& operator=(Texture&&) = delete;
 
     int load(const std::filesystem::path&);
+    void load(int, int);
     inline void generateMipmap() const noexcept;
     void bind() const noexcept;
     void unbind() const noexcept;

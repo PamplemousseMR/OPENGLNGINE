@@ -239,6 +239,23 @@ namespace GL
         return width;
     }
 
+    void Texture::load(int _width, int _height)
+    {
+        switch (m_type)
+        {
+            case TEXTURE_1D :
+                if (_height != 0)
+                {
+                    throw overflow_error("[Texture] not a 1D texture");
+                }
+                glTexImage1D(m_type, 0, GL_RGBA, _width, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            break;
+            case TEXTURE_2D :
+                glTexImage2D(m_type, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            break;
+        }
+    }
+
     void Texture::bind() const noexcept
     {
         glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
