@@ -2,14 +2,14 @@
 
 #include <vector>
 
-#include "GL/IBuffer.hpp"
+#include "GL/IGLObject.hpp"
 #include "GL/RenderBuffer.hpp"
 #include "GL/Texture.hpp"
 
 namespace GL
 {
 
-class FrameBuffer : public IBuffer
+class FrameBuffer : public IGLObject
 {
 
 public:
@@ -21,12 +21,17 @@ public:
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;
 
-    void attachColorTexture2D(const GL::Texture&, unsigned) const;
+    void attachColorTexture2D(const GL::Texture&, unsigned);
     inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
     void checkStatus() const;
+    void attachDrawBuffers() const noexcept;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
+
+private:
+
+    std::vector< unsigned > m_colorAttachement {};
 
 };
 

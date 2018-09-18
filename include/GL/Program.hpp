@@ -4,12 +4,14 @@
 
 #include <vector>
 
+#include "GL/IGLObject.hpp"
+
 namespace GL
 {
 
 class Shader;
 
-class Program
+class Program : public IGLObject
 {
 
 public:
@@ -25,27 +27,24 @@ public:
     void detach(const Shader& shader);
     void detachAll() noexcept;
     void link() const;
-    void toggle() noexcept;
 
-    inline bool isActive() const noexcept;
-    inline GLuint getId() const noexcept;
+    inline virtual void bind() const noexcept;
+    inline virtual void unbind() const noexcept;
 
 private:
 
-    GLuint m_id {0};
-    bool m_toggled {false};
     std::vector<Shader*> m_shaders {};
 
 };
 
-inline bool Program::isActive() const noexcept
+inline void Program::bind() const noexcept
 {
-    return m_toggled;
+    glUseProgram(m_id);
 }
 
-inline GLuint Program::getId() const noexcept
+inline void Program::unbind() const noexcept
 {
-    return m_id;
+    glUseProgram(0);
 }
 
 }

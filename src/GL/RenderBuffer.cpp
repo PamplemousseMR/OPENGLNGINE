@@ -6,7 +6,8 @@ using namespace std;
 
 namespace GL
 {
-    RenderBuffer::RenderBuffer()
+    RenderBuffer::RenderBuffer() :
+        IGLObject()
     {
         glGenRenderbuffers(1, &m_id);
         if(m_id == 0)
@@ -20,14 +21,20 @@ namespace GL
         glDeleteRenderbuffers(1, &m_id);
     }
 
-    RenderBuffer::RenderBuffer(const RenderBuffer&)
+    RenderBuffer::RenderBuffer(const RenderBuffer& _renderBuffer) :
+        IGLObject(_renderBuffer)
     {
         throw invalid_argument("[RenderBuffer] TODO");
     }
 
-    RenderBuffer& RenderBuffer::operator=(const RenderBuffer&)
+    RenderBuffer& RenderBuffer::operator=(const RenderBuffer& _renderBuffer)
     {
-        throw invalid_argument("[RenderBuffer] TODO");
+        if(this != &_renderBuffer)
+        {
+            glDeleteRenderbuffers(1, &m_id);
+            IGLObject::operator=(_renderBuffer);
+            throw invalid_argument("[RenderBuffer] TODO");
+        }
         return *this;
     }
 

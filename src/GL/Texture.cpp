@@ -14,6 +14,7 @@ namespace GL
     bool Texture::s_first = false;
 
     Texture::Texture(TEXTURE_TYPE type) :
+        IGLObject(),
         m_type(type)
     {
         if (!s_first)
@@ -53,6 +54,7 @@ namespace GL
     }
 
     Texture::Texture(const Texture& _texture) :
+        IGLObject(_texture),
         m_type(_texture.m_type)
     {
         for(size_t i=0 ; i<s_location.size() ; ++i)
@@ -79,7 +81,7 @@ namespace GL
         GLint width;
         GLint height;
         GLint internalFormat;
-        glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_COMPONENTS, &internalFormat); // get internal format type of GL texture
+        glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_COMPONENTS, &internalFormat);
         glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_WIDTH, &width);
         glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_HEIGHT, &height);
 
@@ -129,6 +131,7 @@ namespace GL
     {
         if(this != &_texture)
         {
+            IGLObject::operator=(_texture);
             m_type = _texture.m_type;
 
             GLint width;
@@ -139,7 +142,7 @@ namespace GL
 
             _texture.bind();
 
-            glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_COMPONENTS, &internalFormat); // get internal format type of GL texture
+            glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_COMPONENTS, &internalFormat);
             glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_WIDTH, &width);
             glGetTexLevelParameteriv(m_type, 0, GL_TEXTURE_HEIGHT, &height);
 

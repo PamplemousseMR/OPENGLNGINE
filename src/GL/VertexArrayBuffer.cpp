@@ -6,7 +6,8 @@ using namespace std;
 
 namespace GL
 {
-    VertexArrayBuffer::VertexArrayBuffer()
+    VertexArrayBuffer::VertexArrayBuffer() :
+        IGLObject()
     {
         glGenVertexArrays(1, &m_id);
         if(m_id == 0)

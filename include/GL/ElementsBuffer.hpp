@@ -2,12 +2,12 @@
 
 #include <vector>
 
-#include "GL/IBuffer.hpp"
+#include "GL/IGLObject.hpp"
 
 namespace GL
 {
 
-class ElementsBuffer : public IBuffer
+class ElementsBuffer : public IGLObject
 {
 
 public:
@@ -32,7 +32,6 @@ inline void ElementsBuffer::setData(const std::vector<T>& _arr) const noexcept
 {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _arr.size() * sizeof(T), &_arr[0], GL_STATIC_DRAW);
 }
-
 
 inline void ElementsBuffer::bind() const noexcept
 {

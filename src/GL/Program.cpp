@@ -10,8 +10,9 @@ using namespace std;
 namespace GL
 {
     Program::Program() :
-        m_id(glCreateProgram())
+        IGLObject()
     {
+        m_id = glCreateProgram();
         if(m_id == 0)
         {
             throw overflow_error("[Program] Out of memory");
@@ -25,8 +26,9 @@ namespace GL
     }
 
     Program::Program(const Program& _program) :
-        m_id(glCreateProgram())
+        IGLObject(_program)
     {
+        m_id = glCreateProgram();
         if(m_id == 0)
         {
             throw overflow_error("[Program] Out of memory");
@@ -43,6 +45,7 @@ namespace GL
         {
             detachAll();
             glDeleteProgram(m_id);
+            IGLObject::operator=(_program);
             m_id = glCreateProgram();
             if(m_id == 0)
             {
@@ -99,18 +102,5 @@ namespace GL
             glGetProgramInfoLog(m_id, infoLogLength, nullptr, &programErrorMessage[0]);
             throw invalid_argument("[Program] " + std::string(programErrorMessage.begin(), programErrorMessage.end()));
         }
-    }
-
-    void Program::toggle() noexcept
-    {
-        if (!m_toggled)
-        {
-            glUseProgram(m_id);
-        }
-        else
-        {
-            glUseProgram(0);
-        }
-        m_toggled = !m_toggled;
     }
 }

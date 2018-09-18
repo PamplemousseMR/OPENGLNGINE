@@ -6,7 +6,8 @@ using namespace std;
 
 namespace GL
 {
-    ElementsBuffer::ElementsBuffer()
+    ElementsBuffer::ElementsBuffer() :
+        IGLObject()
     {
         glGenBuffers(1, &m_id);
         if(m_id == 0)
@@ -20,7 +21,8 @@ namespace GL
         glDeleteBuffers(1, &m_id);
     }
 
-    ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer)
+    ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer) :
+        IGLObject(_buffer)
     {
         glGenBuffers(1, &m_id);
 
@@ -48,7 +50,7 @@ namespace GL
         if(this != &_buffer)
         {
             glDeleteBuffers(1, &m_id);
-
+            IGLObject::operator=(_buffer);
             glGenBuffers(1, &m_id);
 
             glBindBuffer(GL_COPY_READ_BUFFER, _buffer.getId());

@@ -2,12 +2,12 @@
 
 #include <vector>
 
-#include "GL/IBuffer.hpp"
+#include "GL/IGLObject.hpp"
 
 namespace GL
 {
 
-class RenderBuffer : public IBuffer
+class RenderBuffer : public IGLObject
 {
 
 public:

@@ -7,7 +7,7 @@ using namespace std;
 namespace GL
 {
     VertexBuffer::VertexBuffer() :
-        IBuffer()
+        IGLObject()
     {
         glGenBuffers(1, &m_id);
         if(m_id == 0)
@@ -22,7 +22,7 @@ namespace GL
     }
 
     VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) :
-        IBuffer(_buffer)
+        IGLObject(_buffer)
     {
         glGenBuffers(1, &m_id);
 
@@ -50,7 +50,7 @@ namespace GL
         if(this != &_buffer)
         {
             glDeleteBuffers(1, &m_id);
-
+            IGLObject::operator=(_buffer);
             glGenBuffers(1, &m_id);
 
             glBindBuffer(GL_COPY_READ_BUFFER, _buffer.getId());

@@ -39,7 +39,6 @@ public:
 private:
 
     std::string m_name {};
-    GLuint m_program {0};
     GLint m_location {0};
 
 };

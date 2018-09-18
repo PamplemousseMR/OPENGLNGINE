@@ -2,12 +2,12 @@
 
 #include <vector>
 
-#include "GL/IBuffer.hpp"
+#include "GL/IGLObject.hpp"
 
 namespace GL
 {
 
-class VertexArrayBuffer : public IBuffer
+class VertexArrayBuffer : public IGLObject
 {
 
 public:

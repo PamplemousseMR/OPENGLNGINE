@@ -43,14 +43,14 @@ void exitHandler()
 
 int main()
 {
-    if(std::atexit(exitHandler) != 0)
-    {
-        cerr << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
-        return EXIT_FAILURE;
-    }
-
     try
     {
+        if(std::atexit(exitHandler) != 0)
+        {
+            cerr << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
+            return EXIT_FAILURE;
+        }
+
         int nmonitors;
         const GLFWvidmode* mode;
         GLFWmonitor **monitors;
@@ -106,17 +106,7 @@ int main()
         standarProgram.link();
 
         Assets::OBJFile file;
-        try
-        {
-            file.load("obj/Flamethrower/Flamethrower.obj");
-        }
-        catch (exception e)
-        {
-            cerr << e.what() << endl;
-            return EXIT_FAILURE;
-        }
-
-
+        file.load("obj/Flamethrower/Flamethrower.obj");
         cout << file << endl;
 
         GL::Uniform u_m4Projection("u_m4Projection", standarProgram.getId());
@@ -141,26 +131,28 @@ int main()
         GL::Uniform u_f3DiffuseCol("u_f3DiffuseCol", standarProgram.getId());
         GL::Uniform u_f3SpecularCol("u_f3SpecularCol", standarProgram.getId());
 
+        Component::Light light("light");
+        light.setPosition(glm::vec3(0, 0, 100));
+
+        glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
+        glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
 
-        glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
-        glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-        Component::Light light("light");
-        light.setPosition(glm::vec3(0, 0, 100));
-
         while (!glfwWindowShouldClose(window))
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            standarProgram.toggle();
+            standarProgram.bind();
 
             u_m4View = V;
             u_m4Projection = P;
             u_f3LightPos_Ws = light.getPositionData();
             u_f3LightCol = light.getAmbient();
+
             for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
             {
                 Assets::Object* ob = file.getObjects()[a];
@@ -257,7 +249,7 @@ int main()
                 }
             }
 
-            standarProgram.toggle();
+            standarProgram.unbind();
 
             GLenum err;
             while ((err = glGetError()) != GL_NO_ERROR)

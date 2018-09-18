@@ -2,14 +2,14 @@
 
 #include <vector>
 
-#include "GL/IBuffer.hpp"
+#include "GL/IGLObject.hpp"
 
 #define BUFFER_OFFSET(i) (static_cast< GLfloat* >(nullptr) + (i))
 
 namespace GL 
 {
 
-class VertexBuffer : public IBuffer
+class VertexBuffer : public IGLObject
 {
 
 public:

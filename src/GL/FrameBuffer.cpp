@@ -6,7 +6,8 @@ using namespace std;
 
 namespace GL
 {
-    FrameBuffer::FrameBuffer()
+    FrameBuffer::FrameBuffer() :
+        IGLObject()
     {
         glGenFramebuffers(1, &m_id);
         if(m_id == 0)
@@ -20,18 +21,24 @@ namespace GL
         glDeleteFramebuffers(1, &m_id);
     }
 
-    FrameBuffer::FrameBuffer(const FrameBuffer&)
+    FrameBuffer::FrameBuffer(const FrameBuffer& _frameBuffer) :
+        IGLObject(_frameBuffer)
     {
         throw invalid_argument("[FrameBuffer] TODO");
     }
 
-    FrameBuffer& FrameBuffer::operator=(const FrameBuffer&)
+    FrameBuffer& FrameBuffer::operator=(const FrameBuffer& _frameBuffer)
     {
-        throw invalid_argument("[FrameBuffer] TODO");
+        if(this != &_frameBuffer)
+        {
+            glDeleteFramebuffers(1, &m_id);
+            IGLObject::operator=(_frameBuffer);
+            throw invalid_argument("[FrameBuffer] TODO");
+        }
         return *this;
     }
 
-    void FrameBuffer::attachColorTexture2D(const GL::Texture& _texture, unsigned _attach) const
+    void FrameBuffer::attachColorTexture2D(const GL::Texture& _texture, unsigned _attach)
     {
         GLint maxAttach = 0;
         glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttach);
@@ -40,6 +47,11 @@ namespace GL
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
+        auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
+        if (p == m_colorAttachement.end())
+        {
+            m_colorAttachement.push_back(_attach);
+        }
     }
 
     void FrameBuffer::checkStatus() const
@@ -77,6 +89,16 @@ namespace GL
                 break;
             }
         }
+    }
+
+    void FrameBuffer::attachDrawBuffers() const noexcept
+    {
+        std::vector< GLenum > drawBuffers(m_colorAttachement.size());
+        for(size_t i=0 ; i<m_colorAttachement.size() ; ++i)
+        {
+            drawBuffers[i] = GL_COLOR_ATTACHMENT0 + m_colorAttachement[i];
+        }
+        glDrawBuffers(GLsizei(m_colorAttachement.size()), &drawBuffers[0]);
     }
 
 }

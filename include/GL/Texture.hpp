@@ -6,10 +6,12 @@
 #include <string>
 #include <vector>
 
+#include "GL/IGLObject.hpp"
+
 namespace GL
 {
 
-class Texture
+class Texture : public IGLObject
 {
 
 public:
@@ -32,10 +34,10 @@ public:
     int load(const std::filesystem::path&);
     void loadRGBA(int, int);
     inline void generateMipmap() const noexcept;
+
     inline void bind() const noexcept;
     inline void unbind() const noexcept;
 
-    inline GLuint getId() const noexcept;
     inline int getLocation() const noexcept;
     inline TEXTURE_TYPE getType() const noexcept;
 
@@ -50,7 +52,6 @@ private:
 
     TEXTURE_TYPE m_type {TEXTURE_1D};
     bool m_hasAlpha {false};
-    GLuint m_id {0};
     int m_location {-1};
 
 };
@@ -65,11 +66,6 @@ inline void Texture::bind() const noexcept
 inline void Texture::unbind() const noexcept
 {
     glBindTexture(m_type, 0);
-}
-
-inline GLuint Texture::getId() const noexcept
-{
-    return m_id;
 }
 
 inline int Texture::getLocation() const noexcept
