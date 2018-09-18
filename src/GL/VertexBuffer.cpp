@@ -6,7 +6,8 @@ using namespace std;
 
 namespace GL
 {
-    VertexBuffer::VertexBuffer()
+    VertexBuffer::VertexBuffer() :
+        IBuffer()
     {
         glGenBuffers(1, &m_id);
         if(m_id == 0)
@@ -20,7 +21,8 @@ namespace GL
         glDeleteBuffers(1, &m_id);
     }
 
-    VertexBuffer::VertexBuffer(const VertexBuffer& _buffer)
+    VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) :
+        IBuffer(_buffer)
     {
         glGenBuffers(1, &m_id);
 

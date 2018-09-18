@@ -1,6 +1,4 @@
 #include "GL/FrameBuffer.hpp"
-#include "GL/Texture.hpp"
-#include "GL/RenderBuffer.hpp"
 
 #include <stdexcept>
 
@@ -33,7 +31,7 @@ namespace GL
         return *this;
     }
 
-    void FrameBuffer::attachColorTexture2D(const GL::Texture* const _texture, unsigned _attach) const
+    void FrameBuffer::attachColorTexture2D(const GL::Texture& _texture, unsigned _attach) const
     {
         GLint maxAttach = 0;
         glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttach);
@@ -41,12 +39,7 @@ namespace GL
         {
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture->getId(), 0);
-    }
-
-    void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer* const _buffer) const noexcept
-    {
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer->getId());
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
     }
 
     void FrameBuffer::checkStatus() const

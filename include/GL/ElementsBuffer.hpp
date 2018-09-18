@@ -20,7 +20,7 @@ public:
     ElementsBuffer& operator=(ElementsBuffer&&) = delete;
 
     template<typename T>
-    inline void setData(const std::vector<T>&) const;
+    inline void setData(const std::vector<T>&) const noexcept;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
@@ -28,7 +28,7 @@ public:
 };
 
 template<typename T>
-inline void ElementsBuffer::setData(const std::vector<T>& _arr) const
+inline void ElementsBuffer::setData(const std::vector<T>& _arr) const noexcept
 {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _arr.size() * sizeof(T), &_arr[0], GL_STATIC_DRAW);
 }

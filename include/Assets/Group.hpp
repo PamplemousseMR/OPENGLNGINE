@@ -31,7 +31,6 @@ public:
 
     inline const std::string& getName() const noexcept;
     const std::vector<Component::Mesh*>& getMeshs() const noexcept;
-    Material* getLastMaterial() const noexcept;
 
     std::ostream& print(std::ostream& o) const noexcept;
 

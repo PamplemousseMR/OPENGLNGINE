@@ -3,12 +3,11 @@
 #include <vector>
 
 #include "GL/IBuffer.hpp"
+#include "GL/RenderBuffer.hpp"
+#include "GL/Texture.hpp"
 
 namespace GL
 {
-
-class Texture;
-class RenderBuffer;
 
 class FrameBuffer : public IBuffer
 {
@@ -22,14 +21,19 @@ public:
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;
 
-    void attachColorTexture2D(const GL::Texture* const, unsigned) const;
-    void attachDepthBuffer(const GL::RenderBuffer* const) const noexcept;
+    void attachColorTexture2D(const GL::Texture&, unsigned) const;
+    inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
     void checkStatus() const;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
 
 };
+
+inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const noexcept
+{
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
+}
 
 inline void FrameBuffer::bind() const noexcept
 {

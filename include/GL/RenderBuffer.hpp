@@ -19,12 +19,17 @@ public:
     RenderBuffer& operator=(const RenderBuffer&);
     RenderBuffer& operator=(RenderBuffer&&) = delete;
 
-    void setStorage(int, int) const noexcept;
+    inline void setStorage(int, int) const noexcept;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
 
 };
+
+inline void RenderBuffer::setStorage(int _width, int _height) const noexcept
+{
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _width, _height);
+}
 
 inline void RenderBuffer::bind() const noexcept
 {

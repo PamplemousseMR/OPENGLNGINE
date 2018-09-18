@@ -31,8 +31,4 @@ namespace GL
         return *this;
     }
 
-    void RenderBuffer::setStorage(int _width, int _height) const noexcept
-    {
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _width, _height);
-    }
 }

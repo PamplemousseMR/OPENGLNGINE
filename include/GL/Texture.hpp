@@ -32,8 +32,8 @@ public:
     int load(const std::filesystem::path&);
     void loadRGBA(int, int);
     inline void generateMipmap() const noexcept;
-    void bind() const noexcept;
-    void unbind() const noexcept;
+    inline void bind() const noexcept;
+    inline void unbind() const noexcept;
 
     inline GLuint getId() const noexcept;
     inline int getLocation() const noexcept;
@@ -54,6 +54,18 @@ private:
     int m_location {-1};
 
 };
+
+
+inline void Texture::bind() const noexcept
+{
+    glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
+    glBindTexture(m_type, m_id);
+}
+
+inline void Texture::unbind() const noexcept
+{
+    glBindTexture(m_type, 0);
+}
 
 inline GLuint Texture::getId() const noexcept
 {

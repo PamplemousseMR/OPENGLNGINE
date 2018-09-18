@@ -125,11 +125,6 @@ namespace Assets
         return m_meshs;
     }
 
-    Material* Group::getLastMaterial() const noexcept
-    {
-        return m_meshs.back()->getMaterial();
-    }
-
     ostream& operator<<(ostream& _o, const Group& _m) noexcept
     {
         _m.print(_o);

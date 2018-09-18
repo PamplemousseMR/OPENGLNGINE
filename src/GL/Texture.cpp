@@ -256,15 +256,4 @@ namespace GL
         }
     }
 
-    void Texture::bind() const noexcept
-    {
-        glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
-        glBindTexture(m_type, m_id);
-    }
-
-    void Texture::unbind() const noexcept
-    {
-        glBindTexture(m_type, 0);
-    }
-
 }

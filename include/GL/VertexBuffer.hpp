@@ -22,9 +22,9 @@ public:
     VertexBuffer& operator=(VertexBuffer&&) = delete;
 
     template<typename T>
-    inline void setData(const std::vector<T>&) const;
-    inline void setLocation(GLuint) const;
-    inline void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint) const;
+    inline void setData(const std::vector<T>&) const noexcept;
+    inline void setLocation(GLuint) const noexcept;
+    inline void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint) const noexcept;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
@@ -32,17 +32,17 @@ public:
 };
 
 template<typename T>
-inline void VertexBuffer::setData(const std::vector<T>& _arr) const
+inline void VertexBuffer::setData(const std::vector<T>& _arr) const noexcept
 {
     glBufferData(GL_ARRAY_BUFFER, _arr.size() * sizeof(T), &_arr[0], GL_STATIC_DRAW);
 }
 
-inline void VertexBuffer::setLocation(GLuint _location) const
+inline void VertexBuffer::setLocation(GLuint _location) const noexcept
 {
     glEnableVertexAttribArray(_location);
 }
 
-inline void VertexBuffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset) const
+inline void VertexBuffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset) const noexcept
 {
     glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
 }

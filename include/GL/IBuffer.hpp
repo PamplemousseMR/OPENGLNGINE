@@ -19,10 +19,6 @@ protected:
 
     IBuffer();
     virtual ~IBuffer() noexcept;
-    IBuffer(const IBuffer&);
-    IBuffer(IBuffer&&);
-    IBuffer& operator=(const IBuffer&);
-    IBuffer& operator=(IBuffer&&);
 
 protected:
 
