@@ -1,4 +1,4 @@
-#version 460 core
+#version 440 core
 
 in vec2 v_f2TextCor_Fs;
 in vec3 v_f3NormalDir_Vs;

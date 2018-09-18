@@ -1,4 +1,4 @@
-#version 460 core
+#version 440 core
 
 layout(location = 0) in vec3 a_f3VertexPos_Ms;
 layout(location = 1) in vec2 a_f2TextCor_Fs;

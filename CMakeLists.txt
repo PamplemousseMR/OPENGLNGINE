@@ -25,7 +25,7 @@ CONAN_BASIC_SETUP()
 
 #------------ create project ------------
 ADD_EXECUTABLE(${openglngine_project_name}  ${openglngine_src_files} ${openglngine_header_files} ${openglngine_glsl_files})
-TARGET_INCLUDE_DIRECTORIES(${openglngine_project_name} PRIVATE ${openglngine_header_dir} ${openglngine_glsl_files})
+TARGET_INCLUDE_DIRECTORIES(${openglngine_project_name} PRIVATE ${openglngine_header_dir} ${openglngine_glsl_dir})
 
 #------------ find opengl ------------
 FIND_PACKAGE("OpenGL")

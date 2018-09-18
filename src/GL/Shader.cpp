@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <vector>
+#include <stdexcept>
 
 using namespace std;
 

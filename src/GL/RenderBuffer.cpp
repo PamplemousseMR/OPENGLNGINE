@@ -1,5 +1,7 @@
 #include "GL/RenderBuffer.hpp"
 
+#include <stdexcept>
+
 using namespace std;
 
 namespace GL

@@ -1,5 +1,7 @@
 #include "GL/VertexArrayBuffer.hpp"
 
+#include <stdexcept>
+
 using namespace std;
 
 namespace GL

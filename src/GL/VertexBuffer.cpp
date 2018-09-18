@@ -1,5 +1,7 @@
 #include "GL/VertexBuffer.hpp"
 
+#include <stdexcept>
+
 using namespace std;
 
 namespace GL

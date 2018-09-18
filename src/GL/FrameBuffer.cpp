@@ -2,7 +2,7 @@
 #include "GL/Texture.hpp"
 #include "GL/RenderBuffer.hpp"
 
-#include <exception>
+#include <stdexcept>
 
 using namespace std;
 
