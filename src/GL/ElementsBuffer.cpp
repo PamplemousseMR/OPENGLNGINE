@@ -1,5 +1,6 @@
 #include "GL/ElementsBuffer.hpp"
 
+#include <assert.h>
 #include <stdexcept>
 
 using namespace std;
@@ -18,6 +19,7 @@ namespace GL
             glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &s_maxIndices);
         }
         glGenBuffers(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[ElementsBuffer] Out of memory");
@@ -27,6 +29,7 @@ namespace GL
     ElementsBuffer::~ElementsBuffer() noexcept
     {
         glDeleteBuffers(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer) :
@@ -42,15 +45,12 @@ namespace GL
         if (size != 0)
         {
             glBufferData(GL_COPY_WRITE_BUFFER, size, nullptr, GL_STATIC_DRAW);
-            if(glGetError() == GL_OUT_OF_MEMORY )
-            {
-                throw overflow_error("[ElementsBuffer] Out of memory");
-            }
             glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, size);
         }
 
         glBindBuffer(GL_COPY_READ_BUFFER, 0);
         glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     ElementsBuffer& ElementsBuffer::operator=(const ElementsBuffer& _buffer)
@@ -69,15 +69,12 @@ namespace GL
             if (size != 0)
             {
                 glBufferData(GL_COPY_WRITE_BUFFER, size, nullptr, GL_STATIC_DRAW);
-                if(glGetError() == GL_OUT_OF_MEMORY )
-                {
-                    throw overflow_error("[ElementsBuffer] Out of memory");
-                }
                 glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, size);
             }
 
             glBindBuffer(GL_COPY_READ_BUFFER, 0);
             glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+            assert(glGetError() == GL_NO_ERROR);
         }
         return *this;
     }

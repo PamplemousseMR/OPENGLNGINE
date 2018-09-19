@@ -42,6 +42,7 @@ namespace GL
             throw overflow_error("[Texture] Too much active texture");
         }
         glGenTextures(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[Texture] Out of memory");
@@ -51,6 +52,7 @@ namespace GL
     Texture::~Texture() noexcept
     {
         glDeleteTextures(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
         s_location[size_t(m_location)] = false;
     }
 
@@ -126,6 +128,7 @@ namespace GL
         {
             _texture.unbind();
         }
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     Texture& Texture::operator=(const Texture& _texture)
@@ -185,6 +188,7 @@ namespace GL
             {
                 _texture.unbind();
             }
+            assert(glGetError() == GL_NO_ERROR);
         }
         return *this;
     }
@@ -243,6 +247,7 @@ namespace GL
                 glTexImage2D(m_type, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
             break;
         }
+        assert(glGetError() == GL_NO_ERROR);
         SOIL_free_image_data(data);
         return width;
     }
@@ -266,6 +271,7 @@ namespace GL
                 glTexImage2D(m_type, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             break;
         }
+        assert(glGetError() == GL_NO_ERROR);
     }
 
 }

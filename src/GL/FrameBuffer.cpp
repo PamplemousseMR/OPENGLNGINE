@@ -11,6 +11,7 @@ namespace GL
         IGLObject()
     {
         glGenFramebuffers(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[FrameBuffer] Out of memory");
@@ -20,6 +21,7 @@ namespace GL
     FrameBuffer::~FrameBuffer() noexcept
     {
         glDeleteFramebuffers(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     FrameBuffer::FrameBuffer(const FrameBuffer& _frameBuffer) :
@@ -33,6 +35,7 @@ namespace GL
         if(this != &_frameBuffer)
         {
             glDeleteFramebuffers(1, &m_id);
+            assert(glGetError() == GL_NO_ERROR);
             IGLObject::operator=(_frameBuffer);
             throw invalid_argument("[FrameBuffer] TODO");
         }
@@ -48,6 +51,7 @@ namespace GL
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
+        assert(glGetError() == GL_NO_ERROR);
         auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
         if (p == m_colorAttachement.end())
         {
@@ -90,6 +94,7 @@ namespace GL
                 break;
             }
         }
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     void FrameBuffer::attachDrawBuffers() const
@@ -106,6 +111,7 @@ namespace GL
             drawBuffers[i] = GL_COLOR_ATTACHMENT0 + m_colorAttachement[i];
         }
         glDrawBuffers(GLsizei(m_colorAttachement.size()), &drawBuffers[0]);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
 }

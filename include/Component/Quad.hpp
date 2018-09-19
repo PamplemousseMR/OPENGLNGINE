@@ -60,6 +60,7 @@ std::ostream& operator<<(std::ostream&, const Quad&) noexcept;
 inline void Quad::draw() const noexcept
 {
     glDrawArrays(GL_TRIANGLES, 0, s_DATA_SIZE);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

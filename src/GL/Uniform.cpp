@@ -9,6 +9,7 @@ namespace GL
         m_name(name),
         m_location(glGetUniformLocation(program, name.c_str()))
     {
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     Uniform::~Uniform()

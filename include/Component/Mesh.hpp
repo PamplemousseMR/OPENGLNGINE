@@ -122,6 +122,7 @@ inline bool Mesh::hasTextureCoord() const noexcept
 inline void Mesh::draw() const noexcept
 {
     glDrawElements(GL_TRIANGLES, m_dataSize, GL_UNSIGNED_INT, static_cast< void* >(nullptr));
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

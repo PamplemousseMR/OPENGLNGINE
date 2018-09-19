@@ -1,5 +1,6 @@
 #include "GL/Shader.hpp"
 
+#include <assert.h>
 #include <fstream>
 #include <vector>
 #include <stdexcept>
@@ -13,6 +14,7 @@ namespace GL
         m_id(glCreateShader(type)),
         m_type(type)
     {
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[Shader] Out of memory");
@@ -22,6 +24,7 @@ namespace GL
     Shader::~Shader() noexcept
     {
         glDeleteShader(m_id);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     Shader::Shader(const Shader& _shader) :
@@ -29,6 +32,7 @@ namespace GL
         m_type(_shader.m_type),
         m_sources(_shader.m_sources)
     {
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[Shader] Out of memory");
@@ -42,6 +46,7 @@ namespace GL
             glDeleteShader(m_id);
             m_type = _shader.m_type;
             m_id = glCreateShader(_shader.m_type);
+            assert(glGetError() == GL_NO_ERROR);
             if(m_id == 0)
             {
                 throw overflow_error("[Shader] Out of memory");
@@ -95,6 +100,7 @@ namespace GL
             string str(shaderErrorMessage.begin(), shaderErrorMessage.end());
             throw runtime_error("[Shader] can't compile : " + str);
         }
+        assert(glGetError() == GL_NO_ERROR);
     }
 
 }

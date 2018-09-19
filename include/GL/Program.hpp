@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 
+#include <assert.h>
 #include <vector>
 
 #include "GL/IGLObject.hpp"
@@ -40,11 +41,13 @@ private:
 inline void Program::bind() const noexcept
 {
     glUseProgram(m_id);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void Program::unbind() const noexcept
 {
     glUseProgram(0);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

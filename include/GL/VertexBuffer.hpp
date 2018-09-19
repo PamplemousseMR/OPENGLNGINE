@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <vector>
 
 #include "GL/IGLObject.hpp"
@@ -44,26 +45,31 @@ inline void VertexBuffer::setData(const std::vector<T>& _arr) const
         throw std::overflow_error("[VertexBuffer] Too big");
     }
     glBufferData(GL_ARRAY_BUFFER, _arr.size() * sizeof(T), &_arr[0], GL_STATIC_DRAW);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void VertexBuffer::setLocation(GLuint _location) const noexcept
 {
     glEnableVertexAttribArray(_location);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void VertexBuffer::setAttrib(GLuint _location, GLint _size, GLenum _type, GLboolean _normalize, GLsizei _stride, GLint _offset) const noexcept
 {
     glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void VertexBuffer::bind() const noexcept
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_id);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void VertexBuffer::unbind() const noexcept
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

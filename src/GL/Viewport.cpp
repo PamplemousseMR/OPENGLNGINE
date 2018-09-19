@@ -1,5 +1,6 @@
 #include "GL/Viewport.hpp"
 
+#include <assert.h>
 #include <stdexcept>
 
 using namespace std;
@@ -21,5 +22,6 @@ namespace GL
             throw overflow_error("[Viewport] Size too big");
         }
         glViewport(0, 0, _width, _height);
+        assert(glGetError() == GL_NO_ERROR);
     }
 }

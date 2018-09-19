@@ -13,6 +13,7 @@ namespace GL
         IGLObject()
     {
         m_id = glCreateProgram();
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[Program] Out of memory");
@@ -23,12 +24,14 @@ namespace GL
     {
         detachAll();
         glDeleteProgram(m_id);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     Program::Program(const Program& _program) :
         IGLObject(_program)
     {
         m_id = glCreateProgram();
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[Program] Out of memory");
@@ -47,6 +50,7 @@ namespace GL
             glDeleteProgram(m_id);
             IGLObject::operator=(_program);
             m_id = glCreateProgram();
+            assert(glGetError() == GL_NO_ERROR);
             if(m_id == 0)
             {
                 throw overflow_error("[Program] Out of memory");
@@ -68,6 +72,7 @@ namespace GL
         }
         m_shaders.push_back(&_shader);
         glAttachShader(m_id, _shader.getId());
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     void Program::detach(const Shader& _shader)
@@ -78,6 +83,7 @@ namespace GL
             throw runtime_error("[Program] shader not attached ");
         }
         glDetachShader(m_id, _shader.getId());
+        assert(glGetError() == GL_NO_ERROR);
         m_shaders.erase(p);
     }
 
@@ -102,5 +108,6 @@ namespace GL
             glGetProgramInfoLog(m_id, infoLogLength, nullptr, &programErrorMessage[0]);
             throw runtime_error("[Program] " + std::string(programErrorMessage.begin(), programErrorMessage.end()));
         }
+        assert(glGetError() == GL_NO_ERROR);
     }
 }

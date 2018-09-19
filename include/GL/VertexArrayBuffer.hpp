@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <vector>
 
 #include "GL/IGLObject.hpp"
@@ -27,11 +28,13 @@ public:
 inline void VertexArrayBuffer::bind() const noexcept
 {
     glBindVertexArray(m_id);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void VertexArrayBuffer::unbind() const noexcept
 {
     glBindVertexArray(0);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

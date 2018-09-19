@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 
+#include <assert.h>
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -62,12 +63,15 @@ private:
 inline void Texture::bind() const noexcept
 {
     glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
+    assert(glGetError() == GL_NO_ERROR);
     glBindTexture(m_type, m_id);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void Texture::unbind() const noexcept
 {
     glBindTexture(m_type, 0);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline int Texture::getLocation() const noexcept
@@ -83,11 +87,13 @@ inline Texture::TEXTURE_TYPE Texture::getType() const noexcept
 inline void Texture::setParameter(GLenum pname, GLint param) const noexcept
 {
     glTexParameteri(m_type, pname, param);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void Texture::generateMipmap() const noexcept
 {
     glGenerateMipmap(m_type);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

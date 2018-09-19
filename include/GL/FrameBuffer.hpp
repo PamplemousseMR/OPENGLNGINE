@@ -1,5 +1,6 @@
 #pragma once
 
+#include <assert.h>
 #include <vector>
 
 #include "GL/IGLObject.hpp"
@@ -38,16 +39,19 @@ private:
 inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const noexcept
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void FrameBuffer::bind() const noexcept
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void FrameBuffer::unbind() const noexcept
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 }

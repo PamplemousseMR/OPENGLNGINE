@@ -19,6 +19,7 @@ namespace GL
             glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &s_maxVertices);
         }
         glGenBuffers(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
         {
             throw overflow_error("[VertexBuffer] Out of memory");
@@ -28,6 +29,7 @@ namespace GL
     VertexBuffer::~VertexBuffer() noexcept
     {
         glDeleteBuffers(1, &m_id);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) :
@@ -52,6 +54,7 @@ namespace GL
 
         glBindBuffer(GL_COPY_READ_BUFFER, 0);
         glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
     }
 
     VertexBuffer& VertexBuffer::operator=(const VertexBuffer& _buffer)
@@ -79,6 +82,7 @@ namespace GL
 
             glBindBuffer(GL_COPY_READ_BUFFER, 0);
             glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+            assert(glGetError() == GL_NO_ERROR);
         }
         return *this;
     }
