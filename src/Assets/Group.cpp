@@ -82,27 +82,21 @@ namespace Assets
     {
         m_meshs.push_back(new Mesh(_name ? *_name : m_name));
         Mesh* mesh = m_meshs.back();
-        try {
-            if(_normal && _textCoord)
-            {
-                mesh->loadMesh(_vertex, *_normal, *_textCoord, _index);
-            }
-            else if(_normal)
-            {
-                mesh->loadMesh(_vertex, *_normal, _index);
-            }
-            else if(_textCoord)
-            {
-                mesh->loadMesh(_vertex, *_textCoord, _index);
-            }
-            else
-            {
-                mesh->loadMesh(_vertex, _index);
-            }
-        }
-        catch (const invalid_argument& e)
+        if(_normal && _textCoord)
         {
-            throw invalid_argument("[Group] " + string(e.what()));
+            mesh->loadMesh(_vertex, *_normal, *_textCoord, _index);
+        }
+        else if(_normal)
+        {
+            mesh->loadMesh(_vertex, *_normal, _index);
+        }
+        else if(_textCoord)
+        {
+            mesh->loadMesh(_vertex, *_textCoord, _index);
+        }
+        else
+        {
+            mesh->loadMesh(_vertex, _index);
         }
     }
 

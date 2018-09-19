@@ -87,20 +87,13 @@ void OBJFile::push(vector<vec3>* _vertex, vector<vec3>* _normal, vector<vec2>* _
     {
         throw(invalid_argument("[OBJFile] use normal on faces with no normal define"));
     }
-    try
+    if (*_usemtl != "")
     {
-        if (*_usemtl != "")
-        {
-            m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, _usemtl);
-        }
-        else
-        {
-            m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, nullptr);
-        }
+        m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, _usemtl);
     }
-    catch(const invalid_argument& _e)
+    else
     {
-        throw(invalid_argument("[OBJFile] " + string(string(_e.what()))));
+        m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, nullptr);
     }
     _index->clear();
     *_usemtl = "";
@@ -367,16 +360,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     vector<Map*> map;
                     if (dat0 == "\tmap_Ka" || dat0 == "map_Ka" || dat0 == "\tmap_ka" || dat0 == "map_ka")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setKamap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setKamap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -385,16 +371,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tmap_Kd" || dat0 == "map_Kd" || dat0 == "\tmap_kd" || dat0 == "map_kd")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setKdmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setKdmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -403,16 +382,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tmap_Ks" || dat0 == "map_Ks" || dat0 == "\tmap_ks" || dat0 == "map_ks")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setKsmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setKsmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -421,16 +393,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tmap_Ns" || dat0 == "map_Ns" || dat0 == "\tmap_ns" || dat0 == "map_ns")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setNsmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setNsmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -439,16 +404,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tmap_d" || dat0 == "map_d")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setdmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setdmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -457,16 +415,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tdisp" || dat0 == "disp" || dat0 == "\tmap_Disp" || dat0 == "map_Disp")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setDispmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setDispmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -475,16 +426,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tdecal" || dat0 == "decal")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setDecalmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setDecalmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -493,16 +437,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     }
                     else if (dat0 == "\tbump" || dat0 == "bump" || dat0 == "\tmap_bump" || dat0 == "map_bump")
                     {
-                        try
+                        for(Material* ma : materials)
                         {
-                            for(Material* ma : materials)
-                            {
-                                ma->setBumpmap(_path.parent_path() / data[data.size() - 1]);
-                            }
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] [loadMTLFile] " + string(_e.what()));
+                            ma->setBumpmap(_path.parent_path() / data[data.size() - 1]);
                         }
                         for(Material* ma : materials)
                         {
@@ -910,40 +847,19 @@ void OBJFile::load(const filesystem::path& _path)
                     {
                         if (m_objects.back()->getGroups().size() > 0)
                         {
-                            try
-                            {
-                                push(&vertex, &normal, &textCoord, &index, &usemtl);
-                            }
-                            catch(const invalid_argument& _e)
-                            {
-                                throw invalid_argument("[OBJFile] " + string(_e.what()));
-                            }
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
                         else
                         {
                             m_objects.back()->addGroup("default_group");
-                            try
-                            {
-                                push(&vertex, &normal, &textCoord, &index, &usemtl);
-                            }
-                            catch(const invalid_argument& _e)
-                            {
-                                throw invalid_argument("[OBJFile] " + string(_e.what()));
-                            }
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
                     }
                     if (index.size() != 0)
                     {
                         m_objects.push_back(new Object("default_object"));
                         m_objects.back()->addGroup("default_group");
-                        try
-                        {
-                            push(&vertex, &normal, &textCoord, &index, &usemtl);
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] " + string(_e.what()));
-                        }
+                        push(&vertex, &normal, &textCoord, &index, &usemtl);
                     }
                 }
                 m_objects.push_back(new Object(data[1]));
@@ -962,14 +878,7 @@ void OBJFile::load(const filesystem::path& _path)
                         {
                             if (index.size() != 0)
                             {
-                                try
-                                {
-                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                }
-                                catch(const invalid_argument& _e)
-                                {
-                                    throw invalid_argument("[OBJFile] " + string(_e.what()));
-                                }
+                                push(&vertex, &normal, &textCoord, &index, &usemtl);
                             }
                             m_objects.back()->addGroup(data[1]);
                         }
@@ -978,14 +887,7 @@ void OBJFile::load(const filesystem::path& _path)
                             if (index.size() != 0)
                             {
                                 m_objects.back()->addGroup("default_group");
-                                try
-                                {
-                                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                                }
-                                catch(const invalid_argument& _e)
-                                {
-                                    throw invalid_argument("[OBJFile] " + string(_e.what()));
-                                }
+                                push(&vertex, &normal, &textCoord, &index, &usemtl);
                             }
                             m_objects.back()->addGroup(data[1]);
                         }
@@ -996,14 +898,7 @@ void OBJFile::load(const filesystem::path& _path)
                         {
                             m_objects.push_back(new Object("default_object"));
                             m_objects.back()->addGroup("default_group");
-                            try
-                            {
-                                push(&vertex, &normal, &textCoord, &index, &usemtl);
-                            }
-                            catch(const invalid_argument& _e)
-                            {
-                                throw invalid_argument("[OBJFile] " + string(_e.what()));
-                            }
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
                         m_objects.push_back(new Object("default_object"));
                         m_objects.back()->addGroup(data[1]);
@@ -1024,40 +919,19 @@ void OBJFile::load(const filesystem::path& _path)
                     {
                         if (m_objects.back()->getGroups().size() > 0)
                         {
-                            try
-                            {
-                                push(&vertex, &normal, &textCoord, &index, &usemtl);
-                            }
-                            catch(const invalid_argument& _e)
-                            {
-                                throw invalid_argument("[OBJFile] " + string(_e.what()));
-                            }
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
                         else
                         {
                             m_objects.back()->addGroup("default_group");
-                            try
-                            {
-                                push(&vertex, &normal, &textCoord, &index, &usemtl);
-                            }
-                            catch(const invalid_argument& _e)
-                            {
-                                throw invalid_argument("[OBJFile] " + string(_e.what()));
-                            }
+                            push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
                     }
                     else
                     {
                         m_objects.push_back(new Object("default_object"));
                         m_objects.back()->addGroup("default_group");
-                        try
-                        {
-                            push(&vertex, &normal, &textCoord, &index, &usemtl);
-                        }
-                        catch(const invalid_argument& _e)
-                        {
-                            throw invalid_argument("[OBJFile] " + string(_e.what()));
-                        }
+                        push(&vertex, &normal, &textCoord, &index, &usemtl);
                     }
                 }
                 usemtl = data[1];
@@ -1071,40 +945,19 @@ void OBJFile::load(const filesystem::path& _path)
         {
             if (m_objects.back()->getGroups().size() > 0)
             {
-                try
-                {
-                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                }
-                catch(const invalid_argument& _e)
-                {
-                    throw invalid_argument("[OBJFile] " + string(_e.what()));
-                }
+                push(&vertex, &normal, &textCoord, &index, &usemtl);
             }
             else
             {
                 m_objects.back()->addGroup("default_group");
-                try
-                {
-                    push(&vertex, &normal, &textCoord, &index, &usemtl);
-                }
-                catch(const invalid_argument& _e)
-                {
-                    throw invalid_argument("[OBJFile] " + string(_e.what()));
-                }
+                push(&vertex, &normal, &textCoord, &index, &usemtl);
             }
         }
         else
         {
             m_objects.push_back(new Object("default_group"));
             m_objects.back()->addGroup("default_group");
-            try
-            {
-                push(&vertex, &normal, &textCoord, &index, &usemtl);
-            }
-            catch(const invalid_argument& _e)
-            {
-                throw invalid_argument("[OBJFile] " + string(_e.what()));
-            }
+            push(&vertex, &normal, &textCoord, &index, &usemtl);
         }
     }
 
@@ -1112,14 +965,7 @@ void OBJFile::load(const filesystem::path& _path)
     file.close();
     if (mtllib != "")
     {
-        try
-        {
-            loadMTLFile(_path.parent_path() / mtllib);
-        }
-        catch(invalid_argument e)
-        {
-            throw invalid_argument("[OBJFile] [load(const string& path) throw()] " + string(e.what()));
-        }
+        loadMTLFile(_path.parent_path() / mtllib);
     }
 }
 

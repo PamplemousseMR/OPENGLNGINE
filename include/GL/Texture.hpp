@@ -33,6 +33,7 @@ public:
 
     int load(const std::filesystem::path&);
     void loadRGBA(int, int);
+    void loadDepth(int, int);
     inline void generateMipmap() const noexcept;
 
     inline void bind() const noexcept;
@@ -46,6 +47,7 @@ public:
 private:
 
     static std::vector<bool> s_location;
+    static int s_maxSize;
     static bool s_first;
 
 private:

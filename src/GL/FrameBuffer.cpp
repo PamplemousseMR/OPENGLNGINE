@@ -92,8 +92,14 @@ namespace GL
         }
     }
 
-    void FrameBuffer::attachDrawBuffers() const noexcept
+    void FrameBuffer::attachDrawBuffers() const
     {
+        GLint maxDraw = 0;
+        glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDraw);
+        if(m_colorAttachement.size() >= unsigned(maxDraw))
+        {
+            throw overflow_error("[FrameBuffer] Too much draw texture");
+        }
         std::vector< GLenum > drawBuffers(m_colorAttachement.size());
         for(size_t i=0 ; i<m_colorAttachement.size() ; ++i)
         {

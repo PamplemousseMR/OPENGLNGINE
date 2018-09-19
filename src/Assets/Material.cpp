@@ -225,14 +225,7 @@ namespace Assets
         {
             delete m_kaMap;
         }
-        try
-        {
-            m_kaMap = new Map(Map::KA, _path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_kaMap = new Map(Map::KA, _path);
     }
 
     void Material::setKdmap(const std::filesystem::path& _path)
@@ -241,14 +234,7 @@ namespace Assets
         {
             delete m_kdMap;
         }
-        try
-        {
-            m_kdMap = new Map(Map::KD, _path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_kdMap = new Map(Map::KD, _path);
     }
 
     void Material::setKsmap(const std::filesystem::path& _path)
@@ -257,14 +243,7 @@ namespace Assets
         {
             delete m_ksMap;
         }
-        try
-        {
-            m_ksMap = new Map(Map::KS, _path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_ksMap = new Map(Map::KS, _path);
     }
 
     void Material::setNsmap(const std::filesystem::path& _path)
@@ -273,14 +252,7 @@ namespace Assets
         {
             delete m_nsMap;
         }
-        try
-        {
-            m_nsMap = new Map(Map::NS, _path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_nsMap = new Map(Map::NS, _path);
     }
 
     void Material::setdmap(const std::filesystem::path& _path)
@@ -289,14 +261,7 @@ namespace Assets
         {
             delete m_dMap;
         }
-        try
-        {
-            m_dMap = new Map(Map::D, _path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_dMap = new Map(Map::D, _path);
     }
 
     void Material::setDispmap(const std::filesystem::path& _path)
@@ -305,14 +270,7 @@ namespace Assets
         {
             delete m_dispMap;
         }
-        try
-        {
-            m_dispMap = new Map(Map::DISP, _path);
-        }
-        catch(const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_dispMap = new Map(Map::DISP, _path);
     }
 
     void Material::setDecalmap(const std::filesystem::path& _path)
@@ -321,14 +279,7 @@ namespace Assets
         {
             delete m_decalMap;
         }
-        try
-        {
-            m_decalMap = new Map(Map::DECAL, _path);
-        }
-        catch(const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_decalMap = new Map(Map::DECAL, _path);
     }
 
     void Material::setBumpmap(const std::filesystem::path& _path)
@@ -337,14 +288,7 @@ namespace Assets
         {
             delete m_bumpMap;
         }
-        try
-        {
-            m_bumpMap = new Map(Map::BUMP, _path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Material] " + string(_e.what()));
-        }
+        m_bumpMap = new Map(Map::BUMP, _path);
     }
 
 

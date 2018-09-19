@@ -11,6 +11,7 @@ using namespace std;
 namespace GL
 {
     vector<bool> Texture::s_location;
+    int Texture::s_maxSize;
     bool Texture::s_first = false;
 
     Texture::Texture(TEXTURE_TYPE type) :
@@ -26,6 +27,8 @@ namespace GL
                 s_location.push_back(false);
             }
             s_first = true;
+            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size);
+            s_maxSize = size;
         }
         for(size_t i=0 ; i<s_location.size() ; ++i)
         {
@@ -225,12 +228,16 @@ namespace GL
             format = GL_RGBA;
         }
         data = SOIL_load_image(_path.string().c_str(), &width, &height, &chanel, soilFormat);
+        if(width > s_maxSize || height > s_maxSize)
+        {
+            throw overflow_error("[Texture] Size too big");
+        }
         switch (m_type)
         {
             case TEXTURE_1D :
                 if (height != 0)
                 {
-                    throw overflow_error("[Texture] not a 1D texture");
+                    throw runtime_error("[Texture] not a 1D texture");
                 }
                 glTexImage1D(m_type, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, data);
             break;
@@ -244,12 +251,16 @@ namespace GL
 
     void Texture::loadRGBA(int _width, int _height)
     {
+        if(_width > s_maxSize || _height > s_maxSize)
+        {
+            throw overflow_error("[Texture] Size too big");
+        }
         switch (m_type)
         {
             case TEXTURE_1D :
                 if (_height != 0)
                 {
-                    throw overflow_error("[Texture] not a 1D texture");
+                    throw runtime_error("[Texture] Not a 1D texture");
                 }
                 glTexImage1D(m_type, 0, GL_RGBA, _width, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
             break;

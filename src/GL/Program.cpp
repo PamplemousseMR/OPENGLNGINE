@@ -64,7 +64,7 @@ namespace GL
         auto p = find(m_shaders.begin(), m_shaders.end(), &_shader);
         if (p != m_shaders.end())
         {
-            throw invalid_argument("[Program] shader already attached ");
+            throw runtime_error("[Program] shader already attached ");
         }
         m_shaders.push_back(&_shader);
         glAttachShader(m_id, _shader.getId());
@@ -75,7 +75,7 @@ namespace GL
         auto p = find(m_shaders.begin(), m_shaders.end(), &_shader);
         if (p == m_shaders.end())
         {
-            throw invalid_argument("[Program] shader not attached ");
+            throw runtime_error("[Program] shader not attached ");
         }
         glDetachShader(m_id, _shader.getId());
         m_shaders.erase(p);
@@ -100,7 +100,7 @@ namespace GL
             glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);
             vector<char> programErrorMessage(size_t(infoLogLength) + 1);
             glGetProgramInfoLog(m_id, infoLogLength, nullptr, &programErrorMessage[0]);
-            throw invalid_argument("[Program] " + std::string(programErrorMessage.begin(), programErrorMessage.end()));
+            throw runtime_error("[Program] " + std::string(programErrorMessage.begin(), programErrorMessage.end()));
         }
     }
 }

@@ -24,7 +24,7 @@ public:
     void attachColorTexture2D(const GL::Texture&, unsigned);
     inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
     void checkStatus() const;
-    void attachDrawBuffers() const noexcept;
+    void attachDrawBuffers() const;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;

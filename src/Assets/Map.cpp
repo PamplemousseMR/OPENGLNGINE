@@ -14,14 +14,7 @@ namespace Assets
     {
         m_texture = new Texture(Texture::TEXTURE_2D);
         m_texture->bind();
-        try
-        {
-            m_textres = m_texture->load(_path);
-        }
-        catch (const exception& _e)
-        {
-            throw invalid_argument("[Map] " + string(_e.what()));
-        }
+        m_textres = m_texture->load(_path);
         m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
@@ -176,7 +169,7 @@ namespace Assets
         }
         else
         {
-            throw invalid_argument("[Map] can't set cc for this mapType");
+            throw invalid_argument("[Map] Can't set cc for this mapType");
         }
     }
 
@@ -188,7 +181,7 @@ namespace Assets
         }
         else
         {
-            throw invalid_argument("[Map] can't set clamp for this mapType");
+            throw invalid_argument("[Map] Can't set clamp for this mapType");
         }
     }
 
@@ -200,7 +193,7 @@ namespace Assets
         }
         else
         {
-            throw invalid_argument("[Map " + m_name + "] [getCc() const throw()] can't get cc for this mapType");
+            throw invalid_argument("[Map " + m_name + "] Can't get cc for this mapType");
         }
     }
 
@@ -212,7 +205,7 @@ namespace Assets
         }
         else
         {
-            throw invalid_argument("[Map " + m_name + "] [getClamp() const throw()] can't get clamp for this mapType");
+            throw invalid_argument("[Map " + m_name + "] Can't get clamp for this mapType");
         }
     }
 
