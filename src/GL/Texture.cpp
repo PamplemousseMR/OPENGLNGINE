@@ -237,7 +237,7 @@ namespace GL
         switch (m_type)
         {
             case TEXTURE_1D :
-                if (height != 0)
+                if (height != 1)
                 {
                     throw runtime_error("[Texture] not a 1D texture");
                 }
@@ -261,7 +261,7 @@ namespace GL
         switch (m_type)
         {
             case TEXTURE_1D :
-                if (_height != 0)
+                if (_height != 1)
                 {
                     throw runtime_error("[Texture] Not a 1D texture");
                 }
