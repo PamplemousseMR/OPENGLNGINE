@@ -15,8 +15,8 @@ out vec3 v_f3NormalDir_Vs;
 out vec3 v_f3CamDir_Vs;
 out vec3 v_f3LightDir_Vs;
 
-void main(){ 
-
+void main()
+{
     gl_Position = u_m4Projection * u_m4View * u_m4Model * vec4(a_f3VertexPos_Ms,1);
 
     vec3 vertexPos_Vs = ( u_m4View * u_m4Model * vec4(a_f3VertexPos_Ms,1)).xyz;

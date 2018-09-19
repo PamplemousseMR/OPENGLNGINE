@@ -71,13 +71,13 @@ namespace Component
     void Component::setPosition(const vec3& _position) noexcept
     {
         m_positionData = _position;
-        m_positionMatrix = glm::translate(mat4(), m_positionData);
+        m_positionMatrix = glm::translate(mat4(1.0), m_positionData);
     }
 
     void Component::setRotation(const vec3& rotation) noexcept
     {
         m_rotationData = rotation;
-        m_rotationMatrix = glm::rotate(mat4(), m_rotationData.x, vec3(1, 0, 0));
+        m_rotationMatrix = glm::rotate(mat4(1.0), m_rotationData.x, vec3(1, 0, 0));
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.y, vec3(0, 1, 0));
         m_rotationMatrix = glm::rotate(m_rotationMatrix, m_rotationData.z, vec3(0, 0, 1));
     }
@@ -85,6 +85,6 @@ namespace Component
     void Component::setScale(const vec3& _scaleData) noexcept
     {
         m_scaleData = _scaleData;
-        m_scaleMatrix = scale(mat4(), m_scaleData);
+        m_scaleMatrix = scale(mat4(1.0), m_scaleData);
     }
 }

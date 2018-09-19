@@ -38,11 +38,11 @@ protected:
 
 private:
 
-    glm::mat4 m_positionMatrix {};
+    glm::mat4 m_positionMatrix {1.0};
     glm::vec3 m_positionData {0, 0, 0};
-    glm::mat4 m_rotationMatrix {};
+    glm::mat4 m_rotationMatrix {1.0};
     glm::vec3 m_rotationData {0, 0, 0};
-    glm::mat4 m_scaleMatrix {};
+    glm::mat4 m_scaleMatrix {1.0};
     glm::vec3 m_scaleData {1, 1, 1};
 
 };

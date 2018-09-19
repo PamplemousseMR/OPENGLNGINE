@@ -2,6 +2,8 @@
 #include "GL/Shader.hpp"
 #include "GL/Texture.hpp"
 #include "GL/Uniform.hpp"
+#include "GL/FrameBuffer.hpp"
+#include "GL/RenderBuffer.hpp"
 
 #include "Assets/Group.hpp"
 #include "Assets/Map.hpp"
@@ -12,6 +14,7 @@
 #include "Component/Component.hpp"
 #include "Component/Mesh.hpp"
 #include "Component/Light.hpp"
+#include "Component/Quad.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -23,6 +26,9 @@
 
 using namespace std;
 
+static int s_width = 800;
+static int s_height = 450;
+
 static void keyCallback(GLFWwindow* window, int key, int, int action, int)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -31,9 +37,10 @@ static void keyCallback(GLFWwindow* window, int key, int, int action, int)
     }
 }
 
-void windowSizeCallback(GLFWwindow*, int width, int height)
+void windowSizeCallback(GLFWwindow*, int _width, int _height)
 {
-    glViewport(0,0,width,height);
+    s_width = _width;
+    s_height = _height;
 }
 
 void exitHandler()
@@ -50,6 +57,15 @@ int main()
             cerr << endl << "Probleme : appuyer sur une touche pour continuer.." << endl;
             return EXIT_FAILURE;
         }
+
+        /*========================================
+         * =======================================
+         *
+         *      Init glfw
+         *
+         * =======================================
+         * =======================================
+         */
 
         int nmonitors;
         const GLFWvidmode* mode;
@@ -72,7 +88,7 @@ int main()
         monitors = glfwGetMonitors(&nmonitors);
         mode = glfwGetVideoMode(*monitors);
         //window = glfwCreateWindow(mode->width, mode->height, "3DNIGINE", *monitors, NULL);
-        window = glfwCreateWindow(800, 450, "3DNIGINE", nullptr, nullptr);
+        window = glfwCreateWindow(s_width, s_height, "OPENGLNGINE", nullptr, nullptr);
         if (window == nullptr)
         {
             cerr << "[GLFW] Can't create Window." << endl;
@@ -92,22 +108,27 @@ int main()
         glfwSetKeyCallback(window, keyCallback);
         glfwSetWindowSizeCallback(window, windowSizeCallback);
 
-        GL::Shader standarShader(GL::Shader::VERTEX);
-        standarShader.setSourceFromFile("GLSL/standarVertex.glsl");
-        standarShader.compile();
+        /*========================================
+         * =======================================
+         *
+         *      Init standar shader
+         *
+         * =======================================
+         * =======================================
+         */
 
-        GL::Shader standarFragment(GL::Shader::FRAGMENT);
-        standarFragment.setSourceFromFile("GLSL/standarFragment.glsl");
-        standarFragment.compile();
+        GL::Shader blinnPhongVertex(GL::Shader::VERTEX);
+        blinnPhongVertex.setSourceFromFile("GLSL/blinnPhongVertex.glsl");
+        blinnPhongVertex.compile();
+
+        GL::Shader blinnPhongFragment(GL::Shader::FRAGMENT);
+        blinnPhongFragment.setSourceFromFile("GLSL/blinnPhongFragment.glsl");
+        blinnPhongFragment.compile();
 
         GL::Program standarProgram;
-        standarProgram.attach(standarShader);
-        standarProgram.attach(standarFragment);
+        standarProgram.attach(blinnPhongVertex);
+        standarProgram.attach(blinnPhongFragment);
         standarProgram.link();
-
-        Assets::OBJFile file;
-        file.load("obj/Flamethrower/Flamethrower.obj");
-        cout << file << endl;
 
         GL::Uniform u_m4Projection("u_m4Projection", standarProgram.getId());
         GL::Uniform u_m4Model("u_m4Model", standarProgram.getId());
@@ -131,11 +152,41 @@ int main()
         GL::Uniform u_f3DiffuseCol("u_f3DiffuseCol", standarProgram.getId());
         GL::Uniform u_f3SpecularCol("u_f3SpecularCol", standarProgram.getId());
 
+        /*========================================
+         * =======================================
+         *
+         *      Init component
+         *
+         * =======================================
+         * =======================================
+         */
+
+        Assets::OBJFile file;
+        file.load("obj/Flamethrower/Flamethrower.obj");
+
         Component::Light light("light");
         light.setPosition(glm::vec3(0, 0, 100));
 
+        /*========================================
+         * =======================================
+         *
+         *      Init camera
+         *
+         * =======================================
+         * =======================================
+         */
+
         glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+        /*========================================
+         * =======================================
+         *
+         *      Init standar gl enable
+         *
+         * =======================================
+         * =======================================
+         */
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
@@ -144,112 +195,130 @@ int main()
 
         while (!glfwWindowShouldClose(window))
         {
+            /*========================================
+             * =======================================
+             *
+             *      First pass
+             *
+             * =======================================
+             * =======================================
+             */
+            glViewport(0,0,s_width,s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             standarProgram.bind();
-
-            u_m4View = V;
-            u_m4Projection = P;
-            u_f3LightPos_Ws = light.getPositionData();
-            u_f3LightCol = light.getAmbient();
-
-            for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
             {
-                Assets::Object* ob = file.getObjects()[a];
-                for (size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
+                u_m4View = V;
+                u_m4Projection = P;
+                u_f3LightPos_Ws = light.getPositionData();
+                u_f3LightCol = light.getAmbient();
+
+                for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
                 {
-                    Assets::Group* gp = ob->getGroups()[b];
-                    for (size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
+                    Assets::Object* ob = file.getObjects()[a];
+                    for (size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
                     {
-                        Component::Mesh* me = gp->getMeshs()[c];
+                        Assets::Group* gp = ob->getGroups()[b];
+                        for (size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
+                        {
+                            Component::Mesh* me = gp->getMeshs()[c];
 
-                        u_m4Model = me->getPositionMatrix() * me->getRotationMatrix();
-                        me->setRotation(glm::vec3(0, me->getRotationData().y+0.01f, 0));
+                            u_m4Model = me->getPositionMatrix() * me->getRotationMatrix();
+                            me->setRotation(glm::vec3(0, me->getRotationData().y+0.01f, 0));
 
-                        Assets::Material* material = me->getMaterial();
+                            Assets::Material* material = me->getMaterial();
 
-                        Assets::Map* kaMap = material->getKamap();
-                        if (kaMap)
-                        {
-                            GL::Texture* ambient = kaMap->getTexture();
-                            ambient->bind();
-                            u_tAmbient = ambient->getLocation();
-                            u_bAmbient = true;
-                        }
-                        else
-                        {
-                            u_bAmbient = false;
-                        }
+                            Assets::Map* kaMap = material->getKamap();
+                            if (kaMap)
+                            {
+                                GL::Texture* ambient = kaMap->getTexture();
+                                ambient->bind();
+                                u_tAmbient = ambient->getLocation();
+                                u_bAmbient = true;
+                            }
+                            else
+                            {
+                                u_bAmbient = false;
+                            }
 
-                        Assets::Map* kdMap = material->getKdmap();
-                        if (kdMap)
-                        {
-                            GL::Texture* diffuse = kdMap->getTexture();
-                            diffuse->bind();
-                            u_tDiffuse = diffuse->getLocation();
-                            u_bDiffuse = true;
-                        }
-                        else
-                        {
-                            u_bDiffuse = false;
-                        }
+                            Assets::Map* kdMap = material->getKdmap();
+                            if (kdMap)
+                            {
+                                GL::Texture* diffuse = kdMap->getTexture();
+                                diffuse->bind();
+                                u_tDiffuse = diffuse->getLocation();
+                                u_bDiffuse = true;
+                            }
+                            else
+                            {
+                                u_bDiffuse = false;
+                            }
 
-                        Assets::Map* ksMap = material->getKsmap();
-                        if (ksMap)
-                        {
-                            GL::Texture* specular = ksMap->getTexture();
-                            specular->bind();
-                            u_tSpecular = specular->getLocation();
-                            u_bSpecular = true;
-                        }
-                        else
-                        {
-                            u_bSpecular = false;
-                        }
+                            Assets::Map* ksMap = material->getKsmap();
+                            if (ksMap)
+                            {
+                                GL::Texture* specular = ksMap->getTexture();
+                                specular->bind();
+                                u_tSpecular = specular->getLocation();
+                                u_bSpecular = true;
+                            }
+                            else
+                            {
+                                u_bSpecular = false;
+                            }
 
-                        Assets::Map* bumpMap = material->getBumpmap();
-                        if (bumpMap)
-                        {
-                            GL::Texture* normal = bumpMap->getTexture();
-                            normal->bind();
-                            u_tNormal = normal->getLocation();
-                            u_bNormal = true;
-                        }
-                        else
-                        {
-                            u_bNormal = false;
-                        }
+                            Assets::Map* bumpMap = material->getBumpmap();
+                            if (bumpMap)
+                            {
+                                GL::Texture* normal = bumpMap->getTexture();
+                                normal->bind();
+                                u_tNormal = normal->getLocation();
+                                u_bNormal = true;
+                            }
+                            else
+                            {
+                                u_bNormal = false;
+                            }
 
-                        u_fSpecularExponent = material->getSpecularExponent();
-                        u_f3SpecularCol = material->getSpecular();
-                        u_f3DiffuseCol = material->getDiffuse();
-                        u_f3AmbientCol = material->getAmbient();
+                            u_fSpecularExponent = material->getSpecularExponent();
+                            u_f3SpecularCol = material->getSpecular();
+                            u_f3DiffuseCol = material->getDiffuse();
+                            u_f3AmbientCol = material->getAmbient();
 
-                        me->bind();
-                        me->draw();
-                        me->unbind();
+                            me->bind();
+                            me->draw();
+                            me->unbind();
 
-                        if(material->getKamap() != nullptr)
-                        {
-                            material->getKamap()->getTexture()->unbind();
-                        }
-                        if(material->getKdmap() != nullptr)
-                        {
-                            material->getKdmap()->getTexture()->unbind();
-                        }
-                        if(material->getKsmap() != nullptr)
-                        {
-                            material->getKsmap()->getTexture()->unbind();
-                        }
-                        if(material->getBumpmap() != nullptr)
-                        {
-                            material->getBumpmap()->getTexture()->unbind();
+                            if(material->getKamap() != nullptr)
+                            {
+                                material->getKamap()->getTexture()->unbind();
+                            }
+                            if(material->getKdmap() != nullptr)
+                            {
+                                material->getKdmap()->getTexture()->unbind();
+                            }
+                            if(material->getKsmap() != nullptr)
+                            {
+                                material->getKsmap()->getTexture()->unbind();
+                            }
+                            if(material->getBumpmap() != nullptr)
+                            {
+                                material->getBumpmap()->getTexture()->unbind();
+                            }
                         }
                     }
                 }
             }
-
             standarProgram.unbind();
+
+            /*========================================
+             * =======================================
+             *
+             *      End
+             *
+             * =======================================
+             * =======================================
+             */
 
             GLenum err;
             while ((err = glGetError()) != GL_NO_ERROR)
