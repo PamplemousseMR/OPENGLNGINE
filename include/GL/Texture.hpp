@@ -47,7 +47,7 @@ public:
 private:
 
     static std::vector<bool> s_location;
-    static int s_maxSize;
+    static GLint s_maxSize;
     static bool s_first;
 
 private:

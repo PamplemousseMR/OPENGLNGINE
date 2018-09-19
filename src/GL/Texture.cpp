@@ -4,14 +4,13 @@
 
 #include <algorithm>
 #include <stdexcept>
-#include <iostream>
 
 using namespace std;
 
 namespace GL
 {
     vector<bool> Texture::s_location;
-    int Texture::s_maxSize;
+    GLint Texture::s_maxSize;
     bool Texture::s_first = false;
 
     Texture::Texture(TEXTURE_TYPE type) :
@@ -20,15 +19,14 @@ namespace GL
     {
         if (!s_first)
         {
+            s_first = true;
             GLint size;
             glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &size);
             for (int i(0); i < size; ++i)
             {
                 s_location.push_back(false);
             }
-            s_first = true;
-            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size);
-            s_maxSize = size;
+            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_maxSize);
         }
         for(size_t i=0 ; i<s_location.size() ; ++i)
         {

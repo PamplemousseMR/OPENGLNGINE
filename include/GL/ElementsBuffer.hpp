@@ -20,16 +20,25 @@ public:
     ElementsBuffer& operator=(ElementsBuffer&&) = delete;
 
     template<typename T>
-    inline void setData(const std::vector<T>&) const noexcept;
+    inline void setData(const std::vector<T>&) const;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
 
+private:
+
+    static GLint s_maxIndices;
+    static bool s_first;
+
 };
 
 template<typename T>
-inline void ElementsBuffer::setData(const std::vector<T>& _arr) const noexcept
+inline void ElementsBuffer::setData(const std::vector<T>& _arr) const
 {
+    if(_arr.size() > s_maxIndices)
+    {
+        throw std::overflow_error("[FrameBuffer] Too big");
+    }
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _arr.size() * sizeof(T), &_arr[0], GL_STATIC_DRAW);
 }
 

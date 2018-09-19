@@ -4,6 +4,7 @@
 #include "GL/Uniform.hpp"
 #include "GL/FrameBuffer.hpp"
 #include "GL/RenderBuffer.hpp"
+#include "GL/Viewport.hpp"
 
 #include "Assets/Group.hpp"
 #include "Assets/Map.hpp"
@@ -230,6 +231,7 @@ int main()
 
         glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+        GL::Viewport viewport;
 
         /*========================================
          * =======================================
@@ -256,7 +258,7 @@ int main()
              * =======================================
              */
             frameBuffer.bind();
-            glViewport(0,0,s_width,s_height);
+            viewport.setViewport(s_width,s_height);
             renderTexture.bind();
             renderTexture.loadRGBA(s_width, s_height);
             renderBuffer.bind();
@@ -378,7 +380,7 @@ int main()
              * =======================================
              */
             frameBuffer.unbind();
-            glViewport(0,0,s_width,s_height);
+            viewport.setViewport(s_width,s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             quadProgram.bind();
