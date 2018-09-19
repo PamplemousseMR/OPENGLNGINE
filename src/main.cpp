@@ -155,6 +155,56 @@ int main()
         /*========================================
          * =======================================
          *
+         *      Init quad shader
+         *
+         * =======================================
+         * =======================================
+         */
+
+        GL::Shader quadVertex(GL::Shader::VERTEX);
+        quadVertex.setSourceFromFile("GLSL/quadVertex.glsl");
+        quadVertex.compile();
+
+        GL::Shader quadFragment(GL::Shader::FRAGMENT);
+        quadFragment.setSourceFromFile("GLSL/quadFragment.glsl");
+        quadFragment.compile();
+
+        GL::Program quadProgram;
+        quadProgram.attach(quadVertex);
+        quadProgram.attach(quadFragment);
+        quadProgram.link();
+
+        GL::Uniform u_tTexture("u_tTexture", quadProgram.getId());
+
+        /*========================================
+         * =======================================
+         *
+         *      Init frame buffer
+         *
+         * =======================================
+         * =======================================
+         */
+
+        GL::Texture renderTexture(GL::Texture::TEXTURE_2D);
+        renderTexture.bind();
+        renderTexture.loadRGBA(s_width, s_height);
+        renderTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        renderTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+        GL::RenderBuffer renderBuffer;
+        renderBuffer.bind();
+        renderBuffer.setStorage(s_width, s_height);
+
+        GL::FrameBuffer frameBuffer;
+        frameBuffer.bind();
+        frameBuffer.attachColorTexture2D(renderTexture, 0);
+        frameBuffer.attachDepthBuffer(renderBuffer);
+        frameBuffer.checkStatus();
+        frameBuffer.unbind();
+
+        /*========================================
+         * =======================================
+         *
          *      Init component
          *
          * =======================================
@@ -163,6 +213,8 @@ int main()
 
         Assets::OBJFile file;
         file.load("obj/Flamethrower/Flamethrower.obj");
+
+        Component::Quad quad("QuadRenderer");
 
         Component::Light light("light");
         light.setPosition(glm::vec3(0, 0, 100));
@@ -203,8 +255,14 @@ int main()
              * =======================================
              * =======================================
              */
+            frameBuffer.bind();
             glViewport(0,0,s_width,s_height);
+            renderTexture.bind();
+            renderTexture.loadRGBA(s_width, s_height);
+            renderBuffer.bind();
+            renderBuffer.setStorage(s_width, s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            frameBuffer.attachDrawBuffers();
 
             standarProgram.bind();
             {
@@ -310,6 +368,31 @@ int main()
                 }
             }
             standarProgram.unbind();
+
+            /*========================================
+             * =======================================
+             *
+             *      Second pass
+             *
+             * =======================================
+             * =======================================
+             */
+            frameBuffer.unbind();
+            glViewport(0,0,s_width,s_height);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            quadProgram.bind();
+            {
+                renderTexture.bind();
+                u_tTexture = renderTexture.getLocation();
+
+                quad.bind();
+                quad.draw();
+                quad.unbind();
+
+                renderTexture.unbind();
+            }
+            quadProgram.unbind();
 
             /*========================================
              * =======================================

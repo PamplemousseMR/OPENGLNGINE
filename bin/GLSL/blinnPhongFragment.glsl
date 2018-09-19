@@ -22,7 +22,7 @@ uniform vec3 u_f3DiffuseCol;
 
 uniform vec3 u_f3LightCol;
 
-out vec4 v_f4OutCol;
+layout(location = 0) out vec4 v_f4OutCol;
 
 void main()
 {
