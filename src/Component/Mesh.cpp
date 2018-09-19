@@ -15,7 +15,7 @@ namespace Component
     const GLuint Mesh::S_TEXTCOORDLOCATION = 1;
     const GLuint Mesh::S_NORMALLOCATION = 2;
 
-    Mesh::Mesh(const string& _name) noexcept :
+    Mesh::Mesh(const string& _name) :
         Component(_name)
     {
         m_vboVertex = new VertexBuffer();
@@ -160,7 +160,6 @@ namespace Component
             _mesh.m_vao = nullptr;
             m_material = _mesh.m_material;
             _mesh.m_material = nullptr;
-            m_vao->unbind();
         }
         return *this;
     }

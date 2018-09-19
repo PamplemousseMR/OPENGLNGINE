@@ -37,7 +37,7 @@ public:
 
 public:
 
-    Mesh(const std::string&) noexcept;
+    Mesh(const std::string&);
     ~Mesh() noexcept;
     Mesh(const Mesh&);
     Mesh(Mesh&&);
@@ -52,7 +52,6 @@ public:
     void unbind() const noexcept;
     inline void draw() const noexcept;
 
-    inline const std::string& getName() const noexcept;
     inline GLuint getVertexLocation() const noexcept;
     inline GLuint getTextureCoordLocation() const noexcept;
     inline GLuint getNormalLocation() const noexcept;
@@ -94,11 +93,6 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const Mesh&) noexcept;
-
-inline const std::string& Mesh::getName() const noexcept
-{
-    return m_name;
-}
 
 inline GLuint Mesh::getVertexLocation() const noexcept
 {

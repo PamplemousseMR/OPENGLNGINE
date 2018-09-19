@@ -20,6 +20,7 @@ public :
     Component& operator=(const Component&);
     Component& operator=(Component&&);
 
+    inline const std::string& getName() const;
     inline const glm::mat4& getPositionMatrix() const noexcept;
     inline const glm::mat4& getRotationMatrix() const noexcept;
     inline const glm::mat4& getScaleMatrix() const noexcept;
@@ -45,6 +46,11 @@ private:
     glm::vec3 m_scaleData {1, 1, 1};
 
 };
+
+inline const std::string& Component::getName() const
+{
+    return m_name;
+}
 
 inline const glm::mat4& Component::getPositionMatrix() const noexcept
 {
