@@ -1,5 +1,6 @@
 #include "GL/FrameBuffer.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 using namespace std;
