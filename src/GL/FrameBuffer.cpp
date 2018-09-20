@@ -52,7 +52,7 @@ namespace GL
         return *this;
     }
 
-    void FrameBuffer::attachColorTexture2D(const GL::Texture& _texture, unsigned _attach)
+    void FrameBuffer::attachColorTexture(const GL::Texture& _texture, unsigned _attach)
     {
         if(_attach >= unsigned(s_maxAttachement))
         {

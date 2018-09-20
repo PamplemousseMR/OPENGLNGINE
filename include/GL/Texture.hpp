@@ -34,7 +34,6 @@ public:
 
     int load(const std::filesystem::path&);
     void loadRGBA(int, int);
-    void loadDepth(int, int);
     inline void generateMipmap() const noexcept;
 
     inline void bind() const noexcept;
@@ -63,7 +62,6 @@ private:
 inline void Texture::bind() const noexcept
 {
     glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
-    assert(glGetError() == GL_NO_ERROR);
     glBindTexture(m_type, m_id);
     assert(glGetError() == GL_NO_ERROR);
 }

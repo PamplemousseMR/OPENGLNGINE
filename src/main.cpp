@@ -192,14 +192,14 @@ int main()
         renderTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         renderTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-        GL::RenderBuffer renderBuffer;
-        renderBuffer.bind();
-        renderBuffer.setStorage(s_width, s_height);
+        GL::RenderBuffer renderDepthBuffer;
+        renderDepthBuffer.bind();
+        renderDepthBuffer.setStorage(s_width, s_height);
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
-        frameBuffer.attachColorTexture2D(renderTexture, 0);
-        frameBuffer.attachDepthBuffer(renderBuffer);
+        frameBuffer.attachColorTexture(renderTexture, 0);
+        frameBuffer.attachDepthBuffer(renderDepthBuffer);
         frameBuffer.checkStatus();
         frameBuffer.unbind();
 
@@ -262,8 +262,8 @@ int main()
             viewport.setViewport(s_width,s_height);
             renderTexture.bind();
             renderTexture.loadRGBA(s_width, s_height);
-            renderBuffer.bind();
-            renderBuffer.setStorage(s_width, s_height);
+            renderDepthBuffer.bind();
+            renderDepthBuffer.setStorage(s_width, s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             frameBuffer.attachDrawBuffers();
 
