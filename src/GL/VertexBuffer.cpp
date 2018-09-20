@@ -7,17 +7,9 @@ using namespace std;
 namespace GL
 {
 
-    GLint VertexBuffer::s_maxVertices;
-    bool VertexBuffer::s_first = false;
-
     VertexBuffer::VertexBuffer() :
         IGLObject()
     {
-        if (!s_first)
-        {
-            s_first = true;
-            glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &s_maxVertices);
-        }
         glGenBuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)

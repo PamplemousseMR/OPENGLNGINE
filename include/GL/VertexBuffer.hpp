@@ -23,27 +23,17 @@ public:
     VertexBuffer& operator=(VertexBuffer&&) = delete;
 
     template<typename T>
-    inline void setData(const std::vector<T>&) const;
+    inline void setData(const std::vector<T>&) const noexcept;
     inline void setLocation(GLuint) const noexcept;
     inline void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint) const noexcept;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
-
-private:
-
-    static GLint s_maxVertices;
-    static bool s_first;
-
 };
 
 template<typename T>
-inline void VertexBuffer::setData(const std::vector<T>& _arr) const
+inline void VertexBuffer::setData(const std::vector<T>& _arr) const noexcept
 {
-    if(_arr.size() > s_maxVertices)
-    {
-        throw std::overflow_error("[VertexBuffer] Too big");
-    }
     glBufferData(GL_ARRAY_BUFFER, _arr.size() * sizeof(T), &_arr[0], GL_STATIC_DRAW);
     assert(glGetError() == GL_NO_ERROR);
 }

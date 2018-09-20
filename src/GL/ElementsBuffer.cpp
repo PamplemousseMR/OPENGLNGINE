@@ -7,17 +7,10 @@ using namespace std;
 
 namespace GL
 {
-    GLint ElementsBuffer::s_maxIndices;
-    bool ElementsBuffer::s_first = false;
 
     ElementsBuffer::ElementsBuffer() :
         IGLObject()
     {
-        if (!s_first)
-        {
-            s_first = true;
-            glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &s_maxIndices);
-        }
         glGenBuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)

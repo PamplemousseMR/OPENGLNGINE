@@ -6,9 +6,17 @@ using namespace std;
 
 namespace GL
 {
+    GLint RenderBuffer::s_maxSize;
+    bool RenderBuffer::s_first = false;
+
     RenderBuffer::RenderBuffer() :
         IGLObject()
     {
+        if(!s_first)
+        {
+            s_first = true;
+            glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &s_maxSize);
+        }
         glGenRenderbuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
@@ -41,4 +49,13 @@ namespace GL
         return *this;
     }
 
+    void RenderBuffer::setStorage(int _width, int _height) const
+    {
+        if(_width > s_maxSize || _height > s_maxSize)
+        {
+            throw overflow_error("[Texture] Size too big");
+        }
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _width, _height);
+        assert(glGetError() == GL_NO_ERROR);
+    }
 }
