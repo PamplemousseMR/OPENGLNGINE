@@ -17,10 +17,11 @@ class Texture : public IGLObject
 
 public:
 
-    enum TEXTURE_TYPE : GLenum
+    enum TEXTURE_TYPE
     {
-        TEXTURE_1D = GL_TEXTURE_1D,
-        TEXTURE_2D = GL_TEXTURE_2D,
+        TEXTURE_1D,
+        TEXTURE_2D,
+        TEXTURE_DEPTH
     };
 
 public:
@@ -34,6 +35,8 @@ public:
 
     int load(const std::filesystem::path&);
     void loadRGBA(int, int);
+    void loadDepth(int, int);
+
     inline void generateMipmap() const noexcept;
 
     inline void bind() const noexcept;
@@ -53,6 +56,7 @@ private:
 private:
 
     TEXTURE_TYPE m_type {TEXTURE_1D};
+    GLenum m_glType {GL_TEXTURE_1D};
     bool m_hasAlpha {false};
     int m_location {-1};
 
@@ -62,13 +66,13 @@ private:
 inline void Texture::bind() const noexcept
 {
     glActiveTexture(GLenum(GL_TEXTURE0 + m_location));
-    glBindTexture(m_type, m_id);
+    glBindTexture(m_glType, m_id);
     assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void Texture::unbind() const noexcept
 {
-    glBindTexture(m_type, 0);
+    glBindTexture(m_glType, 0);
     assert(glGetError() == GL_NO_ERROR);
 }
 
@@ -84,13 +88,13 @@ inline Texture::TEXTURE_TYPE Texture::getType() const noexcept
 
 inline void Texture::setParameter(GLenum pname, GLint param) const noexcept
 {
-    glTexParameteri(m_type, pname, param);
+    glTexParameteri(m_glType, pname, param);
     assert(glGetError() == GL_NO_ERROR);
 }
 
 inline void Texture::generateMipmap() const noexcept
 {
-    glGenerateMipmap(m_type);
+    glGenerateMipmap(m_glType);
     assert(glGetError() == GL_NO_ERROR);
 }
 

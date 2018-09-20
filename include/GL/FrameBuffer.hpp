@@ -23,6 +23,7 @@ public:
     FrameBuffer& operator=(FrameBuffer&&) = delete;
 
     void attachColorTexture(const GL::Texture&, unsigned);
+    void attachDepthTexture(const GL::Texture&) const noexcept;
     inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
     void checkStatus() const;
     void attachDrawBuffers() const;
@@ -41,6 +42,12 @@ private:
     std::vector< unsigned > m_colorAttachement {};
 
 };
+
+inline void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const noexcept
+{
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
+    assert(glGetError() == GL_NO_ERROR);
+}
 
 inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const noexcept
 {
