@@ -22,7 +22,8 @@ public:
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;
 
-    void attachColorTexture(const GL::Texture&, unsigned);
+    void attachColorTexture2D(const GL::Texture&, unsigned);
+    void attachColorTexture1D(const GL::Texture&, unsigned);
     void attachDepthTexture(const GL::Texture&) const noexcept;
     inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
     void checkStatus() const;

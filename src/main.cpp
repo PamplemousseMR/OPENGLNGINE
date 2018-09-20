@@ -198,7 +198,7 @@ int main()
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
-        frameBuffer.attachColorTexture(renderTexture, 0);
+        frameBuffer.attachColorTexture2D(renderTexture, 0);
         frameBuffer.attachDepthBuffer(renderDepthBuffer);
         frameBuffer.checkStatus();
         frameBuffer.unbind();
