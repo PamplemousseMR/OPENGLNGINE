@@ -118,11 +118,11 @@ int main()
          * =======================================
          */
 
-        GL::Shader blinnPhongVertex(GL::Shader::VERTEX);
+        GL::Shader blinnPhongVertex(GL::Shader::TYPE_VERTEX);
         blinnPhongVertex.setSourceFromFile("GLSL/blinnPhongVertex.glsl");
         blinnPhongVertex.compile();
 
-        GL::Shader blinnPhongFragment(GL::Shader::FRAGMENT);
+        GL::Shader blinnPhongFragment(GL::Shader::TYPE_FRAGMENT);
         blinnPhongFragment.setSourceFromFile("GLSL/blinnPhongFragment.glsl");
         blinnPhongFragment.compile();
 
@@ -162,11 +162,11 @@ int main()
          * =======================================
          */
 
-        GL::Shader quadVertex(GL::Shader::VERTEX);
+        GL::Shader quadVertex(GL::Shader::TYPE_VERTEX);
         quadVertex.setSourceFromFile("GLSL/quadVertex.glsl");
         quadVertex.compile();
 
-        GL::Shader quadFragment(GL::Shader::FRAGMENT);
+        GL::Shader quadFragment(GL::Shader::TYPE_FRAGMENT);
         quadFragment.setSourceFromFile("GLSL/quadFragment.glsl");
         quadFragment.compile();
 
@@ -186,9 +186,9 @@ int main()
          * =======================================
          */
 
-        GL::Texture renderTexture(GL::Texture::TEXTURE_2D);
+        GL::Texture renderTexture(GL::Texture::TYPE_2D);
         renderTexture.bind();
-        renderTexture.loadRGBA(s_width, s_height);
+        renderTexture.load(s_width, s_height, GL::Texture::FORMAT_RGBA);
         renderTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         renderTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -261,7 +261,7 @@ int main()
             frameBuffer.bind();
             viewport.setViewport(s_width,s_height);
             renderTexture.bind();
-            renderTexture.loadRGBA(s_width, s_height);
+            renderTexture.load(s_width, s_height, GL::Texture::FORMAT_RGBA);
             renderDepthBuffer.bind();
             renderDepthBuffer.setStorage(s_width, s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

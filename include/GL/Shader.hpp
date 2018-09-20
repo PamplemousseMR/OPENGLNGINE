@@ -15,8 +15,8 @@ public:
 
     enum SHADER_TYPE : GLenum
     {
-        VERTEX = GL_VERTEX_SHADER,
-        FRAGMENT = GL_FRAGMENT_SHADER
+        TYPE_VERTEX = GL_VERTEX_SHADER,
+        TYPE_FRAGMENT = GL_FRAGMENT_SHADER
     };
 
 public:
@@ -39,7 +39,7 @@ public:
 private:
 
     GLuint m_id {0};
-    SHADER_TYPE m_type {VERTEX};
+    SHADER_TYPE m_type {TYPE_VERTEX};
     std::string m_sources {};
 
 };

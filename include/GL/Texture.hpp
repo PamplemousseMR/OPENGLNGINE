@@ -19,9 +19,16 @@ public:
 
     enum TEXTURE_TYPE
     {
-        TEXTURE_1D,
-        TEXTURE_2D,
-        TEXTURE_DEPTH
+        TYPE_1D,
+        TYPE_2D,
+        TYPE_DEPTH
+    };
+
+    enum TEXTURE_FORMAT
+    {
+        FORMAT_RGB = GL_RGB,
+        FORMAT_RGBA = GL_RGBA,
+        FORMAT_DEPTH = GL_DEPTH_COMPONENT
     };
 
 public:
@@ -34,8 +41,7 @@ public:
     Texture& operator=(Texture&&) = delete;
 
     int load(const std::filesystem::path&);
-    void loadRGBA(int, int);
-    void loadDepth(int, int);
+    void load(int, int, TEXTURE_FORMAT) const;
 
     inline void generateMipmap() const noexcept;
 
@@ -55,7 +61,7 @@ private:
 
 private:
 
-    TEXTURE_TYPE m_type {TEXTURE_1D};
+    TEXTURE_TYPE m_type {TYPE_1D};
     GLenum m_glType {GL_TEXTURE_1D};
     bool m_hasAlpha {false};
     int m_location {-1};

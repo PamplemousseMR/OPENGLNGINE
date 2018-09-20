@@ -49,11 +49,11 @@ namespace GL
         }
         switch(m_type)
         {
-            case TEXTURE_1D :
+            case TYPE_1D :
                 m_glType = GL_TEXTURE_1D;
             break;
-            case TEXTURE_2D :
-            case TEXTURE_DEPTH :
+            case TYPE_2D :
+            case TYPE_DEPTH :
                 m_glType = GL_TEXTURE_2D;
             break;
         }
@@ -99,8 +99,8 @@ namespace GL
         glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_WIDTH, &width);
         glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_HEIGHT, &height);
 
-        size_t numBytes;
         GLenum format;
+        size_t numBytes;
         switch(internalFormat)
         {
         case GL_RGB:
@@ -111,6 +111,10 @@ namespace GL
             numBytes = size_t(width * height * 4);
             format = GL_RGBA;
             break;
+        case GL_DEPTH_COMPONENT:
+            numBytes = size_t(width * height);
+            format = GL_DEPTH_COMPONENT;
+            break;
         default:
             throw invalid_argument("[Texture] Unsuported format");
             break;
@@ -118,19 +122,34 @@ namespace GL
 
         if(numBytes > 0)
         {
-            std::vector< unsigned char > data(numBytes);
-            glGetTexImage(m_glType, 0, format, GL_UNSIGNED_BYTE, &data[0]);
-
-            _texture.unbind();
-
-            bind();
             switch(m_type)
             {
-                case TEXTURE_1D :
-                    glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                case TYPE_1D :
+                    {
+                        std::vector< unsigned char > data(numBytes);
+                        glGetTexImage(GL_TEXTURE_1D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        _texture.unbind();
+                        bind();
+                        glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                    }
                 break;
-                case TEXTURE_2D :
-                    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                case TYPE_2D :
+                    {
+                        std::vector< unsigned char > data(numBytes);
+                        glGetTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        _texture.unbind();
+                        bind();
+                        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                    }
+                break;
+                case TYPE_DEPTH :
+                    {
+                        std::vector< float > data(numBytes);
+                        glGetTexImage(GL_TEXTURE_2D, 0, format, GL_FLOAT, &data[0]);
+                        _texture.unbind();
+                        bind();
+                        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_FLOAT, &data[0]);
+                    }
                 break;
             }
             unbind();
@@ -172,6 +191,10 @@ namespace GL
                 numBytes = size_t(width * height * 4);
                 format = GL_RGBA;
                 break;
+            case GL_DEPTH_COMPONENT:
+                numBytes = size_t(width * height);
+                format = GL_DEPTH_COMPONENT;
+                break;
             default:
                 throw invalid_argument("[Texture] Unsuported format");
                 break;
@@ -179,19 +202,34 @@ namespace GL
 
             if(numBytes > 0)
             {
-                std::vector< unsigned char > data(numBytes);
-                glGetTexImage(m_glType, 0, format, GL_UNSIGNED_BYTE, &data[0]);
-
-                _texture.unbind();
-
-                bind();
                 switch(m_type)
                 {
-                    case TEXTURE_1D :
-                        glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                    case TYPE_1D :
+                        {
+                            std::vector< unsigned char > data(numBytes);
+                            glGetTexImage(GL_TEXTURE_1D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                            _texture.unbind();
+                            bind();
+                            glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        }
                     break;
-                    case TEXTURE_2D :
-                        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                    case TYPE_2D :
+                        {
+                            std::vector< unsigned char > data(numBytes);
+                            glGetTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                            _texture.unbind();
+                            bind();
+                            glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        }
+                    break;
+                    case TYPE_DEPTH :
+                        {
+                            std::vector< float > data(numBytes);
+                            glGetTexImage(GL_TEXTURE_2D, 0, format, GL_FLOAT, &data[0]);
+                            _texture.unbind();
+                            bind();
+                            glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_FLOAT, &data[0]);
+                        }
                     break;
                 }
                 unbind();
@@ -233,13 +271,13 @@ namespace GL
         int width, height, chanel;
         unsigned char* data;
         int soilFormat = SOIL_LOAD_RGB;
-        GLint internalFormat = GL_RGB;
-        GLenum format = GL_RGB;
+        GLint destFormat = GL_RGB;
+        GLenum srcFormat = GL_RGB;
         if (m_hasAlpha)
         {
             soilFormat = SOIL_LOAD_RGBA;
-            internalFormat = GL_RGBA;
-            format = GL_RGBA;
+            destFormat = GL_RGBA;
+            srcFormat = GL_RGBA;
         }
         data = SOIL_load_image(_path.string().c_str(), &width, &height, &chanel, soilFormat);
         if(width > s_maxSize || height > s_maxSize)
@@ -248,15 +286,18 @@ namespace GL
         }
         switch(m_type)
         {
-            case TEXTURE_1D :
+            case TYPE_1D :
                 if (height != 1)
                 {
                     throw runtime_error("[Texture] not a 1D texture");
                 }
-                glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, data);
+                glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, srcFormat, GL_UNSIGNED_BYTE, data);
             break;
-            case TEXTURE_2D :
-                glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            case TYPE_2D :
+                glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, srcFormat, GL_UNSIGNED_BYTE, data);
+            break;
+            case TYPE_DEPTH:
+                throw invalid_argument("[Texture] Unsuported format");
             break;
         }
         assert(glGetError() == GL_NO_ERROR);
@@ -264,7 +305,7 @@ namespace GL
         return width;
     }
 
-    void Texture::loadRGBA(int _width, int _height)
+    void Texture::load(int _width, int _height, TEXTURE_FORMAT _format) const
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {
@@ -272,30 +313,17 @@ namespace GL
         }
         switch (m_type)
         {
-            case TEXTURE_1D :
+            case TYPE_1D :
                 if (_height != 1)
                 {
                     throw runtime_error("[Texture] Not a 1D texture");
                 }
-                glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA, _width, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+                glTexImage1D(GL_TEXTURE_1D, 0, _format, _width, 0, GLenum(_format), GL_UNSIGNED_BYTE, nullptr);
             break;
-            case TEXTURE_2D :
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-            break;
-        }
-        assert(glGetError() == GL_NO_ERROR);
-    }
-
-    void Texture::loadDepth(int _width, int _height)
-    {
-        if(_width > s_maxSize || _height > s_maxSize)
-        {
-            throw overflow_error("[Texture] Size too big");
-        }
-        switch(m_type)
-        {
-            case TEXTURE_DEPTH :
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, _width, _height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+            case TYPE_2D :
+                glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, GLenum(_format), GL_UNSIGNED_BYTE, nullptr);
+            case TYPE_DEPTH :
+                glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, GLenum(_format), GL_FLOAT, nullptr);
             break;
         }
         assert(glGetError() == GL_NO_ERROR);

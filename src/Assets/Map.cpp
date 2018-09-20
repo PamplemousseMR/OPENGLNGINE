@@ -12,7 +12,7 @@ namespace Assets
         m_name(_path.filename().string()),
         m_mapType(_mapType)
     {
-        m_texture = new Texture(Texture::TEXTURE_2D);
+        m_texture = new Texture(Texture::TYPE_2D);
         m_texture->bind();
         m_textres = m_texture->load(_path);
         m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
