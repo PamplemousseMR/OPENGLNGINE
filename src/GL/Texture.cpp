@@ -17,7 +17,7 @@ namespace GL
         IGLObject(),
         m_type(type)
     {
-        if (!s_first)
+        if(!s_first)
         {
             s_first = true;
             GLint size;

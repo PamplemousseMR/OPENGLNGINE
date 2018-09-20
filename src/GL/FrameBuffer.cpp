@@ -7,9 +7,19 @@ using namespace std;
 
 namespace GL
 {
+    GLint FrameBuffer::s_maxAttachement;
+    GLint FrameBuffer::s_maxDraw;
+    bool FrameBuffer::s_first = false;
+
     FrameBuffer::FrameBuffer() :
         IGLObject()
     {
+        if (!s_first)
+        {
+            s_first = true;
+            glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &s_maxAttachement);
+            glGetIntegerv(GL_MAX_DRAW_BUFFERS, &s_maxDraw);
+        }
         glGenFramebuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
         if(m_id == 0)
@@ -44,9 +54,7 @@ namespace GL
 
     void FrameBuffer::attachColorTexture2D(const GL::Texture& _texture, unsigned _attach)
     {
-        GLint maxAttach = 0;
-        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttach);
-        if(_attach >= unsigned(maxAttach))
+        if(_attach >= unsigned(s_maxAttachement))
         {
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
@@ -99,9 +107,7 @@ namespace GL
 
     void FrameBuffer::attachDrawBuffers() const
     {
-        GLint maxDraw = 0;
-        glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDraw);
-        if(m_colorAttachement.size() >= unsigned(maxDraw))
+        if(m_colorAttachement.size() >= unsigned(s_maxDraw))
         {
             throw overflow_error("[FrameBuffer] Too much draw texture");
         }

@@ -32,6 +32,12 @@ public:
 
 private:
 
+    static GLint s_maxAttachement;
+    static GLint s_maxDraw;
+    static bool s_first;
+
+private:
+
     std::vector< unsigned > m_colorAttachement {};
 
 };
