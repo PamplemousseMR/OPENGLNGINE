@@ -49,7 +49,7 @@ namespace GL
         return *this;
     }
 
-    void RenderBuffer::setStorage(int _width, int _height) const
+    void RenderBuffer::allocate(int _width, int _height) const
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {

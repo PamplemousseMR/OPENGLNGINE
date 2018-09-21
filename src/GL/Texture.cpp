@@ -94,26 +94,26 @@ namespace GL
 
         GLint width;
         GLint height;
-        GLint internalFormat;
-        glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_COMPONENTS, &internalFormat);
+        GLint destFormat;
+        glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_COMPONENTS, &destFormat);
         glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_WIDTH, &width);
         glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_HEIGHT, &height);
 
-        GLenum format;
+        GLenum srcFormat;
         size_t numBytes;
-        switch(internalFormat)
+        switch(destFormat)
         {
         case GL_RGB:
             numBytes = size_t(width * height * 3);
-            format = GL_RGB;
+            srcFormat = GL_RGB;
             break;
         case GL_RGBA:
             numBytes = size_t(width * height * 4);
-            format = GL_RGBA;
+            srcFormat = GL_RGBA;
             break;
         case GL_DEPTH_COMPONENT:
             numBytes = size_t(width * height);
-            format = GL_DEPTH_COMPONENT;
+            srcFormat = GL_DEPTH_COMPONENT;
             break;
         default:
             throw invalid_argument("[Texture] Unsuported format");
@@ -127,28 +127,28 @@ namespace GL
                 case TYPE_1D :
                     {
                         std::vector< unsigned char > data(numBytes);
-                        glGetTexImage(GL_TEXTURE_1D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        glGetTexImage(GL_TEXTURE_1D, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                         _texture.unbind();
                         bind();
-                        glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                     }
                 break;
                 case TYPE_2D :
                     {
                         std::vector< unsigned char > data(numBytes);
-                        glGetTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        glGetTexImage(GL_TEXTURE_2D, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                         _texture.unbind();
                         bind();
-                        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                        glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                     }
                 break;
                 case TYPE_DEPTH :
                     {
                         std::vector< float > data(numBytes);
-                        glGetTexImage(GL_TEXTURE_2D, 0, format, GL_FLOAT, &data[0]);
+                        glGetTexImage(GL_TEXTURE_2D, 0, srcFormat, GL_FLOAT, &data[0]);
                         _texture.unbind();
                         bind();
-                        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_FLOAT, &data[0]);
+                        glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, srcFormat, GL_FLOAT, &data[0]);
                     }
                 break;
             }
@@ -171,29 +171,29 @@ namespace GL
 
             GLint width;
             GLint height;
-            GLint internalFormat;
+            GLint destFormat;
             size_t numBytes;
-            GLenum format;
+            GLenum srcFormat;
 
             _texture.bind();
 
-            glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_COMPONENTS, &internalFormat);
+            glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_COMPONENTS, &destFormat);
             glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_WIDTH, &width);
             glGetTexLevelParameteriv(m_glType, 0, GL_TEXTURE_HEIGHT, &height);
 
-            switch(internalFormat)
+            switch(destFormat)
             {
             case GL_RGB:
                 numBytes = size_t(width * height * 3);
-                format = GL_RGB;
+                srcFormat = GL_RGB;
                 break;
             case GL_RGBA:
                 numBytes = size_t(width * height * 4);
-                format = GL_RGBA;
+                srcFormat = GL_RGBA;
                 break;
             case GL_DEPTH_COMPONENT:
                 numBytes = size_t(width * height);
-                format = GL_DEPTH_COMPONENT;
+                srcFormat = GL_DEPTH_COMPONENT;
                 break;
             default:
                 throw invalid_argument("[Texture] Unsuported format");
@@ -207,28 +207,28 @@ namespace GL
                     case TYPE_1D :
                         {
                             std::vector< unsigned char > data(numBytes);
-                            glGetTexImage(GL_TEXTURE_1D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                            glGetTexImage(GL_TEXTURE_1D, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                             _texture.unbind();
                             bind();
-                            glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                            glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                         }
                     break;
                     case TYPE_2D :
                         {
                             std::vector< unsigned char > data(numBytes);
-                            glGetTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                            glGetTexImage(GL_TEXTURE_2D, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                             _texture.unbind();
                             bind();
-                            glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, &data[0]);
+                            glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, srcFormat, GL_UNSIGNED_BYTE, &data[0]);
                         }
                     break;
                     case TYPE_DEPTH :
                         {
                             std::vector< float > data(numBytes);
-                            glGetTexImage(GL_TEXTURE_2D, 0, format, GL_FLOAT, &data[0]);
+                            glGetTexImage(GL_TEXTURE_2D, 0, srcFormat, GL_FLOAT, &data[0]);
                             _texture.unbind();
                             bind();
-                            glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_FLOAT, &data[0]);
+                            glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, srcFormat, GL_FLOAT, &data[0]);
                         }
                     break;
                 }
@@ -305,7 +305,7 @@ namespace GL
         return width;
     }
 
-    void Texture::load(int _width, int _height, TEXTURE_FORMAT _format) const
+    void Texture::allocate(int _width, int _height, TEXTURE_FORMAT _format) const
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {

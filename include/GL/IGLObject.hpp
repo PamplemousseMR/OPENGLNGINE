@@ -20,9 +20,9 @@ protected:
     IGLObject();
     virtual ~IGLObject() noexcept;
     IGLObject(const IGLObject&);
-    //IGLObject(IGLObject&&) = delete;
+    IGLObject(IGLObject&&) = delete;
     IGLObject& operator=(const IGLObject&);
-    //IGLObject& operator=(IGLObject&&) = delete;
+    IGLObject& operator=(IGLObject&&) = delete;
 
 protected:
 

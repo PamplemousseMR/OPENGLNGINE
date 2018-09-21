@@ -20,7 +20,7 @@ public:
     RenderBuffer& operator=(const RenderBuffer&);
     RenderBuffer& operator=(RenderBuffer&&) = delete;
 
-    void setStorage(int, int) const;
+    void allocate(int, int) const;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;

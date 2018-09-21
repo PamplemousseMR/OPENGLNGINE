@@ -41,7 +41,7 @@ public:
     Texture& operator=(Texture&&) = delete;
 
     int load(const std::filesystem::path&);
-    void load(int, int, TEXTURE_FORMAT) const;
+    void allocate(int, int, TEXTURE_FORMAT) const;
 
     inline void generateMipmap() const noexcept;
 

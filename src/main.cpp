@@ -188,13 +188,13 @@ int main()
 
         GL::Texture renderTexture(GL::Texture::TYPE_2D);
         renderTexture.bind();
-        renderTexture.load(s_width, s_height, GL::Texture::FORMAT_RGBA);
+        renderTexture.allocate(s_width, s_height, GL::Texture::FORMAT_RGBA);
         renderTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         renderTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
         GL::RenderBuffer renderDepthBuffer;
         renderDepthBuffer.bind();
-        renderDepthBuffer.setStorage(s_width, s_height);
+        renderDepthBuffer.allocate(s_width, s_height);
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
@@ -261,9 +261,9 @@ int main()
             frameBuffer.bind();
             viewport.setViewport(s_width,s_height);
             renderTexture.bind();
-            renderTexture.load(s_width, s_height, GL::Texture::FORMAT_RGBA);
+            renderTexture.allocate(s_width, s_height, GL::Texture::FORMAT_RGBA);
             renderDepthBuffer.bind();
-            renderDepthBuffer.setStorage(s_width, s_height);
+            renderDepthBuffer.allocate(s_width, s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             frameBuffer.attachDrawBuffers();
 
