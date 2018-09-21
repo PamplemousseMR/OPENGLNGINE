@@ -194,7 +194,7 @@ int main()
 
         GL::RenderBuffer renderDepthBuffer;
         renderDepthBuffer.bind();
-        renderDepthBuffer.allocate(s_width, s_height);
+        renderDepthBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH);
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
@@ -267,7 +267,7 @@ int main()
             renderTexture.bind();
             renderTexture.allocate(s_width, s_height, GL::Texture::FORMAT_RGBA);
             renderDepthBuffer.bind();
-            renderDepthBuffer.allocate(s_width, s_height);
+            renderDepthBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             frameBuffer.attachDrawBuffers();
 

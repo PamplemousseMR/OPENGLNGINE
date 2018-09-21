@@ -46,13 +46,13 @@ namespace GL
         return *this;
     }
 
-    void RenderBuffer::allocate(int _width, int _height) const
+    void RenderBuffer::allocate(int _width, int _height, RENDERBUFFER_FORMAT _format) const
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {
             throw overflow_error("[Texture] Size too big");
         }
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _width, _height);
+        glRenderbufferStorage(GL_RENDERBUFFER, _format, _width, _height);
         assert(glGetError() == GL_NO_ERROR);
     }
 }

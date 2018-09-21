@@ -13,6 +13,15 @@ class RenderBuffer : public IGLObject
 
 public:
 
+    enum RENDERBUFFER_FORMAT
+    {
+        FORMAT_RGB = GL_RGB,
+        FORMAT_RGBA = GL_RGBA,
+        FORMAT_DEPTH = GL_DEPTH_COMPONENT
+    };
+
+public:
+
     RenderBuffer();
     ~RenderBuffer() noexcept;
     RenderBuffer(const RenderBuffer&);
@@ -20,7 +29,7 @@ public:
     RenderBuffer& operator=(const RenderBuffer&);
     RenderBuffer& operator=(RenderBuffer&&) = delete;
 
-    void allocate(int, int) const;
+    void allocate(int, int, RENDERBUFFER_FORMAT) const;
 
     inline virtual void bind() const noexcept;
     inline virtual void unbind() const noexcept;
