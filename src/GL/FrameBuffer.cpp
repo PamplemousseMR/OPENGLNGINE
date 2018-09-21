@@ -49,13 +49,13 @@ namespace GL
         return *this;
     }
 
-    void FrameBuffer::attachColorTexture2D(const Texture& _texture, unsigned _attach)
+    void FrameBuffer::attachColorTexture1D(const Texture& _texture, unsigned _attach)
     {
         if(_attach >= unsigned(s_maxAttachement))
         {
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
+        glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_1D, _texture.getId(), 0);
         assert(glGetError() == GL_NO_ERROR);
         auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
         if (p == m_colorAttachement.end())
@@ -64,13 +64,13 @@ namespace GL
         }
     }
 
-    void FrameBuffer::attachColorTexture1D(const Texture& _texture, unsigned _attach)
+    void FrameBuffer::attachColorTexture2D(const Texture& _texture, unsigned _attach)
     {
         if(_attach >= unsigned(s_maxAttachement))
         {
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
-        glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_1D, _texture.getId(), 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
         assert(glGetError() == GL_NO_ERROR);
         auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
         if (p == m_colorAttachement.end())

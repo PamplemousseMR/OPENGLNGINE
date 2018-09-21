@@ -189,8 +189,8 @@ int main()
         GL::Texture renderTexture(GL::Texture::TYPE_2D);
         renderTexture.bind();
         renderTexture.allocate(s_width, s_height, GL::Texture::FORMAT_RGBA);
-        renderTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        renderTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        renderTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
+        renderTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
         GL::RenderBuffer renderDepthBuffer;
         renderDepthBuffer.bind();

@@ -28,7 +28,20 @@ public:
     {
         FORMAT_RGB = GL_RGB,
         FORMAT_RGBA = GL_RGBA,
-        FORMAT_DEPTH = GL_DEPTH_COMPONENT
+        FORMAT_DEPTH = GL_DEPTH_COMPONENT,
+        FORMAT_DEPTH16 = GL_DEPTH_COMPONENT16,
+        FORMAT_DEPTH24 = GL_DEPTH_COMPONENT24,
+        FORMAT_DEPTH32 = GL_DEPTH_COMPONENT32
+    };
+
+    enum TEXTURE_FILTER
+    {
+        FILTER_LINEAR = GL_LINEAR,
+        FILTER_NEAREST = GL_NEAREST,
+        FILTER_LINEAR_MIPMAP_LINEAR = GL_LINEAR_MIPMAP_LINEAR,
+        FILTER_LINEAR_MIPMAP_NEAREST = GL_LINEAR_MIPMAP_NEAREST,
+        FILTER_NEAREST_MIPMAP_LINEAR = GL_NEAREST_MIPMAP_LINEAR,
+        FILTER_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST
     };
 
 public:
@@ -42,7 +55,6 @@ public:
 
     int load(const std::filesystem::path&);
     void allocate(int, int, TEXTURE_FORMAT) const;
-
     inline void generateMipmap() const noexcept;
 
     inline void bind() const noexcept;
@@ -51,7 +63,8 @@ public:
     inline int getLocation() const noexcept;
     inline TEXTURE_TYPE getType() const noexcept;
 
-    inline void setParameter(GLenum, GLint) const noexcept;
+    inline void setMagFilter(TEXTURE_FILTER) const noexcept;
+    inline void setMinFilter(TEXTURE_FILTER) const noexcept;
 
 private:
 
@@ -91,9 +104,15 @@ inline Texture::TEXTURE_TYPE Texture::getType() const noexcept
     return m_type;
 }
 
-inline void Texture::setParameter(GLenum pname, GLint param) const noexcept
+inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const noexcept
 {
-    glTexParameteri(m_glType, pname, param);
+    glTexParameteri(m_glType, GL_TEXTURE_MIN_FILTER, _filter);
+    assert(glGetError() == GL_NO_ERROR);
+}
+
+inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const noexcept
+{
+    glTexParameteri(m_glType, GL_TEXTURE_MAG_FILTER, _filter);
     assert(glGetError() == GL_NO_ERROR);
 }
 

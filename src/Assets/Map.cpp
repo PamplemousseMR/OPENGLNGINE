@@ -15,8 +15,8 @@ namespace Assets
         m_texture = new Texture(Texture::TYPE_2D);
         m_texture->bind();
         m_textres = m_texture->load(_path);
-        m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_texture->setMagFilter(Texture::FILTER_LINEAR);
+        m_texture->setMinFilter(Texture::FILTER_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
         m_texture->unbind();
     }
@@ -47,8 +47,8 @@ namespace Assets
         m_mapAat(_map.m_mapAat)
     {
         m_texture->bind();
-        m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_texture->setMagFilter(Texture::FILTER_LINEAR);
+        m_texture->setMinFilter(Texture::FILTER_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
         m_texture->unbind();
     }
@@ -100,8 +100,8 @@ namespace Assets
             m_boost = _map.m_boost;
             m_mapAat = _map.m_mapAat;
             m_texture->bind();
-            m_texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            m_texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            m_texture->setMagFilter(Texture::FILTER_LINEAR);
+            m_texture->setMinFilter(Texture::FILTER_LINEAR_MIPMAP_LINEAR);
             m_texture->generateMipmap();
             m_texture->unbind();
         }
