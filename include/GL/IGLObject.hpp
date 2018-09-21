@@ -26,7 +26,7 @@ protected:
 
 protected:
 
-    GLuint m_id {0};
+    GLuint m_id;
 
 };
 

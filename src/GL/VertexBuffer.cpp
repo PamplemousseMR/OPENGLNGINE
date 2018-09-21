@@ -37,10 +37,6 @@ namespace GL
         if (size != 0)
         {
             glBufferData(GL_COPY_WRITE_BUFFER, size, nullptr, GL_STATIC_DRAW);
-            if(glGetError() == GL_OUT_OF_MEMORY )
-            {
-                throw overflow_error("[VertexBuffer] Out of memory");
-            }
             glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, size);
         }
 
@@ -53,9 +49,7 @@ namespace GL
     {
         if(this != &_buffer)
         {
-            glDeleteBuffers(1, &m_id);
             IGLObject::operator=(_buffer);
-            glGenBuffers(1, &m_id);
 
             glBindBuffer(GL_COPY_READ_BUFFER, _buffer.getId());
             glBindBuffer(GL_COPY_WRITE_BUFFER, m_id);
@@ -65,10 +59,6 @@ namespace GL
             if (size != 0)
             {
                 glBufferData(GL_COPY_WRITE_BUFFER, size, nullptr, GL_STATIC_DRAW);
-                if(glGetError() == GL_OUT_OF_MEMORY )
-                {
-                    throw overflow_error("[VertexBuffer] Out of memory");
-                }
                 glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, size);
             }
 

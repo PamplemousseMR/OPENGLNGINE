@@ -61,9 +61,8 @@ private:
 
 private:
 
-    TEXTURE_TYPE m_type {TYPE_1D};
-    GLenum m_glType {GL_TEXTURE_1D};
-    bool m_hasAlpha {false};
+    TEXTURE_TYPE m_type {TYPE_2D};
+    GLenum m_glType {GL_TEXTURE_2D};
     int m_location {-1};
 
 };

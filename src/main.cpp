@@ -212,8 +212,12 @@ int main()
          * =======================================
          */
 
-        Assets::OBJFile file;
-        file.load("obj/Flamethrower/Flamethrower.obj");
+        Assets::OBJFile files;
+        files.load("obj/Flamethrower/Flamethrower.obj");
+        Assets::OBJFile filess(files);
+        Assets::OBJFile filesss;
+        filesss = filess;
+        Assets::OBJFile file(std::move(filesss));
 
         Component::Quad quad("QuadRenderer");
 

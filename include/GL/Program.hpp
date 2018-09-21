@@ -24,8 +24,8 @@ public:
     Program& operator=(const Program&);
     Program& operator=(Program&&) = delete;
 
-    void attach(Shader& shader);
-    void detach(const Shader& shader);
+    void attach(Shader&);
+    void detach(const Shader&);
     void detachAll() noexcept;
     void link() const;
 

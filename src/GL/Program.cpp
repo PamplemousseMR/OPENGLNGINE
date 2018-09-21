@@ -47,15 +47,8 @@ namespace GL
         if(this != &_program)
         {
             detachAll();
-            glDeleteProgram(m_id);
             IGLObject::operator=(_program);
-            m_id = glCreateProgram();
-            assert(glGetError() == GL_NO_ERROR);
-            if(m_id == 0)
-            {
-                throw overflow_error("[Program] Out of memory");
-            }
-            for (Shader* const s : _program.m_shaders)
+            for(Shader* const s : _program.m_shaders)
             {
                 attach(*s);
             }

@@ -6,15 +6,15 @@ using namespace std;
 
 namespace GL
 {
-    GLint RenderBuffer::s_maxSize;
-    bool RenderBuffer::s_first = false;
+    GLint RenderBuffer::s_maxSize = 0;
+    bool RenderBuffer::s_first = true;
 
     RenderBuffer::RenderBuffer() :
         IGLObject()
     {
-        if(!s_first)
+        if(s_first)
         {
-            s_first = true;
+            s_first = false;
             glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &s_maxSize);
         }
         glGenRenderbuffers(1, &m_id);
@@ -41,9 +41,6 @@ namespace GL
     {
         if(this != &_renderBuffer)
         {
-            glDeleteRenderbuffers(1, &m_id);
-            assert(glGetError() == GL_NO_ERROR);
-            IGLObject::operator=(_renderBuffer);
             throw invalid_argument("[RenderBuffer] TODO");
         }
         return *this;

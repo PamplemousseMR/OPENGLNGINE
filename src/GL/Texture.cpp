@@ -9,17 +9,17 @@ using namespace std;
 
 namespace GL
 {
-    vector<bool> Texture::s_location;
-    GLint Texture::s_maxSize;
-    bool Texture::s_first = false;
+    vector<bool> Texture::s_location = {};
+    GLint Texture::s_maxSize = 0;
+    bool Texture::s_first = true;
 
     Texture::Texture(TEXTURE_TYPE type) :
         IGLObject(),
         m_type(type)
     {
-        if(!s_first)
+        if(s_first)
         {
-            s_first = true;
+            s_first = false;
             GLint size;
             glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &size);
             for (int i(0); i < size; ++i)
@@ -250,14 +250,15 @@ namespace GL
             throw invalid_argument("[Texture] path doesn't exists : " + _path.string());
         }
 
+        bool hasAlpha;
         const string fileFormat = _path.extension().string();
         if (fileFormat == ".bmp" || fileFormat == ".jpg" || fileFormat == ".jpeg")
         {
-            m_hasAlpha = false;
+            hasAlpha = false;
         }
         else if (fileFormat == ".png" || fileFormat == ".tga" || fileFormat == ".psd" || fileFormat == ".DDS")
         {
-            m_hasAlpha = true;
+            hasAlpha = true;
         }
         else if (fileFormat == ".hdr")
         {
@@ -273,7 +274,7 @@ namespace GL
         int soilFormat = SOIL_LOAD_RGB;
         GLint destFormat = GL_RGB;
         GLenum srcFormat = GL_RGB;
-        if (m_hasAlpha)
+        if(hasAlpha)
         {
             soilFormat = SOIL_LOAD_RGBA;
             destFormat = GL_RGBA;

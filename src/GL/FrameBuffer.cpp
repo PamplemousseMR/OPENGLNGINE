@@ -7,16 +7,16 @@ using namespace std;
 
 namespace GL
 {
-    GLint FrameBuffer::s_maxAttachement;
-    GLint FrameBuffer::s_maxDraw;
-    bool FrameBuffer::s_first = false;
+    GLint FrameBuffer::s_maxAttachement = 0;
+    GLint FrameBuffer::s_maxDraw = 0;
+    bool FrameBuffer::s_first = true;
 
     FrameBuffer::FrameBuffer() :
         IGLObject()
     {
-        if (!s_first)
+        if (s_first)
         {
-            s_first = true;
+            s_first = false;
             glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &s_maxAttachement);
             glGetIntegerv(GL_MAX_DRAW_BUFFERS, &s_maxDraw);
         }
@@ -44,9 +44,6 @@ namespace GL
     {
         if(this != &_frameBuffer)
         {
-            glDeleteFramebuffers(1, &m_id);
-            assert(glGetError() == GL_NO_ERROR);
-            IGLObject::operator=(_frameBuffer);
             throw invalid_argument("[FrameBuffer] TODO");
         }
         return *this;
