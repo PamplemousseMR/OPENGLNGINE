@@ -50,9 +50,7 @@ namespace GL
     {
         if(this != &_buffer)
         {
-            glDeleteBuffers(1, &m_id);
             IGLObject::operator=(_buffer);
-            glGenBuffers(1, &m_id);
 
             glBindBuffer(GL_COPY_READ_BUFFER, _buffer.getId());
             glBindBuffer(GL_COPY_WRITE_BUFFER, m_id);

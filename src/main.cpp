@@ -188,7 +188,7 @@ int main()
 
         GL::Texture renderTexture(GL::Texture::TYPE_2D);
         renderTexture.bind();
-        renderTexture.allocate(s_width, s_height, GL::Texture::FORMAT_RGBA);
+        renderTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
         renderTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
@@ -212,12 +212,8 @@ int main()
          * =======================================
          */
 
-        Assets::OBJFile files;
-        files.load("obj/Flamethrower/Flamethrower.obj");
-        Assets::OBJFile filess(files);
-        Assets::OBJFile filesss;
-        filesss = filess;
-        Assets::OBJFile file(std::move(filesss));
+        Assets::OBJFile file;
+        file.load("obj/Flamethrower/Flamethrower.obj");
 
         Component::Quad quad("QuadRenderer");
 
@@ -265,7 +261,7 @@ int main()
             frameBuffer.bind();
             viewport.setViewport(s_width,s_height);
             renderTexture.bind();
-            renderTexture.allocate(s_width, s_height, GL::Texture::FORMAT_RGBA);
+            renderTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
             renderDepthBuffer.bind();
             renderDepthBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
