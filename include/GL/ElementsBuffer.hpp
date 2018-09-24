@@ -14,7 +14,7 @@ class ElementsBuffer : public IGLObject
 public:
 
     ElementsBuffer();
-    ~ElementsBuffer() noexcept;
+    ~ElementsBuffer() noexcept override;
     ElementsBuffer(const ElementsBuffer&);
     ElementsBuffer(ElementsBuffer&&) = delete;
     ElementsBuffer& operator=(const ElementsBuffer&);
@@ -23,8 +23,8 @@ public:
     template<typename T>
     inline void setData(const std::vector<T>&) const noexcept;
 
-    inline virtual void bind() const noexcept;
-    inline virtual void unbind() const noexcept;
+    inline virtual void bind() const noexcept override;
+    inline virtual void unbind() const noexcept override;
 
 };
 

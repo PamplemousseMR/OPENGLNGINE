@@ -26,7 +26,7 @@ public:
 public:
 
     RenderBuffer();
-    ~RenderBuffer() noexcept;
+    ~RenderBuffer() noexcept override;
     RenderBuffer(const RenderBuffer&);
     RenderBuffer(RenderBuffer&&) = delete;
     RenderBuffer& operator=(const RenderBuffer&);
@@ -34,8 +34,8 @@ public:
 
     void allocate(int, int, RENDERBUFFER_FORMAT) const;
 
-    inline virtual void bind() const noexcept;
-    inline virtual void unbind() const noexcept;
+    inline virtual void bind() const noexcept override;
+    inline virtual void unbind() const noexcept override;
 
 private:
 

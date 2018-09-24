@@ -14,14 +14,14 @@ class VertexArrayBuffer : public IGLObject
 public:
 
     VertexArrayBuffer();
-    ~VertexArrayBuffer() noexcept;
+    ~VertexArrayBuffer() noexcept override;
     VertexArrayBuffer(const VertexArrayBuffer&) = delete;
     VertexArrayBuffer(VertexArrayBuffer&&) = delete;
     VertexArrayBuffer& operator=(const VertexArrayBuffer&) = delete;
     VertexArrayBuffer& operator=(VertexArrayBuffer&&) = delete;
 
-    inline virtual void bind() const noexcept;
-    inline virtual void unbind() const noexcept;
+    inline virtual void bind() const noexcept override;
+    inline virtual void unbind() const noexcept override;
 
 };
 

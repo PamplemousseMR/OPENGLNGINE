@@ -16,7 +16,7 @@ class FrameBuffer : public IGLObject
 public:
 
     FrameBuffer();
-    ~FrameBuffer() noexcept;
+    ~FrameBuffer() noexcept override;
     FrameBuffer(const FrameBuffer&);
     FrameBuffer(FrameBuffer&&) = delete;
     FrameBuffer& operator=(const FrameBuffer&);
@@ -30,8 +30,8 @@ public:
     void checkStatus() const;
     void attachDrawBuffers() const;
 
-    inline virtual void bind() const noexcept;
-    inline virtual void unbind() const noexcept;
+    inline virtual void bind() const noexcept override;
+    inline virtual void unbind() const noexcept override;
 
 private:
 

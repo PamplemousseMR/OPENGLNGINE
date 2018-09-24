@@ -47,7 +47,7 @@ public:
 public:
 
     Texture(TEXTURE_TYPE);
-    ~Texture() noexcept;
+    ~Texture() noexcept override;
     Texture(const Texture&);
     Texture(Texture&&) = delete;
     Texture& operator=(const Texture&);
@@ -57,8 +57,8 @@ public:
     void allocate(int, int, TEXTURE_FORMAT) const;
     inline void generateMipmap() const noexcept;
 
-    inline void bind() const noexcept;
-    inline void unbind() const noexcept;
+    inline void bind() const noexcept override;
+    inline void unbind() const noexcept override;
 
     inline int getLocation() const noexcept;
     inline TEXTURE_TYPE getType() const noexcept;

@@ -16,7 +16,7 @@ class VertexBuffer : public IGLObject
 public:
 
     VertexBuffer();
-    ~VertexBuffer() noexcept;
+    ~VertexBuffer() noexcept override;
     VertexBuffer(const VertexBuffer&);
     VertexBuffer(VertexBuffer&&) = delete;
     VertexBuffer& operator=(const VertexBuffer&);
@@ -27,8 +27,8 @@ public:
     inline void setLocation(GLuint) const noexcept;
     inline void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint) const noexcept;
 
-    inline virtual void bind() const noexcept;
-    inline virtual void unbind() const noexcept;
+    inline virtual void bind() const noexcept override;
+    inline virtual void unbind() const noexcept override;
 };
 
 template<typename T>

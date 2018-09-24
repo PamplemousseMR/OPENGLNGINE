@@ -18,7 +18,7 @@ class Program : public IGLObject
 public:
 
     Program();
-    ~Program() noexcept;
+    ~Program() noexcept override;
     Program(const Program&);
     Program(Program&&) = delete;
     Program& operator=(const Program&);
@@ -29,8 +29,8 @@ public:
     void detachAll() noexcept;
     void link() const;
 
-    inline virtual void bind() const noexcept;
-    inline virtual void unbind() const noexcept;
+    inline virtual void bind() const noexcept override;
+    inline virtual void unbind() const noexcept override;
 
 private:
 
