@@ -384,7 +384,7 @@ int main()
             viewport.setViewport(s_width,s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            quadProgram.bind();
+            /*quadProgram.bind();
             {
                 renderTexture.bind();
                 u_tTexture = renderTexture.getLocation();
@@ -395,7 +395,11 @@ int main()
 
                 renderTexture.unbind();
             }
-            quadProgram.unbind();
+            quadProgram.unbind();*/
+
+            frameBuffer.bindToRead();
+            frameBuffer.unbindToDraw();
+            GL::FrameBuffer::blit(s_width, s_height);
 
             /*========================================
              * =======================================
