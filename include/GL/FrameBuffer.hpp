@@ -15,10 +15,6 @@ class FrameBuffer : public IGLObject
 
 public:
 
-    static inline void blit(int, int) noexcept;
-
-public:
-
     FrameBuffer();
     ~FrameBuffer() noexcept override;
     FrameBuffer(const FrameBuffer&);
@@ -33,13 +29,11 @@ public:
     inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
     void checkStatus() const;
     void attachDrawBuffers() const;
+    void blit(int, int, const FrameBuffer&) const noexcept;
+    void blitToDefaultFBO(int, int) const noexcept;
 
     inline virtual void bind() const noexcept override;
     inline virtual void unbind() const noexcept override;
-    inline void bindToRead() const noexcept;
-    inline void unbindToRead() const noexcept;
-    inline void bindToDraw() const noexcept;
-    inline void unbindToDraw() const noexcept;
 
 private:
 
@@ -52,12 +46,6 @@ private:
     std::vector< unsigned > m_colorAttachement {};
 
 };
-
-inline void FrameBuffer::blit(int _width, int _height) noexcept
-{
-    glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-    assert(glGetError() == GL_NO_ERROR);
-}
 
 inline void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const noexcept
 {
@@ -80,30 +68,6 @@ inline void FrameBuffer::bind() const noexcept
 inline void FrameBuffer::unbind() const noexcept
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    assert(glGetError() == GL_NO_ERROR);
-}
-
-inline void FrameBuffer::bindToRead() const noexcept
-{
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-    assert(glGetError() == GL_NO_ERROR);
-}
-
-inline void FrameBuffer::unbindToRead() const noexcept
-{
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-    assert(glGetError() == GL_NO_ERROR);
-}
-
-inline void FrameBuffer::bindToDraw() const noexcept
-{
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
-    assert(glGetError() == GL_NO_ERROR);
-}
-
-inline void FrameBuffer::unbindToDraw() const noexcept
-{
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     assert(glGetError() == GL_NO_ERROR);
 }
 

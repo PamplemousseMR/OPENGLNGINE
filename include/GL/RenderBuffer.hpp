@@ -13,7 +13,7 @@ class RenderBuffer : public IGLObject
 
 public:
 
-    enum RENDERBUFFER_FORMAT
+    enum RENDERBUFFER_FORMAT : GLenum
     {
         FORMAT_RGB = GL_RGB,
         FORMAT_RGBA = GL_RGBA,

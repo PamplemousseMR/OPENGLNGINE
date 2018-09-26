@@ -147,4 +147,24 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
+    void FrameBuffer::blitToDefaultFBO(int _width, int _height) const noexcept
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::blit(int _width, int _height, const FrameBuffer& _frameBuffer) const noexcept
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _frameBuffer.m_id);
+        glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
 }

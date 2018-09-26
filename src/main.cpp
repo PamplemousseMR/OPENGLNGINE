@@ -397,9 +397,7 @@ int main()
             }
             quadProgram.unbind();*/
 
-            frameBuffer.bindToRead();
-            frameBuffer.unbindToDraw();
-            GL::FrameBuffer::blit(s_width, s_height);
+            frameBuffer.blitToDefaultFBO(s_width, s_height);
 
             /*========================================
              * =======================================

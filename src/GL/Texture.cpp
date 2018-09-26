@@ -229,7 +229,7 @@ namespace GL
             case TYPE_1D :
                 if (height != 1)
                 {
-                    throw runtime_error("[Texture] not a 1D texture");
+                    throw invalid_argument("[Texture] not a 1D texture");
                 }
                 glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, width, 0, m_format, GL_UNSIGNED_BYTE, data);
             break;
@@ -254,7 +254,7 @@ namespace GL
             case TYPE_1D :
                 if (_height != 1)
                 {
-                    throw runtime_error("[Texture] Not a 1D texture");
+                    throw invalid_argument("[Texture] Not a 1D texture");
                 }
                 glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, _format, GL_UNSIGNED_BYTE, nullptr);
             break;
