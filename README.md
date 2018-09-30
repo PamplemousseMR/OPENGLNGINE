@@ -17,8 +17,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### compilation
 
-Use conan to download/build libraries : `conan install -s build_type=Release -if C:\build_release .`
 Add bincrafters remote : `conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
+
+Use conan to download/build libraries : `conan install -s build_type=Release -if C:\build_release .`
 
 Generate using cmake in the same build directory than conan: `cmake`.
 
