@@ -118,40 +118,35 @@ int main()
          * =======================================
          */
 
-        GL::Shader blinnPhongVertex(GL::Shader::TYPE_VERTEX);
-        blinnPhongVertex.setSourceFromFile("GLSL/blinnPhongVertex.glsl");
-        blinnPhongVertex.compile();
+        GL::Shader deferredShadingVertex(GL::Shader::TYPE_VERTEX);
+        deferredShadingVertex.setSourceFromFile("GLSL/deferredShadingVertex.glsl");
+        deferredShadingVertex.compile();
 
-        GL::Shader blinnPhongFragment(GL::Shader::TYPE_FRAGMENT);
-        blinnPhongFragment.setSourceFromFile("GLSL/blinnPhongFragment.glsl");
-        blinnPhongFragment.compile();
+        GL::Shader deferredShadingFragment(GL::Shader::TYPE_FRAGMENT);
+        deferredShadingFragment.setSourceFromFile("GLSL/deferredShadingFragment.glsl");
+        deferredShadingFragment.compile();
 
-        GL::Program standarProgram;
-        standarProgram.attach(blinnPhongVertex);
-        standarProgram.attach(blinnPhongFragment);
-        standarProgram.link();
+        GL::Program deferredShadingProgram;
+        deferredShadingProgram.attach(deferredShadingVertex);
+        deferredShadingProgram.attach(deferredShadingFragment);
+        deferredShadingProgram.link();
 
-        GL::Uniform u_m4Projection("u_m4Projection", standarProgram.getId());
-        GL::Uniform u_m4Model("u_m4Model", standarProgram.getId());
-        GL::Uniform u_m4View("u_m4View", standarProgram.getId());
+        GL::Uniform u_m4Model("u_m4Model", deferredShadingProgram.getId());
+        GL::Uniform u_m4View("u_m4View", deferredShadingProgram.getId());
+        GL::Uniform u_m4Projection("u_m4Projection", deferredShadingProgram.getId());
 
-        GL::Uniform u_f3LightPos_Ws("u_f3LightPos_Ws", standarProgram.getId());
-        GL::Uniform u_f3LightCol("u_f3LightCol", standarProgram.getId());
+        GL::Uniform u_tAmbient("u_tAmbient", deferredShadingProgram.getId());
+        GL::Uniform u_tDiffuse("u_tDiffuse", deferredShadingProgram.getId());
+        GL::Uniform u_tSpecular("u_tSpecular", deferredShadingProgram.getId());
 
-        GL::Uniform u_tAmbient("u_tAmbient", standarProgram.getId());
-        GL::Uniform u_tDiffuse("u_tDiffuse", standarProgram.getId());
-        GL::Uniform u_tSpecular("u_tSpecular", standarProgram.getId());
-        GL::Uniform u_tNormal("u_tNormal", standarProgram.getId());
+        GL::Uniform u_bAmbient("u_bAmbient", deferredShadingProgram.getId());
+        GL::Uniform u_bDiffuse("u_bDiffuse", deferredShadingProgram.getId());
+        GL::Uniform u_bSpecular("u_bSpecular", deferredShadingProgram.getId());
 
-        GL::Uniform u_bAmbient("u_bAmbient", standarProgram.getId());
-        GL::Uniform u_bDiffuse("u_bDiffuse", standarProgram.getId());
-        GL::Uniform u_bSpecular("u_bSpecular", standarProgram.getId());
-        GL::Uniform u_bNormal("u_bNormal", standarProgram.getId());
-
-        GL::Uniform u_fSpecularExponent("u_fSpecularExponent", standarProgram.getId());
-        GL::Uniform u_f3AmbientCol("u_f3AmbientCol", standarProgram.getId());
-        GL::Uniform u_f3DiffuseCol("u_f3DiffuseCol", standarProgram.getId());
-        GL::Uniform u_f3SpecularCol("u_f3SpecularCol", standarProgram.getId());
+        GL::Uniform u_fSpecularExponent("u_fSpecularExponent", deferredShadingProgram.getId());
+        GL::Uniform u_f3AmbientCol("u_f3AmbientCol", deferredShadingProgram.getId());
+        GL::Uniform u_f3DiffuseCol("u_f3DiffuseCol", deferredShadingProgram.getId());
+        GL::Uniform u_f3SpecularCol("u_f3SpecularCol", deferredShadingProgram.getId());
 
         /*========================================
          * =======================================
@@ -162,20 +157,28 @@ int main()
          * =======================================
          */
 
-        GL::Shader quadVertex(GL::Shader::TYPE_VERTEX);
-        quadVertex.setSourceFromFile("GLSL/quadVertex.glsl");
-        quadVertex.compile();
+        GL::Shader quadBlinnPhongVertex(GL::Shader::TYPE_VERTEX);
+        quadBlinnPhongVertex.setSourceFromFile("GLSL/quadBlinnPhongVertex.glsl");
+        quadBlinnPhongVertex.compile();
 
-        GL::Shader quadFragment(GL::Shader::TYPE_FRAGMENT);
-        quadFragment.setSourceFromFile("GLSL/quadFragment.glsl");
-        quadFragment.compile();
+        GL::Shader quadBlinnPhongFragment(GL::Shader::TYPE_FRAGMENT);
+        quadBlinnPhongFragment.setSourceFromFile("GLSL/quadBlinnPhongFragment.glsl");
+        quadBlinnPhongFragment.compile();
 
-        GL::Program quadProgram;
-        quadProgram.attach(quadVertex);
-        quadProgram.attach(quadFragment);
-        quadProgram.link();
+        GL::Program quadBlinnPhonProgram;
+        quadBlinnPhonProgram.attach(quadBlinnPhongVertex);
+        quadBlinnPhonProgram.attach(quadBlinnPhongFragment);
+        quadBlinnPhonProgram.link();
 
-        GL::Uniform u_tTexture("u_tTexture", quadProgram.getId());
+        GL::Uniform u_tPositionCor_Vs("u_tPositionCor_Vs", quadBlinnPhonProgram.getId());
+        GL::Uniform u_tOutNormalDir_Vs("u_tNormalDir_Vs", quadBlinnPhonProgram.getId());
+        GL::Uniform u_tOutAmbientCol_Vs("u_tAmbientCol_Vs", quadBlinnPhonProgram.getId());
+        GL::Uniform u_tOutDiffuseCol_Vs("u_tDiffuseCol_Vs", quadBlinnPhonProgram.getId());
+        GL::Uniform u_tOutSpecularCol_Vs("u_tSpecularCol_Vs", quadBlinnPhonProgram.getId());
+
+        GL::Uniform u_m4ViewDeferred("u_m4View", quadBlinnPhonProgram.getId());
+        GL::Uniform u_f3LightPos_Ws("u_f3LightPos_Ws", quadBlinnPhonProgram.getId());
+        GL::Uniform u_f3LightCol("u_f3LightCol", quadBlinnPhonProgram.getId());
 
         /*========================================
          * =======================================
@@ -186,11 +189,35 @@ int main()
          * =======================================
          */
 
-        GL::Texture renderTexture(GL::Texture::TYPE_2D);
-        renderTexture.bind();
-        renderTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
-        renderTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
-        renderTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+        GL::Texture renderPositionTexture(GL::Texture::TYPE_2D);
+        renderPositionTexture.bind();
+        renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
+        renderPositionTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
+        renderPositionTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+
+        GL::Texture renderNormalTexture(GL::Texture::TYPE_2D);
+        renderNormalTexture.bind();
+        renderNormalTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA);
+        renderNormalTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
+        renderNormalTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+
+        GL::Texture renderAmbientTexture(GL::Texture::TYPE_2D);
+        renderAmbientTexture.bind();
+        renderAmbientTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+        renderAmbientTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
+        renderAmbientTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+
+        GL::Texture renderDiffuseTexture(GL::Texture::TYPE_2D);
+        renderDiffuseTexture.bind();
+        renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+        renderDiffuseTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
+        renderDiffuseTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+
+        GL::Texture renderSpecularTexture(GL::Texture::TYPE_2D);
+        renderSpecularTexture.bind();
+        renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+        renderSpecularTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
+        renderSpecularTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
         GL::RenderBuffer renderDepthBuffer;
         renderDepthBuffer.bind();
@@ -198,7 +225,11 @@ int main()
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
-        frameBuffer.attachColorTexture2D(renderTexture, 0);
+        frameBuffer.attachColorTexture2D(renderPositionTexture, 0);
+        frameBuffer.attachColorTexture2D(renderNormalTexture, 1);
+        frameBuffer.attachColorTexture2D(renderAmbientTexture, 2);
+        frameBuffer.attachColorTexture2D(renderDiffuseTexture, 3);
+        frameBuffer.attachColorTexture2D(renderSpecularTexture, 4);
         frameBuffer.attachDepthBuffer(renderDepthBuffer);
         frameBuffer.checkStatus();
         frameBuffer.unbind();
@@ -244,9 +275,8 @@ int main()
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
+        glDisable(GL_BLEND);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         while (!glfwWindowShouldClose(window))
         {
@@ -260,19 +290,25 @@ int main()
              */
             frameBuffer.bind();
             viewport.setViewport(s_width,s_height);
-            renderTexture.bind();
-            renderTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderPositionTexture.bind();
+            renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
+            renderNormalTexture.bind();
+            renderNormalTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA);
+            renderAmbientTexture.bind();
+            renderAmbientTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderDiffuseTexture.bind();
+            renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderSpecularTexture.bind();
+            renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
             renderDepthBuffer.bind();
             renderDepthBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             frameBuffer.attachDrawBuffers();
 
-            standarProgram.bind();
+            deferredShadingProgram.bind();
             {
                 u_m4View = V;
                 u_m4Projection = P;
-                u_f3LightPos_Ws = light.getPositionData();
-                u_f3LightCol = light.getAmbient();
 
                 for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
                 {
@@ -328,19 +364,6 @@ int main()
                                 u_bSpecular = false;
                             }
 
-                            Assets::Map* bumpMap = material->getBumpmap();
-                            if (bumpMap)
-                            {
-                                GL::Texture* normal = bumpMap->getTexture();
-                                normal->bind();
-                                u_tNormal = normal->getLocation();
-                                u_bNormal = true;
-                            }
-                            else
-                            {
-                                u_bNormal = false;
-                            }
-
                             u_fSpecularExponent = material->getSpecularExponent();
                             u_f3SpecularCol = material->getSpecular();
                             u_f3DiffuseCol = material->getDiffuse();
@@ -370,7 +393,7 @@ int main()
                     }
                 }
             }
-            standarProgram.unbind();
+            deferredShadingProgram.unbind();
 
             /*========================================
              * =======================================
@@ -384,20 +407,36 @@ int main()
             viewport.setViewport(s_width,s_height);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            /*quadProgram.bind();
+            quadBlinnPhonProgram.bind();
             {
-                renderTexture.bind();
-                u_tTexture = renderTexture.getLocation();
+                renderPositionTexture.bind();
+                u_tPositionCor_Vs = renderPositionTexture.getLocation();
+                renderNormalTexture.bind();
+                u_tOutNormalDir_Vs = renderNormalTexture.getLocation();
+                renderAmbientTexture.bind();
+                u_tOutAmbientCol_Vs = renderAmbientTexture.getLocation();
+                renderDiffuseTexture.bind();
+                u_tOutDiffuseCol_Vs = renderDiffuseTexture.getLocation();
+                renderSpecularTexture.bind();
+                u_tOutSpecularCol_Vs = renderSpecularTexture.getLocation();
+
+                u_m4ViewDeferred = V;
+                u_f3LightPos_Ws = light.getPositionData();
+                u_f3LightCol = light.getAmbient();
 
                 quad.bind();
                 quad.draw();
                 quad.unbind();
 
-                renderTexture.unbind();
+                renderPositionTexture.unbind();
+                renderNormalTexture.unbind();
+                renderAmbientTexture.unbind();
+                renderDiffuseTexture.unbind();
+                renderSpecularTexture.unbind();
             }
-            quadProgram.unbind();*/
+            quadBlinnPhonProgram.unbind();
 
-            frameBuffer.blitToDefaultFBO(s_width, s_height);
+            //frameBuffer.blitToDefaultFBO(s_width, s_height);
 
             /*========================================
              * =======================================
