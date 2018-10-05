@@ -42,6 +42,7 @@ void windowSizeCallback(GLFWwindow*, int _width, int _height)
 {
     s_width = _width;
     s_height = _height;
+    GL::Viewport::setViewport(s_width,s_height);
 }
 
 void exitHandler()
@@ -237,6 +238,30 @@ int main()
         /*========================================
          * =======================================
          *
+         *      Add realocation to the viewport listeners
+         *
+         * =======================================
+         * =======================================
+         */
+
+        GL::Viewport::addListener([&](int _width, int _height){
+            renderPositionTexture.bind();
+            renderPositionTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
+            renderNormalTexture.bind();
+            renderNormalTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA);
+            renderAmbientTexture.bind();
+            renderAmbientTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderDiffuseTexture.bind();
+            renderDiffuseTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderSpecularTexture.bind();
+            renderSpecularTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderDepthStencilBuffer.bind();
+            renderDepthStencilBuffer.allocate(_width, _height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
+        });
+
+        /*========================================
+         * =======================================
+         *
          *      Init component
          *
          * =======================================
@@ -293,18 +318,6 @@ int main()
              * =======================================
              */
             frameBuffer.bind();
-            renderPositionTexture.bind();
-            renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
-            renderNormalTexture.bind();
-            renderNormalTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA);
-            renderAmbientTexture.bind();
-            renderAmbientTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
-            renderDiffuseTexture.bind();
-            renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
-            renderSpecularTexture.bind();
-            renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
-            renderDepthStencilBuffer.bind();
-            renderDepthStencilBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
             glEnable(GL_DEPTH_TEST);
             glStencilFunc(GL_ALWAYS, 1, 0xFF);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -425,7 +438,6 @@ int main()
              * =======================================
              */
             GL::FrameBuffer::bindDefault();
-            GL::Viewport::setViewport(s_width,s_height);
             glDisable(GL_DEPTH_TEST);
             glStencilFunc(GL_EQUAL, 1, 0xFF);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -459,8 +471,6 @@ int main()
             }
             quadBlinnPhonProgram.unbind();
             GL::FrameBuffer::unbindDefault();
-
-            //frameBuffer.blitToDefaultFBO(s_width, s_height);
 
             /*========================================
              * =======================================

@@ -7,6 +7,7 @@ using namespace std;
 
 namespace GL
 {
+    std::vector< std::function< void(int, int) > > Viewport::s_listeners = {};
     GLint Viewport::s_maxSize[2] = {0, 0};
     bool Viewport::s_first = true;
 
@@ -22,6 +23,15 @@ namespace GL
             throw overflow_error("[Viewport] Size too big");
         }
         glViewport(0, 0, _width, _height);
+        for(Listener l : s_listeners)
+        {
+            l(_width, _height);
+        }
         assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void Viewport::addListener(const Listener& _listener)
+    {
+        s_listeners.push_back(_listener);
     }
 }
