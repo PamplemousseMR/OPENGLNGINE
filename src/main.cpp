@@ -27,8 +27,8 @@
 
 using namespace std;
 
-static int s_width = 800;
-static int s_height = 450;
+static const int s_width = 800;
+static const int s_height = 450;
 
 static void keyCallback(GLFWwindow* window, int key, int, int action, int)
 {
@@ -40,9 +40,7 @@ static void keyCallback(GLFWwindow* window, int key, int, int action, int)
 
 void windowSizeCallback(GLFWwindow*, int _width, int _height)
 {
-    s_width = _width;
-    s_height = _height;
-    GL::Viewport::setViewport(s_width,s_height);
+    GL::Viewport::setViewport(_width,_height);
 }
 
 void exitHandler()
@@ -297,8 +295,6 @@ int main()
          * =======================================
          */
 
-        //glEnable(GL_MULTISAMPLE);
-
         glEnable(GL_STENCIL_TEST);
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
         glStencilMask(0xFF);
@@ -306,6 +302,8 @@ int main()
         glDisable(GL_BLEND);
 
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
+        GL::Viewport::init(s_width, s_height);
 
         while (!glfwWindowShouldClose(window))
         {
@@ -425,7 +423,7 @@ int main()
 
             frameBuffer.bindRead();
             GL::FrameBuffer::bindDrawDefault();
-            GL::FrameBuffer::blit(s_width, s_height, GL::FrameBuffer::MASK_STENCIL);
+            GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::MASK_STENCIL);
             GL::FrameBuffer::unbindDrawDefault();
             frameBuffer.unbindRead();
 
