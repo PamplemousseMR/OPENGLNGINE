@@ -20,7 +20,8 @@ public:
     enum TEXTURE_TYPE
     {
         TYPE_1D,
-        TYPE_2D
+        TYPE_2D,
+        TYPE_2DMULTISAMPLE
     };
 
     enum TEXTURE_INTERNALFORMAT : GLint
@@ -139,7 +140,7 @@ public:
 
     int load(const std::filesystem::path&, TEXTURE_INTERNALFORMAT);
     void allocate(int, int, TEXTURE_INTERNALFORMAT, TEXTURE_FORMAT);
-    inline void generateMipmap() const noexcept;
+    inline void generateMipmap() const;
 
     inline void bind() const noexcept override;
     inline void unbind() const noexcept override;
@@ -147,13 +148,14 @@ public:
     inline int getLocation() const noexcept;
     inline TEXTURE_TYPE getType() const noexcept;
 
-    inline void setMagFilter(TEXTURE_FILTER) const noexcept;
-    inline void setMinFilter(TEXTURE_FILTER) const noexcept;
+    inline void setMagFilter(TEXTURE_FILTER) const;
+    inline void setMinFilter(TEXTURE_FILTER) const;
 
 private:
 
     static std::vector<bool> s_location;
     static GLint s_maxSize;
+    static GLint s_maxSample;
     static bool s_first;
 
 private:
@@ -180,6 +182,9 @@ inline void Texture::bind() const noexcept
         case TYPE_2D :
             glBindTexture(GL_TEXTURE_2D, m_id);
         break;
+        case TYPE_2DMULTISAMPLE :
+            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_id);
+        break;
     }
     assert(glGetError() == GL_NO_ERROR);
 }
@@ -193,6 +198,9 @@ inline void Texture::unbind() const noexcept
         break;
         case TYPE_2D :
             glBindTexture(GL_TEXTURE_2D, 0);
+        break;
+        case TYPE_2DMULTISAMPLE :
+            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
         break;
     }
     assert(glGetError() == GL_NO_ERROR);
@@ -208,7 +216,7 @@ inline Texture::TEXTURE_TYPE Texture::getType() const noexcept
     return m_type;
 }
 
-inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const noexcept
+inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const
 {
     switch(m_type)
     {
@@ -218,11 +226,14 @@ inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const noexcept
         case TYPE_2D :
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);
         break;
+        case TYPE_2DMULTISAMPLE :
+        throw std::invalid_argument("[Texture] Can't set filter to multisampled textures");
+        break;
     }
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const noexcept
+inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 {
     switch(m_type)
     {
@@ -232,11 +243,14 @@ inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const noexcept
         case TYPE_2D :
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filter);
         break;
+        case TYPE_2DMULTISAMPLE :
+            throw std::invalid_argument("[Texture] Can't set filter to multisampled textures");
+        break;
     }
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void Texture::generateMipmap() const noexcept
+inline void Texture::generateMipmap() const
 {
     switch(m_type)
     {
@@ -245,6 +259,9 @@ inline void Texture::generateMipmap() const noexcept
         break;
         case TYPE_2D :
             glGenerateMipmap(GL_TEXTURE_2D);
+        break;
+        case TYPE_2DMULTISAMPLE :
+            throw std::invalid_argument("[Texture] Can't generate mipmap to multisampled textures");
         break;
     }
     assert(glGetError() == GL_NO_ERROR);

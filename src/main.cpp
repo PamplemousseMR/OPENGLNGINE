@@ -219,18 +219,18 @@ int main()
         renderSpecularTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderSpecularTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
-        GL::RenderBuffer renderDepthBuffer;
-        renderDepthBuffer.bind();
-        renderDepthBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH);
+        GL::RenderBuffer renderDepthStencilBuffer;
+        renderDepthStencilBuffer.bind();
+        renderDepthStencilBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
-        frameBuffer.attachColorTexture2D(renderPositionTexture, 0);
-        frameBuffer.attachColorTexture2D(renderNormalTexture, 1);
-        frameBuffer.attachColorTexture2D(renderAmbientTexture, 2);
-        frameBuffer.attachColorTexture2D(renderDiffuseTexture, 3);
-        frameBuffer.attachColorTexture2D(renderSpecularTexture, 4);
-        frameBuffer.attachDepthBuffer(renderDepthBuffer);
+        frameBuffer.attachColorTexture(renderPositionTexture, 0);
+        frameBuffer.attachColorTexture(renderNormalTexture, 1);
+        frameBuffer.attachColorTexture(renderAmbientTexture, 2);
+        frameBuffer.attachColorTexture(renderDiffuseTexture, 3);
+        frameBuffer.attachColorTexture(renderSpecularTexture, 4);
+        frameBuffer.attachDepthStencilBuffer(renderDepthStencilBuffer);
         frameBuffer.checkStatus();
         frameBuffer.unbind();
 
@@ -262,7 +262,6 @@ int main()
 
         glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-        GL::Viewport viewport;
 
         /*========================================
          * =======================================
@@ -273,10 +272,15 @@ int main()
          * =======================================
          */
 
-        glEnable(GL_MULTISAMPLE);
-        glEnable(GL_DEPTH_TEST);
+        //glEnable(GL_MULTISAMPLE);
+
+        glEnable(GL_STENCIL_TEST);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        glStencilMask(0xFF);
+
         glDisable(GL_BLEND);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
         while (!glfwWindowShouldClose(window))
         {
@@ -289,7 +293,6 @@ int main()
              * =======================================
              */
             frameBuffer.bind();
-            viewport.setViewport(s_width,s_height);
             renderPositionTexture.bind();
             renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
             renderNormalTexture.bind();
@@ -300,9 +303,11 @@ int main()
             renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
             renderSpecularTexture.bind();
             renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
-            renderDepthBuffer.bind();
-            renderDepthBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            renderDepthStencilBuffer.bind();
+            renderDepthStencilBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
+            glEnable(GL_DEPTH_TEST);
+            glStencilFunc(GL_ALWAYS, 1, 0xFF);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             frameBuffer.attachDrawBuffers();
 
             deferredShadingProgram.bind();
@@ -394,6 +399,22 @@ int main()
                 }
             }
             deferredShadingProgram.unbind();
+            frameBuffer.unbind();
+
+            /*========================================
+             * =======================================
+             *
+             *      Copy stencil buffer to default frame buffer
+             *
+             * =======================================
+             * =======================================
+             */
+
+            frameBuffer.bindRead();
+            GL::FrameBuffer::bindDrawDefault();
+            GL::FrameBuffer::blit(s_width, s_height, GL::FrameBuffer::MASK_STENCIL);
+            GL::FrameBuffer::unbindDrawDefault();
+            frameBuffer.unbindRead();
 
             /*========================================
              * =======================================
@@ -403,9 +424,11 @@ int main()
              * =======================================
              * =======================================
              */
-            frameBuffer.unbind();
-            viewport.setViewport(s_width,s_height);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GL::FrameBuffer::bindDefault();
+            GL::Viewport::setViewport(s_width,s_height);
+            glDisable(GL_DEPTH_TEST);
+            glStencilFunc(GL_EQUAL, 1, 0xFF);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             quadBlinnPhonProgram.bind();
             {
@@ -435,6 +458,7 @@ int main()
                 renderSpecularTexture.unbind();
             }
             quadBlinnPhonProgram.unbind();
+            GL::FrameBuffer::unbindDefault();
 
             //frameBuffer.blitToDefaultFBO(s_width, s_height);
 

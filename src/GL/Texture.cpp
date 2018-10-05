@@ -34,6 +34,7 @@ namespace GL
 
     vector<bool> Texture::s_location = {};
     GLint Texture::s_maxSize = 0;
+    GLint Texture::s_maxSample = 0;
     bool Texture::s_first = true;
 
     Texture::Texture(TEXTURE_TYPE type) :
@@ -50,6 +51,7 @@ namespace GL
                 s_location.push_back(false);
             }
             glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_maxSize);
+            glGetIntegerv(GL_MAX_SAMPLES, &s_maxSample);
         }
         genTexture();
     }
@@ -87,6 +89,9 @@ namespace GL
                 glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
                 glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_DEPTH, &depth);
             break;
+            case TYPE_2DMULTISAMPLE :
+                throw invalid_argument("[Texture] TODO");
+            break;
         }
 
         size_t numBytes = size_t(width * height * depth) * 4;
@@ -110,6 +115,9 @@ namespace GL
                         bind();
                         glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                     }
+                break;
+                case TYPE_2DMULTISAMPLE :
+                    throw invalid_argument("[Texture] TODO");
                 break;
             }
             unbind();
@@ -148,6 +156,9 @@ namespace GL
                     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
                     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_DEPTH, &depth);
                 break;
+                case TYPE_2DMULTISAMPLE :
+                    throw invalid_argument("[Texture] TODO");
+                break;
             }
 
             size_t numBytes = size_t(width * height * depth) * 4;
@@ -171,6 +182,9 @@ namespace GL
                             bind();
                             glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                         }
+                    break;
+                    case TYPE_2DMULTISAMPLE :
+                        throw invalid_argument("[Texture] TODO");
                     break;
                 }
                 unbind();
@@ -236,6 +250,9 @@ namespace GL
             case TYPE_2D :
                 glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, data);
             break;
+            case TYPE_2DMULTISAMPLE :
+                throw std::invalid_argument("[Texture] Can't load image to multisampled textures");
+            break;
         }
         assert(glGetError() == GL_NO_ERROR);
         SOIL_free_image_data(data);
@@ -260,6 +277,9 @@ namespace GL
             break;
             case TYPE_2D :
                 glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, GL_UNSIGNED_BYTE, nullptr);
+            break;
+            case TYPE_2DMULTISAMPLE :
+                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, _format, _width, _height, GL_TRUE);
             break;
         }
         assert(glGetError() == GL_NO_ERROR);

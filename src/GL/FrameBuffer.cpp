@@ -11,6 +11,48 @@ namespace GL
     GLint FrameBuffer::s_maxDraw = 0;
     bool FrameBuffer::s_first = true;
 
+    void FrameBuffer::bindDefault() noexcept
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::unbindDefault() noexcept
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::bindDrawDefault() noexcept
+    {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::unbindDrawDefault() noexcept
+    {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::bindReadDefault() noexcept
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::unbindReadDefault() noexcept
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::blit(int _width, int _height, FRAMBUFFER_MASK _mask) noexcept
+    {
+        glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, _mask, GL_NEAREST);
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
     FrameBuffer::FrameBuffer() :
         IGLObject()
     {
@@ -49,28 +91,24 @@ namespace GL
         return *this;
     }
 
-    void FrameBuffer::attachColorTexture1D(const Texture& _texture, unsigned _attach)
+    void FrameBuffer::attachColorTexture(const Texture& _texture, unsigned _attach)
     {
         if(_attach >= unsigned(s_maxAttachement))
         {
             throw overflow_error("[FrameBuffer] Too much attached texture");
         }
-        glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_1D, _texture.getId(), 0);
-        assert(glGetError() == GL_NO_ERROR);
-        auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
-        if (p == m_colorAttachement.end())
+        switch(_texture.getType())
         {
-            m_colorAttachement.push_back(_attach);
+        case Texture::TYPE_1D:
+            glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_1D, _texture.getId(), 0);
+            break;
+        case Texture::TYPE_2D:
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
+            break;
+        case Texture::TYPE_2DMULTISAMPLE:
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
+            break;
         }
-    }
-
-    void FrameBuffer::attachColorTexture2D(const Texture& _texture, unsigned _attach)
-    {
-        if(_attach >= unsigned(s_maxAttachement))
-        {
-            throw overflow_error("[FrameBuffer] Too much attached texture");
-        }
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
         assert(glGetError() == GL_NO_ERROR);
         auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
         if (p == m_colorAttachement.end())
@@ -144,26 +182,6 @@ namespace GL
             drawBuffers[i] = GL_COLOR_ATTACHMENT0 + m_colorAttachement[i];
         }
         glDrawBuffers(GLsizei(m_colorAttachement.size()), &drawBuffers[0]);
-        assert(glGetError() == GL_NO_ERROR);
-    }
-
-    void FrameBuffer::blitToDefaultFBO(int _width, int _height) const noexcept
-    {
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        assert(glGetError() == GL_NO_ERROR);
-    }
-
-    void FrameBuffer::blit(int _width, int _height, const FrameBuffer& _frameBuffer) const noexcept
-    {
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _frameBuffer.m_id);
-        glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
