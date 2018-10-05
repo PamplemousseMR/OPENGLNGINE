@@ -259,7 +259,7 @@ namespace GL
         return width;
     }
 
-    void Texture::allocate(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format)
+    void Texture::allocate(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {
@@ -273,10 +273,10 @@ namespace GL
                 {
                     throw invalid_argument("[Texture] Not a 1D texture");
                 }
-                glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, _format, GL_UNSIGNED_BYTE, nullptr);
+                glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, _format, _data, nullptr);
             break;
             case TYPE_2D :
-                glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, GL_UNSIGNED_BYTE, nullptr);
+                glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, _data, nullptr);
             break;
             case TYPE_2DMULTISAMPLE :
                 glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, _format, _width, _height, GL_TRUE);

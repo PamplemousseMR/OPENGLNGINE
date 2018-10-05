@@ -192,31 +192,31 @@ int main()
 
         GL::Texture renderPositionTexture(GL::Texture::TYPE_2D);
         renderPositionTexture.bind();
-        renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
+        renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, GL::Texture::DATA_FLOAT);
         renderPositionTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderPositionTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
         GL::Texture renderNormalTexture(GL::Texture::TYPE_2D);
         renderNormalTexture.bind();
-        renderNormalTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA);
+        renderNormalTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_FLOAT);
         renderNormalTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderNormalTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
         GL::Texture renderAmbientTexture(GL::Texture::TYPE_2D);
         renderAmbientTexture.bind();
-        renderAmbientTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+        renderAmbientTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
         renderAmbientTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderAmbientTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
         GL::Texture renderDiffuseTexture(GL::Texture::TYPE_2D);
         renderDiffuseTexture.bind();
-        renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+        renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
         renderDiffuseTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderDiffuseTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
         GL::Texture renderSpecularTexture(GL::Texture::TYPE_2D);
         renderSpecularTexture.bind();
-        renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+        renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
         renderSpecularTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
         renderSpecularTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
 
@@ -246,15 +246,15 @@ int main()
 
         GL::Viewport::addListener([&](int _width, int _height){
             renderPositionTexture.bind();
-            renderPositionTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB);
+            renderPositionTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, GL::Texture::DATA_FLOAT);
             renderNormalTexture.bind();
-            renderNormalTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA);
+            renderNormalTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_FLOAT);
             renderAmbientTexture.bind();
-            renderAmbientTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderAmbientTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
             renderDiffuseTexture.bind();
-            renderDiffuseTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderDiffuseTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
             renderSpecularTexture.bind();
-            renderSpecularTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA);
+            renderSpecularTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
             renderDepthStencilBuffer.bind();
             renderDepthStencilBuffer.allocate(_width, _height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
         });
