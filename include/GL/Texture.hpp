@@ -164,7 +164,7 @@ public:
 
     int load(const std::filesystem::path&, TEXTURE_INTERNALFORMAT);
     void allocate(int, int, TEXTURE_INTERNALFORMAT, TEXTURE_FORMAT, TEXTURE_DATA);
-    void allocateMultisample(int, int, TEXTURE_INTERNALFORMAT, TEXTURE_FORMAT, TEXTURE_DATA, int);
+    void allocateMultisample(int, int, TEXTURE_INTERNALFORMAT, TEXTURE_FORMAT, int);
     inline void generateMipmap() const;
 
     inline void bind() const noexcept override;

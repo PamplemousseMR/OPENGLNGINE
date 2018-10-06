@@ -285,7 +285,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data, int _sample)
+    void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample)
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {

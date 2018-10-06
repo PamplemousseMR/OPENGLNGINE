@@ -29,6 +29,7 @@ using namespace std;
 
 static const int s_width = 800;
 static const int s_height = 450;
+static const int s_sample = 4;
 
 static void keyCallback(GLFWwindow* window, int key, int, int action, int)
 {
@@ -78,7 +79,7 @@ int main()
             return EXIT_FAILURE;
         }
 
-        glfwWindowHint(GLFW_SAMPLES, 4);
+        glfwWindowHint(GLFW_SAMPLES, s_sample);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -174,10 +175,14 @@ int main()
         GL::Uniform u_tOutAmbientCol_Vs("u_tAmbientCol_Vs", quadBlinnPhonProgram.getId());
         GL::Uniform u_tOutDiffuseCol_Vs("u_tDiffuseCol_Vs", quadBlinnPhonProgram.getId());
         GL::Uniform u_tOutSpecularCol_Vs("u_tSpecularCol_Vs", quadBlinnPhonProgram.getId());
+        GL::Uniform u_tSpecularExp("u_tSpecularExp", quadBlinnPhonProgram.getId());
 
         GL::Uniform u_m4ViewDeferred("u_m4View", quadBlinnPhonProgram.getId());
         GL::Uniform u_f3LightPos_Ws("u_f3LightPos_Ws", quadBlinnPhonProgram.getId());
         GL::Uniform u_f3LightCol("u_f3LightCol", quadBlinnPhonProgram.getId());
+
+        GL::Uniform u_viewport("u_viewport", quadBlinnPhonProgram.getId());
+        GL::Uniform u_sample("u_sample", quadBlinnPhonProgram.getId());
 
         /*========================================
          * =======================================
@@ -188,39 +193,33 @@ int main()
          * =======================================
          */
 
-        GL::Texture renderPositionTexture(GL::Texture::TYPE_2D);
+        GL::Texture renderPositionTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderPositionTexture.bind();
-        renderPositionTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, GL::Texture::DATA_FLOAT);
-        renderPositionTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
-        renderPositionTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+        renderPositionTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
 
-        GL::Texture renderNormalTexture(GL::Texture::TYPE_2D);
+        GL::Texture renderNormalTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderNormalTexture.bind();
-        renderNormalTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_FLOAT);
-        renderNormalTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
-        renderNormalTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+        renderNormalTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
 
-        GL::Texture renderAmbientTexture(GL::Texture::TYPE_2D);
+        GL::Texture renderAmbientTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderAmbientTexture.bind();
-        renderAmbientTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
-        renderAmbientTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
-        renderAmbientTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+        renderAmbientTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
 
-        GL::Texture renderDiffuseTexture(GL::Texture::TYPE_2D);
+        GL::Texture renderDiffuseTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderDiffuseTexture.bind();
-        renderDiffuseTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
-        renderDiffuseTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
-        renderDiffuseTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+        renderDiffuseTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
 
-        GL::Texture renderSpecularTexture(GL::Texture::TYPE_2D);
+        GL::Texture renderSpecularTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderSpecularTexture.bind();
-        renderSpecularTexture.allocate(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
-        renderSpecularTexture.setMagFilter(GL::Texture::FILTER_NEAREST);
-        renderSpecularTexture.setMinFilter(GL::Texture::FILTER_NEAREST);
+        renderSpecularTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+
+        GL::Texture renderSpecularExponentTexture(GL::Texture::TYPE_2DMULTISAMPLE);
+        renderSpecularExponentTexture.bind();
+        renderSpecularExponentTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_R32F, GL::Texture::FORMAT_RED, s_sample);
 
         GL::RenderBuffer renderDepthStencilBuffer;
         renderDepthStencilBuffer.bind();
-        renderDepthStencilBuffer.allocate(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
+        renderDepthStencilBuffer.allocateMultisample(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL, s_sample);
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
@@ -229,6 +228,7 @@ int main()
         frameBuffer.attachColorTexture(renderAmbientTexture, 2);
         frameBuffer.attachColorTexture(renderDiffuseTexture, 3);
         frameBuffer.attachColorTexture(renderSpecularTexture, 4);
+        frameBuffer.attachColorTexture(renderSpecularExponentTexture, 5);
         frameBuffer.attachDepthStencilBuffer(renderDepthStencilBuffer);
         frameBuffer.checkStatus();
         frameBuffer.unbind();
@@ -244,17 +244,19 @@ int main()
 
         GL::Viewport::addListener([&](int _width, int _height){
             renderPositionTexture.bind();
-            renderPositionTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, GL::Texture::DATA_FLOAT);
+            renderPositionTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
             renderNormalTexture.bind();
-            renderNormalTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_FLOAT);
+            renderNormalTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
             renderAmbientTexture.bind();
-            renderAmbientTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
+            renderAmbientTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
             renderDiffuseTexture.bind();
-            renderDiffuseTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
+            renderDiffuseTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
             renderSpecularTexture.bind();
-            renderSpecularTexture.allocate(_width, _height, GL::Texture::INTERNALFORMAT_RGBA, GL::Texture::FORMAT_RGBA, GL::Texture::DATA_UNSIGNED_BYTE);
+            renderSpecularTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+            renderSpecularExponentTexture.bind();
+            renderSpecularExponentTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_R32F, GL::Texture::FORMAT_RED, s_sample);
             renderDepthStencilBuffer.bind();
-            renderDepthStencilBuffer.allocate(_width, _height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL);
+            renderDepthStencilBuffer.allocateMultisample(_width, _height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL, s_sample);
         });
 
         /*========================================
@@ -283,7 +285,11 @@ int main()
          * =======================================
          */
 
-        glm::mat4 P = glm::perspective(glm::radians(45.0f), 16.0f / 9.0f, 0.1f, 1000.0f);
+        glm::mat4 P = glm::perspective(glm::radians(45.0f), (s_width+.0f) / (s_height+.0f), 0.1f, 1000.0f);
+        GL::Viewport::addListener([&] (int _width, int _height)
+        {
+            P = glm::perspective(glm::radians(45.0f), (_width+.0f) / (_height+.0f), 0.1f, 1000.0f);
+        });
         glm::mat4 V = glm::lookAt(glm::vec3(0, 0, 100), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
         /*========================================
@@ -301,7 +307,7 @@ int main()
 
         glDisable(GL_BLEND);
 
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
 
         GL::Viewport::init(s_width, s_height);
 
@@ -452,10 +458,15 @@ int main()
                 u_tOutDiffuseCol_Vs = renderDiffuseTexture.getLocation();
                 renderSpecularTexture.bind();
                 u_tOutSpecularCol_Vs = renderSpecularTexture.getLocation();
+                renderSpecularExponentTexture.bind();
+                u_tSpecularExp = renderSpecularExponentTexture.getLocation();
 
                 u_m4ViewDeferred = V;
                 u_f3LightPos_Ws = light.getPositionData();
                 u_f3LightCol = light.getAmbient();
+
+                u_viewport = GL::Viewport::getViewport();
+                u_sample = s_sample;
 
                 quad.bind();
                 quad.draw();
