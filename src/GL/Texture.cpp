@@ -279,7 +279,7 @@ namespace GL
                 glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, _data, nullptr);
             break;
             case TYPE_2DMULTISAMPLE :
-                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, _format, _width, _height, GL_TRUE);
+                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GLenum(_internalFormat), _width, _height, GL_TRUE);
             break;
         }
         assert(glGetError() == GL_NO_ERROR);
