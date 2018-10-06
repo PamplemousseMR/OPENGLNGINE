@@ -279,7 +279,31 @@ namespace GL
                 glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, _data, nullptr);
             break;
             case TYPE_2DMULTISAMPLE :
-                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GLenum(_internalFormat), _width, _height, GL_TRUE);
+                throw std::invalid_argument("[Texture] Can't allocate multisampled textures without sample");
+            break;
+        }
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data, int _sample)
+    {
+        if(_width > s_maxSize || _height > s_maxSize)
+        {
+            throw overflow_error("[Texture] Size too big");
+        }
+        if(_sample > s_maxSample)
+        {
+            throw overflow_error("[Texture] Sample too hight");
+        }
+        m_format = _format;
+        switch (m_type)
+        {
+            case TYPE_1D :
+            case TYPE_2D :
+                throw std::invalid_argument("[Texture] Can't allocate multisample to no multisampled textures");
+            break;
+            case TYPE_2DMULTISAMPLE :
+                glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, GLenum(_internalFormat), _width, _height, GL_TRUE);
             break;
         }
         assert(glGetError() == GL_NO_ERROR);

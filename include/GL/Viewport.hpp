@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+#include <glm/vec2.hpp>
+
 #include <functional>
 #include <vector>
 
@@ -21,6 +23,7 @@ public:
     static void addListener(const Listener&);
     static int getWidth();
     static int getHeight();
+    static glm::vec2 getViewport();
 
     static void init(int, int);
 

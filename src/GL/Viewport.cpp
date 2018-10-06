@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 using namespace std;
+using namespace glm;
 
 namespace GL
 {
@@ -42,6 +43,11 @@ namespace GL
     int Viewport::getHeight()
     {
         return s_height;
+    }
+
+    glm::vec2 Viewport::getViewport()
+    {
+        return vec2(s_width, s_height);
     }
 
     void Viewport::addListener(const Listener& _listener)
