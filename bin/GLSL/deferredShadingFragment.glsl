@@ -18,11 +18,10 @@ uniform vec3 u_f3DiffuseCol;
 uniform vec3 u_f3SpecularCol;
 
 layout(location = 0) out vec3 v_f3OutPositionCor_Vs;
-layout(location = 1) out vec3 v_f3OutNormalDir_Vs;
+layout(location = 1) out vec4 v_f4OutNormalDir_Vs;
 layout(location = 2) out vec3 v_f3OutAmbientCol_Vs;
 layout(location = 3) out vec3 v_f3OutDiffuseCol_Vs;
 layout(location = 4) out vec3 v_f3OutSpecularCol_Vs;
-layout(location = 5) out float v_fOutSpecularExp;
 
 void main()
 {
@@ -49,9 +48,8 @@ void main()
     }
 
     v_f3OutPositionCor_Vs = v_f3PositionCor_Vs;
-    v_f3OutNormalDir_Vs = v_f3NormalDir_Vs;
+    v_f4OutNormalDir_Vs = vec4(v_f3NormalDir_Vs, u_fSpecularExponent);
     v_f3OutAmbientCol_Vs = f3AmbientCol * u_f3AmbientCol;
     v_f3OutDiffuseCol_Vs = f3DiffuseCol * u_f3DiffuseCol;
     v_f3OutSpecularCol_Vs = f3SpecularCol * u_f3SpecularCol;
-    v_fOutSpecularExp = u_fSpecularExponent;
 }

@@ -199,7 +199,7 @@ int main()
 
         GL::Texture renderNormalTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderNormalTexture.bind();
-        renderNormalTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
+        renderNormalTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, s_sample);
 
         GL::Texture renderAmbientTexture(GL::Texture::TYPE_2DMULTISAMPLE);
         renderAmbientTexture.bind();
@@ -213,10 +213,6 @@ int main()
         renderSpecularTexture.bind();
         renderSpecularTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
 
-        GL::Texture renderSpecularExponentTexture(GL::Texture::TYPE_2DMULTISAMPLE);
-        renderSpecularExponentTexture.bind();
-        renderSpecularExponentTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_R32F, GL::Texture::FORMAT_RED, s_sample);
-
         GL::RenderBuffer renderDepthStencilBuffer;
         renderDepthStencilBuffer.bind();
         renderDepthStencilBuffer.allocateMultisample(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL, s_sample);
@@ -228,7 +224,6 @@ int main()
         frameBuffer.attachColorTexture(renderAmbientTexture, 2);
         frameBuffer.attachColorTexture(renderDiffuseTexture, 3);
         frameBuffer.attachColorTexture(renderSpecularTexture, 4);
-        frameBuffer.attachColorTexture(renderSpecularExponentTexture, 5);
         frameBuffer.attachDepthStencilBuffer(renderDepthStencilBuffer);
         frameBuffer.checkStatus();
         frameBuffer.unbind();
@@ -246,15 +241,13 @@ int main()
             renderPositionTexture.bind();
             renderPositionTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
             renderNormalTexture.bind();
-            renderNormalTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
+            renderNormalTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, s_sample);
             renderAmbientTexture.bind();
             renderAmbientTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
             renderDiffuseTexture.bind();
             renderDiffuseTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
             renderSpecularTexture.bind();
             renderSpecularTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
-            renderSpecularExponentTexture.bind();
-            renderSpecularExponentTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_R32F, GL::Texture::FORMAT_RED, s_sample);
             renderDepthStencilBuffer.bind();
             renderDepthStencilBuffer.allocateMultisample(_width, _height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL, s_sample);
         });
@@ -458,8 +451,6 @@ int main()
                 u_tOutDiffuseCol_Vs = renderDiffuseTexture.getLocation();
                 renderSpecularTexture.bind();
                 u_tOutSpecularCol_Vs = renderSpecularTexture.getLocation();
-                renderSpecularExponentTexture.bind();
-                u_tSpecularExp = renderSpecularExponentTexture.getLocation();
 
                 u_m4ViewDeferred = V;
                 u_f3LightPos_Ws = light.getPositionData();

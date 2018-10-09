@@ -7,7 +7,6 @@ uniform sampler2DMS u_tNormalDir_Vs;
 uniform sampler2DMS u_tAmbientCol_Vs;
 uniform sampler2DMS u_tDiffuseCol_Vs;
 uniform sampler2DMS u_tSpecularCol_Vs;
-uniform sampler2DMS u_tSpecularExp;
 
 uniform mat4 u_m4View;
 uniform vec3 u_f3LightPos_Ws;
@@ -43,9 +42,9 @@ void main()
         vec3 f3DiffuseColTmp = texelFetch(u_tDiffuseCol_Vs, ivec2((v_f2TextCor.x+1) * 0.5 * u_viewport.x, (v_f2TextCor.y+1) * 0.5 * u_viewport.y), sampler).rgb;
         f3DiffuseCol += f3DiffuseColTmp * u_f3LightCol * cosTheta;
 
-        vec3 f3SpecularColTmp = texelFetch(u_tSpecularCol_Vs, ivec2((v_f2TextCor.x+1) * 0.5 * u_viewport.x, (v_f2TextCor.y+1) * 0.5 * u_viewport.y), sampler).rgb;
-        float fSpecularExponent = texelFetch(u_tSpecularExp, ivec2((v_f2TextCor.x+1) * 0.5 * u_viewport.x, (v_f2TextCor.y+1) * 0.5 * u_viewport.y), sampler).x;
-        f3SpecularCol += f3SpecularColTmp * u_f3LightCol * pow(cosAlpha, fSpecularExponent);
+        vec3 f4SpecularColTmp = texelFetch(u_tSpecularCol_Vs, ivec2((v_f2TextCor.x+1) * 0.5 * u_viewport.x, (v_f2TextCor.y+1) * 0.5 * u_viewport.y), sampler).rgb;
+        float fSpecularExponent = texelFetch(u_tNormalDir_Vs, ivec2((v_f2TextCor.x+1) * 0.5 * u_viewport.x, (v_f2TextCor.y+1) * 0.5 * u_viewport.y), sampler).w;
+        f3SpecularCol += f4SpecularColTmp * u_f3LightCol * pow(cosAlpha, fSpecularExponent);
     }
 
     v_f3OutCol = (f3AmbientCol + f3DiffuseCol + f3SpecularCol) / u_sample;
