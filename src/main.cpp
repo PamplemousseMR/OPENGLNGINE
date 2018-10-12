@@ -181,7 +181,6 @@ int main()
         GL::Uniform u_f3LightPos_Ws("u_f3LightPos_Ws", quadBlinnPhonProgram.getId());
         GL::Uniform u_f3LightCol("u_f3LightCol", quadBlinnPhonProgram.getId());
 
-        GL::Uniform u_viewport("u_viewport", quadBlinnPhonProgram.getId());
         GL::Uniform u_sample("u_sample", quadBlinnPhonProgram.getId());
 
         /*========================================
@@ -456,7 +455,6 @@ int main()
                 u_f3LightPos_Ws = light.getPositionData();
                 u_f3LightCol = light.getAmbient();
 
-                u_viewport = GL::Viewport::getViewport();
                 u_sample = s_sample;
 
                 quad.bind();
