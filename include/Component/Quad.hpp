@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.hpp"
+#include "Drawable.hpp"
 
 #include <iostream>
 #include <string>
@@ -16,7 +16,7 @@ namespace GL
 
 namespace Component
 {
-class Quad : public Component
+class Quad : public Drawable
 {
 
 public:

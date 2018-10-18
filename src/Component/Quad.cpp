@@ -9,7 +9,7 @@ namespace Component
 {
 
     Quad::Quad(const string& _name) :
-        Component(_name)
+        Drawable(_name)
     {
         m_vboVertex = new VertexBuffer();
         m_vao = new VertexArrayBuffer();
@@ -21,8 +21,8 @@ namespace Component
         m_vao->bind();
         {
             m_vboVertex->bind();
-            m_vboVertex->setLocation(0);
-            m_vboVertex->setAttrib(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            m_vboVertex->setLocation(S_VERTEXLOCATION);
+            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
         }
         m_vao->unbind();
     }
@@ -34,7 +34,7 @@ namespace Component
     }
 
     Quad::Quad(const Quad& _quad) :
-        Component(_quad),
+        Drawable(_quad),
         m_vboVertex(new VertexBuffer(*_quad.m_vboVertex)),
         m_vao(new VertexArrayBuffer())
     {
@@ -46,7 +46,7 @@ namespace Component
     }
 
     Quad::Quad(Quad&& _quad) :
-        Component(std::move(_quad))
+        Drawable(std::move(_quad))
     {
         m_vboVertex = _quad.m_vboVertex;
         _quad.m_vboVertex = nullptr;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.hpp"
+#include "Drawable.hpp"
 
 #include <GL/glew.h>
 
@@ -26,14 +26,9 @@ namespace GL
 
 namespace Component
 {
-class Mesh : public Component
+
+class Mesh : public Drawable
 {
-
-public:
-
-    static const GLuint S_VERTEXLOCATION;
-    static const GLuint S_TEXTCOORDLOCATION;
-    static const GLuint S_NORMALLOCATION;
 
 public:
 

@@ -11,12 +11,8 @@ using namespace Assets;
 
 namespace Component
 {
-    const GLuint Mesh::S_VERTEXLOCATION = 0;
-    const GLuint Mesh::S_TEXTCOORDLOCATION = 1;
-    const GLuint Mesh::S_NORMALLOCATION = 2;
-
     Mesh::Mesh(const string& _name) :
-        Component(_name)
+        Drawable(_name)
     {
         m_vboVertex = new VertexBuffer();
         m_vboNormal = new VertexBuffer();
@@ -37,7 +33,7 @@ namespace Component
     }
 
     Mesh::Mesh(const Mesh& _mesh) :
-        Component(_mesh),
+        Drawable(_mesh),
         m_dataSize(_mesh.m_dataSize),
         m_vboVertex(new VertexBuffer(*_mesh.m_vboVertex)),
         m_vboNormal(new VertexBuffer(*_mesh.m_vboNormal)),
@@ -70,7 +66,7 @@ namespace Component
     }
 
     Mesh::Mesh(Mesh&& _mesh) :
-        Component(std::move(_mesh)),
+        Drawable(std::move(_mesh)),
         m_dataSize(std::move(_mesh.m_dataSize)),
         m_textCoord(std::move(_mesh.m_textCoord))
     {
@@ -99,7 +95,7 @@ namespace Component
             delete m_vboTextCoord;
             delete m_material;
 
-            Component::operator=(_mesh);
+            Drawable::operator=(_mesh);
             m_dataSize = _mesh.m_dataSize;
             m_vboVertex = new VertexBuffer(*_mesh.m_vboVertex);
             m_vboNormal = new VertexBuffer(*_mesh.m_vboNormal);
@@ -144,7 +140,7 @@ namespace Component
             delete m_vboTextCoord;
             delete m_material;
 
-            Component::operator=(std::move(_mesh));
+            Drawable::operator=(std::move(_mesh));
             m_dataSize = std::move(_mesh.m_dataSize);
             m_textCoord = std::move(_mesh.m_textCoord);
 
