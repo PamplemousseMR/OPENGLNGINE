@@ -178,8 +178,11 @@ int main()
         GL::Uniform u_tSpecularExp("u_tSpecularExp", quadBlinnPhonProgram.getId());
 
         GL::Uniform u_m4ViewDeferred("u_m4View", quadBlinnPhonProgram.getId());
+
         GL::Uniform u_f3LightPos_Ws("u_f3LightPos_Ws", quadBlinnPhonProgram.getId());
-        GL::Uniform u_f3LightCol("u_f3LightCol", quadBlinnPhonProgram.getId());
+        GL::Uniform u_f3LightAmbientCol("u_f3LightAmbientCol", quadBlinnPhonProgram.getId());
+        GL::Uniform u_f3LightDiffuseCol("u_f3LightDiffuseCol", quadBlinnPhonProgram.getId());
+        GL::Uniform u_f3LightSpecularCol("u_f3LightSpecularCol", quadBlinnPhonProgram.getId());
 
         GL::Uniform u_sample("u_sample", quadBlinnPhonProgram.getId());
 
@@ -452,8 +455,11 @@ int main()
                 u_tOutSpecularCol_Vs = renderSpecularTexture.getLocation();
 
                 u_m4ViewDeferred = V;
+
                 u_f3LightPos_Ws = light.getPositionData();
-                u_f3LightCol = light.getAmbient();
+                u_f3LightAmbientCol = light.getAmbient();
+                u_f3LightDiffuseCol = light.getDiffuse();
+                u_f3LightSpecularCol = light.getSpecular();
 
                 u_sample = s_sample;
 

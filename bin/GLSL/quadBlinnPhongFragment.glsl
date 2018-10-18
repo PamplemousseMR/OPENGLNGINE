@@ -7,8 +7,11 @@ uniform sampler2DMS u_tDiffuseCol_Vs;
 uniform sampler2DMS u_tSpecularCol_Vs;
 
 uniform mat4 u_m4View;
+
 uniform vec3 u_f3LightPos_Ws;
-uniform vec3 u_f3LightCol;
+uniform vec3 u_f3LightAmbientCol;
+uniform vec3 u_f3LightDiffuseCol;
+uniform vec3 u_f3LightSpecularCol;
 
 uniform int u_sample;
 
@@ -37,12 +40,12 @@ void main()
         f3AmbientCol += texelFetch(u_tAmbientCol_Vs, ivec2(gl_FragCoord), sampler).rgb;
 
         vec3 f3DiffuseColTmp = texelFetch(u_tDiffuseCol_Vs, ivec2(gl_FragCoord), sampler).rgb;
-        f3DiffuseCol += f3DiffuseColTmp * u_f3LightCol * cosTheta;
+        f3DiffuseCol += f3DiffuseColTmp * cosTheta;
 
         vec3 f4SpecularColTmp = texelFetch(u_tSpecularCol_Vs, ivec2(gl_FragCoord), sampler).rgb;
         float fSpecularExponent = texelFetch(u_tNormalDir_Vs, ivec2(gl_FragCoord), sampler).w;
-        f3SpecularCol += f4SpecularColTmp * u_f3LightCol * pow(cosAlpha, fSpecularExponent);
+        f3SpecularCol += f4SpecularColTmp * pow(cosAlpha, fSpecularExponent);
     }
 
-    v_f3OutCol = (f3AmbientCol + f3DiffuseCol + f3SpecularCol) / u_sample;
+    v_f3OutCol = (f3AmbientCol*u_f3LightAmbientCol + f3DiffuseCol*u_f3LightDiffuseCol + f3SpecularCol*u_f3LightSpecularCol) / u_sample;
 }
