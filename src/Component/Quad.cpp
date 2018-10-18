@@ -46,7 +46,7 @@ namespace Component
     }
 
     Quad::Quad(Quad&& _quad) :
-        Drawable(std::move(_quad))
+        Drawable(move(_quad))
     {
         m_vboVertex = _quad.m_vboVertex;
         _quad.m_vboVertex = nullptr;
@@ -81,7 +81,7 @@ namespace Component
             delete m_vao;
             delete m_vboVertex;
 
-            Component::operator=(std::move(_quad));
+            Component::operator=(move(_quad));
 
             m_vboVertex = _quad.m_vboVertex;
             _quad.m_vboVertex = nullptr;

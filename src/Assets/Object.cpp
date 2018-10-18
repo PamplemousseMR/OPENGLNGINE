@@ -39,7 +39,7 @@ namespace Assets
     }
 
     Object::Object(Object&& _obj) :
-        m_name(std::move(_obj.m_name))
+        m_name(move(_obj.m_name))
     {
         for (size_t i=0 ; i<_obj.m_groups.size() ; ++i)
         {
@@ -75,7 +75,7 @@ namespace Assets
                 delete g;
             }
             m_groups.clear();
-            m_name = std::move(_obj.m_name);
+            m_name = move(_obj.m_name);
             for (size_t i=0 ; i<_obj.m_groups.size() ; ++i)
             {
                 m_groups.push_back(_obj.m_groups[i]);

@@ -32,7 +32,7 @@ namespace Assets
     }
 
     Group::Group(Group&& _group) :
-        m_name(std::move(_group.m_name))
+        m_name(move(_group.m_name))
     {
         for (size_t i=0 ; i<_group.m_meshs.size() ; ++i)
         {
@@ -68,7 +68,7 @@ namespace Assets
                 delete m;
             }
             m_meshs.clear();
-            m_name = std::move(_group.m_name);
+            m_name = move(_group.m_name);
             for (size_t i=0 ; i<_group.m_meshs.size() ; ++i)
             {
                 m_meshs.push_back(_group.m_meshs[i]);

@@ -27,13 +27,13 @@ namespace Component
     }
 
     Light::Light(Light&& _light) :
-        Component(std::move(_light)),
-        m_ambient(std::move(_light.m_ambient)),
-        m_diffuse(std::move(_light.m_diffuse)),
-        m_specular(std::move(_light.m_specular)),
-        m_constant(std::move(_light.m_constant)),
-        m_linear(std::move(_light.m_linear)),
-        m_quadratic(std::move(_light.m_quadratic))
+        Component(move(_light)),
+        m_ambient(move(_light.m_ambient)),
+        m_diffuse(move(_light.m_diffuse)),
+        m_specular(move(_light.m_specular)),
+        m_constant(move(_light.m_constant)),
+        m_linear(move(_light.m_linear)),
+        m_quadratic(move(_light.m_quadratic))
     {
     }
 
@@ -56,13 +56,13 @@ namespace Component
     {
         if(this != &_light)
         {
-            Component::operator=(std::move(_light));
-            m_ambient = std::move(_light.m_ambient);
-            m_diffuse = std::move(_light.m_diffuse);
-            m_specular = std::move(_light.m_specular);
-            m_constant = std::move(_light.m_constant);
-            m_linear = std::move(_light.m_linear);
-            m_quadratic = std::move(_light.m_quadratic);
+            Component::operator=(move(_light));
+            m_ambient = move(_light.m_ambient);
+            m_diffuse = move(_light.m_diffuse);
+            m_specular = move(_light.m_specular);
+            m_constant = move(_light.m_constant);
+            m_linear = move(_light.m_linear);
+            m_quadratic = move(_light.m_quadratic);
         }
         return *this;
     }

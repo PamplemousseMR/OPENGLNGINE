@@ -613,7 +613,7 @@ OBJFile::OBJFile(const OBJFile& _objfile) :
 }
 
 OBJFile::OBJFile(OBJFile&& _objfile) :
-    m_name(std::move(_objfile.m_name))
+    m_name(move(_objfile.m_name))
 {
     for (size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
     {
@@ -649,7 +649,7 @@ OBJFile& OBJFile::operator=(OBJFile&& _objfile)
             delete m;
         }
         m_objects.clear();
-        m_name = std::move(_objfile.m_name);
+        m_name = move(_objfile.m_name);
         for (size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
         {
             m_objects.push_back(_objfile.m_objects[i]);

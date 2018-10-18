@@ -48,18 +48,18 @@ namespace Assets
     }
 
     Material::Material(Material&& _mat) :
-       m_name(std::move(_mat.m_name)),
-       m_kaAmbient(std::move(_mat.m_kaAmbient)),
-       m_kdDiffuse(std::move(_mat.m_kdDiffuse)),
-       m_ksSpecular(std::move(_mat.m_ksSpecular)),
-       m_tfTransmissionfilter(std::move(_mat.m_tfTransmissionfilter)),
-       m_illumIllumination(std::move(_mat.m_illumIllumination)),
-       m_dDissolve(std::move(_mat.m_dDissolve)),
-       m_halo(std::move(_mat.m_halo)),
-       m_nsSpecularexponent(std::move(_mat.m_nsSpecularexponent)),
-       m_sharpnessSharpness(std::move(_mat.m_sharpnessSharpness)),
-       m_niOpticaldensity(std::move(_mat.m_niOpticaldensity)),
-       m_Ke(std::move(_mat.m_Ke))
+       m_name(move(_mat.m_name)),
+       m_kaAmbient(move(_mat.m_kaAmbient)),
+       m_kdDiffuse(move(_mat.m_kdDiffuse)),
+       m_ksSpecular(move(_mat.m_ksSpecular)),
+       m_tfTransmissionfilter(move(_mat.m_tfTransmissionfilter)),
+       m_illumIllumination(move(_mat.m_illumIllumination)),
+       m_dDissolve(move(_mat.m_dDissolve)),
+       m_halo(move(_mat.m_halo)),
+       m_nsSpecularexponent(move(_mat.m_nsSpecularexponent)),
+       m_sharpnessSharpness(move(_mat.m_sharpnessSharpness)),
+       m_niOpticaldensity(move(_mat.m_niOpticaldensity)),
+       m_Ke(move(_mat.m_Ke))
    {
        m_kaMap = _mat.m_kaMap;
        _mat.m_kaMap = nullptr;
@@ -129,18 +129,18 @@ namespace Assets
             if (m_decalMap)delete m_decalMap;
             if (m_bumpMap)delete m_bumpMap;
 
-            m_name = std::move(_mat.m_name);
-            m_kaAmbient = std::move(_mat.m_kaAmbient);
-            m_kdDiffuse = std::move(_mat.m_kdDiffuse);
-            m_ksSpecular = std::move(_mat.m_ksSpecular);
-            m_tfTransmissionfilter = std::move(_mat.m_tfTransmissionfilter);
-            m_illumIllumination = std::move(_mat.m_illumIllumination);
-            m_dDissolve = std::move(_mat.m_dDissolve);
-            m_halo = std::move(_mat.m_halo);
-            m_nsSpecularexponent = std::move(_mat.m_nsSpecularexponent);
-            m_sharpnessSharpness = std::move(_mat.m_sharpnessSharpness);
-            m_niOpticaldensity = std::move(_mat.m_niOpticaldensity);
-            m_Ke = std::move(_mat.m_Ke);
+            m_name = move(_mat.m_name);
+            m_kaAmbient = move(_mat.m_kaAmbient);
+            m_kdDiffuse = move(_mat.m_kdDiffuse);
+            m_ksSpecular = move(_mat.m_ksSpecular);
+            m_tfTransmissionfilter = move(_mat.m_tfTransmissionfilter);
+            m_illumIllumination = move(_mat.m_illumIllumination);
+            m_dDissolve = move(_mat.m_dDissolve);
+            m_halo = move(_mat.m_halo);
+            m_nsSpecularexponent = move(_mat.m_nsSpecularexponent);
+            m_sharpnessSharpness = move(_mat.m_sharpnessSharpness);
+            m_niOpticaldensity = move(_mat.m_niOpticaldensity);
+            m_Ke = move(_mat.m_Ke);
 
             m_kaMap = _mat.m_kaMap;
             _mat.m_kaMap = nullptr;

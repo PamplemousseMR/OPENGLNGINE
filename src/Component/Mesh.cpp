@@ -66,9 +66,9 @@ namespace Component
     }
 
     Mesh::Mesh(Mesh&& _mesh) :
-        Drawable(std::move(_mesh)),
-        m_dataSize(std::move(_mesh.m_dataSize)),
-        m_textCoord(std::move(_mesh.m_textCoord))
+        Drawable(move(_mesh)),
+        m_dataSize(move(_mesh.m_dataSize)),
+        m_textCoord(move(_mesh.m_textCoord))
     {
         m_vboVertex = _mesh.m_vboVertex;
         _mesh.m_vboVertex = nullptr;
@@ -140,9 +140,9 @@ namespace Component
             delete m_vboTextCoord;
             delete m_material;
 
-            Drawable::operator=(std::move(_mesh));
-            m_dataSize = std::move(_mesh.m_dataSize);
-            m_textCoord = std::move(_mesh.m_textCoord);
+            Drawable::operator=(move(_mesh));
+            m_dataSize = move(_mesh.m_dataSize);
+            m_textCoord = move(_mesh.m_textCoord);
 
             m_vboVertex = _mesh.m_vboVertex;
             _mesh.m_vboVertex = nullptr;

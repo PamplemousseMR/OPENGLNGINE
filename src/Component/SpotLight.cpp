@@ -25,12 +25,12 @@ namespace Component
     }
 
     SpotLight::SpotLight(SpotLight&& _light) :
-        DirectionalLight(std::move(_light)),
-        m_theta(std::move(_light.m_theta)),
-        m_phi(std::move(_light.m_phi)),
-        m_phiCutoff(std::move(_light.m_phiCutoff)),
-        m_lambda(std::move(_light.m_lambda)),
-        m_lambdaCutoff(std::move(_light.m_lambdaCutoff))
+        DirectionalLight(move(_light)),
+        m_theta(move(_light.m_theta)),
+        m_phi(move(_light.m_phi)),
+        m_phiCutoff(move(_light.m_phiCutoff)),
+        m_lambda(move(_light.m_lambda)),
+        m_lambdaCutoff(move(_light.m_lambdaCutoff))
     {
     }
 
@@ -52,12 +52,12 @@ namespace Component
     {
         if(this != &_light)
         {
-            DirectionalLight::operator=(std::move(_light));
-            m_theta = std::move(_light.m_theta);
-            m_phi = std::move(_light.m_phi);
-            m_phiCutoff = std::move(_light.m_phiCutoff);
-            m_lambda = std::move(_light.m_lambda);
-            m_lambdaCutoff = std::move(_light.m_lambdaCutoff);
+            DirectionalLight::operator=(move(_light));
+            m_theta = move(_light.m_theta);
+            m_phi = move(_light.m_phi);
+            m_phiCutoff = move(_light.m_phiCutoff);
+            m_lambda = move(_light.m_lambda);
+            m_lambdaCutoff = move(_light.m_lambdaCutoff);
         }
         return *this;
     }
