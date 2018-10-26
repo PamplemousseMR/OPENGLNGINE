@@ -296,14 +296,6 @@ int main()
          * =======================================
          */
 
-        glEnable(GL_STENCIL_TEST);
-        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-        glStencilMask(0xFF);
-
-        glDisable(GL_BLEND);
-
-        glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
-
         GL::Viewport::init(s_width, s_height);
 
         while (!glfwWindowShouldClose(window))
@@ -318,8 +310,19 @@ int main()
              */
             frameBuffer.bind();
             glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LESS);
+
+            glEnable(GL_STENCIL_TEST);
+            glStencilMask(0xFF);
             glStencilFunc(GL_ALWAYS, 1, 0xFF);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+            glDisable(GL_BLEND);
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
             frameBuffer.attachDrawBuffers();
 
             deferredShadingProgram.bind();
@@ -437,8 +440,18 @@ int main()
              * =======================================
              */
             GL::FrameBuffer::bindDefault();
+
             glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
+
+            glEnable(GL_STENCIL_TEST);
+            glStencilMask(0xFF);
             glStencilFunc(GL_EQUAL, 1, 0xFF);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+            glDisable(GL_BLEND);
+
+            glClearColor(0.75f, 0.75f, 0.75f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
             quadBlinnPhonProgram.bind();
