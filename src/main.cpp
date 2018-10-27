@@ -189,6 +189,37 @@ int main()
         /*========================================
          * =======================================
          *
+         *      Init normal shader
+         *
+         * =======================================
+         * =======================================
+         */
+
+        GL::Shader normalVertex(GL::Shader::TYPE_VERTEX);
+        normalVertex.setSourceFromFile("GLSL/normalVertex.glsl");
+        normalVertex.compile();
+
+        GL::Shader normalFragment(GL::Shader::TYPE_FRAGMENT);
+        normalFragment.setSourceFromFile("GLSL/normalFragment.glsl");
+        normalFragment.compile();
+
+        GL::Shader normalGeometry(GL::Shader::TYPE_GEOMETRY);
+        normalGeometry.setSourceFromFile("GLSL/normalGeometry.glsl");
+        normalGeometry.compile();
+
+        GL::Program normalProgram;
+        normalProgram.attach(normalVertex);
+        normalProgram.attach(normalGeometry);
+        normalProgram.attach(normalFragment);
+        normalProgram.link();
+
+        GL::Uniform u_m4ModelNormal("u_m4Model", normalProgram.getId());
+        GL::Uniform u_m4ViewNormal("u_m4View", normalProgram.getId());
+        GL::Uniform u_m4ProjectionNormal("u_m4Projection", normalProgram.getId());
+
+        /*========================================
+         * =======================================
+         *
          *      Init frame buffer
          *
          * =======================================
@@ -308,6 +339,7 @@ int main()
              * =======================================
              * =======================================
              */
+
             frameBuffer.bind();
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
@@ -428,6 +460,7 @@ int main()
             frameBuffer.bindRead();
             GL::FrameBuffer::bindDrawDefault();
             GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::MASK_STENCIL);
+            GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::MASK_DEPTH);
             GL::FrameBuffer::unbindDrawDefault();
             frameBuffer.unbindRead();
 
@@ -439,6 +472,7 @@ int main()
              * =======================================
              * =======================================
              */
+
             GL::FrameBuffer::bindDefault();
 
             glDisable(GL_DEPTH_TEST);
@@ -487,6 +521,52 @@ int main()
                 renderSpecularTexture.unbind();
             }
             quadBlinnPhonProgram.unbind();
+            GL::FrameBuffer::unbindDefault();
+
+            /*========================================
+             * =======================================
+             *
+             *      Normal pass
+             *
+             * =======================================
+             * =======================================
+             */
+
+            GL::FrameBuffer::bindDefault();
+            glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LESS);
+
+            glDisable(GL_STENCIL_TEST);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+            glDisable(GL_BLEND);
+
+            normalProgram.bind();
+            {
+                u_m4ViewNormal = V;
+                u_m4ProjectionNormal = P;
+
+                for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
+                {
+                    Assets::Object* ob = file.getObjects()[a];
+                    for (size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
+                    {
+                        Assets::Group* gp = ob->getGroups()[b];
+                        for (size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
+                        {
+                            Component::Mesh* me = gp->getMeshs()[c];
+
+                            u_m4ModelNormal = me->getPositionMatrix() * me->getRotationMatrix();
+
+                            me->bind();
+                            me->draw();
+                            me->unbind();
+                        }
+                    }
+                }
+            }
+            normalProgram.unbind();
             GL::FrameBuffer::unbindDefault();
 
             /*========================================

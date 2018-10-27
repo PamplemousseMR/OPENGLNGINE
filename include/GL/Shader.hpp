@@ -16,7 +16,8 @@ public:
     enum SHADER_TYPE : GLenum
     {
         TYPE_VERTEX = GL_VERTEX_SHADER,
-        TYPE_FRAGMENT = GL_FRAGMENT_SHADER
+        TYPE_FRAGMENT = GL_FRAGMENT_SHADER,
+        TYPE_GEOMETRY = GL_GEOMETRY_SHADER
     };
 
 public:
