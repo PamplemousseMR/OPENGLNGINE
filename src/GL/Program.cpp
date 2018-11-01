@@ -42,7 +42,7 @@ namespace GL
         }
     }
 
-    Program& Program::operator=(const Program& _program)
+    Program& Program::operator=(const Program& _program) noexcept
     {
         if(this != &_program)
         {

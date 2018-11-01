@@ -17,9 +17,9 @@ public:
 
     VertexBuffer();
     ~VertexBuffer() noexcept override;
-    VertexBuffer(const VertexBuffer&);
+    VertexBuffer(const VertexBuffer&) noexcept;
     VertexBuffer(VertexBuffer&&) = delete;
-    VertexBuffer& operator=(const VertexBuffer&);
+    VertexBuffer& operator=(const VertexBuffer&) noexcept;
     VertexBuffer& operator=(VertexBuffer&&) = delete;
 
     template<typename T>

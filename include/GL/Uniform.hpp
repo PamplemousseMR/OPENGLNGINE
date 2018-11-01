@@ -18,11 +18,11 @@ class Uniform
 
 public:
 
-    Uniform(const std::string&, GLuint);
-    ~Uniform();
-    Uniform(const Uniform&);
+    Uniform(const std::string&, GLuint) noexcept;
+    ~Uniform() noexcept;
+    Uniform(const Uniform&) noexcept;
     Uniform(Uniform&&) = delete;
-    Uniform& operator=(const Uniform&);
+    Uniform& operator=(const Uniform&) noexcept;
     Uniform& operator=(Uniform&&) = delete;
 
     inline void operator=(bool) const noexcept;

@@ -25,7 +25,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer) :
+    ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer) noexcept :
         IGLObject(_buffer)
     {
         glGenBuffers(1, &m_id);
@@ -46,7 +46,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    ElementsBuffer& ElementsBuffer::operator=(const ElementsBuffer& _buffer)
+    ElementsBuffer& ElementsBuffer::operator=(const ElementsBuffer& _buffer) noexcept
     {
         if(this != &_buffer)
         {

@@ -15,9 +15,9 @@ public:
 
     ElementsBuffer();
     ~ElementsBuffer() noexcept override;
-    ElementsBuffer(const ElementsBuffer&);
+    ElementsBuffer(const ElementsBuffer&) noexcept;
     ElementsBuffer(ElementsBuffer&&) = delete;
-    ElementsBuffer& operator=(const ElementsBuffer&);
+    ElementsBuffer& operator=(const ElementsBuffer&) noexcept;
     ElementsBuffer& operator=(ElementsBuffer&&) = delete;
 
     template<typename T>

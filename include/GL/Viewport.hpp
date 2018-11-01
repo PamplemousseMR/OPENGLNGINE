@@ -20,12 +20,10 @@ public:
 public:
 
     static void setViewport(int, int);
-    static void addListener(const Listener&);
-    static int getWidth();
-    static int getHeight();
-    static glm::vec2 getViewport();
-
-    static void init(int, int);
+    static void addListener(const Listener&) noexcept;
+    static int getWidth() noexcept;
+    static int getHeight() noexcept;
+    static glm::vec2 getViewport() noexcept;
 
 private:
 

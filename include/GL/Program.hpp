@@ -21,7 +21,7 @@ public:
     ~Program() noexcept override;
     Program(const Program&);
     Program(Program&&) = delete;
-    Program& operator=(const Program&);
+    Program& operator=(const Program&) noexcept;
     Program& operator=(Program&&) = delete;
 
     void attach(Shader&);

@@ -24,7 +24,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) :
+    VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) noexcept :
         IGLObject(_buffer)
     {
         glGenBuffers(1, &m_id);
@@ -45,7 +45,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    VertexBuffer& VertexBuffer::operator=(const VertexBuffer& _buffer)
+    VertexBuffer& VertexBuffer::operator=(const VertexBuffer& _buffer) noexcept
     {
         if(this != &_buffer)
         {

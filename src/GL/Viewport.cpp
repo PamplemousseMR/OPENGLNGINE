@@ -35,30 +35,23 @@ namespace GL
         }
     }
 
-    int Viewport::getWidth()
+    int Viewport::getWidth() noexcept
     {
         return s_width;
     }
 
-    int Viewport::getHeight()
+    int Viewport::getHeight() noexcept
     {
         return s_height;
     }
 
-    glm::vec2 Viewport::getViewport()
+    glm::vec2 Viewport::getViewport() noexcept
     {
         return vec2(s_width, s_height);
     }
 
-    void Viewport::addListener(const Listener& _listener)
+    void Viewport::addListener(const Listener& _listener) noexcept
     {
         s_listeners.push_back(_listener);
     }
-
-    void Viewport::init(int _width, int _height)
-    {
-        s_width = _width;
-        s_height = _height;
-    }
-
 }
