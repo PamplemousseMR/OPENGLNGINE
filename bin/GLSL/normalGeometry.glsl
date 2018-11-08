@@ -15,13 +15,13 @@ void main()
     int i;
     for(i=0; i<gl_in.length(); ++i)
     {
-        vec3 P = gl_in[i].gl_Position.xyz;
+        vec4 P = gl_in[i].gl_Position;
         vec3 N = v_vertex[i].v_f3NormalDir_Ms;
 
-        gl_Position = v_vertex[i].v_modelViewProj * vec4(P, 1.0);
+        gl_Position = v_vertex[i].v_modelViewProj * P;
         EmitVertex();
 
-        gl_Position = v_vertex[i].v_modelViewProj * vec4(P + N, 1.0);
+        gl_Position = v_vertex[i].v_modelViewProj * (P + vec4(N, 0.0));
         EmitVertex();
 
         EndPrimitive();
