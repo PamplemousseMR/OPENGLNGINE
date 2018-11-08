@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -82,9 +83,9 @@ namespace GL
 
     void Program::detachAll() noexcept
     {
-        for (const Shader* const s : m_shaders)
+        while(m_shaders.size() != 0)
         {
-            detach(*s);
+            detach(*m_shaders[0]);
         }
     }
 
