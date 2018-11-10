@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 - [glm](https://glm.g-truc.net/0.9.9/index.html) : A mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
 - [SOIL](https://www.lonesock.net/soil.html) : A library used primarily for uploading textures into OpenGL.
 
-### compilation
+### Generation
 
 Add bincrafters remote : `conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
 

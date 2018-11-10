@@ -47,9 +47,6 @@ public:
     void unbind() const noexcept;
     inline void draw() const noexcept;
 
-    inline GLuint getVertexLocation() const noexcept;
-    inline GLuint getTextureCoordLocation() const noexcept;
-    inline GLuint getNormalLocation() const noexcept;
     inline Assets::Material* getMaterial() const noexcept;
     inline bool hasTextureCoord() const noexcept;
 
@@ -88,21 +85,6 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const Mesh&) noexcept;
-
-inline GLuint Mesh::getVertexLocation() const noexcept
-{
-    return S_VERTEXLOCATION;
-}
-
-inline GLuint Mesh::getTextureCoordLocation() const noexcept
-{
-    return m_textCoord;
-}
-
-inline GLuint Mesh::getNormalLocation() const noexcept
-{
-    return S_NORMALLOCATION;
-}
 
 inline Assets::Material* Mesh::getMaterial() const noexcept
 {
