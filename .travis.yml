@@ -3,177 +3,350 @@ sudo: false
 
 matrix:
   include:
+
     #============================================================
     #
-    #             Debug 
-    #
-    #============================================================
-    #============================================================
-    #
-    #             Debug 
+    #                         Debug 
     #
     #============================================================
     #==============================
     #
-    #     osx g++ 
+    #          osx gcc
     #
     #==============================
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-4.9
+      env: MATRIX_EVAL="brew install gcc@4.9 && CXX=g++-4.9 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=4.9"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-5
+      env: MATRIX_EVAL="brew install gcc@5 && CXX=g++-5 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=5"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-6
+      env: MATRIX_EVAL="brew install gcc@6 && CXX=g++-6 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=6"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-7
+      env: MATRIX_EVAL="brew install gcc@7 && CXX=g++-7 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=7"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-8
+      env: MATRIX_EVAL="CXX=g++-8 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=8"
+
+    #==============================
+    #
+    #          osx clang
+    #
+    #==============================
+
+    - os: osx
+      osx_image: xcode6.4
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     - os: osx
       osx_image: xcode7.3
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     - os: osx
       osx_image: xcode8
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     - os: osx
       osx_image: xcode8.3
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9.1
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     - os: osx
       osx_image: xcode9.2
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9.3
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     - os: osx
       osx_image: xcode9.4
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     - os: osx
-      osx_image: xcode10
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      osx_image: xcode10.1
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
+
+    - os: osx
+      osx_image: xcode10.2
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Debug"
 
     #==============================
     #
-    #     osx clang++
+    #          linux gcc 
     #
     #==============================
 
-    - os: osx
-      osx_image: xcode7.3
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode8
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode8.3
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9.1
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9.2
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9.3
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode9.4
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: osx
-      osx_image: xcode10
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    #==============================
-    #
-    #     linux g++ 
-    #
-    #==============================
-    
     - os: linux
+      compiler: gcc-4.9
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-4.9
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      dist: xenial
+      env: MATRIX_EVAL="CXX=g++-4.9 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=4.9"
 
     - os: linux
+      compiler: gcc-5
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      dist: xenial
+      env: MATRIX_EVAL="CXX=g++-5 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=5"
 
     - os: linux
+      compiler: gcc-6
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      dist: xenial
+      env: MATRIX_EVAL="CXX=g++-6 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=6"
 
     - os: linux
+      compiler: gcc-7
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      dist: xenial
+      env: MATRIX_EVAL="CXX=g++-7 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=7"
 
     - os: linux
+      compiler: gcc-8
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Debug
+      dist: xenial
+      env: MATRIX_EVAL="CXX=g++-8 && BUILD_TYPE=Debug && COMPILER_NAME=gcc && COMPILER_VERSION=8"
 
     #==============================
     #
-    #     linux clang++ 
+    #          linux clang 
+    #
+    #==============================
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-3.6
+          packages:
+            - clang-3.6
+      dist: xenial
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.6 && BUILD_TYPE=Debug && COMPILER_NAME=clang && COMPILER_VERSION=3.6"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-3.7
+          packages:
+            - clang-3.7
+      dist: xenial
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.7 && BUILD_TYPE=Debug && COMPILER_NAME=clang && COMPILER_VERSION=3.7"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-3.8
+          packages:
+            - clang-3.8
+      dist: xenial
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.8 && BUILD_TYPE=Debug && COMPILER_NAME=clang && COMPILER_VERSION=3.8"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-3.9
+          packages:
+            - clang-3.9
+      dist: xenial
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.9 && BUILD_TYPE=Debug && COMPILER_NAME=clang && COMPILER_VERSION=3.9"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-4.0
+          packages:
+            - clang-4.0
+      dist: xenial
+      env:
+        - MATRIX_EVAL="CXX=clang++-4.0 && BUILD_TYPE=Debug && COMPILER_NAME=clang && COMPILER_VERSION=4.0"
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-5.0
+          packages:
+            - clang-5.0
+      dist: xenial
+      env:
+        - MATRIX_EVAL="CXX=clang++-5.0 && BUILD_TYPE=Debug && COMPILER_NAME=clang && COMPILER_VERSION=5.0"
+
+    #============================================================
+    #
+    #                         Release 
+    #
+    #============================================================
+    #==============================
+    #
+    #          osx gcc
+    #
+    #==============================
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-4.9
+      env: MATRIX_EVAL="brew install gcc@4.9 && CXX=g++-4.9 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=4.9"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-5
+      env: MATRIX_EVAL="brew install gcc@5 && CXX=g++-5 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=5"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-6
+      env: MATRIX_EVAL="brew install gcc@6 && CXX=g++-6 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=6"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-7
+      env: MATRIX_EVAL="brew install gcc@7 && CXX=g++-7 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=7"
+
+    - os: osx
+      osx_image: xcode10.2
+      compiler: gcc-8
+      env: MATRIX_EVAL="CXX=g++-8 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=8"
+
+    #==============================
+    #
+    #          osx clang
+    #
+    #==============================
+
+    - os: osx
+      osx_image: xcode6.4
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode7.3
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode8.3
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode9.2
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode9.4
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode10.1
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    - os: osx
+      osx_image: xcode10.2
+      env: MATRIX_EVAL="CXX=clang++ && BUILD_TYPE=Release"
+
+    #==============================
+    #
+    #          linux gcc 
+    #
+    #==============================
+
+    - os: linux
+      compiler: gcc-4.9
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+      env: MATRIX_EVAL="CXX=g++-4.9 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=4.9"
+
+    - os: linux
+      compiler: gcc-5
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env: MATRIX_EVAL="CXX=g++-5 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=5"
+
+    - os: linux
+      compiler: gcc-6
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      env: MATRIX_EVAL="CXX=g++-6 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=6"
+
+    - os: linux
+      compiler: gcc-7
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env: MATRIX_EVAL="CXX=g++-7 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=7"
+
+    - os: linux
+      compiler: gcc-8
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env: MATRIX_EVAL="CXX=g++-8 && BUILD_TYPE=Release && COMPILER_NAME=gcc && COMPILER_VERSION=8"
+
+    #==============================
+    #
+    #          linux clang 
     #
     #==============================
 
@@ -185,8 +358,8 @@ matrix:
             - llvm-toolchain-precise-3.6
           packages:
             - clang-3.6
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.6 && BUILD_TYPE=Release && COMPILER_NAME=clang && COMPILER_VERSION=3.6"
 
     - os: linux
       addons:
@@ -196,8 +369,8 @@ matrix:
             - llvm-toolchain-precise-3.7
           packages:
             - clang-3.7
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.7 && BUILD_TYPE=Release && COMPILER_NAME=clang && COMPILER_VERSION=3.7"
 
     - os: linux
       addons:
@@ -207,301 +380,41 @@ matrix:
             - llvm-toolchain-precise-3.8
           packages:
             - clang-3.8
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.8 && BUILD_TYPE=Release && COMPILER_NAME=clang && COMPILER_VERSION=3.8"
 
     - os: linux
       addons:
         apt:
           sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.9
+            - llvm-toolchain-trusty-3.9
           packages:
             - clang-3.9
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
+      env:
+        - MATRIX_EVAL="CXX=clang++-3.9 && BUILD_TYPE=Release && COMPILER_NAME=clang && COMPILER_VERSION=3.9"
 
     - os: linux
       addons:
         apt:
           sources:
-            - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-4.0
           packages:
             - clang-4.0
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
+      env:
+        - MATRIX_EVAL="CXX=clang++-4.0 && BUILD_TYPE=Release && COMPILER_NAME=clang && COMPILER_VERSION=4.0"
 
     - os: linux
       addons:
         apt:
           sources:
-            - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-          packages:
-            - clang-6.0
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Debug
-
-    #============================================================
-    #
-    #             Release 
-    #
-    #============================================================
-    #==============================
-    #
-    #     osx g++ 
-    #
-    #==============================
-
-    - os: osx
-      osx_image: xcode7.3
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode8
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode8.3
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.1
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.2
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.3
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.4
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode10
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    #==============================
-    #
-    #     osx clang++
-    #
-    #==============================
-
-    - os: osx
-      osx_image: xcode7.3
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode8
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode8.3
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.1
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.2
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.3
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode9.4
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: osx
-      osx_image: xcode10
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    #==============================
-    #
-    #     linux g++ 
-    #
-    #==============================
-    
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.9
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-5
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-6
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-8
-      compiler: g++
-      env: CXX=g++ CC=gcc BUILD_TYPE=Release
-
-    #==============================
-    #
-    #     linux clang++ 
-    #
-    #==============================
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-          packages:
-            - clang-3.6
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-          packages:
-            - clang-3.8
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.9
-          packages:
-            - clang-3.9
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-4.0
-          packages:
-            - clang-4.0
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-5.0
-          packages:
-            - clang-5.0
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
-          packages:
-            - clang-6.0
-      compiler: clang++
-      env: CXX=clang++ CC=clang BUILD_TYPE=Release
+      env:
+        - MATRIX_EVAL="CXX=clang++-5.0 && BUILD_TYPE=Release && COMPILER_NAME=clang && COMPILER_VERSION=5.0"
 
 before_install:
-  - eval
+  - eval ${MATRIX_EVAL}
 
 install:
   - sudo pip install conan
@@ -509,7 +422,7 @@ install:
 
 before_script:
   - mkdir build
-  - conan install --build missing -s build_type=${BUILD_TYPE} -if build .
+  - conan install --build missing -s build_type=${BUILD_TYPE} -s compiler=${COMPILER_NAME} -s compiler.version=${COMPILER_VERSION} -if build .
   - cd build
   - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_CC_COMPILER=${CC}
 

@@ -1,7 +1,7 @@
 #======================================== 
 #	project
 #========================================
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
 PROJECT("OPENGLNGINE")
 
 #================================================================================  
@@ -22,6 +22,9 @@ SET(openglngine_obj_dir "${openglngine_bin_dir}/obj")
 #	compiler specifications
 #========================================
 SET(CMAKE_CXX_STANDARD 17)
+IF(NOT WIN32)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lstdc++fs")
+ENDIF(UNIX)
 
 #======================================== 
 #	find files
