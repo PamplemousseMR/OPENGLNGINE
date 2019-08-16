@@ -20,7 +20,7 @@ namespace Assets
 
 vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
 {
-    if (_str == "")
+    if(_str == "")
     {
         return vector<string>(0);
     }
@@ -28,13 +28,13 @@ vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
     vector<string> tokens;
     for(size_t i = 0; i < _str.length(); ++i)
     {
-        if (_str[i] == _splitter)
+        if(_str[i] == _splitter)
         {
             semicolons.push_back(i);
         }
     }
 
-    if (semicolons.size() == 0)
+    if(semicolons.size() == 0)
     {
         tokens.push_back(_str);
         return tokens;
@@ -42,11 +42,11 @@ vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
 
     for(size_t i = 0; i<semicolons.size() + 1; ++i)
     {
-        if (i == 0)
+        if(i == 0)
         {
             tokens.push_back(_str.substr(0, semicolons[i]));
         }
-        else if (i == semicolons.size())
+        else if(i == semicolons.size())
         {
             tokens.push_back(_str.substr(semicolons[i - 1] + 1));
         }
@@ -63,7 +63,7 @@ vector<string> OBJFile::removeNullptr(const vector<string>& _str) noexcept
     vector<string> res;
     for(unsigned int i(0); i < _str.size(); ++i)
     {
-        if (_str[i] != "")
+        if(_str[i] != "")
         {
             res.push_back(_str[i]);
         }
@@ -73,7 +73,7 @@ vector<string> OBJFile::removeNullptr(const vector<string>& _str) noexcept
 
 void OBJFile::push(vector<vec3>* _vertex, vector<vec3>* _normal, vector<vec2>* _textCoord, vector<vec3>* _index, string* _usemtl) const
 {
-    if (_usemtl == nullptr)
+    if(_usemtl == nullptr)
     {
         throw(invalid_argument("[OBJFile] usemtl can`t be nullptr"));
     }
@@ -83,11 +83,11 @@ void OBJFile::push(vector<vec3>* _vertex, vector<vec3>* _normal, vector<vec2>* _
     {
         throw(invalid_argument("[OBJFile] use texture coord on faces with no texture coord define"));
     }
-    if (long(vec[2]) != 0 && _normal->size() == 0)
+    if(long(vec[2]) != 0 && _normal->size() == 0)
     {
         throw(invalid_argument("[OBJFile] use normal on faces with no normal define"));
     }
-    if (*_usemtl != "")
+    if(*_usemtl != "")
     {
         m_objects.back()->getLastGroup()->add(*_vertex, _normal->size() > 0 ? _normal : nullptr, _textCoord->size() > 0 ? _textCoord : nullptr, *_index, _usemtl);
     }
@@ -109,7 +109,7 @@ vector<Material*> OBJFile::findMaterial(const string& _mtl) const noexcept
             for(Mesh* ms : gp->getMeshs())
             {
                 Material* ma = ms->getMaterial();
-                if (ma && ma->getName() == _mtl)
+                if(ma && ma->getName() == _mtl)
                 {
                     m.push_back(ma);
                 }
@@ -123,11 +123,11 @@ void OBJFile::checkSize(const vector<string>& _vec, size_t _min, size_t _max, in
 {
     const string symbol = "[OBJFile] unexpected symbol at the end of the line ";
     const string invalidData = "[OBJFile] missing value(s) at the line ";
-    if (_vec.size() < _min)
+    if(_vec.size() < _min)
     {
         throw invalid_argument(invalidData + to_string(_linuNumber));
     }
-    if (_vec.size() > _max)
+    if(_vec.size() > _max)
     {
         throw invalid_argument(symbol + to_string(_linuNumber));
     }
@@ -153,36 +153,36 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
     int lineNumber = 0;
 
     ifstream file(_path, ios::in);
-    if (!file)
+    if(!file)
     {
         throw invalid_argument("[OBJFile] can't open mtl file : " + _path.string());
     }
     vector<Material*> materials;
     string line;
 
-    while (getline(file, line, '\n'))
+    while(getline(file, line, '\n'))
     {
         lineNumber++;
         vector<string> data = removeNullptr(split(line, ' '));
-        if (data.size() > 0)
+        if(data.size() > 0)
         {
             string dat0 = data[0];
-            if (dat0 == "newmtl")
+            if(dat0 == "newmtl")
             {
                 checkSize(data, 2, 2, lineNumber);
                 materials = findMaterial(data[1]);
-                if (materials.size() == 0)
+                if(materials.size() == 0)
                 {
                     throw invalid_argument("[OBJFile] Material " + data[1] + " not used at the line " + to_string(lineNumber));
                 }
             }
             else if(dat0 != "#")
             {
-                if (materials.size() == 0)
+                if(materials.size() == 0)
                 {
                     throw invalid_argument(noexiste + to_string(lineNumber));
                 }
-                if (dat0 == "\tKa" || dat0 == "Ka" || dat0 == "\tka" || dat0 == "ka")
+                if(dat0 == "\tKa" || dat0 == "Ka" || dat0 == "\tka" || dat0 == "ka")
                 {
                     checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
@@ -197,7 +197,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tKd" || dat0 == "Kd" || dat0 == "\tkd" || dat0 == "kd")
+                else if(dat0 == "\tKd" || dat0 == "Kd" || dat0 == "\tkd" || dat0 == "kd")
                 {
                     checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
@@ -212,7 +212,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tKs" || dat0 == "Ks" || dat0 == "\tks" || dat0 == "ks")
+                else if(dat0 == "\tKs" || dat0 == "Ks" || dat0 == "\tks" || dat0 == "ks")
                 {
                     checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
@@ -227,7 +227,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tKe" || dat0 == "Ke" || dat0 == "\tke" || dat0 == "ke")
+                else if(dat0 == "\tKe" || dat0 == "Ke" || dat0 == "\tke" || dat0 == "ke")
                 {
                     checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
@@ -242,7 +242,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tTf" || dat0 == "Tf" || dat0 == "\ttf" || dat0 == "tf")
+                else if(dat0 == "\tTf" || dat0 == "Tf" || dat0 == "\ttf" || dat0 == "tf")
                 {
                     checkSize(data, 4, 4, lineNumber);
                     for(Material* ma : materials)
@@ -257,7 +257,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tillum" || dat0 == "illum")
+                else if(dat0 == "\tillum" || dat0 == "illum")
                 {
                     checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
@@ -272,10 +272,10 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\td" || dat0 == "d")
+                else if(dat0 == "\td" || dat0 == "d")
                 {
                     checkSize(data, 2, 3, lineNumber);
-                    if (data.size() == 2)
+                    if(data.size() == 2)
                     {
                         for(Material* ma : materials)
                         {
@@ -296,7 +296,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             ma->setDissolve(stof(data[2]));
                         }
                         string com = data[1];
-                        if (com != "-halo")
+                        if(com != "-halo")
                         {
                             throw invalid_argument(commande + to_string(lineNumber));
                         }
@@ -306,7 +306,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tNs" || dat0 == "Ns" || dat0 == "\tns" || dat0 == "ns")
+                else if(dat0 == "\tNs" || dat0 == "Ns" || dat0 == "\tns" || dat0 == "ns")
                 {
                     checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
@@ -321,7 +321,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tsharpness" || dat0 == "sharpness")
+                else if(dat0 == "\tsharpness" || dat0 == "sharpness")
                 {
                     checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
@@ -336,7 +336,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                         }
                     }
                 }
-                else if (dat0 == "\tNi" || dat0 == "Ni" || dat0 == "\tni" || dat0 == "ni")
+                else if(dat0 == "\tNi" || dat0 == "Ni" || dat0 == "\tni" || dat0 == "ni")
                 {
                     checkSize(data, 2, 2, lineNumber);
                     for(Material* ma : materials)
@@ -353,12 +353,12 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                 }
                 else
                 {
-                    if (data.size() < 2)
+                    if(data.size() < 2)
                     {
                         throw invalid_argument(invalidData + to_string(lineNumber));
                     }
                     vector<Map*> map;
-                    if (dat0 == "\tmap_Ka" || dat0 == "map_Ka" || dat0 == "\tmap_ka" || dat0 == "map_ka")
+                    if(dat0 == "\tmap_Ka" || dat0 == "map_Ka" || dat0 == "\tmap_ka" || dat0 == "map_ka")
                     {
                         for(Material* ma : materials)
                         {
@@ -369,7 +369,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getKamap());
                         }
                     }
-                    else if (dat0 == "\tmap_Kd" || dat0 == "map_Kd" || dat0 == "\tmap_kd" || dat0 == "map_kd")
+                    else if(dat0 == "\tmap_Kd" || dat0 == "map_Kd" || dat0 == "\tmap_kd" || dat0 == "map_kd")
                     {
                         for(Material* ma : materials)
                         {
@@ -380,7 +380,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getKdmap());
                         }
                     }
-                    else if (dat0 == "\tmap_Ks" || dat0 == "map_Ks" || dat0 == "\tmap_ks" || dat0 == "map_ks")
+                    else if(dat0 == "\tmap_Ks" || dat0 == "map_Ks" || dat0 == "\tmap_ks" || dat0 == "map_ks")
                     {
                         for(Material* ma : materials)
                         {
@@ -391,7 +391,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getKsmap());
                         }
                     }
-                    else if (dat0 == "\tmap_Ns" || dat0 == "map_Ns" || dat0 == "\tmap_ns" || dat0 == "map_ns")
+                    else if(dat0 == "\tmap_Ns" || dat0 == "map_Ns" || dat0 == "\tmap_ns" || dat0 == "map_ns")
                     {
                         for(Material* ma : materials)
                         {
@@ -402,7 +402,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getKsmap());
                         }
                     }
-                    else if (dat0 == "\tmap_d" || dat0 == "map_d")
+                    else if(dat0 == "\tmap_d" || dat0 == "map_d")
                     {
                         for(Material* ma : materials)
                         {
@@ -413,7 +413,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getdmap());
                         }
                     }
-                    else if (dat0 == "\tdisp" || dat0 == "disp" || dat0 == "\tmap_Disp" || dat0 == "map_Disp")
+                    else if(dat0 == "\tdisp" || dat0 == "disp" || dat0 == "\tmap_Disp" || dat0 == "map_Disp")
                     {
                         for(Material* ma : materials)
                         {
@@ -424,7 +424,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getDispmap());
                         }
                     }
-                    else if (dat0 == "\tdecal" || dat0 == "decal")
+                    else if(dat0 == "\tdecal" || dat0 == "decal")
                     {
                         for(Material* ma : materials)
                         {
@@ -435,7 +435,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                             map.push_back(ma->getDecalmap());
                         }
                     }
-                    else if (dat0 == "\tbump" || dat0 == "bump" || dat0 == "\tmap_bump" || dat0 == "map_bump")
+                    else if(dat0 == "\tbump" || dat0 == "bump" || dat0 == "\tmap_bump" || dat0 == "map_bump")
                     {
                         for(Material* ma : materials)
                         {
@@ -450,11 +450,11 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                     {
                         throw invalid_argument(lineError + to_string(lineNumber) + " : \"" + dat0 + "\"");
                     }
-                    if (map.size() != 0)
+                    if(map.size() != 0)
                     {
                         for(size_t i = 1 ; i < data.size() - 1 ; ++i)
                         {
-                            if (data[i] == "-bm")
+                            if(data[i] == "-bm")
                             {
                                 for(Map* umap : map)
                                 {
@@ -462,9 +462,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-clamp")
+                            else if(data[i] == "-clamp")
                             {
-                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                if(data[i + 1] != "on" && data[i + 1] != "off")
                                 {
                                     throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
                                 }
@@ -474,9 +474,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-blendu")
+                            else if(data[i] == "-blendu")
                             {
-                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                if(data[i + 1] != "on" && data[i + 1] != "off")
                                 {
                                     throw invalid_argument(lineError + to_string(lineNumber) + " for blendu value");
                                 }
@@ -484,9 +484,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                     umap->setBlendu(data[i + 1] == "on" ? true : false);
                                 ++i;
                             }
-                            else if (data[i] == "-blendv")
+                            else if(data[i] == "-blendv")
                             {
-                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                if(data[i + 1] != "on" && data[i + 1] != "off")
                                 {
                                     throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
                                 }
@@ -496,9 +496,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-blendv")
+                            else if(data[i] == "-blendv")
                             {
-                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                if(data[i + 1] != "on" && data[i + 1] != "off")
                                 {
                                     throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
                                 }
@@ -508,7 +508,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-mm")
+                            else if(data[i] == "-mm")
                             {
                                 for(Map* umap : map)
                                 {
@@ -517,7 +517,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
 
                             }
-                            else if (data[i] == "-o")
+                            else if(data[i] == "-o")
                             {
                                 for(Map* umap : map)
                                 {
@@ -525,7 +525,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 i += 3;
                             }
-                            else if (data[i] == "-s")
+                            else if(data[i] == "-s")
                             {
                                 for(Map* umap : map)
                                 {
@@ -533,7 +533,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 i += 3;
                             }
-                            else if (data[i] == "-t")
+                            else if(data[i] == "-t")
                             {
                                 for(Map* umap : map)
                                 {
@@ -541,7 +541,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 i += 3;
                             }
-                            else if (data[i] == "-textres")
+                            else if(data[i] == "-textres")
                             {
                                 for(Map* umap : map)
                                 {
@@ -549,9 +549,9 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-cc")
+                            else if(data[i] == "-cc")
                             {
-                                if (data[i + 1] != "on" && data[i + 1] != "off")
+                                if(data[i + 1] != "on" && data[i + 1] != "off")
                                 {
                                     throw invalid_argument(lineError + to_string(lineNumber) + " for blendv value");
                                 }
@@ -561,7 +561,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-boost")
+                            else if(data[i] == "-boost")
                             {
                                 for(Map* umap : map)
                                 {
@@ -569,7 +569,7 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
                                 }
                                 ++i;
                             }
-                            else if (data[i] == "-imfchan")
+                            else if(data[i] == "-imfchan")
                             {
                                 for(Map* umap : map)
                                 {
@@ -615,7 +615,7 @@ OBJFile::OBJFile(const OBJFile& _objfile) :
 OBJFile::OBJFile(OBJFile&& _objfile) :
     m_name(move(_objfile.m_name))
 {
-    for (size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
+    for(size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
     {
         m_objects.push_back(_objfile.m_objects[i]);
         _objfile.m_objects[i] = nullptr;
@@ -650,7 +650,7 @@ OBJFile& OBJFile::operator=(OBJFile&& _objfile)
         }
         m_objects.clear();
         m_name = move(_objfile.m_name);
-        for (size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
+        for(size_t i=0 ; i<_objfile.m_objects.size() ; ++i)
         {
             m_objects.push_back(_objfile.m_objects[i]);
             _objfile.m_objects[i] = nullptr;
@@ -678,7 +678,7 @@ void OBJFile::load(const filesystem::path& _path)
 
     m_name = _path.filename().string();
     ifstream file(_path, ios::in);
-    if (!file)
+    if(!file)
     {
         throw invalid_argument("[OBJFile] Can't open file : " + _path.string());
     }
@@ -696,18 +696,18 @@ void OBJFile::load(const filesystem::path& _path)
     string usemtl = "";
     int lineNumber = 0;
 
-    while (getline(file, line, '\n'))
+    while(getline(file, line, '\n'))
     {
         ++lineNumber;
         vector<string> data = removeNullptr(split(line, ' '));
-        if (data.size() > 0)
+        if(data.size() > 0)
         {
             string dat0 = data[0];
-            if (dat0 != "v" && dat0 != "vn" && dat0 != "vt" && dat0 != "f" && dat0 != "o" && dat0 != "g" && dat0 != "#" && dat0 != "usemtl" && dat0 != "mtllib" && dat0 != "s")
+            if(dat0 != "v" && dat0 != "vn" && dat0 != "vt" && dat0 != "f" && dat0 != "o" && dat0 != "g" && dat0 != "#" && dat0 != "usemtl" && dat0 != "mtllib" && dat0 != "s")
             {
                 throw invalid_argument(lineError + to_string(lineNumber));
             }
-            if (dat0 == "v" || dat0 == "vn")
+            if(dat0 == "v" || dat0 == "vn")
             {
                 checkSize(data, 4, 4, lineNumber);
                 vec3 val;
@@ -722,16 +722,16 @@ void OBJFile::load(const filesystem::path& _path)
                         throw invalid_argument(invalidData + to_string(lineNumber));
                     }
                 }
-                if (dat0 == "vn")
+                if(dat0 == "vn")
                 {
                     normal.push_back(val);
                 }
-                else if (dat0 == "v")
+                else if(dat0 == "v")
                 {
                     vertex.push_back(val);
                 }
             }
-            else if (dat0 == "vt")
+            else if(dat0 == "vt")
             {
                 checkSize(data, 3, 4, lineNumber);
                 vec2 val;
@@ -748,7 +748,7 @@ void OBJFile::load(const filesystem::path& _path)
                 }
                 textCoord.push_back(val);
             }
-            else if (dat0 == "f")
+            else if(dat0 == "f")
             {
                 checkSize(data, 4, 5, lineNumber);
                 vec3 val;
@@ -758,11 +758,11 @@ void OBJFile::load(const filesystem::path& _path)
                     for(short i=0+k ; i<=2+k ; ++i)
                     {
                         vector<string> d = split(data[i%4+1], '/');
-                        if (d.size() > 3)
+                        if(d.size() > 3)
                         {
                             throw invalid_argument(lineError + to_string(lineNumber));
                         }
-                        if (d.size() == 1)
+                        if(d.size() == 1)
                         {
                             try
                             {
@@ -775,7 +775,7 @@ void OBJFile::load(const filesystem::path& _path)
                             val[1] = 0;
                             val[2] = 0;
                         }
-                        else if (d.size() == 2)
+                        else if(d.size() == 2)
                         {
                             try
                             {
@@ -790,7 +790,7 @@ void OBJFile::load(const filesystem::path& _path)
                                 throw invalid_argument(invalidData + to_string(lineNumber));
                             }
                         }
-                        else if (d.size() == 3)
+                        else if(d.size() == 3)
                         {
                             float temp;
                             try
@@ -803,7 +803,7 @@ void OBJFile::load(const filesystem::path& _path)
                             }
                             val[0] = temp;
 
-                            if (d[1] == "")
+                            if(d[1] == "")
                             {
                                 val[1] = 0;
                             }
@@ -838,14 +838,14 @@ void OBJFile::load(const filesystem::path& _path)
                     }
                 }
             }
-            else if (dat0 == "o")
+            else if(dat0 == "o")
             {
                 checkSize(data, 2, 2, lineNumber);
-                if (index.size() != 0)
+                if(index.size() != 0)
                 {
-                    if (m_objects.size() > 0)
+                    if(m_objects.size() > 0)
                     {
-                        if (m_objects.back()->getGroups().size() > 0)
+                        if(m_objects.back()->getGroups().size() > 0)
                         {
                             push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
@@ -855,7 +855,7 @@ void OBJFile::load(const filesystem::path& _path)
                             push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
                     }
-                    if (index.size() != 0)
+                    if(index.size() != 0)
                     {
                         m_objects.push_back(new Object("default_object"));
                         m_objects.back()->addGroup("default_group");
@@ -864,19 +864,19 @@ void OBJFile::load(const filesystem::path& _path)
                 }
                 m_objects.push_back(new Object(data[1]));
             }
-            else if (dat0 == "g")
+            else if(dat0 == "g")
             {
-                if (data.size() > 2)
+                if(data.size() > 2)
                 {
                     throw invalid_argument(symbol + to_string(lineNumber));
                 }
-                if (data.size() == 2)
+                if(data.size() == 2)
                 {
-                    if (m_objects.size() > 0)
+                    if(m_objects.size() > 0)
                     {
-                        if (m_objects.back()->getGroups().size() > 0)
+                        if(m_objects.back()->getGroups().size() > 0)
                         {
-                            if (index.size() != 0)
+                            if(index.size() != 0)
                             {
                                 push(&vertex, &normal, &textCoord, &index, &usemtl);
                             }
@@ -884,7 +884,7 @@ void OBJFile::load(const filesystem::path& _path)
                         }
                         else
                         {
-                            if (index.size() != 0)
+                            if(index.size() != 0)
                             {
                                 m_objects.back()->addGroup("default_group");
                                 push(&vertex, &normal, &textCoord, &index, &usemtl);
@@ -894,7 +894,7 @@ void OBJFile::load(const filesystem::path& _path)
                     }
                     else
                     {
-                        if (index.size() != 0)
+                        if(index.size() != 0)
                         {
                             m_objects.push_back(new Object("default_object"));
                             m_objects.back()->addGroup("default_group");
@@ -905,19 +905,19 @@ void OBJFile::load(const filesystem::path& _path)
                     }
                 }
             }
-            else if (dat0 == "mtllib")
+            else if(dat0 == "mtllib")
             {
                 checkSize(data, 2, 2, lineNumber);
                 mtllib = data[1];
             }
-            else if (dat0 == "usemtl")
+            else if(dat0 == "usemtl")
             {
                 checkSize(data, 2, 2, lineNumber);
-                if (index.size() > 0)
+                if(index.size() > 0)
                 {
-                    if (m_objects.size() > 0)
+                    if(m_objects.size() > 0)
                     {
-                        if (m_objects.back()->getGroups().size() > 0)
+                        if(m_objects.back()->getGroups().size() > 0)
                         {
                             push(&vertex, &normal, &textCoord, &index, &usemtl);
                         }
@@ -939,11 +939,11 @@ void OBJFile::load(const filesystem::path& _path)
         }
     }
 
-    if (index.size() > 0)
+    if(index.size() > 0)
     {
-        if (m_objects.size() > 0)
+        if(m_objects.size() > 0)
         {
-            if (m_objects.back()->getGroups().size() > 0)
+            if(m_objects.back()->getGroups().size() > 0)
             {
                 push(&vertex, &normal, &textCoord, &index, &usemtl);
             }
@@ -963,7 +963,7 @@ void OBJFile::load(const filesystem::path& _path)
 
 
     file.close();
-    if (mtllib != "")
+    if(mtllib != "")
     {
         loadMTLFile(_path.parent_path() / mtllib);
     }

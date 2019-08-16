@@ -24,7 +24,7 @@ namespace GL
 
     Uniform& Uniform::operator=(const Uniform& _uniform) noexcept
     {
-        if (this != &_uniform)
+        if(this != &_uniform)
         {
             m_name = _uniform.m_name;
             m_location = _uniform.m_location;

@@ -156,14 +156,14 @@ namespace Assets
         return _o;
     }
 
-    Texture* Map::getTexture() const noexcept
+    Texture& Map::getTexture() const noexcept
     {
-        return m_texture;
+        return *m_texture;
     }
 
     void Map::setCc(bool _cc)
     {
-        if (m_mapType == KA || m_mapType == KD || m_mapType == KS)
+        if(m_mapType == KA || m_mapType == KD || m_mapType == KS)
         {
             m_cc = _cc;
         }
@@ -175,7 +175,7 @@ namespace Assets
 
     void Map::setClamp(bool _clamp)
     {
-        if (m_mapType == NS || m_mapType == D || m_mapType == DECAL || m_mapType == DISP)
+        if(m_mapType == NS || m_mapType == D || m_mapType == DECAL || m_mapType == DISP)
         {
             m_clamp = _clamp;
         }
@@ -187,7 +187,7 @@ namespace Assets
 
     bool Map::getCc() const
     {
-        if (m_mapType == KA || m_mapType == KD || m_mapType == KS)
+        if(m_mapType == KA || m_mapType == KD || m_mapType == KS)
         {
             return m_cc;
         }
@@ -199,7 +199,7 @@ namespace Assets
 
     bool Map::getClamp() const
     {
-        if (m_mapType == NS || m_mapType == D || m_mapType == DECAL || m_mapType == DISP)
+        if(m_mapType == NS || m_mapType == D || m_mapType == DECAL || m_mapType == DISP)
         {
             return m_clamp;
         }

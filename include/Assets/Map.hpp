@@ -40,7 +40,7 @@ public:
     Map& operator=(const Map&);
     Map& operator=(Map&&);
 
-    GL::Texture* getTexture() const noexcept;
+    GL::Texture& getTexture() const noexcept;
     inline const std::string& getName() const noexcept;
     inline bool getBlendu() const noexcept;
     inline bool getBlendv() const noexcept;

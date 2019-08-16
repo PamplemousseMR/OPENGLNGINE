@@ -16,7 +16,7 @@ namespace GL
 
     void Viewport::setViewport(int _width, int _height)
     {
-        if (s_first)
+        if(s_first)
         {
             s_first = false;
             glGetIntegerv(GL_MAX_VIEWPORT_DIMS, s_maxSize);

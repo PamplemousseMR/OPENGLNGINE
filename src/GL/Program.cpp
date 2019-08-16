@@ -37,7 +37,7 @@ namespace GL
         {
             throw overflow_error("[Program] Out of memory");
         }
-        for (Shader* const s : _program.m_shaders)
+        for(Shader* const s : _program.m_shaders)
         {
             attach(*s);
         }
@@ -60,7 +60,7 @@ namespace GL
     void Program::attach(Shader& _shader)
     {
         auto p = find(m_shaders.begin(), m_shaders.end(), &_shader);
-        if (p != m_shaders.end())
+        if(p != m_shaders.end())
         {
             throw runtime_error("[Program] shader already attached ");
         }
@@ -72,7 +72,7 @@ namespace GL
     void Program::detach(const Shader& _shader)
     {
         auto p = find(m_shaders.begin(), m_shaders.end(), &_shader);
-        if (p == m_shaders.end())
+        if(p == m_shaders.end())
         {
             throw runtime_error("[Program] shader not attached ");
         }
@@ -94,7 +94,7 @@ namespace GL
         glLinkProgram(m_id);
         GLint result = GL_FALSE;
         glGetProgramiv(m_id, GL_LINK_STATUS, &result);
-        if (!result)
+        if(!result)
         {
             int infoLogLength;
             glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);

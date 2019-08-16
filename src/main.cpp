@@ -34,7 +34,7 @@ static const int s_sample = 4;
 
 static void keyCallback(GLFWwindow* window, int key, int, int action, int)
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
@@ -74,7 +74,7 @@ int main()
         GLFWmonitor **monitors;
         GLFWwindow* window;
 
-        if (!glfwInit())
+        if(!glfwInit())
         {
             cerr << "[GLFW] Can't initialize glfw."<< endl;
             return EXIT_FAILURE;
@@ -91,7 +91,7 @@ int main()
         mode = glfwGetVideoMode(*monitors);
         //window = glfwCreateWindow(mode->width, mode->height, "3DNIGINE", *monitors, NULL);
         window = glfwCreateWindow(s_width, s_height, "OPENGLNGINE", nullptr, nullptr);
-        if (window == nullptr)
+        if(window == nullptr)
         {
             cerr << "[GLFW] Can't create Window." << endl;
             return EXIT_FAILURE;
@@ -100,7 +100,7 @@ int main()
         glfwMakeContextCurrent(window);
         glewExperimental = true;
 
-        if (glewInit() != GLEW_OK)
+        if(glewInit() != GLEW_OK)
         {
             cerr << "[GLEW] Can't initialize glew." << endl;
             return EXIT_FAILURE;
@@ -330,7 +330,7 @@ int main()
 
         GL::Viewport::setViewport(s_width, s_height);
 
-        while (!glfwWindowShouldClose(window))
+        while(!glfwWindowShouldClose(window))
         {
             /*========================================
              * =======================================
@@ -363,13 +363,13 @@ int main()
                 u_m4View = V;
                 u_m4Projection = P;
 
-                for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
+                for(size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
                 {
                     Assets::Object* ob = file.getObjects()[a];
-                    for (size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
+                    for(size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
                     {
                         Assets::Group* gp = ob->getGroups()[b];
-                        for (size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
+                        for(size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
                         {
                             Component::Mesh* me = gp->getMeshs()[c];
 
@@ -379,11 +379,11 @@ int main()
                             Assets::Material* material = me->getMaterial();
 
                             Assets::Map* kaMap = material->getKamap();
-                            if (kaMap)
+                            if(kaMap)
                             {
-                                GL::Texture* ambient = kaMap->getTexture();
-                                ambient->bind();
-                                u_tAmbient = ambient->getLocation();
+                                const GL::Texture& ambient = kaMap->getTexture();
+                                ambient.bind();
+                                u_tAmbient = ambient.getLocation();
                                 u_bAmbient = true;
                             }
                             else
@@ -392,11 +392,11 @@ int main()
                             }
 
                             Assets::Map* kdMap = material->getKdmap();
-                            if (kdMap)
+                            if(kdMap)
                             {
-                                GL::Texture* diffuse = kdMap->getTexture();
-                                diffuse->bind();
-                                u_tDiffuse = diffuse->getLocation();
+                                const GL::Texture& diffuse = kdMap->getTexture();
+                                diffuse.bind();
+                                u_tDiffuse = diffuse.getLocation();
                                 u_bDiffuse = true;
                             }
                             else
@@ -405,11 +405,11 @@ int main()
                             }
 
                             Assets::Map* ksMap = material->getKsmap();
-                            if (ksMap)
+                            if(ksMap)
                             {
-                                GL::Texture* specular = ksMap->getTexture();
-                                specular->bind();
-                                u_tSpecular = specular->getLocation();
+                                const GL::Texture& specular = ksMap->getTexture();
+                                specular.bind();
+                                u_tSpecular = specular.getLocation();
                                 u_bSpecular = true;
                             }
                             else
@@ -428,19 +428,15 @@ int main()
 
                             if(material->getKamap() != nullptr)
                             {
-                                material->getKamap()->getTexture()->unbind();
+                                material->getKamap()->getTexture().unbind();
                             }
                             if(material->getKdmap() != nullptr)
                             {
-                                material->getKdmap()->getTexture()->unbind();
+                                material->getKdmap()->getTexture().unbind();
                             }
                             if(material->getKsmap() != nullptr)
                             {
-                                material->getKsmap()->getTexture()->unbind();
-                            }
-                            if(material->getBumpmap() != nullptr)
-                            {
-                                material->getBumpmap()->getTexture()->unbind();
+                                material->getKsmap()->getTexture().unbind();
                             }
                         }
                     }
@@ -547,13 +543,13 @@ int main()
                 u_m4ViewNormal = V;
                 u_m4ProjectionNormal = P;
 
-                for (size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
+                for(size_t a = file.getObjects().size()-1 ; a != std::numeric_limits<size_t>::max() ; --a)
                 {
                     Assets::Object* ob = file.getObjects()[a];
-                    for (size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
+                    for(size_t b = ob->getGroups().size()-1; b != std::numeric_limits<size_t>::max() ; --b)
                     {
                         Assets::Group* gp = ob->getGroups()[b];
-                        for (size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
+                        for(size_t c = gp->getMeshs().size() - 1; c != std::numeric_limits<size_t>::max() ; --c)
                         {
                             Component::Mesh* me = gp->getMeshs()[c];
 
@@ -579,7 +575,7 @@ int main()
              */
 
             GLenum err;
-            while ((err = glGetError()) != GL_NO_ERROR)
+            while((err = glGetError()) != GL_NO_ERROR)
             {
                     cerr << "[OpenGL] error: " << err << endl;
             }

@@ -34,7 +34,7 @@
       1.05   fix TGA loading to return correct *comp and use good luminance calc
       1.04   default float alpha is 1, not 255; use 'void *' for stbi_image_free
       1.03   bugfixes to STBI_NO_STDIO, STBI_NO_HDR
-      1.02   support for (subset of) HDR files, float interface for preferred access to them
+      1.02   support for(subset of) HDR files, float interface for preferred access to them
       1.01   fix bug: possible bug in handling right-side up bmps... not sure
              fix bug: the stbi_bmp_load() and stbi_tga_load() functions didn't work at all
       1.00   interface to zlib that skips zlib header

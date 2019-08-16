@@ -36,7 +36,7 @@ public:
 
     FrameBuffer();
     ~FrameBuffer() noexcept override;
-    FrameBuffer(const FrameBuffer&);
+    [[ noreturn ]] FrameBuffer(const FrameBuffer&);
     FrameBuffer(FrameBuffer&&) = delete;
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;

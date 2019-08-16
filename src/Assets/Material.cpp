@@ -13,14 +13,14 @@ namespace Assets
 
     Material::~Material() noexcept
     {
-        if (m_kaMap)delete m_kaMap;
-        if (m_kdMap)delete m_kdMap;
-        if (m_ksMap)delete m_ksMap;
-        if (m_nsMap)delete m_nsMap;
-        if (m_dMap)delete m_dMap;
-        if (m_dispMap)delete m_dispMap;
-        if (m_decalMap)delete m_decalMap;
-        if (m_bumpMap)delete m_bumpMap;
+        if(m_kaMap)delete m_kaMap;
+        if(m_kdMap)delete m_kdMap;
+        if(m_ksMap)delete m_ksMap;
+        if(m_nsMap)delete m_nsMap;
+        if(m_dMap)delete m_dMap;
+        if(m_dispMap)delete m_dispMap;
+        if(m_decalMap)delete m_decalMap;
+        if(m_bumpMap)delete m_bumpMap;
     }
 
     Material::Material(const Material& _mat) :
@@ -83,14 +83,14 @@ namespace Assets
     {
         if(this != &_mat)
         {
-            if (m_kaMap)delete m_kaMap;
-            if (m_kdMap)delete m_kdMap;
-            if (m_ksMap)delete m_ksMap;
-            if (m_nsMap)delete m_nsMap;
-            if (m_dMap)delete m_dMap;
-            if (m_dispMap)delete m_dispMap;
-            if (m_decalMap)delete m_decalMap;
-            if (m_bumpMap)delete m_bumpMap;
+            if(m_kaMap)delete m_kaMap;
+            if(m_kdMap)delete m_kdMap;
+            if(m_ksMap)delete m_ksMap;
+            if(m_nsMap)delete m_nsMap;
+            if(m_dMap)delete m_dMap;
+            if(m_dispMap)delete m_dispMap;
+            if(m_decalMap)delete m_decalMap;
+            if(m_bumpMap)delete m_bumpMap;
 
             m_name = _mat.m_name;
             m_kaAmbient = _mat.m_kaAmbient;
@@ -120,14 +120,14 @@ namespace Assets
     {
         if(this != &_mat)
         {
-            if (m_kaMap)delete m_kaMap;
-            if (m_kdMap)delete m_kdMap;
-            if (m_ksMap)delete m_ksMap;
-            if (m_nsMap)delete m_nsMap;
-            if (m_dMap)delete m_dMap;
-            if (m_dispMap)delete m_dispMap;
-            if (m_decalMap)delete m_decalMap;
-            if (m_bumpMap)delete m_bumpMap;
+            if(m_kaMap)delete m_kaMap;
+            if(m_kdMap)delete m_kdMap;
+            if(m_ksMap)delete m_ksMap;
+            if(m_nsMap)delete m_nsMap;
+            if(m_dMap)delete m_dMap;
+            if(m_dispMap)delete m_dispMap;
+            if(m_decalMap)delete m_decalMap;
+            if(m_bumpMap)delete m_bumpMap;
 
             m_name = move(_mat.m_name);
             m_kaAmbient = move(_mat.m_kaAmbient);
@@ -221,7 +221,7 @@ namespace Assets
 
     void Material::setKamap(const std::filesystem::path& _path)
     {
-        if (m_kaMap)
+        if(m_kaMap)
         {
             delete m_kaMap;
         }
@@ -230,7 +230,7 @@ namespace Assets
 
     void Material::setKdmap(const std::filesystem::path& _path)
     {
-        if (m_kdMap)
+        if(m_kdMap)
         {
             delete m_kdMap;
         }
@@ -239,7 +239,7 @@ namespace Assets
 
     void Material::setKsmap(const std::filesystem::path& _path)
     {
-        if (m_ksMap)
+        if(m_ksMap)
         {
             delete m_ksMap;
         }
@@ -248,7 +248,7 @@ namespace Assets
 
     void Material::setNsmap(const std::filesystem::path& _path)
     {
-        if (m_nsMap)
+        if(m_nsMap)
         {
             delete m_nsMap;
         }
@@ -257,7 +257,7 @@ namespace Assets
 
     void Material::setdmap(const std::filesystem::path& _path)
     {
-        if (m_dMap)
+        if(m_dMap)
         {
             delete m_dMap;
         }
@@ -266,7 +266,7 @@ namespace Assets
 
     void Material::setDispmap(const std::filesystem::path& _path)
     {
-        if (m_dispMap)
+        if(m_dispMap)
         {
             delete m_dispMap;
         }
@@ -275,7 +275,7 @@ namespace Assets
 
     void Material::setDecalmap(const std::filesystem::path& _path)
     {
-        if (m_decalMap)
+        if(m_decalMap)
         {
             delete m_decalMap;
         }
@@ -284,7 +284,7 @@ namespace Assets
 
     void Material::setBumpmap(const std::filesystem::path& _path)
     {
-        if (m_bumpMap)
+        if(m_bumpMap)
         {
             delete m_bumpMap;
         }

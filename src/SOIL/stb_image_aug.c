@@ -34,7 +34,7 @@
       1.05   fix TGA loading to return correct *comp and use good luminance calc
       1.04   default float alpha is 1, not 255; use 'void *' for stbi_image_free
       1.03   bugfixes to STBI_NO_STDIO, STBI_NO_HDR
-      1.02   support for (subset of) HDR files, float interface for preferred access to them
+      1.02   support for(subset of) HDR files, float interface for preferred access to them
       1.01   fix bug: possible bug in handling right-side up bmps... not sure
              fix bug: the stbi_bmp_load() and stbi_tga_load() functions didn't work at all
       1.00   interface to zlib that skips zlib header
@@ -151,12 +151,12 @@ static int max_loaders = 0;
 int stbi_register_loader(stbi_loader *loader)
 {
    int i;
-   for (i=0; i < MAX_LOADERS; ++i) {
+   for(i=0; i < MAX_LOADERS; ++i) {
       // already present?
-      if (loaders[i] == loader)
+      if(loaders[i] == loader)
          return 1;
       // end of the list?
-      if (loaders[i] == NULL) {
+      if(loaders[i] == NULL) {
          loaders[i] = loader;
          max_loaders = i+1;
          return 1;
@@ -176,7 +176,7 @@ unsigned char *stbi_load(char const *filename, int *x, int *y, int *comp, int re
 {
    FILE *f = fopen(filename, "rb");
    unsigned char *result;
-   if (!f) return epuc("can't fopen", "Unable to open file");
+   if(!f) return epuc("can't fopen", "Unable to open file");
    result = stbi_load_from_file(f,x,y,comp,req_comp);
    fclose(f);
    return result;
@@ -185,29 +185,29 @@ unsigned char *stbi_load(char const *filename, int *x, int *y, int *comp, int re
 unsigned char *stbi_load_from_file(FILE *f, int *x, int *y, int *comp, int req_comp)
 {
    int i;
-   if (stbi_jpeg_test_file(f))
+   if(stbi_jpeg_test_file(f))
       return stbi_jpeg_load_from_file(f,x,y,comp,req_comp);
-   if (stbi_png_test_file(f))
+   if(stbi_png_test_file(f))
       return stbi_png_load_from_file(f,x,y,comp,req_comp);
-   if (stbi_bmp_test_file(f))
+   if(stbi_bmp_test_file(f))
       return stbi_bmp_load_from_file(f,x,y,comp,req_comp);
-   if (stbi_psd_test_file(f))
+   if(stbi_psd_test_file(f))
       return stbi_psd_load_from_file(f,x,y,comp,req_comp);
    #ifndef STBI_NO_DDS
-   if (stbi_dds_test_file(f))
+   if(stbi_dds_test_file(f))
       return stbi_dds_load_from_file(f,x,y,comp,req_comp);
    #endif
    #ifndef STBI_NO_HDR
-   if (stbi_hdr_test_file(f)) {
+   if(stbi_hdr_test_file(f)) {
       float *hdr = stbi_hdr_load_from_file(f, x,y,comp,req_comp);
       return hdr_to_ldr(hdr, *x, *y, req_comp ? req_comp : *comp);
    }
    #endif
-   for (i=0; i < max_loaders; ++i)
-      if (loaders[i]->test_file(f))
+   for(i=0; i < max_loaders; ++i)
+      if(loaders[i]->test_file(f))
          return loaders[i]->load_from_file(f,x,y,comp,req_comp);
    // test tga last because it's a crappy test!
-   if (stbi_tga_test_file(f))
+   if(stbi_tga_test_file(f))
       return stbi_tga_load_from_file(f,x,y,comp,req_comp);
    return epuc("unknown image type", "Image not of any known type, or corrupt");
 }
@@ -216,29 +216,29 @@ unsigned char *stbi_load_from_file(FILE *f, int *x, int *y, int *comp, int req_c
 unsigned char *stbi_load_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp, int req_comp)
 {
    int i;
-   if (stbi_jpeg_test_memory(buffer,len))
+   if(stbi_jpeg_test_memory(buffer,len))
       return stbi_jpeg_load_from_memory(buffer,len,x,y,comp,req_comp);
-   if (stbi_png_test_memory(buffer,len))
+   if(stbi_png_test_memory(buffer,len))
       return stbi_png_load_from_memory(buffer,len,x,y,comp,req_comp);
-   if (stbi_bmp_test_memory(buffer,len))
+   if(stbi_bmp_test_memory(buffer,len))
       return stbi_bmp_load_from_memory(buffer,len,x,y,comp,req_comp);
-   if (stbi_psd_test_memory(buffer,len))
+   if(stbi_psd_test_memory(buffer,len))
       return stbi_psd_load_from_memory(buffer,len,x,y,comp,req_comp);
    #ifndef STBI_NO_DDS
-   if (stbi_dds_test_memory(buffer,len))
+   if(stbi_dds_test_memory(buffer,len))
       return stbi_dds_load_from_memory(buffer,len,x,y,comp,req_comp);
    #endif
    #ifndef STBI_NO_HDR
-   if (stbi_hdr_test_memory(buffer, len)) {
+   if(stbi_hdr_test_memory(buffer, len)) {
       float *hdr = stbi_hdr_load_from_memory(buffer, len,x,y,comp,req_comp);
       return hdr_to_ldr(hdr, *x, *y, req_comp ? req_comp : *comp);
    }
    #endif
-   for (i=0; i < max_loaders; ++i)
-      if (loaders[i]->test_memory(buffer,len))
+   for(i=0; i < max_loaders; ++i)
+      if(loaders[i]->test_memory(buffer,len))
          return loaders[i]->load_from_memory(buffer,len,x,y,comp,req_comp);
    // test tga last because it's a crappy test!
-   if (stbi_tga_test_memory(buffer,len))
+   if(stbi_tga_test_memory(buffer,len))
       return stbi_tga_load_from_memory(buffer,len,x,y,comp,req_comp);
    return epuc("unknown image type", "Image not of any known type, or corrupt");
 }
@@ -250,7 +250,7 @@ float *stbi_loadf(char const *filename, int *x, int *y, int *comp, int req_comp)
 {
    FILE *f = fopen(filename, "rb");
    float *result;
-   if (!f) return epf("can't fopen", "Unable to open file");
+   if(!f) return epf("can't fopen", "Unable to open file");
    result = stbi_loadf_from_file(f,x,y,comp,req_comp);
    fclose(f);
    return result;
@@ -260,11 +260,11 @@ float *stbi_loadf_from_file(FILE *f, int *x, int *y, int *comp, int req_comp)
 {
    unsigned char *data;
    #ifndef STBI_NO_HDR
-   if (stbi_hdr_test_file(f))
+   if(stbi_hdr_test_file(f))
       return stbi_hdr_load_from_file(f,x,y,comp,req_comp);
    #endif
    data = stbi_load_from_file(f, x, y, comp, req_comp);
-   if (data)
+   if(data)
       return ldr_to_hdr(data, *x, *y, req_comp ? req_comp : *comp);
    return epf("unknown image type", "Image not of any known type, or corrupt");
 }
@@ -274,11 +274,11 @@ float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, in
 {
    stbi_uc *data;
    #ifndef STBI_NO_HDR
-   if (stbi_hdr_test_memory(buffer, len))
+   if(stbi_hdr_test_memory(buffer, len))
       return stbi_hdr_load_from_memory(buffer, len,x,y,comp,req_comp);
    #endif
    data = stbi_load_from_memory(buffer, len, x, y, comp, req_comp);
-   if (data)
+   if(data)
       return ldr_to_hdr(data, *x, *y, req_comp ? req_comp : *comp);
    return epf("unknown image type", "Image not of any known type, or corrupt");
 }
@@ -302,7 +302,7 @@ extern int      stbi_is_hdr          (char const *filename)
 {
    FILE *f = fopen(filename, "rb");
    int result=0;
-   if (f) {
+   if(f) {
       result = stbi_is_hdr_from_file(f);
       fclose(f);
    }
@@ -381,12 +381,12 @@ static void start_mem(stbi *s, uint8 const *buffer, int len)
 __forceinline static int get8(stbi *s)
 {
 #ifndef STBI_NO_STDIO
-   if (s->img_file) {
+   if(s->img_file) {
       int c = fgetc(s->img_file);
       return c == EOF ? 0 : c;
    }
 #endif
-   if (s->img_buffer < s->img_buffer_end)
+   if(s->img_buffer < s->img_buffer_end)
       return *s->img_buffer++;
    return 0;
 }
@@ -394,7 +394,7 @@ __forceinline static int get8(stbi *s)
 __forceinline static int at_eof(stbi *s)
 {
 #ifndef STBI_NO_STDIO
-   if (s->img_file)
+   if(s->img_file)
       return feof(s->img_file);
 #endif
    return s->img_buffer >= s->img_buffer_end;
@@ -408,7 +408,7 @@ __forceinline static uint8 get8u(stbi *s)
 static void skip(stbi *s, int n)
 {
 #ifndef STBI_NO_STDIO
-   if (s->img_file)
+   if(s->img_file)
       fseek(s->img_file, n, SEEK_CUR);
    else
 #endif
@@ -442,7 +442,7 @@ static uint32 get32le(stbi *s)
 static void getn(stbi *s, stbi_uc *buffer, int n)
 {
 #ifndef STBI_NO_STDIO
-   if (s->img_file) {
+   if(s->img_file) {
       fread(buffer, 1, n, s->img_file);
       return;
    }
@@ -472,16 +472,16 @@ static unsigned char *convert_format(unsigned char *data, int img_n, int req_com
    int i,j;
    unsigned char *good;
 
-   if (req_comp == img_n) return data;
+   if(req_comp == img_n) return data;
    assert(req_comp >= 1 && req_comp <= 4);
 
    good = (unsigned char *) malloc(req_comp * x * y);
-   if (good == NULL) {
+   if(good == NULL) {
       free(data);
       return epuc("outofmem", "Out of memory");
    }
 
-   for (j=0; j < (int) y; ++j) {
+   for(j=0; j < (int) y; ++j) {
       unsigned char *src  = data + j * x * img_n   ;
       unsigned char *dest = good + j * x * req_comp;
 
@@ -516,14 +516,14 @@ static float   *ldr_to_hdr(stbi_uc *data, int x, int y, int comp)
 {
    int i,k,n;
    float *output = (float *) malloc(x * y * comp * sizeof(float));
-   if (output == NULL) { free(data); return epf("outofmem", "Out of memory"); }
+   if(output == NULL) { free(data); return epf("outofmem", "Out of memory"); }
    // compute number of non-alpha components
-   if (comp & 1) n = comp; else n = comp-1;
-   for (i=0; i < x*y; ++i) {
-      for (k=0; k < n; ++k) {
+   if(comp & 1) n = comp; else n = comp-1;
+   for(i=0; i < x*y; ++i) {
+      for(k=0; k < n; ++k) {
          output[i*comp + k] = (float) pow(data[i*comp+k]/255.0f, l2h_gamma) * l2h_scale;
       }
-      if (k < comp) output[i*comp + k] = data[i*comp+k]/255.0f;
+      if(k < comp) output[i*comp + k] = data[i*comp+k]/255.0f;
    }
    free(data);
    return output;
@@ -534,20 +534,20 @@ static stbi_uc *hdr_to_ldr(float   *data, int x, int y, int comp)
 {
    int i,k,n;
    stbi_uc *output = (stbi_uc *) malloc(x * y * comp);
-   if (output == NULL) { free(data); return epuc("outofmem", "Out of memory"); }
+   if(output == NULL) { free(data); return epuc("outofmem", "Out of memory"); }
    // compute number of non-alpha components
-   if (comp & 1) n = comp; else n = comp-1;
-   for (i=0; i < x*y; ++i) {
-      for (k=0; k < n; ++k) {
+   if(comp & 1) n = comp; else n = comp-1;
+   for(i=0; i < x*y; ++i) {
+      for(k=0; k < n; ++k) {
          float z = (float) pow(data[i*comp+k]*h2l_scale_i, h2l_gamma_i) * 255 + 0.5f;
-         if (z < 0) z = 0;
-         if (z > 255) z = 255;
+         if(z < 0) z = 0;
+         if(z > 255) z = 255;
          output[i*comp + k] = float2int(z);
       }
-      if (k < comp) {
+      if(k < comp) {
          float z = data[i*comp+k] * 255 + 0.5f;
-         if (z < 0) z = 0;
-         if (z > 255) z = 255;
+         if(z < 0) z = 0;
+         if(z > 255) z = 255;
          output[i*comp + k] = float2int(z);
       }
    }
@@ -640,8 +640,8 @@ static int build_huffman(huffman *h, int *count)
 {
    int i,j,k=0,code;
    // build size list for each symbol (from JPEG spec)
-   for (i=0; i < 16; ++i)
-      for (j=0; j < count[i]; ++j)
+   for(i=0; i < 16; ++i)
+      for(j=0; j < count[i]; ++j)
          h->size[k++] = (uint8) (i+1);
    h->size[k] = 0;
 
@@ -651,10 +651,10 @@ static int build_huffman(huffman *h, int *count)
    for(j=1; j <= 16; ++j) {
       // compute delta to add to code to compute symbol id
       h->delta[j] = k - code;
-      if (h->size[k] == j) {
-         while (h->size[k] == j)
+      if(h->size[k] == j) {
+         while(h->size[k] == j)
             h->code[k++] = (uint16) (code++);
-         if (code-1 >= (1 << j)) return e("bad code lengths","Corrupt JPEG");
+         if(code-1 >= (1 << j)) return e("bad code lengths","Corrupt JPEG");
       }
       // compute largest code + 1 for this size, preshifted as needed later
       h->maxcode[j] = code << (16-j);
@@ -664,12 +664,12 @@ static int build_huffman(huffman *h, int *count)
 
    // build non-spec acceleration table; 255 is flag for not-accelerated
    memset(h->fast, 255, 1 << FAST_BITS);
-   for (i=0; i < k; ++i) {
+   for(i=0; i < k; ++i) {
       int s = h->size[i];
-      if (s <= FAST_BITS) {
+      if(s <= FAST_BITS) {
          int c = h->code[i] << (FAST_BITS-s);
          int m = 1 << (FAST_BITS-s);
-         for (j=0; j < m; ++j) {
+         for(j=0; j < m; ++j) {
             h->fast[c+j] = (uint8) i;
          }
       }
@@ -681,9 +681,9 @@ static void grow_buffer_unsafe(jpeg *j)
 {
    do {
       int b = j->nomore ? 0 : get8(&j->s);
-      if (b == 0xff) {
+      if(b == 0xff) {
          int c = get8(&j->s);
-         if (c != 0) {
+         if(c != 0) {
             j->marker = (unsigned char) c;
             j->nomore = 1;
             return;
@@ -691,7 +691,7 @@ static void grow_buffer_unsafe(jpeg *j)
       }
       j->code_buffer = (j->code_buffer << 8) | b;
       j->code_bits += 8;
-   } while (j->code_bits <= 24);
+   } while(j->code_bits <= 24);
 }
 
 // (1 << n) - 1
@@ -703,14 +703,14 @@ __forceinline static int decode(jpeg *j, huffman *h)
    unsigned int temp;
    int c,k;
 
-   if (j->code_bits < 16) grow_buffer_unsafe(j);
+   if(j->code_bits < 16) grow_buffer_unsafe(j);
 
    // look at the top FAST_BITS and determine what symbol ID it is,
    // if the code is <= FAST_BITS
    c = (j->code_buffer >> (j->code_bits - FAST_BITS)) & ((1 << FAST_BITS)-1);
    k = h->fast[c];
-   if (k < 255) {
-      if (h->size[k] > j->code_bits)
+   if(k < 255) {
+      if(h->size[k] > j->code_bits)
          return -1;
       j->code_bits -= h->size[k];
       return h->values[k];
@@ -722,20 +722,20 @@ __forceinline static int decode(jpeg *j, huffman *h)
    // end; in other words, regardless of the number of bits, it
    // wants to be compared against something shifted to have 16;
    // that way we don't need to shift inside the loop.
-   if (j->code_bits < 16)
+   if(j->code_bits < 16)
       temp = (j->code_buffer << (16 - j->code_bits)) & 0xffff;
    else
       temp = (j->code_buffer >> (j->code_bits - 16)) & 0xffff;
-   for (k=FAST_BITS+1 ; ; ++k)
-      if (temp < h->maxcode[k])
+   for(k=FAST_BITS+1 ; ; ++k)
+      if(temp < h->maxcode[k])
          break;
-   if (k == 17) {
+   if(k == 17) {
       // error! code not found
       j->code_bits -= 16;
       return -1;
    }
 
-   if (k > j->code_bits)
+   if(k > j->code_bits)
       return -1;
 
    // convert the huffman code to the symbol id
@@ -753,13 +753,13 @@ __forceinline static int extend_receive(jpeg *j, int n)
 {
    unsigned int m = 1 << (n-1);
    unsigned int k;
-   if (j->code_bits < n) grow_buffer_unsafe(j);
+   if(j->code_bits < n) grow_buffer_unsafe(j);
    k = (j->code_buffer >> (j->code_bits - n)) & bmask[n];
    j->code_bits -= n;
    // the following test is probably a random branch that won't
    // predict well. I tried to table accelerate it but failed.
    // maybe it's compiling as a conditional move?
-   if (k < m)
+   if(k < m)
       return (-1 << n) + k + 1;
    else
       return k;
@@ -787,7 +787,7 @@ static int decode_block(jpeg *j, short data[64], huffman *hdc, huffman *hac, int
 {
    int diff,dc,k;
    int t = decode(j, hdc);
-   if (t < 0) return e("bad huffman code","Corrupt JPEG");
+   if(t < 0) return e("bad huffman code","Corrupt JPEG");
 
    // 0 all the ac values now so we can do it 32-bits at a time
    memset(data,0,64*sizeof(data[0]));
@@ -802,18 +802,18 @@ static int decode_block(jpeg *j, short data[64], huffman *hdc, huffman *hac, int
    do {
       int r,s;
       int rs = decode(j, hac);
-      if (rs < 0) return e("bad huffman code","Corrupt JPEG");
+      if(rs < 0) return e("bad huffman code","Corrupt JPEG");
       s = rs & 15;
       r = rs >> 4;
-      if (s == 0) {
-         if (rs != 0xf0) break; // end block
+      if(s == 0) {
+         if(rs != 0xf0) break; // end block
          k += 16;
       } else {
          k += r;
          // decode into unzigzag'd location
          data[dezigzag[k++]] = (short) extend_receive(j,s);
       }
-   } while (k < 64);
+   } while(k < 64);
    return 1;
 }
 
@@ -822,9 +822,9 @@ __forceinline static uint8 clamp(int x)
 {
    x += 128;
    // trick to use a single test to catch both cases
-   if ((unsigned int) x > 255) {
-      if (x < 0) return 0;
-      if (x > 255) return 255;
+   if((unsigned int) x > 255) {
+      if(x < 0) return 0;
+      if(x > 255) return 255;
    }
    return (uint8) x;
 }
@@ -879,9 +879,9 @@ static void idct_block(uint8 *out, int out_stride, short data[64], uint8 *dequan
    short *d = data;
 
    // columns
-   for (i=0; i < 8; ++i,++d,++dq, ++v) {
+   for(i=0; i < 8; ++i,++d,++dq, ++v) {
       // if all zeroes, shortcut -- this avoids dequantizing 0s and IDCTing
-      if (d[ 8]==0 && d[16]==0 && d[24]==0 && d[32]==0
+      if(d[ 8]==0 && d[16]==0 && d[24]==0 && d[32]==0
            && d[40]==0 && d[48]==0 && d[56]==0) {
          //    no shortcut                 0     seconds
          //    (1|2|3|4|5|6|7)==0          0     seconds
@@ -906,7 +906,7 @@ static void idct_block(uint8 *out, int out_stride, short data[64], uint8 *dequan
       }
    }
 
-   for (i=0, v=val, o=out; i < 8; ++i,v+=8,o+=out_stride) {
+   for(i=0, v=val, o=out; i < 8; ++i,v+=8,o+=out_stride) {
       // no fast case since the first 1D IDCT spread components out
       IDCT_1D(v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7])
       // constants scaled things up by 1<<12, plus we had 1<<2 from first
@@ -932,9 +932,9 @@ static void idct_block(uint8 *out, int out_stride, short data[64], unsigned shor
    short *d = data;
 
    // columns
-   for (i=0; i < 8; ++i,++d,++dq, ++v) {
+   for(i=0; i < 8; ++i,++d,++dq, ++v) {
       // if all zeroes, shortcut -- this avoids dequantizing 0s and IDCTing
-      if (d[ 8]==0 && d[16]==0 && d[24]==0 && d[32]==0
+      if(d[ 8]==0 && d[16]==0 && d[24]==0 && d[32]==0
            && d[40]==0 && d[48]==0 && d[56]==0) {
          //    no shortcut                 0     seconds
          //    (1|2|3|4|5|6|7)==0          0     seconds
@@ -959,7 +959,7 @@ static void idct_block(uint8 *out, int out_stride, short data[64], unsigned shor
       }
    }
 
-   for (i=0, v=val, o=out; i < 8; ++i,v+=8,o+=out_stride) {
+   for(i=0, v=val, o=out; i < 8; ++i,v+=8,o+=out_stride) {
       // no fast case since the first 1D IDCT spread components out
       IDCT_1D(v[0],v[1],v[2],v[3],v[4],v[5],v[6],v[7])
       // constants scaled things up by 1<<12, plus we had 1<<2 from first
@@ -991,10 +991,10 @@ extern void stbi_install_idct(stbi_idct_8x8 func)
 static uint8 get_marker(jpeg *j)
 {
    uint8 x;
-   if (j->marker != MARKER_none) { x = j->marker; j->marker = MARKER_none; return x; }
+   if(j->marker != MARKER_none) { x = j->marker; j->marker = MARKER_none; return x; }
    x = get8u(&j->s);
-   if (x != 0xff) return MARKER_none;
-   while (x == 0xff)
+   if(x != 0xff) return MARKER_none;
+   while(x == 0xff)
       x = get8u(&j->s);
    return x;
 }
@@ -1020,7 +1020,7 @@ static void reset(jpeg *j)
 static int parse_entropy_coded_data(jpeg *z)
 {
    reset(z);
-   if (z->scan_n == 1) {
+   if(z->scan_n == 1) {
       int i,j;
       #if STBI_SIMD
       __declspec(align(16))
@@ -1033,20 +1033,20 @@ static int parse_entropy_coded_data(jpeg *z)
       // component has, independent of interleaved MCU blocking and such
       int w = (z->img_comp[n].x+7) >> 3;
       int h = (z->img_comp[n].y+7) >> 3;
-      for (j=0; j < h; ++j) {
-         for (i=0; i < w; ++i) {
-            if (!decode_block(z, data, z->huff_dc+z->img_comp[n].hd, z->huff_ac+z->img_comp[n].ha, n)) return 0;
+      for(j=0; j < h; ++j) {
+         for(i=0; i < w; ++i) {
+            if(!decode_block(z, data, z->huff_dc+z->img_comp[n].hd, z->huff_ac+z->img_comp[n].ha, n)) return 0;
             #if STBI_SIMD
             stbi_idct_installed(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data, z->dequant2[z->img_comp[n].tq]);
             #else
             idct_block(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data, z->dequant[z->img_comp[n].tq]);
             #endif
             // every data block is an MCU, so countdown the restart interval
-            if (--z->todo <= 0) {
-               if (z->code_bits < 24) grow_buffer_unsafe(z);
+            if(--z->todo <= 0) {
+               if(z->code_bits < 24) grow_buffer_unsafe(z);
                // if it's NOT a restart, then just bail, so we get corrupt data
                // rather than no data
-               if (!RESTART(z->marker)) return 1;
+               if(!RESTART(z->marker)) return 1;
                reset(z);
             }
          }
@@ -1054,18 +1054,18 @@ static int parse_entropy_coded_data(jpeg *z)
    } else { // interleaved!
       int i,j,k,x,y;
       short data[64];
-      for (j=0; j < z->img_mcu_y; ++j) {
-         for (i=0; i < z->img_mcu_x; ++i) {
+      for(j=0; j < z->img_mcu_y; ++j) {
+         for(i=0; i < z->img_mcu_x; ++i) {
             // scan an interleaved mcu... process scan_n components in order
-            for (k=0; k < z->scan_n; ++k) {
+            for(k=0; k < z->scan_n; ++k) {
                int n = z->order[k];
                // scan out an mcu's worth of this component; that's just determined
                // by the basic H and V specified for the component
-               for (y=0; y < z->img_comp[n].v; ++y) {
-                  for (x=0; x < z->img_comp[n].h; ++x) {
+               for(y=0; y < z->img_comp[n].v; ++y) {
+                  for(x=0; x < z->img_comp[n].h; ++x) {
                      int x2 = (i*z->img_comp[n].h + x)*8;
                      int y2 = (j*z->img_comp[n].v + y)*8;
-                     if (!decode_block(z, data, z->huff_dc+z->img_comp[n].hd, z->huff_ac+z->img_comp[n].ha, n)) return 0;
+                     if(!decode_block(z, data, z->huff_dc+z->img_comp[n].hd, z->huff_ac+z->img_comp[n].ha, n)) return 0;
                      #if STBI_SIMD
                      stbi_idct_installed(z->img_comp[n].data+z->img_comp[n].w2*y2+x2, z->img_comp[n].w2, data, z->dequant2[z->img_comp[n].tq]);
                      #else
@@ -1076,11 +1076,11 @@ static int parse_entropy_coded_data(jpeg *z)
             }
             // after all interleaved components, that's an interleaved MCU,
             // so now count down the restart interval
-            if (--z->todo <= 0) {
-               if (z->code_bits < 24) grow_buffer_unsafe(z);
+            if(--z->todo <= 0) {
+               if(z->code_bits < 24) grow_buffer_unsafe(z);
                // if it's NOT a restart, then just bail, so we get corrupt data
                // rather than no data
-               if (!RESTART(z->marker)) return 1;
+               if(!RESTART(z->marker)) return 1;
                reset(z);
             }
          }
@@ -1100,22 +1100,22 @@ static int process_marker(jpeg *z, int m)
          return e("progressive jpeg","JPEG format not supported (progressive)");
 
       case 0xDD: // DRI - specify restart interval
-         if (get16(&z->s) != 4) return e("bad DRI len","Corrupt JPEG");
+         if(get16(&z->s) != 4) return e("bad DRI len","Corrupt JPEG");
          z->restart_interval = get16(&z->s);
          return 1;
 
       case 0xDB: // DQT - define quantization table
          L = get16(&z->s)-2;
-         while (L > 0) {
+         while(L > 0) {
             int q = get8(&z->s);
             int p = q >> 4;
             int t = q & 15,i;
-            if (p != 0) return e("bad DQT type","Corrupt JPEG");
-            if (t > 3) return e("bad DQT table","Corrupt JPEG");
-            for (i=0; i < 64; ++i)
+            if(p != 0) return e("bad DQT type","Corrupt JPEG");
+            if(t > 3) return e("bad DQT table","Corrupt JPEG");
+            for(i=0; i < 64; ++i)
                z->dequant[t][dezigzag[i]] = get8u(&z->s);
             #if STBI_SIMD
-            for (i=0; i < 64; ++i)
+            for(i=0; i < 64; ++i)
                z->dequant2[t][i] = dequant[t][i];
             #endif
             L -= 65;
@@ -1124,33 +1124,33 @@ static int process_marker(jpeg *z, int m)
 
       case 0xC4: // DHT - define huffman table
          L = get16(&z->s)-2;
-         while (L > 0) {
+         while(L > 0) {
             uint8 *v;
             int sizes[16],i,m=0;
             int q = get8(&z->s);
             int tc = q >> 4;
             int th = q & 15;
-            if (tc > 1 || th > 3) return e("bad DHT header","Corrupt JPEG");
-            for (i=0; i < 16; ++i) {
+            if(tc > 1 || th > 3) return e("bad DHT header","Corrupt JPEG");
+            for(i=0; i < 16; ++i) {
                sizes[i] = get8(&z->s);
                m += sizes[i];
             }
             L -= 17;
-            if (tc == 0) {
-               if (!build_huffman(z->huff_dc+th, sizes)) return 0;
+            if(tc == 0) {
+               if(!build_huffman(z->huff_dc+th, sizes)) return 0;
                v = z->huff_dc[th].values;
             } else {
-               if (!build_huffman(z->huff_ac+th, sizes)) return 0;
+               if(!build_huffman(z->huff_ac+th, sizes)) return 0;
                v = z->huff_ac[th].values;
             }
-            for (i=0; i < m; ++i)
+            for(i=0; i < m; ++i)
                v[i] = get8u(&z->s);
             L -= m;
          }
          return L==0;
    }
    // check for comment block or APP blocks
-   if ((m >= 0xE0 && m <= 0xEF) || m == 0xFE) {
+   if((m >= 0xE0 && m <= 0xEF) || m == 0xFE) {
       skip(&z->s, get16(&z->s)-2);
       return 1;
    }
@@ -1163,22 +1163,22 @@ static int process_scan_header(jpeg *z)
    int i;
    int Ls = get16(&z->s);
    z->scan_n = get8(&z->s);
-   if (z->scan_n < 1 || z->scan_n > 4 || z->scan_n > (int) z->s.img_n) return e("bad SOS component count","Corrupt JPEG");
-   if (Ls != 6+2*z->scan_n) return e("bad SOS len","Corrupt JPEG");
-   for (i=0; i < z->scan_n; ++i) {
+   if(z->scan_n < 1 || z->scan_n > 4 || z->scan_n > (int) z->s.img_n) return e("bad SOS component count","Corrupt JPEG");
+   if(Ls != 6+2*z->scan_n) return e("bad SOS len","Corrupt JPEG");
+   for(i=0; i < z->scan_n; ++i) {
       int id = get8(&z->s), which;
       int q = get8(&z->s);
-      for (which = 0; which < z->s.img_n; ++which)
-         if (z->img_comp[which].id == id)
+      for(which = 0; which < z->s.img_n; ++which)
+         if(z->img_comp[which].id == id)
             break;
-      if (which == z->s.img_n) return 0;
-      z->img_comp[which].hd = q >> 4;   if (z->img_comp[which].hd > 3) return e("bad DC huff","Corrupt JPEG");
-      z->img_comp[which].ha = q & 15;   if (z->img_comp[which].ha > 3) return e("bad AC huff","Corrupt JPEG");
+      if(which == z->s.img_n) return 0;
+      z->img_comp[which].hd = q >> 4;   if(z->img_comp[which].hd > 3) return e("bad DC huff","Corrupt JPEG");
+      z->img_comp[which].ha = q & 15;   if(z->img_comp[which].ha > 3) return e("bad AC huff","Corrupt JPEG");
       z->order[i] = which;
    }
-   if (get8(&z->s) != 0) return e("bad SOS","Corrupt JPEG");
+   if(get8(&z->s) != 0) return e("bad SOS","Corrupt JPEG");
    get8(&z->s); // should be 63, but might be 0
-   if (get8(&z->s) != 0) return e("bad SOS","Corrupt JPEG");
+   if(get8(&z->s) != 0) return e("bad SOS","Corrupt JPEG");
 
    return 1;
 }
@@ -1187,38 +1187,38 @@ static int process_frame_header(jpeg *z, int scan)
 {
    stbi *s = &z->s;
    int Lf,p,i,q, h_max=1,v_max=1,c;
-   Lf = get16(s);         if (Lf < 11) return e("bad SOF len","Corrupt JPEG"); // JPEG
-   p  = get8(s);          if (p != 8) return e("only 8-bit","JPEG format not supported: 8-bit only"); // JPEG baseline
-   s->img_y = get16(s);   if (s->img_y == 0) return e("no header height", "JPEG format not supported: delayed height"); // Legal, but we don't handle it--but neither does IJG
-   s->img_x = get16(s);   if (s->img_x == 0) return e("0 width","Corrupt JPEG"); // JPEG requires
+   Lf = get16(s);         if(Lf < 11) return e("bad SOF len","Corrupt JPEG"); // JPEG
+   p  = get8(s);          if(p != 8) return e("only 8-bit","JPEG format not supported: 8-bit only"); // JPEG baseline
+   s->img_y = get16(s);   if(s->img_y == 0) return e("no header height", "JPEG format not supported: delayed height"); // Legal, but we don't handle it--but neither does IJG
+   s->img_x = get16(s);   if(s->img_x == 0) return e("0 width","Corrupt JPEG"); // JPEG requires
    c = get8(s);
-   if (c != 3 && c != 1) return e("bad component count","Corrupt JPEG");    // JFIF requires
+   if(c != 3 && c != 1) return e("bad component count","Corrupt JPEG");    // JFIF requires
    s->img_n = c;
-   for (i=0; i < c; ++i) {
+   for(i=0; i < c; ++i) {
       z->img_comp[i].data = NULL;
       z->img_comp[i].linebuf = NULL;
    }
 
-   if (Lf != 8+3*s->img_n) return e("bad SOF len","Corrupt JPEG");
+   if(Lf != 8+3*s->img_n) return e("bad SOF len","Corrupt JPEG");
 
-   for (i=0; i < s->img_n; ++i) {
+   for(i=0; i < s->img_n; ++i) {
       z->img_comp[i].id = get8(s);
-      if (z->img_comp[i].id != i+1)   // JFIF requires
-         if (z->img_comp[i].id != i)  // some version of jpegtran outputs non-JFIF-compliant files!
+      if(z->img_comp[i].id != i+1)   // JFIF requires
+         if(z->img_comp[i].id != i)  // some version of jpegtran outputs non-JFIF-compliant files!
             return e("bad component ID","Corrupt JPEG");
       q = get8(s);
-      z->img_comp[i].h = (q >> 4);  if (!z->img_comp[i].h || z->img_comp[i].h > 4) return e("bad H","Corrupt JPEG");
-      z->img_comp[i].v = q & 15;    if (!z->img_comp[i].v || z->img_comp[i].v > 4) return e("bad V","Corrupt JPEG");
-      z->img_comp[i].tq = get8(s);  if (z->img_comp[i].tq > 3) return e("bad TQ","Corrupt JPEG");
+      z->img_comp[i].h = (q >> 4);  if(!z->img_comp[i].h || z->img_comp[i].h > 4) return e("bad H","Corrupt JPEG");
+      z->img_comp[i].v = q & 15;    if(!z->img_comp[i].v || z->img_comp[i].v > 4) return e("bad V","Corrupt JPEG");
+      z->img_comp[i].tq = get8(s);  if(z->img_comp[i].tq > 3) return e("bad TQ","Corrupt JPEG");
    }
 
-   if (scan != SCAN_load) return 1;
+   if(scan != SCAN_load) return 1;
 
-   if ((1 << 30) / s->img_x / s->img_n < s->img_y) return e("too large", "Image too large to decode");
+   if((1 << 30) / s->img_x / s->img_n < s->img_y) return e("too large", "Image too large to decode");
 
-   for (i=0; i < s->img_n; ++i) {
-      if (z->img_comp[i].h > h_max) h_max = z->img_comp[i].h;
-      if (z->img_comp[i].v > v_max) v_max = z->img_comp[i].v;
+   for(i=0; i < s->img_n; ++i) {
+      if(z->img_comp[i].h > h_max) h_max = z->img_comp[i].h;
+      if(z->img_comp[i].v > v_max) v_max = z->img_comp[i].v;
    }
 
    // compute interleaved mcu info
@@ -1229,7 +1229,7 @@ static int process_frame_header(jpeg *z, int scan)
    z->img_mcu_x = (s->img_x + z->img_mcu_w-1) / z->img_mcu_w;
    z->img_mcu_y = (s->img_y + z->img_mcu_h-1) / z->img_mcu_h;
 
-   for (i=0; i < s->img_n; ++i) {
+   for(i=0; i < s->img_n; ++i) {
       // number of effective pixels (e.g. for non-interleaved MCU)
       z->img_comp[i].x = (s->img_x * z->img_comp[i].h + h_max-1) / h_max;
       z->img_comp[i].y = (s->img_y * z->img_comp[i].v + v_max-1) / v_max;
@@ -1240,7 +1240,7 @@ static int process_frame_header(jpeg *z, int scan)
       z->img_comp[i].w2 = z->img_mcu_x * z->img_comp[i].h * 8;
       z->img_comp[i].h2 = z->img_mcu_y * z->img_comp[i].v * 8;
       z->img_comp[i].raw_data = malloc(z->img_comp[i].w2 * z->img_comp[i].h2+15);
-      if (z->img_comp[i].raw_data == NULL) {
+      if(z->img_comp[i].raw_data == NULL) {
          for(--i; i >= 0; --i) {
             free(z->img_comp[i].raw_data);
             z->img_comp[i].data = NULL;
@@ -1267,19 +1267,19 @@ static int decode_jpeg_header(jpeg *z, int scan)
    int m;
    z->marker = MARKER_none; // initialize cached marker to empty
    m = get_marker(z);
-   if (!SOI(m)) return e("no SOI","Corrupt JPEG");
-   if (scan == SCAN_type) return 1;
+   if(!SOI(m)) return e("no SOI","Corrupt JPEG");
+   if(scan == SCAN_type) return 1;
    m = get_marker(z);
-   while (!SOF(m)) {
-      if (!process_marker(z,m)) return 0;
+   while(!SOF(m)) {
+      if(!process_marker(z,m)) return 0;
       m = get_marker(z);
-      while (m == MARKER_none) {
+      while(m == MARKER_none) {
          // some files have extra padding after their blocks, so ok, we'll scan
-         if (at_eof(&z->s)) return e("no SOF", "Corrupt JPEG");
+         if(at_eof(&z->s)) return e("no SOF", "Corrupt JPEG");
          m = get_marker(z);
       }
    }
-   if (!process_frame_header(z, scan)) return 0;
+   if(!process_frame_header(z, scan)) return 0;
    return 1;
 }
 
@@ -1287,14 +1287,14 @@ static int decode_jpeg_image(jpeg *j)
 {
    int m;
    j->restart_interval = 0;
-   if (!decode_jpeg_header(j, SCAN_load)) return 0;
+   if(!decode_jpeg_header(j, SCAN_load)) return 0;
    m = get_marker(j);
-   while (!EOI(m)) {
-      if (SOS(m)) {
-         if (!process_scan_header(j)) return 0;
-         if (!parse_entropy_coded_data(j)) return 0;
+   while(!EOI(m)) {
+      if(SOS(m)) {
+         if(!process_scan_header(j)) return 0;
+         if(!parse_entropy_coded_data(j)) return 0;
       } else {
-         if (!process_marker(j, m)) return 0;
+         if(!process_marker(j, m)) return 0;
       }
       m = get_marker(j);
    }
@@ -1317,7 +1317,7 @@ static uint8* resample_row_v_2(uint8 *out, uint8 *in_near, uint8 *in_far, int w,
 {
    // need to generate two samples vertically for every one in input
    int i;
-   for (i=0; i < w; ++i)
+   for(i=0; i < w; ++i)
       out[i] = div4(3*in_near[i] + in_far[i] + 2);
    return out;
 }
@@ -1327,7 +1327,7 @@ static uint8*  resample_row_h_2(uint8 *out, uint8 *in_near, uint8 *in_far, int w
    // need to generate two samples horizontally for every one in input
    int i;
    uint8 *input = in_near;
-   if (w == 1) {
+   if(w == 1) {
       // if only one sample, can't do any interpolation
       out[0] = out[1] = input[0];
       return out;
@@ -1335,7 +1335,7 @@ static uint8*  resample_row_h_2(uint8 *out, uint8 *in_near, uint8 *in_far, int w
 
    out[0] = input[0];
    out[1] = div4(input[0]*3 + input[1] + 2);
-   for (i=1; i < w-1; ++i) {
+   for(i=1; i < w-1; ++i) {
       int n = 3*input[i]+2;
       out[i*2+0] = div4(n+input[i-1]);
       out[i*2+1] = div4(n+input[i+1]);
@@ -1351,14 +1351,14 @@ static uint8 *resample_row_hv_2(uint8 *out, uint8 *in_near, uint8 *in_far, int w
 {
    // need to generate 2x2 samples for every one in input
    int i,t0,t1;
-   if (w == 1) {
+   if(w == 1) {
       out[0] = out[1] = div4(3*in_near[0] + in_far[0] + 2);
       return out;
    }
 
    t1 = 3*in_near[0] + in_far[0];
    out[0] = div4(t1+2);
-   for (i=1; i < w; ++i) {
+   for(i=1; i < w; ++i) {
       t0 = t1;
       t1 = 3*in_near[i]+in_far[i];
       out[i*2-1] = div16(3*t0 + t1 + 8);
@@ -1372,8 +1372,8 @@ static uint8 *resample_row_generic(uint8 *out, uint8 *in_near, uint8 *in_far, in
 {
    // resample with nearest-neighbor
    int i,j;
-   for (i=0; i < w; ++i)
-      for (j=0; j < hs; ++j)
+   for(i=0; i < w; ++i)
+      for(j=0; j < hs; ++j)
          out[i*hs+j] = in_near[i];
    return out;
 }
@@ -1385,7 +1385,7 @@ static uint8 *resample_row_generic(uint8 *out, uint8 *in_near, uint8 *in_far, in
 static void YCbCr_to_RGB_row(uint8 *out, uint8 *y, uint8 *pcb, uint8 *pcr, int count, int step)
 {
    int i;
-   for (i=0; i < count; ++i) {
+   for(i=0; i < count; ++i) {
       int y_fixed = (y[i] << 16) + 32768; // rounding
       int r,g,b;
       int cr = pcr[i] - 128;
@@ -1396,9 +1396,9 @@ static void YCbCr_to_RGB_row(uint8 *out, uint8 *y, uint8 *pcb, uint8 *pcr, int c
       r >>= 16;
       g >>= 16;
       b >>= 16;
-      if ((unsigned) r > 255) { if (r < 0) r = 0; else r = 255; }
-      if ((unsigned) g > 255) { if (g < 0) g = 0; else g = 255; }
-      if ((unsigned) b > 255) { if (b < 0) b = 0; else b = 255; }
+      if((unsigned) r > 255) { if(r < 0) r = 0; else r = 255; }
+      if((unsigned) g > 255) { if(g < 0) g = 0; else g = 255; }
+      if((unsigned) b > 255) { if(b < 0) b = 0; else b = 255; }
       out[0] = (uint8)r;
       out[1] = (uint8)g;
       out[2] = (uint8)b;
@@ -1421,12 +1421,12 @@ void stbi_install_YCbCr_to_RGB(stbi_YCbCr_to_RGB_run func)
 static void cleanup_jpeg(jpeg *j)
 {
    int i;
-   for (i=0; i < j->s.img_n; ++i) {
-      if (j->img_comp[i].data) {
+   for(i=0; i < j->s.img_n; ++i) {
+      if(j->img_comp[i].data) {
          free(j->img_comp[i].raw_data);
          j->img_comp[i].data = NULL;
       }
-      if (j->img_comp[i].linebuf) {
+      if(j->img_comp[i].linebuf) {
          free(j->img_comp[i].linebuf);
          j->img_comp[i].linebuf = NULL;
       }
@@ -1447,16 +1447,16 @@ static uint8 *load_jpeg_image(jpeg *z, int *out_x, int *out_y, int *comp, int re
 {
    int n, decode_n;
    // validate req_comp
-   if (req_comp < 0 || req_comp > 4) return epuc("bad req_comp", "Internal error");
+   if(req_comp < 0 || req_comp > 4) return epuc("bad req_comp", "Internal error");
    z->s.img_n = 0;
 
    // load a jpeg image from whichever source
-   if (!decode_jpeg_image(z)) { cleanup_jpeg(z); return NULL; }
+   if(!decode_jpeg_image(z)) { cleanup_jpeg(z); return NULL; }
 
    // determine actual number of components to generate
    n = req_comp ? req_comp : z->s.img_n;
 
-   if (z->s.img_n == 3 && n < 3)
+   if(z->s.img_n == 3 && n < 3)
       decode_n = 1;
    else
       decode_n = z->s.img_n;
@@ -1470,13 +1470,13 @@ static uint8 *load_jpeg_image(jpeg *z, int *out_x, int *out_y, int *comp, int re
 
       stbi_resample res_comp[4];
 
-      for (k=0; k < decode_n; ++k) {
+      for(k=0; k < decode_n; ++k) {
          stbi_resample *r = &res_comp[k];
 
          // allocate line buffer big enough for upsampling off the edges
          // with upsample factor of 4
          z->img_comp[k].linebuf = (uint8 *) malloc(z->s.img_x + 3);
-         if (!z->img_comp[k].linebuf) { cleanup_jpeg(z); return epuc("outofmem", "Out of memory"); }
+         if(!z->img_comp[k].linebuf) { cleanup_jpeg(z); return epuc("outofmem", "Out of memory"); }
 
          r->hs      = z->img_h_max / z->img_comp[k].h;
          r->vs      = z->img_v_max / z->img_comp[k].v;
@@ -1486,59 +1486,59 @@ static uint8 *load_jpeg_image(jpeg *z, int *out_x, int *out_y, int *comp, int re
          r->line0   = r->line1 = z->img_comp[k].data;
 
          if      (r->hs == 1 && r->vs == 1) r->resample = resample_row_1;
-         else if (r->hs == 1 && r->vs == 2) r->resample = resample_row_v_2;
-         else if (r->hs == 2 && r->vs == 1) r->resample = resample_row_h_2;
-         else if (r->hs == 2 && r->vs == 2) r->resample = resample_row_hv_2;
+         else if(r->hs == 1 && r->vs == 2) r->resample = resample_row_v_2;
+         else if(r->hs == 2 && r->vs == 1) r->resample = resample_row_h_2;
+         else if(r->hs == 2 && r->vs == 2) r->resample = resample_row_hv_2;
          else                               r->resample = resample_row_generic;
       }
 
       // can't error after this so, this is safe
       output = (uint8 *) malloc(n * z->s.img_x * z->s.img_y + 1);
-      if (!output) { cleanup_jpeg(z); return epuc("outofmem", "Out of memory"); }
+      if(!output) { cleanup_jpeg(z); return epuc("outofmem", "Out of memory"); }
 
       // now go ahead and resample
-      for (j=0; j < z->s.img_y; ++j) {
+      for(j=0; j < z->s.img_y; ++j) {
          uint8 *out = output + n * z->s.img_x * j;
-         for (k=0; k < decode_n; ++k) {
+         for(k=0; k < decode_n; ++k) {
             stbi_resample *r = &res_comp[k];
             int y_bot = r->ystep >= (r->vs >> 1);
             coutput[k] = r->resample(z->img_comp[k].linebuf,
                                      y_bot ? r->line1 : r->line0,
                                      y_bot ? r->line0 : r->line1,
                                      r->w_lores, r->hs);
-            if (++r->ystep >= r->vs) {
+            if(++r->ystep >= r->vs) {
                r->ystep = 0;
                r->line0 = r->line1;
-               if (++r->ypos < z->img_comp[k].y)
+               if(++r->ypos < z->img_comp[k].y)
                   r->line1 += z->img_comp[k].w2;
             }
          }
-         if (n >= 3) {
+         if(n >= 3) {
             uint8 *y = coutput[0];
-            if (z->s.img_n == 3) {
+            if(z->s.img_n == 3) {
                #if STBI_SIMD
                stbi_YCbCr_installed(out, y, coutput[1], coutput[2], z->s.img_x, n);
                #else
                YCbCr_to_RGB_row(out, y, coutput[1], coutput[2], z->s.img_x, n);
                #endif
             } else
-               for (i=0; i < z->s.img_x; ++i) {
+               for(i=0; i < z->s.img_x; ++i) {
                   out[0] = out[1] = out[2] = y[i];
                   out[3] = 255; // not used if n==3
                   out += n;
                }
          } else {
             uint8 *y = coutput[0];
-            if (n == 1)
-               for (i=0; i < z->s.img_x; ++i) out[i] = y[i];
+            if(n == 1)
+               for(i=0; i < z->s.img_x; ++i) out[i] = y[i];
             else
-               for (i=0; i < z->s.img_x; ++i) *out++ = y[i], *out++ = 255;
+               for(i=0; i < z->s.img_x; ++i) *out++ = y[i], *out++ = 255;
          }
       }
       cleanup_jpeg(z);
       *out_x = z->s.img_x;
       *out_y = z->s.img_y;
-      if (comp) *comp  = z->s.img_n; // report original components, not output
+      if(comp) *comp  = z->s.img_n; // report original components, not output
       return output;
    }
 }
@@ -1555,7 +1555,7 @@ unsigned char *stbi_jpeg_load(char const *filename, int *x, int *y, int *comp, i
 {
    unsigned char *data;
    FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
+   if(!f) return NULL;
    data = stbi_jpeg_load_from_file(f,x,y,comp,req_comp);
    fclose(f);
    return data;
@@ -1644,33 +1644,33 @@ static int zbuild_huffman(zhuffman *z, uint8 *sizelist, int num)
    // DEFLATE spec for generating codes
    memset(sizes, 0, sizeof(sizes));
    memset(z->fast, 255, sizeof(z->fast));
-   for (i=0; i < num; ++i)
+   for(i=0; i < num; ++i)
       ++sizes[sizelist[i]];
    sizes[0] = 0;
-   for (i=1; i < 16; ++i)
+   for(i=1; i < 16; ++i)
       assert(sizes[i] <= (1 << i));
    code = 0;
-   for (i=1; i < 16; ++i) {
+   for(i=1; i < 16; ++i) {
       next_code[i] = code;
       z->firstcode[i] = (uint16) code;
       z->firstsymbol[i] = (uint16) k;
       code = (code + sizes[i]);
-      if (sizes[i])
-         if (code-1 >= (1 << i)) return e("bad codelengths","Corrupt JPEG");
+      if(sizes[i])
+         if(code-1 >= (1 << i)) return e("bad codelengths","Corrupt JPEG");
       z->maxcode[i] = code << (16-i); // preshift for inner loop
       code <<= 1;
       k += sizes[i];
    }
    z->maxcode[16] = 0x10000; // sentinel
-   for (i=0; i < num; ++i) {
+   for(i=0; i < num; ++i) {
       int s = sizelist[i];
-      if (s) {
+      if(s) {
          int c = next_code[s] - z->firstcode[s] + z->firstsymbol[s];
          z->size[c] = (uint8)s;
          z->value[c] = (uint16)i;
-         if (s <= ZFAST_BITS) {
+         if(s <= ZFAST_BITS) {
             int k = bit_reverse(next_code[s],s);
-            while (k < (1 << ZFAST_BITS)) {
+            while(k < (1 << ZFAST_BITS)) {
                z->fast[k] = (uint16) c;
                k += (1 << s);
             }
@@ -1703,7 +1703,7 @@ typedef struct
 
 __forceinline static int zget8(zbuf *z)
 {
-   if (z->zbuffer >= z->zbuffer_end) return 0;
+   if(z->zbuffer >= z->zbuffer_end) return 0;
    return *z->zbuffer++;
 }
 
@@ -1713,13 +1713,13 @@ static void fill_bits(zbuf *z)
       assert(z->code_buffer < (1U << z->num_bits));
       z->code_buffer |= zget8(z) << z->num_bits;
       z->num_bits += 8;
-   } while (z->num_bits <= 24);
+   } while(z->num_bits <= 24);
 }
 
 __forceinline static unsigned int zreceive(zbuf *z, int n)
 {
    unsigned int k;
-   if (z->num_bits < n) fill_bits(z);
+   if(z->num_bits < n) fill_bits(z);
    k = z->code_buffer & ((1 << n) - 1);
    z->code_buffer >>= n;
    z->num_bits -= n;
@@ -1729,9 +1729,9 @@ __forceinline static unsigned int zreceive(zbuf *z, int n)
 __forceinline static int zhuffman_decode(zbuf *a, zhuffman *z)
 {
    int b,s,k;
-   if (a->num_bits < 16) fill_bits(a);
+   if(a->num_bits < 16) fill_bits(a);
    b = z->fast[a->code_buffer & ZFAST_MASK];
-   if (b < 0xffff) {
+   if(b < 0xffff) {
       s = z->size[b];
       a->code_buffer >>= s;
       a->num_bits -= s;
@@ -1741,10 +1741,10 @@ __forceinline static int zhuffman_decode(zbuf *a, zhuffman *z)
    // not resolved by fast table, so compute it the slow way
    // use jpeg approach, which requires MSbits at top
    k = bit_reverse(a->code_buffer, 16);
-   for (s=ZFAST_BITS+1; ; ++s)
-      if (k < z->maxcode[s])
+   for(s=ZFAST_BITS+1; ; ++s)
+      if(k < z->maxcode[s])
          break;
-   if (s == 16) return -1; // invalid code!
+   if(s == 16) return -1; // invalid code!
    // code size is s, so:
    b = (k >> (16-s)) - z->firstcode[s] + z->firstsymbol[s];
    assert(z->size[b] == s);
@@ -1757,13 +1757,13 @@ static int expand(zbuf *z, int n)  // need to make room for n bytes
 {
    char *q;
    int cur, limit;
-   if (!z->z_expandable) return e("output buffer limit","Corrupt PNG");
+   if(!z->z_expandable) return e("output buffer limit","Corrupt PNG");
    cur   = (int) (z->zout     - z->zout_start);
    limit = (int) (z->zout_end - z->zout_start);
-   while (cur + n > limit)
+   while(cur + n > limit)
       limit *= 2;
    q = (char *) realloc(z->zout_start, limit);
-   if (q == NULL) return e("outofmem", "Out of memory");
+   if(q == NULL) return e("outofmem", "Out of memory");
    z->zout_start = q;
    z->zout       = q + cur;
    z->zout_end   = q + limit;
@@ -1788,25 +1788,25 @@ static int parse_huffman_block(zbuf *a)
 {
    for(;;) {
       int z = zhuffman_decode(a, &a->z_length);
-      if (z < 256) {
-         if (z < 0) return e("bad huffman code","Corrupt PNG"); // error in huffman codes
-         if (a->zout >= a->zout_end) if (!expand(a, 1)) return 0;
+      if(z < 256) {
+         if(z < 0) return e("bad huffman code","Corrupt PNG"); // error in huffman codes
+         if(a->zout >= a->zout_end) if(!expand(a, 1)) return 0;
          *a->zout++ = (char) z;
       } else {
          uint8 *p;
          int len,dist;
-         if (z == 256) return 1;
+         if(z == 256) return 1;
          z -= 257;
          len = length_base[z];
-         if (length_extra[z]) len += zreceive(a, length_extra[z]);
+         if(length_extra[z]) len += zreceive(a, length_extra[z]);
          z = zhuffman_decode(a, &a->z_distance);
-         if (z < 0) return e("bad huffman code","Corrupt PNG");
+         if(z < 0) return e("bad huffman code","Corrupt PNG");
          dist = dist_base[z];
-         if (dist_extra[z]) dist += zreceive(a, dist_extra[z]);
-         if (a->zout - a->zout_start < dist) return e("bad dist","Corrupt PNG");
-         if (a->zout + len > a->zout_end) if (!expand(a, len)) return 0;
+         if(dist_extra[z]) dist += zreceive(a, dist_extra[z]);
+         if(a->zout - a->zout_start < dist) return e("bad dist","Corrupt PNG");
+         if(a->zout + len > a->zout_end) if(!expand(a, len)) return 0;
          p = (uint8 *) (a->zout - dist);
-         while (len--)
+         while(len--)
             *a->zout++ = *p++;
       }
    }
@@ -1825,23 +1825,23 @@ static int compute_huffman_codes(zbuf *a)
    int hclen = zreceive(a,4) + 4;
 
    memset(codelength_sizes, 0, sizeof(codelength_sizes));
-   for (i=0; i < hclen; ++i) {
+   for(i=0; i < hclen; ++i) {
       int s = zreceive(a,3);
       codelength_sizes[length_dezigzag[i]] = (uint8) s;
    }
-   if (!zbuild_huffman(&z_codelength, codelength_sizes, 19)) return 0;
+   if(!zbuild_huffman(&z_codelength, codelength_sizes, 19)) return 0;
 
    n = 0;
-   while (n < hlit + hdist) {
+   while(n < hlit + hdist) {
       int c = zhuffman_decode(a, &z_codelength);
       assert(c >= 0 && c < 19);
-      if (c < 16)
+      if(c < 16)
          lencodes[n++] = (uint8) c;
-      else if (c == 16) {
+      else if(c == 16) {
          c = zreceive(a,2)+3;
          memset(lencodes+n, lencodes[n-1], c);
          n += c;
-      } else if (c == 17) {
+      } else if(c == 17) {
          c = zreceive(a,3)+3;
          memset(lencodes+n, 0, c);
          n += c;
@@ -1852,9 +1852,9 @@ static int compute_huffman_codes(zbuf *a)
          n += c;
       }
    }
-   if (n != hlit+hdist) return e("bad codelengths","Corrupt PNG");
-   if (!zbuild_huffman(&a->z_length, lencodes, hlit)) return 0;
-   if (!zbuild_huffman(&a->z_distance, lencodes+hlit, hdist)) return 0;
+   if(n != hlit+hdist) return e("bad codelengths","Corrupt PNG");
+   if(!zbuild_huffman(&a->z_length, lencodes, hlit)) return 0;
+   if(!zbuild_huffman(&a->z_distance, lencodes+hlit, hdist)) return 0;
    return 1;
 }
 
@@ -1862,25 +1862,25 @@ static int parse_uncompressed_block(zbuf *a)
 {
    uint8 header[4];
    int len,nlen,k;
-   if (a->num_bits & 7)
+   if(a->num_bits & 7)
       zreceive(a, a->num_bits & 7); // discard
    // drain the bit-packed data into header
    k = 0;
-   while (a->num_bits > 0) {
+   while(a->num_bits > 0) {
       header[k++] = (uint8) (a->code_buffer & 255); // wtf this warns?
       a->code_buffer >>= 8;
       a->num_bits -= 8;
    }
    assert(a->num_bits == 0);
    // now fill header the normal way
-   while (k < 4)
+   while(k < 4)
       header[k++] = (uint8) zget8(a);
    len  = header[1] * 256 + header[0];
    nlen = header[3] * 256 + header[2];
-   if (nlen != (len ^ 0xffff)) return e("zlib corrupt","Corrupt PNG");
-   if (a->zbuffer + len > a->zbuffer_end) return e("read past buffer","Corrupt PNG");
-   if (a->zout + len > a->zout_end)
-      if (!expand(a, len)) return 0;
+   if(nlen != (len ^ 0xffff)) return e("zlib corrupt","Corrupt PNG");
+   if(a->zbuffer + len > a->zbuffer_end) return e("read past buffer","Corrupt PNG");
+   if(a->zout + len > a->zout_end)
+      if(!expand(a, len)) return 0;
    memcpy(a->zout, a->zbuffer, len);
    a->zbuffer += len;
    a->zout += len;
@@ -1893,9 +1893,9 @@ static int parse_zlib_header(zbuf *a)
    int cm    = cmf & 15;
    /* int cinfo = cmf >> 4; */
    int flg   = zget8(a);
-   if ((cmf*256+flg) % 31 != 0) return e("bad zlib header","Corrupt PNG"); // zlib spec
-   if (flg & 32) return e("no preset dict","Corrupt PNG"); // preset dictionary not allowed in png
-   if (cm != 8) return e("bad compression","Corrupt PNG"); // DEFLATE required for png
+   if((cmf*256+flg) % 31 != 0) return e("bad zlib header","Corrupt PNG"); // zlib spec
+   if(flg & 32) return e("no preset dict","Corrupt PNG"); // preset dictionary not allowed in png
+   if(cm != 8) return e("bad compression","Corrupt PNG"); // DEFLATE required for png
    // window = 1 << (8 + cinfo)... but who cares, we fully buffer output
    return 1;
 }
@@ -1905,40 +1905,40 @@ static uint8 default_length[288], default_distance[32];
 static void init_defaults(void)
 {
    int i;   // use <= to match clearly with spec
-   for (i=0; i <= 143; ++i)     default_length[i]   = 8;
-   for (   ; i <= 255; ++i)     default_length[i]   = 9;
-   for (   ; i <= 279; ++i)     default_length[i]   = 7;
-   for (   ; i <= 287; ++i)     default_length[i]   = 8;
+   for(i=0; i <= 143; ++i)     default_length[i]   = 8;
+   for(   ; i <= 255; ++i)     default_length[i]   = 9;
+   for(   ; i <= 279; ++i)     default_length[i]   = 7;
+   for(   ; i <= 287; ++i)     default_length[i]   = 8;
 
-   for (i=0; i <=  31; ++i)     default_distance[i] = 5;
+   for(i=0; i <=  31; ++i)     default_distance[i] = 5;
 }
 
 static int parse_zlib(zbuf *a, int parse_header)
 {
    int final, type;
-   if (parse_header)
-      if (!parse_zlib_header(a)) return 0;
+   if(parse_header)
+      if(!parse_zlib_header(a)) return 0;
    a->num_bits = 0;
    a->code_buffer = 0;
    do {
       final = zreceive(a,1);
       type = zreceive(a,2);
-      if (type == 0) {
-         if (!parse_uncompressed_block(a)) return 0;
-      } else if (type == 3) {
+      if(type == 0) {
+         if(!parse_uncompressed_block(a)) return 0;
+      } else if(type == 3) {
          return 0;
       } else {
-         if (type == 1) {
+         if(type == 1) {
             // use fixed code lengths
-            if (!default_distance[31]) init_defaults();
-            if (!zbuild_huffman(&a->z_length  , default_length  , 288)) return 0;
-            if (!zbuild_huffman(&a->z_distance, default_distance,  32)) return 0;
+            if(!default_distance[31]) init_defaults();
+            if(!zbuild_huffman(&a->z_length  , default_length  , 288)) return 0;
+            if(!zbuild_huffman(&a->z_distance, default_distance,  32)) return 0;
          } else {
-            if (!compute_huffman_codes(a)) return 0;
+            if(!compute_huffman_codes(a)) return 0;
          }
-         if (!parse_huffman_block(a)) return 0;
+         if(!parse_huffman_block(a)) return 0;
       }
-   } while (!final);
+   } while(!final);
    return 1;
 }
 
@@ -1956,11 +1956,11 @@ char *stbi_zlib_decode_malloc_guesssize(const char *buffer, int len, int initial
 {
    zbuf a;
    char *p = (char *) malloc(initial_size);
-   if (p == NULL) return NULL;
+   if(p == NULL) return NULL;
    a.zbuffer = (uint8 *) buffer;
    a.zbuffer_end = (uint8 *) buffer + len;
-   if (do_zlib(&a, p, initial_size, 1, 1)) {
-      if (outlen) *outlen = (int) (a.zout - a.zout_start);
+   if(do_zlib(&a, p, initial_size, 1, 1)) {
+      if(outlen) *outlen = (int) (a.zout - a.zout_start);
       return a.zout_start;
    } else {
       free(a.zout_start);
@@ -1978,7 +1978,7 @@ int stbi_zlib_decode_buffer(char *obuffer, int olen, char const *IGLObject, int 
    zbuf a;
    a.zbuffer = (uint8 *) IGLObject;
    a.zbuffer_end = (uint8 *) IGLObject + ilen;
-   if (do_zlib(&a, obuffer, olen, 0, 1))
+   if(do_zlib(&a, obuffer, olen, 0, 1))
       return (int) (a.zout - a.zout_start);
    else
       return -1;
@@ -1988,11 +1988,11 @@ char *stbi_zlib_decode_noheader_malloc(char const *buffer, int len, int *outlen)
 {
    zbuf a;
    char *p = (char *) malloc(16384);
-   if (p == NULL) return NULL;
+   if(p == NULL) return NULL;
    a.zbuffer = (uint8 *) buffer;
    a.zbuffer_end = (uint8 *) buffer+len;
-   if (do_zlib(&a, p, 16384, 1, 0)) {
-      if (outlen) *outlen = (int) (a.zout - a.zout_start);
+   if(do_zlib(&a, p, 16384, 1, 0)) {
+      if(outlen) *outlen = (int) (a.zout - a.zout_start);
       return a.zout_start;
    } else {
       free(a.zout_start);
@@ -2005,7 +2005,7 @@ int stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char *IGLObj
    zbuf a;
    a.zbuffer = (uint8 *) IGLObject;
    a.zbuffer_end = (uint8 *) IGLObject + ilen;
-   if (do_zlib(&a, obuffer, olen, 0, 0))
+   if(do_zlib(&a, obuffer, olen, 0, 0))
       return (int) (a.zout - a.zout_start);
    else
       return -1;
@@ -2042,8 +2042,8 @@ static int check_png_header(stbi *s)
 {
    static uint8 png_sig[8] = { 137,80,78,71,13,10,26,10 };
    int i;
-   for (i=0; i < 8; ++i)
-      if (get8(s) != png_sig[i]) return e("bad png sig","Not a PNG");
+   for(i=0; i < 8; ++i)
+      if(get8(s) != png_sig[i]) return e("bad png sig","Not a PNG");
    return 1;
 }
 
@@ -2070,8 +2070,8 @@ static int paeth(int a, int b, int c)
    int pa = abs(p-a);
    int pb = abs(p-b);
    int pc = abs(p-c);
-   if (pa <= pb && pa <= pc) return a;
-   if (pb <= pc) return b;
+   if(pa <= pb && pa <= pc) return a;
+   if(pb <= pc) return b;
    return c;
 }
 
@@ -2084,17 +2084,17 @@ static int create_png_image(png *a, uint8 *raw, uint32 raw_len, int out_n)
    int img_n = s->img_n; // copy it into a local for later
    assert(out_n == s->img_n || out_n == s->img_n+1);
    a->out = (uint8 *) malloc(s->img_x * s->img_y * out_n);
-   if (!a->out) return e("outofmem", "Out of memory");
-   if (raw_len != (img_n * s->img_x + 1) * s->img_y) return e("not enough pixels","Corrupt PNG");
-   for (j=0; j < s->img_y; ++j) {
+   if(!a->out) return e("outofmem", "Out of memory");
+   if(raw_len != (img_n * s->img_x + 1) * s->img_y) return e("not enough pixels","Corrupt PNG");
+   for(j=0; j < s->img_y; ++j) {
       uint8 *cur = a->out + stride*j;
       uint8 *prior = cur - stride;
       int filter = *raw++;
-      if (filter > 4) return e("invalid filter","Corrupt PNG");
+      if(filter > 4) return e("invalid filter","Corrupt PNG");
       // if first row, use special filter that doesn't sample previous row
-      if (j == 0) filter = first_row_filter[filter];
+      if(j == 0) filter = first_row_filter[filter];
       // handle first pixel explicitly
-      for (k=0; k < img_n; ++k) {
+      for(k=0; k < img_n; ++k) {
          switch(filter) {
             case F_none       : cur[k] = raw[k]; break;
             case F_sub        : cur[k] = raw[k]; break;
@@ -2105,16 +2105,16 @@ static int create_png_image(png *a, uint8 *raw, uint32 raw_len, int out_n)
             case F_paeth_first: cur[k] = raw[k]; break;
          }
       }
-      if (img_n != out_n) cur[img_n] = 255;
+      if(img_n != out_n) cur[img_n] = 255;
       raw += img_n;
       cur += out_n;
       prior += out_n;
       // this is a little gross, so that we don't switch per-pixel or per-component
-      if (img_n == out_n) {
+      if(img_n == out_n) {
          #define CASE(f) \
              case f:     \
-                for (i=s->img_x-1; i >= 1; --i, raw+=img_n,cur+=img_n,prior+=img_n) \
-                   for (k=0; k < img_n; ++k)
+                for(i=s->img_x-1; i >= 1; --i, raw+=img_n,cur+=img_n,prior+=img_n) \
+                   for(k=0; k < img_n; ++k)
          switch(filter) {
             CASE(F_none)  cur[k] = raw[k]; break;
             CASE(F_sub)   cur[k] = raw[k] + cur[k-img_n]; break;
@@ -2129,8 +2129,8 @@ static int create_png_image(png *a, uint8 *raw, uint32 raw_len, int out_n)
          assert(img_n+1 == out_n);
          #define CASE(f) \
              case f:     \
-                for (i=s->img_x-1; i >= 1; --i, cur[img_n]=255,raw+=img_n,cur+=out_n,prior+=out_n) \
-                   for (k=0; k < img_n; ++k)
+                for(i=s->img_x-1; i >= 1; --i, cur[img_n]=255,raw+=img_n,cur+=out_n,prior+=out_n) \
+                   for(k=0; k < img_n; ++k)
          switch(filter) {
             CASE(F_none)  cur[k] = raw[k]; break;
             CASE(F_sub)   cur[k] = raw[k] + cur[k-out_n]; break;
@@ -2156,14 +2156,14 @@ static int compute_transparency(png *z, uint8 tc[3], int out_n)
    // already got 255 as the alpha value in the output
    assert(out_n == 2 || out_n == 4);
 
-   if (out_n == 2) {
-      for (i=0; i < pixel_count; ++i) {
+   if(out_n == 2) {
+      for(i=0; i < pixel_count; ++i) {
          p[1] = (p[0] == tc[0] ? 0 : 255);
          p += 2;
       }
    } else {
-      for (i=0; i < pixel_count; ++i) {
-         if (p[0] == tc[0] && p[1] == tc[1] && p[2] == tc[2])
+      for(i=0; i < pixel_count; ++i) {
+         if(p[0] == tc[0] && p[1] == tc[1] && p[2] == tc[2])
             p[3] = 0;
          p += 4;
       }
@@ -2177,13 +2177,13 @@ static int expand_palette(png *a, uint8 *palette, int len, int pal_img_n)
    uint8 *p, *temp_out, *orig = a->out;
 
    p = (uint8 *) malloc(pixel_count * pal_img_n);
-   if (p == NULL) return e("outofmem", "Out of memory");
+   if(p == NULL) return e("outofmem", "Out of memory");
 
    // between here and free(out) below, exitting would leak
    temp_out = p;
 
-   if (pal_img_n == 3) {
-      for (i=0; i < pixel_count; ++i) {
+   if(pal_img_n == 3) {
+      for(i=0; i < pixel_count; ++i) {
          int n = orig[i]*4;
          p[0] = palette[n  ];
          p[1] = palette[n+1];
@@ -2191,7 +2191,7 @@ static int expand_palette(png *a, uint8 *palette, int len, int pal_img_n)
          p += 3;
       }
    } else {
-      for (i=0; i < pixel_count; ++i) {
+      for(i=0; i < pixel_count; ++i) {
          int n = orig[i]*4;
          p[0] = palette[n  ];
          p[1] = palette[n+1];
@@ -2213,47 +2213,47 @@ static int parse_png_file(png *z, int scan, int req_comp)
    int first=1,k;
    stbi *s = &z->s;
 
-   if (!check_png_header(s)) return 0;
+   if(!check_png_header(s)) return 0;
 
-   if (scan == SCAN_type) return 1;
+   if(scan == SCAN_type) return 1;
 
    for(;;first=0) {
       chunk c = get_chunk_header(s);
-      if (first && c.type != PNG_TYPE('I','H','D','R'))
+      if(first && c.type != PNG_TYPE('I','H','D','R'))
          return e("first not IHDR","Corrupt PNG");
       switch (c.type) {
          case PNG_TYPE('I','H','D','R'): {
             int depth,color,interlace,comp,filter;
-            if (!first) return e("multiple IHDR","Corrupt PNG");
-            if (c.length != 13) return e("bad IHDR len","Corrupt PNG");
-            s->img_x = get32(s); if (s->img_x > (1 << 24)) return e("too large","Very large image (corrupt?)");
-            s->img_y = get32(s); if (s->img_y > (1 << 24)) return e("too large","Very large image (corrupt?)");
-            depth = get8(s);  if (depth != 8)        return e("8bit only","PNG not supported: 8-bit only");
-            color = get8(s);  if (color > 6)         return e("bad ctype","Corrupt PNG");
-            if (color == 3) pal_img_n = 3; else if (color & 1) return e("bad ctype","Corrupt PNG");
-            comp  = get8(s);  if (comp) return e("bad comp method","Corrupt PNG");
-            filter= get8(s);  if (filter) return e("bad filter method","Corrupt PNG");
-            interlace = get8(s); if (interlace) return e("interlaced","PNG not supported: interlaced mode");
-            if (!s->img_x || !s->img_y) return e("0-pixel image","Corrupt PNG");
-            if (!pal_img_n) {
+            if(!first) return e("multiple IHDR","Corrupt PNG");
+            if(c.length != 13) return e("bad IHDR len","Corrupt PNG");
+            s->img_x = get32(s); if(s->img_x > (1 << 24)) return e("too large","Very large image (corrupt?)");
+            s->img_y = get32(s); if(s->img_y > (1 << 24)) return e("too large","Very large image (corrupt?)");
+            depth = get8(s);  if(depth != 8)        return e("8bit only","PNG not supported: 8-bit only");
+            color = get8(s);  if(color > 6)         return e("bad ctype","Corrupt PNG");
+            if(color == 3) pal_img_n = 3; else if(color & 1) return e("bad ctype","Corrupt PNG");
+            comp  = get8(s);  if(comp) return e("bad comp method","Corrupt PNG");
+            filter= get8(s);  if(filter) return e("bad filter method","Corrupt PNG");
+            interlace = get8(s); if(interlace) return e("interlaced","PNG not supported: interlaced mode");
+            if(!s->img_x || !s->img_y) return e("0-pixel image","Corrupt PNG");
+            if(!pal_img_n) {
                s->img_n = (color & 2 ? 3 : 1) + (color & 4 ? 1 : 0);
-               if ((1 << 30) / s->img_x / s->img_n < s->img_y) return e("too large", "Image too large to decode");
-               if (scan == SCAN_header) return 1;
+               if((1 << 30) / s->img_x / s->img_n < s->img_y) return e("too large", "Image too large to decode");
+               if(scan == SCAN_header) return 1;
             } else {
                // if paletted, then pal_n is our final components, and
                // img_n is # components to decompress/filter.
                s->img_n = 1;
-               if ((1 << 30) / s->img_x / 4 < s->img_y) return e("too large","Corrupt PNG");
+               if((1 << 30) / s->img_x / 4 < s->img_y) return e("too large","Corrupt PNG");
                // if SCAN_header, have to scan to see if we have a tRNS
             }
             break;
          }
 
          case PNG_TYPE('P','L','T','E'):  {
-            if (c.length > 256*3) return e("invalid PLTE","Corrupt PNG");
+            if(c.length > 256*3) return e("invalid PLTE","Corrupt PNG");
             pal_len = c.length / 3;
-            if (pal_len * 3 != c.length) return e("invalid PLTE","Corrupt PNG");
-            for (i=0; i < pal_len; ++i) {
+            if(pal_len * 3 != c.length) return e("invalid PLTE","Corrupt PNG");
+            for(i=0; i < pal_len; ++i) {
                palette[i*4+0] = get8u(s);
                palette[i*4+1] = get8u(s);
                palette[i*4+2] = get8u(s);
@@ -2263,39 +2263,39 @@ static int parse_png_file(png *z, int scan, int req_comp)
          }
 
          case PNG_TYPE('t','R','N','S'): {
-            if (z->idata) return e("tRNS after IDAT","Corrupt PNG");
-            if (pal_img_n) {
-               if (scan == SCAN_header) { s->img_n = 4; return 1; }
-               if (pal_len == 0) return e("tRNS before PLTE","Corrupt PNG");
-               if (c.length > pal_len) return e("bad tRNS len","Corrupt PNG");
+            if(z->idata) return e("tRNS after IDAT","Corrupt PNG");
+            if(pal_img_n) {
+               if(scan == SCAN_header) { s->img_n = 4; return 1; }
+               if(pal_len == 0) return e("tRNS before PLTE","Corrupt PNG");
+               if(c.length > pal_len) return e("bad tRNS len","Corrupt PNG");
                pal_img_n = 4;
-               for (i=0; i < c.length; ++i)
+               for(i=0; i < c.length; ++i)
                   palette[i*4+3] = get8u(s);
             } else {
-               if (!(s->img_n & 1)) return e("tRNS with alpha","Corrupt PNG");
-               if (c.length != (uint32) s->img_n*2) return e("bad tRNS len","Corrupt PNG");
+               if(!(s->img_n & 1)) return e("tRNS with alpha","Corrupt PNG");
+               if(c.length != (uint32) s->img_n*2) return e("bad tRNS len","Corrupt PNG");
                has_trans = 1;
-               for (k=0; k < s->img_n; ++k)
+               for(k=0; k < s->img_n; ++k)
                   tc[k] = (uint8) get16(s); // non 8-bit images will be larger
             }
             break;
          }
 
          case PNG_TYPE('I','D','A','T'): {
-            if (pal_img_n && !pal_len) return e("no PLTE","Corrupt PNG");
-            if (scan == SCAN_header) { s->img_n = pal_img_n; return 1; }
-            if (ioff + c.length > idata_limit) {
+            if(pal_img_n && !pal_len) return e("no PLTE","Corrupt PNG");
+            if(scan == SCAN_header) { s->img_n = pal_img_n; return 1; }
+            if(ioff + c.length > idata_limit) {
                uint8 *p;
-               if (idata_limit == 0) idata_limit = c.length > 4096 ? c.length : 4096;
-               while (ioff + c.length > idata_limit)
+               if(idata_limit == 0) idata_limit = c.length > 4096 ? c.length : 4096;
+               while(ioff + c.length > idata_limit)
                   idata_limit *= 2;
-               p = (uint8 *) realloc(z->idata, idata_limit); if (p == NULL) return e("outofmem", "Out of memory");
+               p = (uint8 *) realloc(z->idata, idata_limit); if(p == NULL) return e("outofmem", "Out of memory");
                z->idata = p;
             }
             #ifndef STBI_NO_STDIO
-            if (s->img_file)
+            if(s->img_file)
             {
-               if (fread(z->idata+ioff,1,c.length,s->img_file) != c.length) return e("outofdata","Corrupt PNG");
+               if(fread(z->idata+ioff,1,c.length,s->img_file) != c.length) return e("outofdata","Corrupt PNG");
             }
             else
             #endif
@@ -2309,24 +2309,24 @@ static int parse_png_file(png *z, int scan, int req_comp)
 
          case PNG_TYPE('I','E','N','D'): {
             uint32 raw_len;
-            if (scan != SCAN_load) return 1;
-            if (z->idata == NULL) return e("no IDAT","Corrupt PNG");
+            if(scan != SCAN_load) return 1;
+            if(z->idata == NULL) return e("no IDAT","Corrupt PNG");
             z->expanded = (uint8 *) stbi_zlib_decode_malloc((char *) z->idata, ioff, (int *) &raw_len);
-            if (z->expanded == NULL) return 0; // zlib should set error
+            if(z->expanded == NULL) return 0; // zlib should set error
             free(z->idata); z->idata = NULL;
-            if ((req_comp == s->img_n+1 && req_comp != 3 && !pal_img_n) || has_trans)
+            if((req_comp == s->img_n+1 && req_comp != 3 && !pal_img_n) || has_trans)
                s->img_out_n = s->img_n+1;
             else
                s->img_out_n = s->img_n;
-            if (!create_png_image(z, z->expanded, raw_len, s->img_out_n)) return 0;
-            if (has_trans)
-               if (!compute_transparency(z, tc, s->img_out_n)) return 0;
-            if (pal_img_n) {
+            if(!create_png_image(z, z->expanded, raw_len, s->img_out_n)) return 0;
+            if(has_trans)
+               if(!compute_transparency(z, tc, s->img_out_n)) return 0;
+            if(pal_img_n) {
                // pal_img_n == 3 or 4
                s->img_n = pal_img_n; // record the actual colors we had
                s->img_out_n = pal_img_n;
-               if (req_comp >= 3) s->img_out_n = req_comp;
-               if (!expand_palette(z, palette, pal_len, s->img_out_n))
+               if(req_comp >= 3) s->img_out_n = req_comp;
+               if(!expand_palette(z, palette, pal_len, s->img_out_n))
                   return 0;
             }
             free(z->expanded); z->expanded = NULL;
@@ -2335,7 +2335,7 @@ static int parse_png_file(png *z, int scan, int req_comp)
 
          default:
             // if critical, fail
-            if ((c.type & (1 << 29)) == 0) {
+            if((c.type & (1 << 29)) == 0) {
                #ifndef STBI_NO_FAILURE_STRINGS
                // not threadsafe
                static char invalid_chunk[] = "XXXX chunk not known";
@@ -2360,18 +2360,18 @@ static unsigned char *do_png(png *p, int *x, int *y, int *n, int req_comp)
    p->expanded = NULL;
    p->idata = NULL;
    p->out = NULL;
-   if (req_comp < 0 || req_comp > 4) return epuc("bad req_comp", "Internal error");
-   if (parse_png_file(p, SCAN_load, req_comp)) {
+   if(req_comp < 0 || req_comp > 4) return epuc("bad req_comp", "Internal error");
+   if(parse_png_file(p, SCAN_load, req_comp)) {
       result = p->out;
       p->out = NULL;
-      if (req_comp && req_comp != p->s.img_out_n) {
+      if(req_comp && req_comp != p->s.img_out_n) {
          result = convert_format(result, p->s.img_out_n, req_comp, p->s.img_x, p->s.img_y);
          p->s.img_out_n = req_comp;
-         if (result == NULL) return result;
+         if(result == NULL) return result;
       }
       *x = p->s.img_x;
       *y = p->s.img_y;
-      if (n) *n = p->s.img_n;
+      if(n) *n = p->s.img_n;
    }
    free(p->out);      p->out      = NULL;
    free(p->expanded); p->expanded = NULL;
@@ -2392,7 +2392,7 @@ unsigned char *stbi_png_load(char const *filename, int *x, int *y, int *comp, in
 {
    unsigned char *data;
    FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
+   if(!f) return NULL;
    data = stbi_png_load_from_file(f,x,y,comp,req_comp);
    fclose(f);
    return data;
@@ -2438,14 +2438,14 @@ extern int      stbi_png_info_from_memory (stbi_uc const *buffer, int len, int *
 static int bmp_test(stbi *s)
 {
    int sz;
-   if (get8(s) != 'B') return 0;
-   if (get8(s) != 'M') return 0;
+   if(get8(s) != 'B') return 0;
+   if(get8(s) != 'M') return 0;
    get32le(s); // discard filesize
    get16le(s); // discard reserved
    get16le(s); // discard reserved
    get32le(s); // discard data offset
    sz = get32le(s);
-   if (sz == 12 || sz == 40 || sz == 56 || sz == 108) return 1;
+   if(sz == 12 || sz == 40 || sz == 56 || sz == 108) return 1;
    return 0;
 }
 
@@ -2472,12 +2472,12 @@ int      stbi_bmp_test_memory      (stbi_uc const *buffer, int len)
 static int high_bit(unsigned int z)
 {
    int n=0;
-   if (z == 0) return -1;
-   if (z >= 0x10000) n += 16, z >>= 16;
-   if (z >= 0x00100) n +=  8, z >>=  8;
-   if (z >= 0x00010) n +=  4, z >>=  4;
-   if (z >= 0x00004) n +=  2, z >>=  2;
-   if (z >= 0x00002) n +=  1, z >>=  1;
+   if(z == 0) return -1;
+   if(z >= 0x10000) n += 16, z >>= 16;
+   if(z >= 0x00100) n +=  8, z >>=  8;
+   if(z >= 0x00010) n +=  4, z >>=  4;
+   if(z >= 0x00004) n +=  2, z >>=  2;
+   if(z >= 0x00002) n +=  1, z >>=  1;
    return n;
 }
 
@@ -2496,12 +2496,12 @@ static int shiftsigned(int v, int shift, int bits)
    int result;
    int z=0;
 
-   if (shift < 0) v <<= -shift;
+   if(shift < 0) v <<= -shift;
    else v >>= shift;
    result = v;
 
    z = bits;
-   while (z < 8) {
+   while(z < 8) {
       result += v >> z;
       z += bits;
    }
@@ -2515,48 +2515,48 @@ static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
    stbi_uc pal[256][4];
    int psize=0,i,j,compress=0,width;
    int bpp, flip_vertically, pad, target, offset, hsz;
-   if (get8(s) != 'B' || get8(s) != 'M') return epuc("not BMP", "Corrupt BMP");
+   if(get8(s) != 'B' || get8(s) != 'M') return epuc("not BMP", "Corrupt BMP");
    get32le(s); // discard filesize
    get16le(s); // discard reserved
    get16le(s); // discard reserved
    offset = get32le(s);
    hsz = get32le(s);
-   if (hsz != 12 && hsz != 40 && hsz != 56 && hsz != 108) return epuc("unknown BMP", "BMP type not supported: unknown");
+   if(hsz != 12 && hsz != 40 && hsz != 56 && hsz != 108) return epuc("unknown BMP", "BMP type not supported: unknown");
    failure_reason = "bad BMP";
-   if (hsz == 12) {
+   if(hsz == 12) {
       s->img_x = get16le(s);
       s->img_y = get16le(s);
    } else {
       s->img_x = get32le(s);
       s->img_y = get32le(s);
    }
-   if (get16le(s) != 1) return 0;
+   if(get16le(s) != 1) return 0;
    bpp = get16le(s);
-   if (bpp == 1) return epuc("monochrome", "BMP type not supported: 1-bit");
+   if(bpp == 1) return epuc("monochrome", "BMP type not supported: 1-bit");
    flip_vertically = ((int) s->img_y) > 0;
    s->img_y = abs((int) s->img_y);
-   if (hsz == 12) {
-      if (bpp < 24)
+   if(hsz == 12) {
+      if(bpp < 24)
          psize = (offset - 14 - 24) / 3;
    } else {
       compress = get32le(s);
-      if (compress == 1 || compress == 2) return epuc("BMP RLE", "BMP type not supported: RLE");
+      if(compress == 1 || compress == 2) return epuc("BMP RLE", "BMP type not supported: RLE");
       get32le(s); // discard sizeof
       get32le(s); // discard hres
       get32le(s); // discard vres
       get32le(s); // discard colorsused
       get32le(s); // discard max important
-      if (hsz == 40 || hsz == 56) {
-         if (hsz == 56) {
+      if(hsz == 40 || hsz == 56) {
+         if(hsz == 56) {
             get32le(s);
             get32le(s);
             get32le(s);
             get32le(s);
          }
-         if (bpp == 16 || bpp == 32) {
+         if(bpp == 16 || bpp == 32) {
             mr = mg = mb = 0;
-            if (compress == 0) {
-               if (bpp == 32) {
+            if(compress == 0) {
+               if(bpp == 32) {
                   mr = 0xff << 16;
                   mg = 0xff <<  8;
                   mb = 0xff <<  0;
@@ -2565,12 +2565,12 @@ static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
                   mg = 31 <<  5;
                   mb = 31 <<  0;
                }
-            } else if (compress == 3) {
+            } else if(compress == 3) {
                mr = get32le(s);
                mg = get32le(s);
                mb = get32le(s);
                // not documented, but generated by photoshop and handled by mspaint
-               if (mr == mg && mg == mb) {
+               if(mr == mg && mg == mb) {
                   // ?!?!?
                   return NULL;
                }
@@ -2584,51 +2584,51 @@ static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
          mb = get32le(s);
          ma = get32le(s);
          get32le(s); // discard color space
-         for (i=0; i < 12; ++i)
+         for(i=0; i < 12; ++i)
             get32le(s); // discard color space parameters
       }
-      if (bpp < 16)
+      if(bpp < 16)
          psize = (offset - 14 - hsz) >> 2;
    }
    s->img_n = ma ? 4 : 3;
-   if (req_comp && req_comp >= 3) // we can directly decode 3 or 4
+   if(req_comp && req_comp >= 3) // we can directly decode 3 or 4
       target = req_comp;
    else
       target = s->img_n; // if they want monochrome, we'll post-convert
    out = (stbi_uc *) malloc(target * s->img_x * s->img_y);
-   if (!out) return epuc("outofmem", "Out of memory");
-   if (bpp < 16) {
+   if(!out) return epuc("outofmem", "Out of memory");
+   if(bpp < 16) {
       int z=0;
-      if (psize == 0 || psize > 256) { free(out); return epuc("invalid", "Corrupt BMP"); }
-      for (i=0; i < psize; ++i) {
+      if(psize == 0 || psize > 256) { free(out); return epuc("invalid", "Corrupt BMP"); }
+      for(i=0; i < psize; ++i) {
          pal[i][2] = get8(s);
          pal[i][1] = get8(s);
          pal[i][0] = get8(s);
-         if (hsz != 12) get8(s);
+         if(hsz != 12) get8(s);
          pal[i][3] = 255;
       }
       skip(s, offset - 14 - hsz - psize * (hsz == 12 ? 3 : 4));
-      if (bpp == 4) width = (s->img_x + 1) >> 1;
-      else if (bpp == 8) width = s->img_x;
+      if(bpp == 4) width = (s->img_x + 1) >> 1;
+      else if(bpp == 8) width = s->img_x;
       else { free(out); return epuc("bad bpp", "Corrupt BMP"); }
       pad = (-width)&3;
-      for (j=0; j < (int) s->img_y; ++j) {
-         for (i=0; i < (int) s->img_x; i += 2) {
+      for(j=0; j < (int) s->img_y; ++j) {
+         for(i=0; i < (int) s->img_x; i += 2) {
             int v=get8(s),v2=0;
-            if (bpp == 4) {
+            if(bpp == 4) {
                v2 = v & 15;
                v >>= 4;
             }
             out[z++] = pal[v][0];
             out[z++] = pal[v][1];
             out[z++] = pal[v][2];
-            if (target == 4) out[z++] = 255;
-            if (i+1 == (int) s->img_x) break;
+            if(target == 4) out[z++] = 255;
+            if(i+1 == (int) s->img_x) break;
             v = (bpp == 8) ? get8(s) : v2;
             out[z++] = pal[v][0];
             out[z++] = pal[v][1];
             out[z++] = pal[v][2];
-            if (target == 4) out[z++] = 255;
+            if(target == 4) out[z++] = 255;
          }
          skip(s, pad);
       }
@@ -2637,68 +2637,68 @@ static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
       int z = 0;
       int easy=0;
       skip(s, offset - 14 - hsz);
-      if (bpp == 24) width = 3 * s->img_x;
-      else if (bpp == 16) width = 2*s->img_x;
+      if(bpp == 24) width = 3 * s->img_x;
+      else if(bpp == 16) width = 2*s->img_x;
       else /* bpp = 32 and pad = 0 */ width=0;
       pad = (-width) & 3;
-      if (bpp == 24) {
+      if(bpp == 24) {
          easy = 1;
-      } else if (bpp == 32) {
-         if (mb == 0xff && mg == 0xff00 && mr == 0xff000000 && ma == 0xff000000)
+      } else if(bpp == 32) {
+         if(mb == 0xff && mg == 0xff00 && mr == 0xff000000 && ma == 0xff000000)
             easy = 2;
       }
-      if (!easy) {
-         if (!mr || !mg || !mb) return epuc("bad masks", "Corrupt BMP");
+      if(!easy) {
+         if(!mr || !mg || !mb) return epuc("bad masks", "Corrupt BMP");
          // right shift amt to put high bit in position #7
          rshift = high_bit(mr)-7; rcount = bitcount(mr);
          gshift = high_bit(mg)-7; gcount = bitcount(mr);
          bshift = high_bit(mb)-7; bcount = bitcount(mr);
          ashift = high_bit(ma)-7; acount = bitcount(mr);
       }
-      for (j=0; j < (int) s->img_y; ++j) {
-         if (easy) {
-            for (i=0; i < (int) s->img_x; ++i) {
+      for(j=0; j < (int) s->img_y; ++j) {
+         if(easy) {
+            for(i=0; i < (int) s->img_x; ++i) {
                int a;
                out[z+2] = get8(s);
                out[z+1] = get8(s);
                out[z+0] = get8(s);
                z += 3;
                a = (easy == 2 ? get8(s) : 255);
-               if (target == 4) out[z++] = a;
+               if(target == 4) out[z++] = a;
             }
          } else {
-            for (i=0; i < (int) s->img_x; ++i) {
+            for(i=0; i < (int) s->img_x; ++i) {
                uint32 v = (bpp == 16 ? get16le(s) : get32le(s));
                int a;
                out[z++] = shiftsigned(v & mr, rshift, rcount);
                out[z++] = shiftsigned(v & mg, gshift, gcount);
                out[z++] = shiftsigned(v & mb, bshift, bcount);
                a = (ma ? shiftsigned(v & ma, ashift, acount) : 255);
-               if (target == 4) out[z++] = a;
+               if(target == 4) out[z++] = a;
             }
          }
          skip(s, pad);
       }
    }
-   if (flip_vertically) {
+   if(flip_vertically) {
       stbi_uc t;
-      for (j=0; j < (int) s->img_y>>1; ++j) {
+      for(j=0; j < (int) s->img_y>>1; ++j) {
          stbi_uc *p1 = out +      j     *s->img_x*target;
          stbi_uc *p2 = out + (s->img_y-1-j)*s->img_x*target;
-         for (i=0; i < (int) s->img_x*target; ++i) {
+         for(i=0; i < (int) s->img_x*target; ++i) {
             t = p1[i], p1[i] = p2[i], p2[i] = t;
          }
       }
    }
 
-   if (req_comp && req_comp != target) {
+   if(req_comp && req_comp != target) {
       out = convert_format(out, target, req_comp, s->img_x, s->img_y);
-      if (out == NULL) return out; // convert_format frees input on failure
+      if(out == NULL) return out; // convert_format frees input on failure
    }
 
    *x = s->img_x;
    *y = s->img_y;
-   if (comp) *comp = target;
+   if(comp) *comp = target;
    return out;
 }
 
@@ -2707,7 +2707,7 @@ stbi_uc *stbi_bmp_load             (char const *filename,           int *x, int 
 {
    stbi_uc *data;
    FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
+   if(!f) return NULL;
    data = stbi_bmp_load_from_file(f, x,y,comp,req_comp);
    fclose(f);
    return data;
@@ -2993,7 +2993,7 @@ stbi_uc *stbi_tga_load             (char const *filename,           int *x, int 
 {
    stbi_uc *data;
    FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
+   if(!f) return NULL;
    data = stbi_tga_load_from_file(f, x,y,comp,req_comp);
    fclose(f);
    return data;
@@ -3020,7 +3020,7 @@ stbi_uc *stbi_tga_load_from_memory (stbi_uc const *buffer, int len, int *x, int 
 
 static int psd_test(stbi *s)
 {
-    if (get32(s) != 0x38425053) return 0;    // "8BPS"
+    if(get32(s) != 0x38425053) return 0;    // "8BPS"
     else return 1;
 }
 
@@ -3052,11 +3052,11 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
    uint8 *out;
 
     // Check identifier
-    if (get32(s) != 0x38425053)    // "8BPS"
+    if(get32(s) != 0x38425053)    // "8BPS"
         return epuc("not PSD", "Corrupt PSD image");
 
     // Check file type version.
-    if (get16(s) != 1)
+    if(get16(s) != 1)
         return epuc("wrong version", "Unsupported version of PSD image");
 
     // Skip 6 reserved bytes.
@@ -3064,7 +3064,7 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 
     // Read the number of channels (R, G, B, A, etc).
     channelCount = get16(s);
-    if (channelCount < 0 || channelCount > 16)
+    if(channelCount < 0 || channelCount > 16)
         return epuc("wrong channel count", "Unsupported number of channels in PSD image");
 
     // Read the rows and columns of the image.
@@ -3072,7 +3072,7 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
    w = get32(s);
 
     // Make sure the depth is 8 bits.
-    if (get16(s) != 8)
+    if(get16(s) != 8)
         return epuc("unsupported bit depth", "PSD bit depth is not 8 bit");
 
     // Make sure the color mode is RGB.
@@ -3085,7 +3085,7 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
     //   7: Multichannel
     //   8: Duotone
     //   9: Lab color
-    if (get16(s) != 3)
+    if(get16(s) != 3)
         return epuc("wrong color format", "PSD is not in RGB color format");
 
     // Skip the Mode Data.  (It's the palette for indexed color; other info for other modes.)
@@ -3102,19 +3102,19 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
     //   0: no compression
     //   1: RLE compressed
     compression = get16(s);
-    if (compression > 1)
+    if(compression > 1)
         return epuc("bad compression", "PSD has an unknown compression format");
 
     // Create the destination image.
     out = (stbi_uc *) malloc(4 * w*h);
-    if (!out) return epuc("outofmem", "Out of memory");
+    if(!out) return epuc("outofmem", "Out of memory");
    pixelCount = w*h;
 
     // Initialize the data to zero.
     //memset( out, 0, pixelCount * 4 );
 
     // Finally, the image data.
-    if (compression) {
+    if(compression) {
         // RLE as used by .PSD and .TIFF
         // Loop until you get the number of unpacked bytes you are expecting:
         //     Read the next source byte into n.
@@ -3128,30 +3128,30 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
         skip(s, h * channelCount * 2 );
 
         // Read the RLE data by channel.
-        for (channel = 0; channel < 4; channel++) {
+        for(channel = 0; channel < 4; channel++) {
             uint8 *p;
 
          p = out+channel;
-            if (channel >= channelCount) {
+            if(channel >= channelCount) {
                 // Fill this channel with default data.
-                for (i = 0; i < pixelCount; i++) *p = (channel == 3 ? 255 : 0), p += 4;
+                for(i = 0; i < pixelCount; i++) *p = (channel == 3 ? 255 : 0), p += 4;
             } else {
                 // Read the RLE data.
                 count = 0;
-                while (count < pixelCount) {
+                while(count < pixelCount) {
                     len = get8(s);
-                    if (len == 128) {
+                    if(len == 128) {
                         // No-op.
-                    } else if (len < 128) {
+                    } else if(len < 128) {
                         // Copy next len+1 bytes literally.
                         len++;
                         count += len;
-                        while (len) {
+                        while(len) {
                             *p = get8(s);
                      p += 4;
                             len--;
                         }
-                    } else if (len > 128) {
+                    } else if(len > 128) {
                         uint32    val;
                         // Next -len+1 bytes in the dest are replicated from next source byte.
                         // (Interpret len as a negative 8-bit int.)
@@ -3159,7 +3159,7 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
                         len += 2;
                   val = get8(s);
                         count += len;
-                        while (len) {
+                        while(len) {
                             *p = val;
                      p += 4;
                             len--;
@@ -3174,28 +3174,28 @@ static stbi_uc *psd_load(stbi *s, int *x, int *y, int *comp, int req_comp)
         // where each channel consists of an 8-bit value for each pixel in the image.
 
         // Read the data by channel.
-        for (channel = 0; channel < 4; channel++) {
+        for(channel = 0; channel < 4; channel++) {
             uint8 *p;
 
          p = out + channel;
-            if (channel > channelCount) {
+            if(channel > channelCount) {
                 // Fill this channel with default data.
-                for (i = 0; i < pixelCount; i++) *p = channel == 3 ? 255 : 0, p += 4;
+                for(i = 0; i < pixelCount; i++) *p = channel == 3 ? 255 : 0, p += 4;
             } else {
                 // Read the data.
                 count = 0;
-                for (i = 0; i < pixelCount; i++)
+                for(i = 0; i < pixelCount; i++)
                     *p = get8(s), p += 4;
             }
         }
     }
 
-    if (req_comp && req_comp != 4) {
+    if(req_comp && req_comp != 4) {
         out = convert_format(out, 4, req_comp, w, h);
-        if (out == NULL) return out; // convert_format frees input on failure
+        if(out == NULL) return out; // convert_format frees input on failure
     }
 
-    if (comp) *comp = channelCount;
+    if(comp) *comp = channelCount;
     *y = h;
     *x = w;
 
@@ -3207,7 +3207,7 @@ stbi_uc *stbi_psd_load(char const *filename, int *x, int *y, int *comp, int req_
 {
    stbi_uc *data;
    FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
+   if(!f) return NULL;
    data = stbi_psd_load_from_file(f, x,y,comp,req_comp);
    fclose(f);
    return data;
@@ -3237,8 +3237,8 @@ static int hdr_test(stbi *s)
 {
    char *signature = "#?RADIANCE\n";
    int i;
-   for (i=0; signature[i]; ++i)
-      if (get8(s) != signature[i])
+   for(i=0; signature[i]; ++i)
+      if(get8(s) != signature[i])
          return 0;
     return 1;
 }
@@ -3271,11 +3271,11 @@ static char *hdr_gettoken(stbi *z, char *buffer)
 
    c = get8(z);
 
-    while (!at_eof(z) && c != '\n') {
+    while(!at_eof(z) && c != '\n') {
         buffer[len++] = c;
-      if (len == HDR_BUFLEN-1) {
+      if(len == HDR_BUFLEN-1) {
          // flush to end of line
-         while (!at_eof(z) && get8(z) != '\n')
+         while(!at_eof(z) && get8(z) != '\n')
             ;
          break;
       }
@@ -3292,15 +3292,15 @@ static void hdr_convert(float *output, stbi_uc *input, int req_comp)
       float f1;
         // Exponent
         f1 = (float) ldexp(1.0f, input[3] - (int)(128 + 8));
-      if (req_comp <= 2)
+      if(req_comp <= 2)
          output[0] = (input[0] + input[1] + input[2]) * f1 / 3;
       else {
          output[0] = input[0] * f1;
          output[1] = input[1] * f1;
          output[2] = input[2] * f1;
       }
-      if (req_comp == 2) output[1] = 1;
-      if (req_comp == 4) output[3] = 1;
+      if(req_comp == 2) output[1] = 1;
+      if(req_comp == 4) output[3] = 1;
     } else {
       switch (req_comp) {
          case 4: output[3] = 1; /* fallthrough */
@@ -3328,26 +3328,26 @@ static float *hdr_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 
 
     // Check identifier
-    if (strcmp(hdr_gettoken(s,buffer), "#?RADIANCE") != 0)
+    if(strcmp(hdr_gettoken(s,buffer), "#?RADIANCE") != 0)
         return epf("not HDR", "Corrupt HDR image");
 
     // Parse header
     while(1) {
         token = hdr_gettoken(s,buffer);
-      if (token[0] == 0) break;
-        if (strcmp(token, "FORMAT=32-bit_rle_rgbe") == 0) valid = 1;
+      if(token[0] == 0) break;
+        if(strcmp(token, "FORMAT=32-bit_rle_rgbe") == 0) valid = 1;
    }
 
-    if (!valid)    return epf("unsupported format", "Unsupported HDR format");
+    if(!valid)    return epf("unsupported format", "Unsupported HDR format");
 
    // Parse width and height
    // can't use sscanf() if we're not using stdio!
    token = hdr_gettoken(s,buffer);
-   if (strncmp(token, "-Y ", 3))  return epf("unsupported data layout", "Unsupported HDR format");
+   if(strncmp(token, "-Y ", 3))  return epf("unsupported data layout", "Unsupported HDR format");
    token += 3;
    height = strtol(token, &token, 10);
-   while (*token == ' ') ++token;
-   if (strncmp(token, "+X ", 3))  return epf("unsupported data layout", "Unsupported HDR format");
+   while(*token == ' ') ++token;
+   if(strncmp(token, "+X ", 3))  return epf("unsupported data layout", "Unsupported HDR format");
    token += 3;
    width = strtol(token, NULL, 10);
 
@@ -3355,7 +3355,7 @@ static float *hdr_load(stbi *s, int *x, int *y, int *comp, int req_comp)
     *y = height;
 
    *comp = 3;
-    if (req_comp == 0) req_comp = 3;
+    if(req_comp == 0) req_comp = 3;
 
     // Read data
     hdr_data = (float *) malloc(height * width * req_comp * sizeof(float));
@@ -3364,8 +3364,8 @@ static float *hdr_load(stbi *s, int *x, int *y, int *comp, int req_comp)
    // image data is stored as some number of sca
     if( width < 8 || width >= 32768) {
         // Read flat data
-      for (j=0; j < height; ++j) {
-         for (i=0; i < width; ++i) {
+      for(j=0; j < height; ++j) {
+         for(i=0; i < width; ++i) {
             stbi_uc rgbe[4];
            main_decode_loop:
             getn(s, rgbe, 4);
@@ -3376,11 +3376,11 @@ static float *hdr_load(stbi *s, int *x, int *y, int *comp, int req_comp)
         // Read RLE-encoded data
         scanline = NULL;
 
-        for (j = 0; j < height; ++j) {
+        for(j = 0; j < height; ++j) {
          c1 = get8(s);
          c2 = get8(s);
          len = get8(s);
-         if (c1 != 2 || c2 != 2 || (len & 0x80)) {
+         if(c1 != 2 || c2 != 2 || (len & 0x80)) {
             // not run-length encoded, so we have to actually use THIS data as a decoded
             // pixel (note this can't be a valid pixel--one of RGB must be >= 128)
             stbi_uc rgbe[4] = { c1,c2,len, get8(s) };
@@ -3392,27 +3392,27 @@ static float *hdr_load(stbi *s, int *x, int *y, int *comp, int req_comp)
          }
          len <<= 8;
          len |= get8(s);
-         if (len != width) { free(hdr_data); free(scanline); return epf("invalid decoded scanline length", "corrupt HDR"); }
-         if (scanline == NULL) scanline = (stbi_uc *) malloc(width * 4);
+         if(len != width) { free(hdr_data); free(scanline); return epf("invalid decoded scanline length", "corrupt HDR"); }
+         if(scanline == NULL) scanline = (stbi_uc *) malloc(width * 4);
 
-            for (k = 0; k < 4; ++k) {
+            for(k = 0; k < 4; ++k) {
                 i = 0;
-                while (i < width) {
+                while(i < width) {
                     count = get8(s);
-                    if (count > 128) {
+                    if(count > 128) {
                         // Run
                         value = get8(s);
                   count -= 128;
-                        for (z = 0; z < count; ++z)
+                        for(z = 0; z < count; ++z)
                             scanline[i++ * 4 + k] = value;
                     } else {
                         // Dump
-                        for (z = 0; z < count; ++z)
+                        for(z = 0; z < count; ++z)
                             scanline[i++ * 4 + k] = get8(s);
                     }
                 }
             }
-         for (i=0; i < width; ++i)
+         for(i=0; i < width; ++i)
             hdr_convert(hdr_data+(j*width + i)*req_comp, scanline + i*4, req_comp);
         }
       free(scanline);
@@ -3435,26 +3435,26 @@ static stbi_uc *hdr_load_rgbe(stbi *s, int *x, int *y, int *comp, int req_comp)
 
 
     // Check identifier
-    if (strcmp(hdr_gettoken(s,buffer), "#?RADIANCE") != 0)
+    if(strcmp(hdr_gettoken(s,buffer), "#?RADIANCE") != 0)
         return epuc("not HDR", "Corrupt HDR image");
 
     // Parse header
     while(1) {
         token = hdr_gettoken(s,buffer);
-      if (token[0] == 0) break;
-        if (strcmp(token, "FORMAT=32-bit_rle_rgbe") == 0) valid = 1;
+      if(token[0] == 0) break;
+        if(strcmp(token, "FORMAT=32-bit_rle_rgbe") == 0) valid = 1;
    }
 
-    if (!valid)    return epuc("unsupported format", "Unsupported HDR format");
+    if(!valid)    return epuc("unsupported format", "Unsupported HDR format");
 
    // Parse width and height
    // can't use sscanf() if we're not using stdio!
    token = hdr_gettoken(s,buffer);
-   if (strncmp(token, "-Y ", 3))  return epuc("unsupported data layout", "Unsupported HDR format");
+   if(strncmp(token, "-Y ", 3))  return epuc("unsupported data layout", "Unsupported HDR format");
    token += 3;
    height = strtol(token, &token, 10);
-   while (*token == ' ') ++token;
-   if (strncmp(token, "+X ", 3))  return epuc("unsupported data layout", "Unsupported HDR format");
+   while(*token == ' ') ++token;
+   if(strncmp(token, "+X ", 3))  return epuc("unsupported data layout", "Unsupported HDR format");
    token += 3;
    width = strtol(token, NULL, 10);
 
@@ -3474,8 +3474,8 @@ static stbi_uc *hdr_load_rgbe(stbi *s, int *x, int *y, int *comp, int req_comp)
    // image data is stored as some number of scan lines
     if( width < 8 || width >= 32768) {
         // Read flat data
-      for (j=0; j < height; ++j) {
-         for (i=0; i < width; ++i) {
+      for(j=0; j < height; ++j) {
+         for(i=0; i < width; ++i) {
            main_decode_loop:
             //getn(rgbe, 4);
             getn(s,scanline, 4);
@@ -3484,11 +3484,11 @@ static stbi_uc *hdr_load_rgbe(stbi *s, int *x, int *y, int *comp, int req_comp)
       }
     } else {
         // Read RLE-encoded data
-        for (j = 0; j < height; ++j) {
+        for(j = 0; j < height; ++j) {
          c1 = get8(s);
          c2 = get8(s);
          len = get8(s);
-         if (c1 != 2 || c2 != 2 || (len & 0x80)) {
+         if(c1 != 2 || c2 != 2 || (len & 0x80)) {
             // not run-length encoded, so we have to actually use THIS data as a decoded
             // pixel (note this can't be a valid pixel--one of RGB must be >= 128)
             scanline[0] = c1;
@@ -3502,20 +3502,20 @@ static stbi_uc *hdr_load_rgbe(stbi *s, int *x, int *y, int *comp, int req_comp)
          }
          len <<= 8;
          len |= get8(s);
-         if (len != width) { free(rgbe_data); return epuc("invalid decoded scanline length", "corrupt HDR"); }
-            for (k = 0; k < 4; ++k) {
+         if(len != width) { free(rgbe_data); return epuc("invalid decoded scanline length", "corrupt HDR"); }
+            for(k = 0; k < 4; ++k) {
                 i = 0;
-                while (i < width) {
+                while(i < width) {
                     count = get8(s);
-                    if (count > 128) {
+                    if(count > 128) {
                         // Run
                         value = get8(s);
                   count -= 128;
-                        for (z = 0; z < count; ++z)
+                        for(z = 0; z < count; ++z)
                             scanline[i++ * 4 + k] = value;
                     } else {
                         // Dump
-                        for (z = 0; z < count; ++z)
+                        for(z = 0; z < count; ++z)
                             scanline[i++ * 4 + k] = get8(s);
                     }
                 }
@@ -3547,7 +3547,7 @@ stbi_uc *stbi_hdr_load_rgbe        (char const *filename,           int *x, int 
 {
    FILE *f = fopen(filename, "rb");
    unsigned char *result;
-   if (!f) return epuc("can't fopen", "Unable to open file");
+   if(!f) return epuc("can't fopen", "Unable to open file");
    result = stbi_hdr_load_rgbe_file(f,x,y,comp,req_comp);
    fclose(f);
    return result;
@@ -3578,7 +3578,7 @@ static void write8(FILE *f, int x) { uint8 z = (uint8) x; fwrite(&z,1,1,f); }
 
 static void writefv(FILE *f, char *fmt, va_list v)
 {
-   while (*fmt) {
+   while(*fmt) {
       switch (*fmt++) {
          case ' ': break;
          case '1': { uint8 x = va_arg(v, int); write8(f,x); break; }
@@ -3606,23 +3606,23 @@ static void write_pixels(FILE *f, int rgb_dir, int vdir, int x, int y, int comp,
    uint32 zero = 0;
    int i,j,k, j_end;
 
-   if (vdir < 0)
+   if(vdir < 0)
       j_end = -1, j = y-1;
    else
       j_end =  y, j = 0;
 
-   for (; j != j_end; j += vdir) {
-      for (i=0; i < x; ++i) {
+   for(; j != j_end; j += vdir) {
+      for(i=0; i < x; ++i) {
          uint8 *d = (uint8 *) data + (j*x+i)*comp;
-         if (write_alpha < 0)
+         if(write_alpha < 0)
             fwrite(&d[comp-1], 1, 1, f);
          switch (comp) {
             case 1:
             case 2: writef(f, "111", d[0],d[0],d[0]);
                     break;
             case 4:
-               if (!write_alpha) {
-                  for (k=0; k < 3; ++k)
+               if(!write_alpha) {
+                  for(k=0; k < 3; ++k)
                      px[k] = bg[k] + ((d[k] - bg[k]) * d[3])/255;
                   writef(f, "111", px[1-rgb_dir],px[1],px[1+rgb_dir]);
                   break;
@@ -3632,7 +3632,7 @@ static void write_pixels(FILE *f, int rgb_dir, int vdir, int x, int y, int comp,
                writef(f, "111", d[1-rgb_dir],d[1],d[1+rgb_dir]);
                break;
          }
-         if (write_alpha > 0)
+         if(write_alpha > 0)
             fwrite(&d[comp-1], 1, 1, f);
       }
       fwrite(&zero,scanline_pad,1,f);
@@ -3642,7 +3642,7 @@ static void write_pixels(FILE *f, int rgb_dir, int vdir, int x, int y, int comp,
 static int outfile(char const *filename, int rgb_dir, int vdir, int x, int y, int comp, void *data, int alpha, int pad, char *fmt, ...)
 {
    FILE *f = fopen(filename, "wb");
-   if (f) {
+   if(f) {
       va_list v;
       va_start(v, fmt);
       writefv(f, fmt, v);

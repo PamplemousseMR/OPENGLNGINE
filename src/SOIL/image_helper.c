@@ -24,7 +24,7 @@ int
     int x, y, c;
 
     /* error(s) check    */
-    if (     (width < 1) || (height < 1) ||
+    if(     (width < 1) || (height < 1) ||
             (resampled_width < 2) || (resampled_height < 2) ||
             (channels < 1) ||
             (NULL == orig) || (NULL == resampled) )
@@ -38,7 +38,7 @@ int
     */
     dx = (width - 1.0f) / (resampled_width - 1.0f);
     dy = (height - 1.0f) / (resampled_height - 1.0f);
-    for ( y = 0; y < resampled_height; ++y )
+    for( y = 0; y < resampled_height; ++y )
     {
         /* find the base y index and fractional offset from that    */
         float sampley = y * dy;
@@ -46,7 +46,7 @@ int
         /*    if( inty < 0 ) { inty = 0; } else    */
         if( inty > height - 2 ) { inty = height - 2; }
         sampley -= inty;
-        for ( x = 0; x < resampled_width; ++x )
+        for( x = 0; x < resampled_width; ++x )
         {
             float samplex = x * dx;
             int intx = (int)samplex;
@@ -57,7 +57,7 @@ int
             samplex -= intx;
             /*    base index into the original image    */
             base_index = (inty * width + intx) * channels;
-            for ( c = 0; c < channels; ++c )
+            for( c = 0; c < channels; ++c )
             {
                 /*    do the sampling    */
                 float value = 0.5f;

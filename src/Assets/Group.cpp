@@ -16,7 +16,7 @@ namespace Assets
 
     Group::~Group() noexcept
     {
-        for (Mesh* m : m_meshs)
+        for(Mesh* m : m_meshs)
         {
             delete m;
         }
@@ -25,7 +25,7 @@ namespace Assets
     Group::Group(const Group& _group) :
         m_name(_group.m_name)
     {
-        for (Mesh* m : _group.m_meshs)
+        for(Mesh* m : _group.m_meshs)
         {
             m_meshs.push_back(new Mesh(*m));
         }
@@ -34,7 +34,7 @@ namespace Assets
     Group::Group(Group&& _group) :
         m_name(move(_group.m_name))
     {
-        for (size_t i=0 ; i<_group.m_meshs.size() ; ++i)
+        for(size_t i=0 ; i<_group.m_meshs.size() ; ++i)
         {
             m_meshs.push_back(_group.m_meshs[i]);
             _group.m_meshs[i] = nullptr;
@@ -45,13 +45,13 @@ namespace Assets
     {
         if(this != &_group)
         {
-            for (Mesh* m : m_meshs)
+            for(Mesh* m : m_meshs)
             {
                 delete m;
             }
             m_meshs.clear();
             m_name = _group.m_name;
-            for (Mesh* m : _group.m_meshs)
+            for(Mesh* m : _group.m_meshs)
             {
                 m_meshs.push_back(new Mesh(*m));
             }
@@ -63,13 +63,13 @@ namespace Assets
     {
         if(this != &_group)
         {
-            for (Mesh* m : m_meshs)
+            for(Mesh* m : m_meshs)
             {
                 delete m;
             }
             m_meshs.clear();
             m_name = move(_group.m_name);
-            for (size_t i=0 ; i<_group.m_meshs.size() ; ++i)
+            for(size_t i=0 ; i<_group.m_meshs.size() ; ++i)
             {
                 m_meshs.push_back(_group.m_meshs[i]);
                 _group.m_meshs[i] = nullptr;
@@ -103,9 +103,9 @@ namespace Assets
     ostream& Group::print(ostream& _o) const noexcept
     {
         _o << "[Group " << m_name << "]\n";
-        for (size_t i = 0 ; i < m_meshs.size(); ++i)
+        for(size_t i = 0 ; i < m_meshs.size(); ++i)
         {
-            if (i > 0)
+            if(i > 0)
             {
                 _o << "\n";
             }

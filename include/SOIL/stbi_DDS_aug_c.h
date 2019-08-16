@@ -74,12 +74,12 @@ typedef struct {
 static int dds_test(stbi *s)
 {
     //    check the magic number
-    if (get8(s) != 'D') return 0;
-    if (get8(s) != 'D') return 0;
-    if (get8(s) != 'S') return 0;
-    if (get8(s) != ' ') return 0;
+    if(get8(s) != 'D') return 0;
+    if(get8(s) != 'D') return 0;
+    if(get8(s) != 'S') return 0;
+    if(get8(s) != ' ') return 0;
     //    check header size
-    if (get32le(s) != 124) return 0;
+    if(get32le(s) != 124) return 0;
     return 1;
 }
 #ifndef STBI_NO_STDIO
@@ -496,7 +496,7 @@ stbi_uc *stbi_dds_load             (char *filename,           int *x, int *y, in
 {
    stbi_uc *data;
    FILE *f = fopen(filename, "rb");
-   if (!f) return NULL;
+   if(!f) return NULL;
    data = stbi_dds_load_from_file(f,x,y,comp,req_comp);
    fclose(f);
    return data;

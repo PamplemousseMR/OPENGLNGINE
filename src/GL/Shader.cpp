@@ -41,7 +41,7 @@ namespace GL
 
     Shader& Shader::operator=(const Shader& _shader)
     {
-        if (this != &_shader)
+        if(this != &_shader)
         {
             glDeleteShader(m_id);
             m_type = _shader.m_type;
@@ -64,10 +64,10 @@ namespace GL
         }
         string shaderCode;
         ifstream shaderStream(_path, ios::in);
-        if (shaderStream.is_open())
+        if(shaderStream.is_open())
         {
             string Line = "";
-            while (getline(shaderStream, Line))
+            while(getline(shaderStream, Line))
             {
                 shaderCode += "\n" + Line;
             }
@@ -89,7 +89,7 @@ namespace GL
         GLint result = GL_FALSE;
         glGetShaderiv(m_id, GL_COMPILE_STATUS, &result);
 
-        if (!result)
+        if(!result)
         {
             int infoLogLength;
             glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &infoLogLength);

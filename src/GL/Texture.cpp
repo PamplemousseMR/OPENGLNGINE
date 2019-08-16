@@ -13,7 +13,7 @@ namespace GL
     {
         for(size_t i=0 ; i<s_location.size() ; ++i)
         {
-            if (s_location[i] == false)
+            if(s_location[i] == false)
             {
                 m_location = int(i);
                 s_location[i] = true;
@@ -46,7 +46,7 @@ namespace GL
             s_first = false;
             GLint size;
             glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &size);
-            for (int i(0); i < size; ++i)
+            for(int i(0); i < size; ++i)
             {
                 s_location.push_back(false);
             }
@@ -91,7 +91,6 @@ namespace GL
             break;
             case TYPE_2DMULTISAMPLE :
                 throw invalid_argument("[Texture] TODO");
-            break;
         }
 
         size_t numBytes = size_t(width * height * depth) * 4;
@@ -118,7 +117,6 @@ namespace GL
                 break;
                 case TYPE_2DMULTISAMPLE :
                     throw invalid_argument("[Texture] TODO");
-                break;
             }
             unbind();
         }
@@ -158,7 +156,6 @@ namespace GL
                 break;
                 case TYPE_2DMULTISAMPLE :
                     throw invalid_argument("[Texture] TODO");
-                break;
             }
 
             size_t numBytes = size_t(width * height * depth) * 4;
@@ -185,7 +182,6 @@ namespace GL
                     break;
                     case TYPE_2DMULTISAMPLE :
                         throw invalid_argument("[Texture] TODO");
-                    break;
                 }
                 unbind();
             }
@@ -207,15 +203,15 @@ namespace GL
 
         bool hasAlpha;
         const string fileFormat = _path.extension().string();
-        if (fileFormat == ".bmp" || fileFormat == ".jpg" || fileFormat == ".jpeg")
+        if(fileFormat == ".bmp" || fileFormat == ".jpg" || fileFormat == ".jpeg")
         {
             hasAlpha = false;
         }
-        else if (fileFormat == ".png" || fileFormat == ".tga" || fileFormat == ".psd" || fileFormat == ".DDS")
+        else if(fileFormat == ".png" || fileFormat == ".tga" || fileFormat == ".psd" || fileFormat == ".DDS")
         {
             hasAlpha = true;
         }
-        else if (fileFormat == ".hdr")
+        else if(fileFormat == ".hdr")
         {
             throw invalid_argument("[Texture] TODO HDR");
         }
@@ -241,7 +237,7 @@ namespace GL
         switch(m_type)
         {
             case TYPE_1D :
-                if (height != 1)
+                if(height != 1)
                 {
                     throw invalid_argument("[Texture] not a 1D texture");
                 }
@@ -252,7 +248,6 @@ namespace GL
             break;
             case TYPE_2DMULTISAMPLE :
                 throw std::invalid_argument("[Texture] Can't load image to multisampled textures");
-            break;
         }
         assert(glGetError() == GL_NO_ERROR);
         SOIL_free_image_data(data);
@@ -269,7 +264,7 @@ namespace GL
         switch (m_type)
         {
             case TYPE_1D :
-                if (_height != 1)
+                if(_height != 1)
                 {
                     throw invalid_argument("[Texture] Not a 1D texture");
                 }
@@ -304,7 +299,6 @@ namespace GL
             break;
             case TYPE_2DMULTISAMPLE :
                 glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, GLenum(_internalFormat), _width, _height, GL_TRUE);
-            break;
         }
         assert(glGetError() == GL_NO_ERROR);
     }

@@ -56,7 +56,7 @@ namespace GL
     FrameBuffer::FrameBuffer() :
         IGLObject()
     {
-        if (s_first)
+        if(s_first)
         {
             s_first = false;
             glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &s_maxAttachement);
@@ -111,7 +111,7 @@ namespace GL
         }
         assert(glGetError() == GL_NO_ERROR);
         auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
-        if (p == m_colorAttachement.end())
+        if(p == m_colorAttachement.end())
         {
             m_colorAttachement.push_back(_attach);
         }
@@ -126,7 +126,7 @@ namespace GL
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_RENDERBUFFER, _buffer.getId());
         assert(glGetError() == GL_NO_ERROR);
         auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
-        if (p == m_colorAttachement.end())
+        if(p == m_colorAttachement.end())
         {
             m_colorAttachement.push_back(_attach);
         }
@@ -140,31 +140,22 @@ namespace GL
             switch(err) {
             case GL_FRAMEBUFFER_UNDEFINED:
                 throw std::runtime_error("[FrameBuffer] undefined");
-                break;
             case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
                 throw std::runtime_error("[FrameBuffer] incomplete attachment");
-                break;
             case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
                 throw std::runtime_error("[FrameBuffer] incomplete missing attachment");
-                break;
             case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
                 throw std::runtime_error("[FrameBuffer] incomplete draw buffer");
-                break;
             case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
                 throw std::runtime_error("[FrameBuffer] incomplete read buffer");
-                break;
             case GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE:
                 throw std::runtime_error("[FrameBuffer] attachment object type");
-                break;
             case GL_FRAMEBUFFER_UNSUPPORTED:
                 throw std::runtime_error("[FrameBuffer] unsupported");
-                break;
             case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
                 throw std::runtime_error("[FrameBuffer] incomplete multisample");
-                break;
             case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
                 throw std::runtime_error("[FrameBuffer] incomplete layer targets");
-                break;
             }
         }
         assert(glGetError() == GL_NO_ERROR);

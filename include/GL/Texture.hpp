@@ -252,8 +252,7 @@ inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);
         break;
         case TYPE_2DMULTISAMPLE :
-        throw std::invalid_argument("[Texture] Can't set filter to multisampled textures");
-        break;
+            throw std::invalid_argument("[Texture] Can't set filter to multisampled textures");
     }
     assert(glGetError() == GL_NO_ERROR);
 }
@@ -270,7 +269,6 @@ inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const
         break;
         case TYPE_2DMULTISAMPLE :
             throw std::invalid_argument("[Texture] Can't set filter to multisampled textures");
-        break;
     }
     assert(glGetError() == GL_NO_ERROR);
 }
@@ -287,7 +285,6 @@ inline void Texture::generateMipmap() const
         break;
         case TYPE_2DMULTISAMPLE :
             throw std::invalid_argument("[Texture] Can't generate mipmap to multisampled textures");
-        break;
     }
     assert(glGetError() == GL_NO_ERROR);
 }
