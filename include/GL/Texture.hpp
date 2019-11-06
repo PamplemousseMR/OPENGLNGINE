@@ -7,12 +7,12 @@
 #include <string>
 #include <vector>
 
-#include "GL/IGLObject.hpp"
+#include "GL/IBindable.hpp"
 
 namespace GL
 {
 
-class Texture : public IGLObject
+class Texture : public IBindable
 {
 
 public:
@@ -156,7 +156,7 @@ public:
 public:
 
     Texture(TEXTURE_TYPE);
-    ~Texture() noexcept override;
+    ~Texture() noexcept final;
     Texture(const Texture&);
     Texture(Texture&&) = delete;
     Texture& operator=(const Texture&);
@@ -167,8 +167,8 @@ public:
     void allocateMultisample(int, int, TEXTURE_INTERNALFORMAT, TEXTURE_FORMAT, int);
     inline void generateMipmap() const;
 
-    inline void bind() const noexcept override;
-    inline void unbind() const noexcept override;
+    inline void bind() const noexcept final;
+    inline void unbind() const noexcept final;
 
     inline int getLocation() const noexcept;
     inline TEXTURE_TYPE getType() const noexcept;

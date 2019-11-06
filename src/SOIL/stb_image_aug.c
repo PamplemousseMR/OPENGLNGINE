@@ -1973,11 +1973,11 @@ char *stbi_zlib_decode_malloc(char const *buffer, int len, int *outlen)
    return stbi_zlib_decode_malloc_guesssize(buffer, len, 16384, outlen);
 }
 
-int stbi_zlib_decode_buffer(char *obuffer, int olen, char const *IGLObject, int ilen)
+int stbi_zlib_decode_buffer(char *obuffer, int olen, char const *IObject, int ilen)
 {
    zbuf a;
-   a.zbuffer = (uint8 *) IGLObject;
-   a.zbuffer_end = (uint8 *) IGLObject + ilen;
+   a.zbuffer = (uint8 *) IObject;
+   a.zbuffer_end = (uint8 *) IObject + ilen;
    if(do_zlib(&a, obuffer, olen, 0, 1))
       return (int) (a.zout - a.zout_start);
    else
@@ -2000,11 +2000,11 @@ char *stbi_zlib_decode_noheader_malloc(char const *buffer, int len, int *outlen)
    }
 }
 
-int stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char *IGLObject, int ilen)
+int stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char *IObject, int ilen)
 {
    zbuf a;
-   a.zbuffer = (uint8 *) IGLObject;
-   a.zbuffer_end = (uint8 *) IGLObject + ilen;
+   a.zbuffer = (uint8 *) IObject;
+   a.zbuffer_end = (uint8 *) IObject + ilen;
    if(do_zlib(&a, obuffer, olen, 0, 0))
       return (int) (a.zout - a.zout_start);
    else

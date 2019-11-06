@@ -3,20 +3,20 @@
 #include <assert.h>
 #include <vector>
 
-#include "GL/IGLObject.hpp"
+#include "GL/IBindable.hpp"
 
 #define BUFFER_OFFSET(i) (static_cast< GLfloat* >(nullptr) + (i))
 
 namespace GL 
 {
 
-class VertexBuffer : public IGLObject
+class VertexBuffer : public IBindable
 {
 
 public:
 
     VertexBuffer();
-    ~VertexBuffer() noexcept override;
+    ~VertexBuffer() noexcept final;
     VertexBuffer(const VertexBuffer&) noexcept;
     VertexBuffer(VertexBuffer&&) = delete;
     VertexBuffer& operator=(const VertexBuffer&) noexcept;
@@ -27,8 +27,8 @@ public:
     inline void setLocation(GLuint) const noexcept;
     inline void setAttrib(GLuint, GLint, GLenum, GLboolean, GLsizei, GLint) const noexcept;
 
-    inline virtual void bind() const noexcept override;
-    inline virtual void unbind() const noexcept override;
+    inline virtual void bind() const noexcept final;
+    inline virtual void unbind() const noexcept final;
 };
 
 template<typename T>

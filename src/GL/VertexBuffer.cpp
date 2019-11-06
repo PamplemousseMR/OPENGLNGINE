@@ -8,7 +8,7 @@ namespace GL
 {
 
     VertexBuffer::VertexBuffer() :
-        IGLObject()
+        IBindable()
     {
         glGenBuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
@@ -25,7 +25,7 @@ namespace GL
     }
 
     VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) noexcept :
-        IGLObject(_buffer)
+        IBindable(_buffer)
     {
         glGenBuffers(1, &m_id);
 
@@ -49,7 +49,7 @@ namespace GL
     {
         if(this != &_buffer)
         {
-            IGLObject::operator=(_buffer);
+            IObject::operator=(_buffer);
 
             glBindBuffer(GL_COPY_READ_BUFFER, _buffer.getId());
             glBindBuffer(GL_COPY_WRITE_BUFFER, m_id);

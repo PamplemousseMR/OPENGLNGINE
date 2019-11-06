@@ -11,7 +11,7 @@ namespace GL
     bool RenderBuffer::s_first = true;
 
     RenderBuffer::RenderBuffer() :
-        IGLObject()
+        IBindable()
     {
         if(s_first)
         {
@@ -34,7 +34,7 @@ namespace GL
     }
 
     RenderBuffer::RenderBuffer(const RenderBuffer& _renderBuffer) :
-        IGLObject(_renderBuffer)
+        IBindable(_renderBuffer)
     {
         throw invalid_argument("[RenderBuffer] TODO");
     }

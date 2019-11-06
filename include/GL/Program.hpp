@@ -5,20 +5,20 @@
 #include <assert.h>
 #include <vector>
 
-#include "GL/IGLObject.hpp"
+#include "GL/IBindable.hpp"
 
 namespace GL
 {
 
 class Shader;
 
-class Program : public IGLObject
+class Program : public IBindable
 {
 
 public:
 
     Program();
-    ~Program() noexcept override;
+    ~Program() noexcept final;
     Program(const Program&);
     Program(Program&&) = delete;
     Program& operator=(const Program&) noexcept;
@@ -29,8 +29,8 @@ public:
     void detachAll() noexcept;
     void link() const;
 
-    inline virtual void bind() const noexcept override;
-    inline virtual void unbind() const noexcept override;
+    inline virtual void bind() const noexcept final;
+    inline virtual void unbind() const noexcept final;
 
 private:
 

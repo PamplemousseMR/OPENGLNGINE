@@ -3,25 +3,25 @@
 #include <assert.h>
 #include <vector>
 
-#include "GL/IGLObject.hpp"
+#include "GL/IBindable.hpp"
 
 namespace GL
 {
 
-class VertexArrayBuffer : public IGLObject
+class VertexArrayBuffer : public IBindable
 {
 
 public:
 
     VertexArrayBuffer();
-    ~VertexArrayBuffer() noexcept override;
+    ~VertexArrayBuffer() noexcept final;
     VertexArrayBuffer(const VertexArrayBuffer&) = delete;
     VertexArrayBuffer(VertexArrayBuffer&&) = delete;
     VertexArrayBuffer& operator=(const VertexArrayBuffer&) = delete;
     VertexArrayBuffer& operator=(VertexArrayBuffer&&) = delete;
 
-    inline virtual void bind() const noexcept override;
-    inline virtual void unbind() const noexcept override;
+    inline virtual void bind() const noexcept final;
+    inline virtual void unbind() const noexcept final;
 
 };
 

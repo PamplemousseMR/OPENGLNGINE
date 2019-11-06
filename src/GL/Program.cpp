@@ -11,7 +11,7 @@ using namespace std;
 namespace GL
 {
     Program::Program() :
-        IGLObject()
+        IBindable()
     {
         m_id = glCreateProgram();
         assert(glGetError() == GL_NO_ERROR);
@@ -29,7 +29,7 @@ namespace GL
     }
 
     Program::Program(const Program& _program) :
-        IGLObject(_program)
+        IBindable(_program)
     {
         m_id = glCreateProgram();
         assert(glGetError() == GL_NO_ERROR);
@@ -48,7 +48,7 @@ namespace GL
         if(this != &_program)
         {
             detachAll();
-            IGLObject::operator=(_program);
+            IObject::operator=(_program);
             for(Shader* const s : _program.m_shaders)
             {
                 attach(*s);

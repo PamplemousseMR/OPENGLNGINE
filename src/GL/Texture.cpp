@@ -38,7 +38,7 @@ namespace GL
     bool Texture::s_first = true;
 
     Texture::Texture(TEXTURE_TYPE type) :
-        IGLObject(),
+        IBindable(),
         m_type(type)
     {
         if(s_first)
@@ -64,7 +64,7 @@ namespace GL
     }
 
     Texture::Texture(const Texture& _texture) :
-        IGLObject(_texture),
+        IBindable(_texture),
         m_type(_texture.m_type),
         m_format(_texture.m_format)
     {
@@ -131,7 +131,7 @@ namespace GL
     {
         if(this != &_texture)
         {
-            IGLObject::operator=(_texture);
+            IObject::operator=(_texture);
             m_type = _texture.m_type;
             m_format = _texture.m_format;
 

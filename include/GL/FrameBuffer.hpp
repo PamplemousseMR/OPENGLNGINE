@@ -3,14 +3,14 @@
 #include <assert.h>
 #include <vector>
 
-#include "GL/IGLObject.hpp"
+#include "GL/IBindable.hpp"
 #include "GL/RenderBuffer.hpp"
 #include "GL/Texture.hpp"
 
 namespace GL
 {
 
-class FrameBuffer : public IGLObject
+class FrameBuffer : public IBindable
 {
 
 public:
@@ -35,8 +35,8 @@ public:
 public:
 
     FrameBuffer();
-    ~FrameBuffer() noexcept override;
-    [[ noreturn ]] FrameBuffer(const FrameBuffer&);
+    ~FrameBuffer() noexcept final;
+    FrameBuffer(const FrameBuffer&);
     FrameBuffer(FrameBuffer&&) = delete;
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;
@@ -52,8 +52,8 @@ public:
     void checkStatus() const;
     void attachDrawBuffers() const;
 
-    inline virtual void bind() const noexcept override;
-    inline virtual void unbind() const noexcept override;
+    inline virtual void bind() const noexcept final;
+    inline virtual void unbind() const noexcept final;
     inline virtual void bindDraw() const noexcept;
     inline virtual void unbindDraw() const noexcept;
     inline virtual void bindRead() const noexcept;

@@ -7,7 +7,7 @@ using namespace std;
 namespace GL
 {
     VertexArrayBuffer::VertexArrayBuffer() :
-        IGLObject()
+        IBindable()
     {
         glGenVertexArrays(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);

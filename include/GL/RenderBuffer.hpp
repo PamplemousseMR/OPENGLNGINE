@@ -3,12 +3,12 @@
 #include <assert.h>
 #include <vector>
 
-#include "GL/IGLObject.hpp"
+#include "GL/IBindable.hpp"
 
 namespace GL
 {
 
-class RenderBuffer : public IGLObject
+class RenderBuffer : public IBindable
 {
 
 public:
@@ -92,7 +92,7 @@ public:
 public:
 
     RenderBuffer();
-    ~RenderBuffer() noexcept override;
+    ~RenderBuffer() noexcept final;
     RenderBuffer(const RenderBuffer&);
     RenderBuffer(RenderBuffer&&) = delete;
     RenderBuffer& operator=(const RenderBuffer&);
@@ -101,8 +101,8 @@ public:
     void allocate(int, int, RENDERBUFFER_FORMAT) const;
     void allocateMultisample(int, int, RENDERBUFFER_FORMAT, int) const;
 
-    inline virtual void bind() const noexcept override;
-    inline virtual void unbind() const noexcept override;
+    inline virtual void bind() const noexcept final;
+    inline virtual void unbind() const noexcept final;
 
 private:
 

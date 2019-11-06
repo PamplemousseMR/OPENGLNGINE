@@ -54,7 +54,7 @@ namespace GL
     }
 
     FrameBuffer::FrameBuffer() :
-        IGLObject()
+        IBindable()
     {
         if(s_first)
         {
@@ -77,7 +77,7 @@ namespace GL
     }
 
     FrameBuffer::FrameBuffer(const FrameBuffer& _frameBuffer) :
-        IGLObject(_frameBuffer)
+        IBindable(_frameBuffer)
     {
         throw invalid_argument("[FrameBuffer] TODO");
     }
