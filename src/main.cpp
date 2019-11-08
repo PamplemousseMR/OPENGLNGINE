@@ -536,7 +536,8 @@ int main()
 
             GL::PixelOperation::enableStencilTest(false);
 
-            GL::PixelOperation::enableBlendTest(false);
+            GL::PixelOperation::enableBlendTest(true);
+            GL::PixelOperation::setBlendFunc(GL::PixelOperation::BLEND_SRC_ALPHA, GL::PixelOperation::BLEND_ONE_MINUS_SRC_ALPHA);
 
             normalProgram.bind();
             {

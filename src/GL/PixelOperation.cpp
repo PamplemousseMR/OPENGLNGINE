@@ -63,10 +63,15 @@ namespace GL
         glClearStencil(_value);
     }
 
-
     void PixelOperation::enableBlendTest(bool _enable) noexcept
     {
         _enable ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
+    }
+
+    void PixelOperation::setBlendFunc(PIXELOPERATION_BLEND _sfactor, PIXELOPERATION_BLEND _dfactor) noexcept
+    {
+        glBlendFunc(_sfactor, _dfactor);
+
     }
 
 }
