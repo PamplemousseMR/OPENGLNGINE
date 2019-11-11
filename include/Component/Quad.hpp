@@ -16,6 +16,7 @@ namespace GL
 
 namespace Component
 {
+
 class Quad : public Drawable
 {
 

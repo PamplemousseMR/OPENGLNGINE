@@ -6,6 +6,7 @@
 
 namespace Component
 {
+
 class Drawable : public Component
 {
 

@@ -8,6 +8,7 @@
 
 namespace Component
 {
+
 class Component
 {
 
