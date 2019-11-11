@@ -42,8 +42,8 @@ public:
     FrameBuffer& operator=(FrameBuffer&&) = delete;
 
     void attachColorTexture(const GL::Texture&, unsigned);
-    inline void attachDepthTexture(const GL::Texture&) const noexcept;
-    inline void attachDepthStencilTexture(const GL::Texture&) const noexcept;
+    void attachDepthTexture(const GL::Texture&) const noexcept;
+    void attachDepthStencilTexture(const GL::Texture&) const noexcept;
 
     void attachColorBuffer(const GL::RenderBuffer&, unsigned);
     inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
@@ -70,40 +70,6 @@ private:
     std::vector< unsigned > m_colorAttachement {};
 
 };
-
-inline void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const noexcept
-{
-    switch(_texture.getType())
-    {
-    case Texture::TYPE_1D:
-        glFramebufferTexture1D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
-        break;
-    case Texture::TYPE_2D:
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
-        break;
-    case Texture::TYPE_2DMULTISAMPLE:
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
-        break;
-    }
-    assert(glGetError() == GL_NO_ERROR);
-}
-
-inline void FrameBuffer::attachDepthStencilTexture(const GL::Texture& _texture) const noexcept
-{
-    switch(_texture.getType())
-    {
-    case Texture::TYPE_1D:
-        glFramebufferTexture1D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
-        break;
-    case Texture::TYPE_2D:
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
-        break;
-    case Texture::TYPE_2DMULTISAMPLE:
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
-        break;
-    }
-    assert(glGetError() == GL_NO_ERROR);
-}
 
 inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const noexcept
 {

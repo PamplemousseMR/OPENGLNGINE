@@ -117,6 +117,40 @@ namespace GL
         }
     }
 
+    void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const noexcept
+    {
+        switch(_texture.getType())
+        {
+        case Texture::TYPE_1D:
+            glFramebufferTexture1D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
+            break;
+        case Texture::TYPE_2D:
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
+            break;
+        case Texture::TYPE_2DMULTISAMPLE:
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
+            break;
+        }
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
+    void FrameBuffer::attachDepthStencilTexture(const GL::Texture& _texture) const noexcept
+    {
+        switch(_texture.getType())
+        {
+        case Texture::TYPE_1D:
+            glFramebufferTexture1D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
+            break;
+        case Texture::TYPE_2D:
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
+            break;
+        case Texture::TYPE_2DMULTISAMPLE:
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
+            break;
+        }
+        assert(glGetError() == GL_NO_ERROR);
+    }
+
     void FrameBuffer::attachColorBuffer(const RenderBuffer& _buffer, unsigned _attach)
     {
         if(_attach >= unsigned(s_maxAttachement))

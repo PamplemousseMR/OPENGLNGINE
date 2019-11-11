@@ -71,7 +71,6 @@ namespace GL
     void PixelOperation::setBlendFunc(PIXELOPERATION_BLEND _sfactor, PIXELOPERATION_BLEND _dfactor) noexcept
     {
         glBlendFunc(_sfactor, _dfactor);
-
     }
 
 }
