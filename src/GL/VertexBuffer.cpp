@@ -18,13 +18,13 @@ namespace GL
         }
     }
 
-    VertexBuffer::~VertexBuffer() noexcept
+    VertexBuffer::~VertexBuffer()
     {
         glDeleteBuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) noexcept :
+    VertexBuffer::VertexBuffer(const VertexBuffer& _buffer) :
         IBindable(_buffer)
     {
         glGenBuffers(1, &m_id);
@@ -45,7 +45,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    VertexBuffer& VertexBuffer::operator=(const VertexBuffer& _buffer) noexcept
+    VertexBuffer& VertexBuffer::operator=(const VertexBuffer& _buffer)
     {
         if(this != &_buffer)
         {

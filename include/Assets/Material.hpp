@@ -20,44 +20,44 @@ class Material
 
 public:
 
-    Material(const std::string&) noexcept;
-    ~Material() noexcept;
+    Material(const std::string&);
+    ~Material();
     Material(const Material&);
     Material(Material&&);
     Material& operator=(const Material&);
     Material& operator=(Material&&);
 
-    inline const std::string& getName() const noexcept;
-    inline const glm::vec3& getAmbient() const noexcept;
-    inline const glm::vec3& getDiffuse() const noexcept;
-    inline const glm::vec3& getSpecular() const noexcept;
-    inline const glm::vec3& getTransmissionFilter() const noexcept;
-    inline int getIllumination() const noexcept;
-    inline float getDissolve() const noexcept;
-    inline bool getHalo() const noexcept;
-    inline float getSpecularExponent() const noexcept;
-    inline float getSharpness() const noexcept;
-    inline float getopticalDensity() const noexcept;
-    Map* getKamap() const noexcept;
-    Map* getKdmap() const noexcept;
-    Map* getKsmap() const noexcept;
-    Map* getNsmap() const noexcept;
-    Map* getdmap() const noexcept;
-    Map* getDecalmap() const noexcept;
-    Map* getDispmap() const noexcept;
-    Map* getBumpmap() const noexcept;
+    inline const std::string& getName() const;
+    inline const glm::vec3& getAmbient() const;
+    inline const glm::vec3& getDiffuse() const;
+    inline const glm::vec3& getSpecular() const;
+    inline const glm::vec3& getTransmissionFilter() const;
+    inline int getIllumination() const;
+    inline float getDissolve() const;
+    inline bool getHalo() const;
+    inline float getSpecularExponent() const;
+    inline float getSharpness() const;
+    inline float getopticalDensity() const;
+    Map* getKamap() const;
+    Map* getKdmap() const;
+    Map* getKsmap() const;
+    Map* getNsmap() const;
+    Map* getdmap() const;
+    Map* getDecalmap() const;
+    Map* getDispmap() const;
+    Map* getBumpmap() const;
 
-    inline void setAmbient(const glm::vec3&) noexcept;
-    inline void setDiffuse(const glm::vec3&) noexcept;
-    inline void setSpecular(const glm::vec3&) noexcept;
-    inline void setTransmissionFilter(const glm::vec3&) noexcept;
-    inline void setIllumination(int) noexcept;
-    inline void setDissolve(float) noexcept;
-    inline void setHalo(bool) noexcept;
-    inline void setSpecularExponent(float) noexcept;
-    inline void setSharpness(float) noexcept;
-    inline void setopticalDensity(float) noexcept;
-    inline void setEmissiveCoeficient(const glm::vec3&) noexcept;
+    inline void setAmbient(const glm::vec3&);
+    inline void setDiffuse(const glm::vec3&);
+    inline void setSpecular(const glm::vec3&);
+    inline void setTransmissionFilter(const glm::vec3&);
+    inline void setIllumination(int);
+    inline void setDissolve(float);
+    inline void setHalo(bool);
+    inline void setSpecularExponent(float);
+    inline void setSharpness(float);
+    inline void setopticalDensity(float);
+    inline void setEmissiveCoeficient(const glm::vec3&);
     void setKamap(const std::filesystem::path&);
     void setKdmap(const std::filesystem::path&);
     void setKsmap(const std::filesystem::path&);
@@ -67,7 +67,7 @@ public:
     void setDispmap(const std::filesystem::path&);
     void setBumpmap(const std::filesystem::path&);
 
-    std::ostream& print(std::ostream&) const noexcept;
+    std::ostream& print(std::ostream&) const;
 
 private :
 
@@ -94,114 +94,114 @@ private :
 
 };
 
-std::ostream& operator<<(std::ostream&, const Material&) noexcept;
+std::ostream& operator<<(std::ostream&, const Material&);
 
-inline const std::string& Material::getName() const noexcept
+inline const std::string& Material::getName() const
 {
     return m_name;
 }
 
-inline const glm::vec3& Material::getAmbient() const noexcept
+inline const glm::vec3& Material::getAmbient() const
 {
     return m_kaAmbient;
 }
 
-inline const glm::vec3& Material::getDiffuse() const noexcept
+inline const glm::vec3& Material::getDiffuse() const
 {
     return m_kdDiffuse;
 }
 
-inline const glm::vec3& Material::getSpecular() const noexcept
+inline const glm::vec3& Material::getSpecular() const
 {
     return m_ksSpecular;
 }
 
-inline const glm::vec3& Material::getTransmissionFilter() const noexcept
+inline const glm::vec3& Material::getTransmissionFilter() const
 {
     return m_tfTransmissionfilter;
 }
 
-inline int Material::getIllumination() const noexcept
+inline int Material::getIllumination() const
 {
     return m_illumIllumination;
 }
 
-inline float Material::getDissolve() const noexcept
+inline float Material::getDissolve() const
 {
     return m_dDissolve;
 }
 
-inline bool Material::getHalo() const noexcept
+inline bool Material::getHalo() const
 {
     return m_halo;
 }
 
-inline float Material::getSpecularExponent() const noexcept
+inline float Material::getSpecularExponent() const
 {
     return m_nsSpecularexponent;
 }
 
-inline float Material::getSharpness() const noexcept
+inline float Material::getSharpness() const
 {
     return m_sharpnessSharpness;
 }
 
-inline float Material::getopticalDensity() const noexcept
+inline float Material::getopticalDensity() const
 {
     return m_niOpticaldensity;
 }
 
-inline void Material::setAmbient(const glm::vec3& _ka) noexcept
+inline void Material::setAmbient(const glm::vec3& _ka)
 {
     m_kaAmbient = _ka;
 }
 
-inline void Material::setDiffuse(const glm::vec3& _kd) noexcept
+inline void Material::setDiffuse(const glm::vec3& _kd)
 {
     m_kdDiffuse = _kd;
 }
 
-inline void Material::setSpecular(const glm::vec3& _ks) noexcept
+inline void Material::setSpecular(const glm::vec3& _ks)
 {
     m_ksSpecular = _ks;
 }
 
-inline void Material::setTransmissionFilter(const glm::vec3& _tf) noexcept
+inline void Material::setTransmissionFilter(const glm::vec3& _tf)
 {
     m_tfTransmissionfilter = _tf;
 }
 
-inline void Material::setIllumination(int _illum) noexcept
+inline void Material::setIllumination(int _illum)
 {
     m_illumIllumination = _illum;
 }
 
-inline void Material::setDissolve(float _d) noexcept
+inline void Material::setDissolve(float _d)
 {
     m_dDissolve = _d;
 }
 
-inline void Material::setHalo(bool _h) noexcept
+inline void Material::setHalo(bool _h)
 {
     m_halo = _h;
 }
 
-inline void Material::setSpecularExponent(float _ns) noexcept
+inline void Material::setSpecularExponent(float _ns)
 {
     m_nsSpecularexponent = _ns;
 }
 
-inline void Material::setSharpness(float _sharp) noexcept
+inline void Material::setSharpness(float _sharp)
 {
     m_sharpnessSharpness = _sharp;
 }
 
-inline void Material::setopticalDensity(float _ni) noexcept
+inline void Material::setopticalDensity(float _ni)
 {
     m_niOpticaldensity = _ni;
 }
 
-inline void Material::setEmissiveCoeficient(const glm::vec3& _ke) noexcept
+inline void Material::setEmissiveCoeficient(const glm::vec3& _ke)
 {
     m_Ke = _ke;
 }

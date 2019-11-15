@@ -17,47 +17,47 @@ public:
 
     enum FRAMBUFFER_MASK : GLbitfield
     {
-        MASK_COLOR = GL_COLOR_BUFFER_BIT,
-        MASK_DEPTH = GL_DEPTH_BUFFER_BIT,
-        MASK_STENCIL = GL_STENCIL_BUFFER_BIT
+        FM_COLOR = GL_COLOR_BUFFER_BIT,
+        FM_DEPTH = GL_DEPTH_BUFFER_BIT,
+        FM_STENCIL = GL_STENCIL_BUFFER_BIT
     };
 
 public:
 
-    static void bindDefault() noexcept;
-    static void unbindDefault() noexcept;
-    static void bindDrawDefault() noexcept;
-    static void unbindDrawDefault() noexcept;
-    static void bindReadDefault() noexcept;
-    static void unbindReadDefault() noexcept;
-    static void blit(int, int, FRAMBUFFER_MASK) noexcept;
+    static void bindDefault();
+    static void unbindDefault();
+    static void bindDrawDefault();
+    static void unbindDrawDefault();
+    static void bindReadDefault();
+    static void unbindReadDefault();
+    static void blit(int, int, FRAMBUFFER_MASK);
 
 public:
 
     FrameBuffer();
-    ~FrameBuffer() noexcept final;
+    ~FrameBuffer() final;
     FrameBuffer(const FrameBuffer&);
     FrameBuffer(FrameBuffer&&) = delete;
     FrameBuffer& operator=(const FrameBuffer&);
     FrameBuffer& operator=(FrameBuffer&&) = delete;
 
     void attachColorTexture(const GL::Texture&, unsigned);
-    void attachDepthTexture(const GL::Texture&) const noexcept;
-    void attachDepthStencilTexture(const GL::Texture&) const noexcept;
+    void attachDepthTexture(const GL::Texture&) const;
+    void attachDepthStencilTexture(const GL::Texture&) const;
 
     void attachColorBuffer(const GL::RenderBuffer&, unsigned);
-    inline void attachDepthBuffer(const GL::RenderBuffer&) const noexcept;
-    inline void attachDepthStencilBuffer(const GL::RenderBuffer&) const noexcept;
+    inline void attachDepthBuffer(const GL::RenderBuffer&) const;
+    inline void attachDepthStencilBuffer(const GL::RenderBuffer&) const;
 
     void checkStatus() const;
     void attachDrawBuffers() const;
 
-    inline virtual void bind() const noexcept final;
-    inline virtual void unbind() const noexcept final;
-    inline virtual void bindDraw() const noexcept;
-    inline virtual void unbindDraw() const noexcept;
-    inline virtual void bindRead() const noexcept;
-    inline virtual void unbindRead() const noexcept;
+    inline virtual void bind() const final;
+    inline virtual void unbind() const final;
+    inline virtual void bindDraw() const;
+    inline virtual void unbindDraw() const;
+    inline virtual void bindRead() const;
+    inline virtual void unbindRead() const;
 
 private:
 
@@ -71,49 +71,49 @@ private:
 
 };
 
-inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const noexcept
+inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::attachDepthStencilBuffer(const GL::RenderBuffer& _buffer) const noexcept
+inline void FrameBuffer::attachDepthStencilBuffer(const GL::RenderBuffer& _buffer) const
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::bind() const noexcept
+inline void FrameBuffer::bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::unbind() const noexcept
+inline void FrameBuffer::unbind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::bindDraw() const noexcept
+inline void FrameBuffer::bindDraw() const
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::unbindDraw() const noexcept
+inline void FrameBuffer::unbindDraw() const
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::bindRead() const noexcept
+inline void FrameBuffer::bindRead() const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void FrameBuffer::unbindRead() const noexcept
+inline void FrameBuffer::unbindRead() const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
     assert(glGetError() == GL_NO_ERROR);

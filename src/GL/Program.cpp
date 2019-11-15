@@ -21,7 +21,7 @@ namespace GL
         }
     }
 
-    Program::~Program() noexcept
+    Program::~Program()
     {
         detachAll();
         glDeleteProgram(m_id);
@@ -43,7 +43,7 @@ namespace GL
         }
     }
 
-    Program& Program::operator=(const Program& _program) noexcept
+    Program& Program::operator=(const Program& _program)
     {
         if(this != &_program)
         {
@@ -81,7 +81,7 @@ namespace GL
         m_shaders.erase(p);
     }
 
-    void Program::detachAll() noexcept
+    void Program::detachAll()
     {
         while(m_shaders.size() != 0)
         {

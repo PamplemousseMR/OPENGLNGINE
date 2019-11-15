@@ -25,22 +25,22 @@ public :
     Drawable& operator=(const Drawable&);
     Drawable& operator=(Drawable&&);
 
-    inline GLuint getVertexLocation() const noexcept;
-    inline GLuint getTextureCoordLocation() const noexcept;
-    inline GLuint getNormalLocation() const noexcept;
+    inline GLuint getVertexLocation() const;
+    inline GLuint getTextureCoordLocation() const;
+    inline GLuint getNormalLocation() const;
 };
 
-inline GLuint Drawable::getVertexLocation() const noexcept
+inline GLuint Drawable::getVertexLocation() const
 {
     return S_VERTEXLOCATION;
 }
 
-inline GLuint Drawable::getTextureCoordLocation() const noexcept
+inline GLuint Drawable::getTextureCoordLocation() const
 {
     return S_TEXTCOORDLOCATION;
 }
 
-inline GLuint Drawable::getNormalLocation() const noexcept
+inline GLuint Drawable::getNormalLocation() const
 {
     return S_NORMALLOCATION;
 }

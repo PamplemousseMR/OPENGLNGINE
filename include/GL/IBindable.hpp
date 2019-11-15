@@ -12,13 +12,13 @@ class IBindable : public IObject
 
 public:
 
-    virtual void bind() const noexcept = 0;
-    virtual void unbind() const noexcept = 0;
+    virtual void bind() const = 0;
+    virtual void unbind() const = 0;
 
 protected:
 
     IBindable();
-    virtual ~IBindable() noexcept;
+    virtual ~IBindable();
     IBindable(const IBindable&);
     IBindable(IBindable&&) = delete;
     IBindable& operator=(const IBindable&);

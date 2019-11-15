@@ -33,7 +33,7 @@ class Mesh : public Drawable
 public:
 
     Mesh(const std::string&);
-    ~Mesh() noexcept;
+    ~Mesh();
     Mesh(const Mesh&);
     Mesh(Mesh&&);
     Mesh& operator=(const Mesh&);
@@ -43,14 +43,14 @@ public:
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&);
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&);
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec3>&);
-    void bind() const noexcept;
-    void unbind() const noexcept;
-    inline void draw() const noexcept;
+    void bind() const;
+    void unbind() const;
+    inline void draw() const;
 
-    inline Assets::Material* getMaterial() const noexcept;
-    inline bool hasTextureCoord() const noexcept;
+    inline Assets::Material* getMaterial() const;
+    inline bool hasTextureCoord() const;
 
-    std::ostream& print(std::ostream&) const noexcept;
+    std::ostream& print(std::ostream&) const;
 
 private:
 
@@ -68,8 +68,8 @@ private:
 
 private:
 
-    bool getSimilarVertexIndex(const PackedVertex&, const std::map<PackedVertex, unsigned int>&, unsigned int&) const noexcept;
-    void indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&) const noexcept;
+    bool getSimilarVertexIndex(const PackedVertex&, const std::map<PackedVertex, unsigned int>&, unsigned int&) const;
+    void indexVBO(const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&, std::vector<unsigned int>&, std::vector<glm::vec3>&, std::vector<glm::vec2>&, std::vector<glm::vec3>&) const;
 
 private:
 
@@ -84,19 +84,19 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream&, const Mesh&) noexcept;
+std::ostream& operator<<(std::ostream&, const Mesh&);
 
-inline Assets::Material* Mesh::getMaterial() const noexcept
+inline Assets::Material* Mesh::getMaterial() const
 {
     return m_material;
 }
 
-inline bool Mesh::hasTextureCoord() const noexcept
+inline bool Mesh::hasTextureCoord() const
 {
     return m_textCoord;
 }
 
-inline void Mesh::draw() const noexcept
+inline void Mesh::draw() const
 {
     glDrawElements(GL_TRIANGLES, m_dataSize, GL_UNSIGNED_INT, static_cast< void* >(nullptr));
     assert(glGetError() == GL_NO_ERROR);

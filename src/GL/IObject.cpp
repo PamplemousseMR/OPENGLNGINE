@@ -6,7 +6,7 @@ namespace GL
     {
     }
 
-    IObject::~IObject() noexcept
+    IObject::~IObject()
     {
     }
 

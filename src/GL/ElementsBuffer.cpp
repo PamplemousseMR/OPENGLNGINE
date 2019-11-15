@@ -19,13 +19,13 @@ namespace GL
         }
     }
 
-    ElementsBuffer::~ElementsBuffer() noexcept
+    ElementsBuffer::~ElementsBuffer()
     {
         glDeleteBuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer) noexcept :
+    ElementsBuffer::ElementsBuffer(const ElementsBuffer& _buffer) :
         IBindable(_buffer)
     {
         glGenBuffers(1, &m_id);
@@ -46,7 +46,7 @@ namespace GL
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    ElementsBuffer& ElementsBuffer::operator=(const ElementsBuffer& _buffer) noexcept
+    ElementsBuffer& ElementsBuffer::operator=(const ElementsBuffer& _buffer)
     {
         if(this != &_buffer)
         {

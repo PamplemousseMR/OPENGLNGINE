@@ -12,94 +12,94 @@ public:
 
     enum PIXELOPERATION_CLEAR : GLbitfield
     {
-        CLEAR_COLOR = GL_COLOR_BUFFER_BIT,
-        CLEAR_DEPTH = GL_DEPTH_BUFFER_BIT,
-        CLEAR_STENCIL = GL_STENCIL_BUFFER_BIT,
-        CLEAR_COLOR_DEPTH = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT,
-        CLEAR_COLOR_STENCIL = GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT,
-        CLEAR_DEPTH_STENCIL = GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT,
-        CLEAR_ALL = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
+        PC_COLOR = GL_COLOR_BUFFER_BIT,
+        PC_DEPTH = GL_DEPTH_BUFFER_BIT,
+        PC_STENCIL = GL_STENCIL_BUFFER_BIT,
+        PC_COLOR_DEPTH = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT,
+        PC_COLOR_STENCIL = GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT,
+        PC_DEPTH_STENCIL = GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT,
+        PC_ALL = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
     };
 
     enum PIXELOPERATION_DEPTH : GLenum
     {
-        DEPTH_NEVER = GL_NEVER,
-        DEPTH_LESS = GL_LESS,
-        DEPTH_EQUAL = GL_EQUAL,
-        DEPTH_LEQUAL = GL_LEQUAL,
-        DEPTH_GREATER = GL_GREATER,
-        DEPTH_NOTEQUAL = GL_NOTEQUAL,
-        DEPTH_GEQUAL = GL_GEQUAL,
-        DEPTH_ALWAYS = GL_ALWAYS
+        PD_NEVER = GL_NEVER,
+        PD_LESS = GL_LESS,
+        PD_EQUAL = GL_EQUAL,
+        PD_LEQUAL = GL_LEQUAL,
+        PD_GREATER = GL_GREATER,
+        PD_NOTEQUAL = GL_NOTEQUAL,
+        PD_GEQUAL = GL_GEQUAL,
+        PD_ALWAYS = GL_ALWAYS
     };
 
     enum PIXELOPERATION_STENCIL_OPERATION : GLenum
     {
-        STENCIL_KEEP = GL_KEEP,
-        STENCIL_ZERO = GL_ZERO,
-        STENCIL_REPLACE = GL_REPLACE,
-        STENCIL_INCR = GL_INCR,
-        STENCIL_INCR_WRAP = GL_INCR_WRAP,
-        STENCIL_DECR = GL_DECR,
-        STENCIL_DECR_WRAP = GL_DECR_WRAP,
-        STENCIL_INVERT = GL_INVERT
+        PSO_KEEP = GL_KEEP,
+        PSO_ZERO = GL_ZERO,
+        PSO_REPLACE = GL_REPLACE,
+        PSO_INCR = GL_INCR,
+        PSO_INCR_WRAP = GL_INCR_WRAP,
+        PSO_DECR = GL_DECR,
+        PSO_DECR_WRAP = GL_DECR_WRAP,
+        PSO_INVERT = GL_INVERT
     };
 
     enum PIXELOPERATION_STENCIL_FUNCTION : GLenum
     {
-        STENCIL_NEVER = GL_NEVER,
-        STENCIL_LESS = GL_LESS,
-        STENCIL_LEQUAL = GL_LEQUAL,
-        STENCIL_GREATER = GL_GREATER,
-        STENCIL_GEQUAL = GL_GEQUAL,
-        STENCIL_EQUAL = GL_EQUAL,
-        STENCIL_NOTEQUAL = GL_NOTEQUAL,
-        STENCIL_ALWAYS = GL_ALWAYS
+        PSF_NEVER = GL_NEVER,
+        PSF_LESS = GL_LESS,
+        PSF_LEQUAL = GL_LEQUAL,
+        PSF_GREATER = GL_GREATER,
+        PSF_GEQUAL = GL_GEQUAL,
+        PSF_EQUAL = GL_EQUAL,
+        PSF_NOTEQUAL = GL_NOTEQUAL,
+        PSF_ALWAYS = GL_ALWAYS
     };
 
     enum PIXELOPERATION_BLEND : GLenum
     {
-        BLEND_ZERO = GL_ZERO,
-        BLEND_ONE = GL_ONE,
-        BLEND_SRC_COLOR = GL_SRC_COLOR,
-        BLEND_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
-        BLEND_DST_COLOR = GL_DST_COLOR,
-        BLEND_ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR,
-        BLEND_SRC_ALPHA = GL_SRC_ALPHA,
-        BLEND_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
-        BLEND_DST_ALPHA = GL_DST_ALPHA,
-        BLEND_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA,
-        BLEND_CONSTANT_COLOR = GL_CONSTANT_COLOR,
-        BLEND_ONE_MINUS_CONSTANT_COLOR = GL_ONE_MINUS_CONSTANT_COLOR,
-        BLEND_CONSTANT_ALPHA = GL_CONSTANT_ALPHA,
-        BLEND_ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA,
-        BLEND_SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE,
-        BLEND_SRC1_COLOR = GL_SRC1_COLOR,
-        BLEND_ONE_MINUS_SRC1_COLOR = GL_ONE_MINUS_SRC1_COLOR,
-        BLEND_SRC1_ALPHA = GL_SRC1_ALPHA,
-        BLEND_ONE_MINUS_SRC1_ALPHA = GL_ONE_MINUS_SRC1_ALPHA,
+        PB_ZERO = GL_ZERO,
+        PB_ONE = GL_ONE,
+        PB_SRC_COLOR = GL_SRC_COLOR,
+        PB_ONE_MINUS_SRC_COLOR = GL_ONE_MINUS_SRC_COLOR,
+        PB_DST_COLOR = GL_DST_COLOR,
+        PB_ONE_MINUS_DST_COLOR = GL_ONE_MINUS_DST_COLOR,
+        PB_SRC_ALPHA = GL_SRC_ALPHA,
+        PB_ONE_MINUS_SRC_ALPHA = GL_ONE_MINUS_SRC_ALPHA,
+        PB_DST_ALPHA = GL_DST_ALPHA,
+        PB_ONE_MINUS_DST_ALPHA = GL_ONE_MINUS_DST_ALPHA,
+        PB_CONSTANT_COLOR = GL_CONSTANT_COLOR,
+        PB_ONE_MINUS_CONSTANT_COLOR = GL_ONE_MINUS_CONSTANT_COLOR,
+        PB_CONSTANT_ALPHA = GL_CONSTANT_ALPHA,
+        PB_ONE_MINUS_CONSTANT_ALPHA = GL_ONE_MINUS_CONSTANT_ALPHA,
+        PB_SRC_ALPHA_SATURATE = GL_SRC_ALPHA_SATURATE,
+        PB_SRC1_COLOR = GL_SRC1_COLOR,
+        PB_ONE_MINUS_SRC1_COLOR = GL_ONE_MINUS_SRC1_COLOR,
+        PB_SRC1_ALPHA = GL_SRC1_ALPHA,
+        PB_ONE_MINUS_SRC1_ALPHA = GL_ONE_MINUS_SRC1_ALPHA,
     };
 
 public:
 
-    static void clear(PIXELOPERATION_CLEAR) noexcept;
+    static void clear(PIXELOPERATION_CLEAR);
 
-    static void setColorClearValue(float, float, float, float) noexcept;
+    static void setColorClearValue(float, float, float, float);
 
-    static void enableDepthTest(bool) noexcept;
-    static void enableDepthWrite(bool) noexcept;
-    static void setDepthFunc(PIXELOPERATION_DEPTH) noexcept;
+    static void enableDepthTest(bool);
+    static void enableDepthWrite(bool);
+    static void setDepthFunc(PIXELOPERATION_DEPTH);
     static void setDepthClearValue(float);
     static void setDepthClearValue(double);
 
-    static void enableStencilTest(bool) noexcept;
-    static void setStencilOperation(PIXELOPERATION_STENCIL_OPERATION, PIXELOPERATION_STENCIL_OPERATION, PIXELOPERATION_STENCIL_OPERATION) noexcept;
-    static void setStencilFunc(PIXELOPERATION_STENCIL_FUNCTION, int, unsigned) noexcept;
-    static void setStencilMask(unsigned) noexcept;
+    static void enableStencilTest(bool);
+    static void setStencilOperation(PIXELOPERATION_STENCIL_OPERATION, PIXELOPERATION_STENCIL_OPERATION, PIXELOPERATION_STENCIL_OPERATION);
+    static void setStencilFunc(PIXELOPERATION_STENCIL_FUNCTION, int, unsigned);
+    static void setStencilMask(unsigned);
     static void seStencilClearValue(int);
 
-    static void enableBlendTest(bool) noexcept;
-    static void setBlendFunc(PIXELOPERATION_BLEND, PIXELOPERATION_BLEND) noexcept;
+    static void enableBlendTest(bool);
+    static void setBlendFunc(PIXELOPERATION_BLEND, PIXELOPERATION_BLEND);
 
 };
 

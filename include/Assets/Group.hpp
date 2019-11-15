@@ -21,8 +21,8 @@ class Group
 
 public:
 
-    Group(const std::string&) noexcept;
-    ~Group() noexcept;
+    Group(const std::string&);
+    ~Group();
     Group(const Group&);
     Group(Group&&);
     Group& operator=(const Group&);
@@ -30,10 +30,10 @@ public:
 
     void add(const std::vector<glm::vec3>&, const std::vector<glm::vec3>*, const std::vector<glm::vec2>*, const std::vector<glm::vec3>&, const std::string*);
 
-    inline const std::string& getName() const noexcept;
-    const std::vector<Component::Mesh*>& getMeshs() const noexcept;
+    inline const std::string& getName() const;
+    const std::vector<Component::Mesh*>& getMeshs() const;
 
-    std::ostream& print(std::ostream& o) const noexcept;
+    std::ostream& print(std::ostream& o) const;
 
 private :
 
@@ -42,9 +42,9 @@ private :
 
 };
 
-std::ostream& operator<<(std::ostream& o, const Group& m) noexcept;
+std::ostream& operator<<(std::ostream& o, const Group& m);
 
-inline const std::string& Group::getName() const noexcept
+inline const std::string& Group::getName() const
 {
     return m_name;
 }

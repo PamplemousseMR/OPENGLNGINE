@@ -21,7 +21,7 @@ namespace GL
         }
     }
 
-    Shader::~Shader() noexcept
+    Shader::~Shader()
     {
         glDeleteShader(m_id);
         assert(glGetError() == GL_NO_ERROR);

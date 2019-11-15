@@ -2209,7 +2209,7 @@ static int parse_png_file(png *z, int scan, int req_comp)
 {
    uint8 palette[1024], pal_img_n=0;
    uint8 has_trans=0, tc[3];
-   uint32 ioff=0, idata_limit=0, i, pal_len=0;
+   uint32 ioff=0, iTD_limit=0, i, pal_len=0;
    int first=1,k;
    stbi *s = &z->s;
 
@@ -2284,12 +2284,12 @@ static int parse_png_file(png *z, int scan, int req_comp)
          case PNG_TYPE('I','D','A','T'): {
             if(pal_img_n && !pal_len) return e("no PLTE","Corrupt PNG");
             if(scan == SCAN_header) { s->img_n = pal_img_n; return 1; }
-            if(ioff + c.length > idata_limit) {
+            if(ioff + c.length > iTD_limit) {
                uint8 *p;
-               if(idata_limit == 0) idata_limit = c.length > 4096 ? c.length : 4096;
-               while(ioff + c.length > idata_limit)
-                  idata_limit *= 2;
-               p = (uint8 *) realloc(z->idata, idata_limit); if(p == NULL) return e("outofmem", "Out of memory");
+               if(iTD_limit == 0) iTD_limit = c.length > 4096 ? c.length : 4096;
+               while(ioff + c.length > iTD_limit)
+                  iTD_limit *= 2;
+               p = (uint8 *) realloc(z->idata, iTD_limit); if(p == NULL) return e("outofmem", "Out of memory");
                z->idata = p;
             }
             #ifndef STBI_NO_STDIO

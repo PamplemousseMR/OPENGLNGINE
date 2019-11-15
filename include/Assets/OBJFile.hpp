@@ -17,8 +17,8 @@ class OBJFile
 
 public:
 
-    OBJFile() noexcept;
-    ~OBJFile() noexcept;
+    OBJFile();
+    ~OBJFile();
     OBJFile(const OBJFile&);
     OBJFile(OBJFile&&);
     OBJFile& operator=(const OBJFile&);
@@ -26,20 +26,20 @@ public:
 
     void load(const std::filesystem::path&);
 
-    const std::vector<Object*>& getObjects() const noexcept;
+    const std::vector<Object*>& getObjects() const;
 
-    std::ostream& print(std::ostream&) const noexcept;
+    std::ostream& print(std::ostream&) const;
 
 private:
 
-    static std::vector<std::string> split(const std::string & str, char splitter) noexcept;
-    static std::vector<std::string> removeNullptr(const std::vector<std::string> & str) noexcept;
+    static std::vector<std::string> split(const std::string & str, char splitter);
+    static std::vector<std::string> removeNullptr(const std::vector<std::string> & str);
     static void checkSize(const std::vector<std::string>&, size_t, size_t, int);
 
 private:
 
     void push(std::vector<glm::vec3>*, std::vector<glm::vec3>*, std::vector<glm::vec2>*, std::vector<glm::vec3>*, std::string*) const;
-    std::vector<Material*> findMaterial(const std::string&) const noexcept;
+    std::vector<Material*> findMaterial(const std::string&) const;
     void loadMTLFile(const std::filesystem::path&) const;
 
 private:
@@ -49,7 +49,7 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream& o, const OBJFile&) noexcept;
+std::ostream& operator<<(std::ostream& o, const OBJFile&);
 
 }
 

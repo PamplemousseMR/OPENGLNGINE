@@ -18,7 +18,7 @@ using namespace Component;
 namespace Assets
 {
 
-vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
+vector<string> OBJFile::split(const string& _str, char _splitter)
 {
     if(_str == "")
     {
@@ -58,7 +58,7 @@ vector<string> OBJFile::split(const string& _str, char _splitter) noexcept
     return tokens;
 }
 
-vector<string> OBJFile::removeNullptr(const vector<string>& _str) noexcept
+vector<string> OBJFile::removeNullptr(const vector<string>& _str)
 {
     vector<string> res;
     for(unsigned int i(0); i < _str.size(); ++i)
@@ -99,7 +99,7 @@ void OBJFile::push(vector<vec3>* _vertex, vector<vec3>* _normal, vector<vec2>* _
     *_usemtl = "";
 }
 
-vector<Material*> OBJFile::findMaterial(const string& _mtl) const noexcept
+vector<Material*> OBJFile::findMaterial(const string& _mtl) const
 {
     vector<Material*> m;
     for(Object* ob : m_objects)
@@ -591,11 +591,11 @@ void OBJFile::loadMTLFile(const std::filesystem::path& _path) const
     file.close();
 }
 
-OBJFile::OBJFile() noexcept
+OBJFile::OBJFile()
 {
 }
 
-OBJFile::~OBJFile() noexcept
+OBJFile::~OBJFile()
 {
     for(Object* m : m_objects)
     {
@@ -969,7 +969,7 @@ void OBJFile::load(const filesystem::path& _path)
     }
 }
 
-ostream& OBJFile::print(ostream& _o) const noexcept
+ostream& OBJFile::print(ostream& _o) const
 {
     _o << "[OBJFile " << m_name << "]";
     for(const Object* ob : m_objects)
@@ -979,12 +979,12 @@ ostream& OBJFile::print(ostream& _o) const noexcept
     return _o;
 }
 
-const vector<Object*>& OBJFile::getObjects() const noexcept
+const vector<Object*>& OBJFile::getObjects() const
 {
     return m_objects;
 }
 
-ostream& operator<<(ostream& o, const OBJFile& m) noexcept
+ostream& operator<<(ostream& o, const OBJFile& m)
 {
     m.print(o);
     return o;

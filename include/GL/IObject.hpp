@@ -10,12 +10,12 @@ class IObject
 
 public:
 
-    inline GLuint getId() const noexcept;
+    inline GLuint getId() const;
 
 protected:
 
     IObject();
-    virtual ~IObject() noexcept;
+    virtual ~IObject();
     IObject(const IObject&);
     IObject(IObject&&) = delete;
     IObject& operator=(const IObject&);
@@ -27,7 +27,7 @@ protected:
 
 };
 
-inline GLuint IObject::getId() const noexcept
+inline GLuint IObject::getId() const
 {
     return m_id;
 }

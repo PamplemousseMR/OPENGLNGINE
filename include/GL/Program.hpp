@@ -18,19 +18,19 @@ class Program : public IBindable
 public:
 
     Program();
-    ~Program() noexcept final;
+    ~Program() final;
     Program(const Program&);
     Program(Program&&) = delete;
-    Program& operator=(const Program&) noexcept;
+    Program& operator=(const Program&);
     Program& operator=(Program&&) = delete;
 
     void attach(Shader&);
     void detach(const Shader&);
-    void detachAll() noexcept;
+    void detachAll();
     void link() const;
 
-    inline virtual void bind() const noexcept final;
-    inline virtual void unbind() const noexcept final;
+    inline virtual void bind() const final;
+    inline virtual void unbind() const final;
 
 private:
 
@@ -38,13 +38,13 @@ private:
 
 };
 
-inline void Program::bind() const noexcept
+inline void Program::bind() const
 {
     glUseProgram(m_id);
     assert(glGetError() == GL_NO_ERROR);
 }
 
-inline void Program::unbind() const noexcept
+inline void Program::unbind() const
 {
     glUseProgram(0);
     assert(glGetError() == GL_NO_ERROR);

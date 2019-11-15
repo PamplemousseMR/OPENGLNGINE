@@ -34,47 +34,47 @@ public:
 public:
 
     Map(MAP_TYPE, const std::filesystem::path&);
-    ~Map() noexcept;
+    ~Map();
     Map(const Map&);
     Map(Map&&);
     Map& operator=(const Map&);
     Map& operator=(Map&&);
 
-    GL::Texture& getTexture() const noexcept;
-    inline const std::string& getName() const noexcept;
-    inline bool getBlendu() const noexcept;
-    inline bool getBlendv() const noexcept;
+    GL::Texture& getTexture() const;
+    inline const std::string& getName() const;
+    inline bool getBlendu() const;
+    inline bool getBlendv() const;
     bool getCc() const;
     bool getClamp() const;
-    inline const glm::vec3& getImfchanrgb() const noexcept;
-    inline const glm::vec3& getImfchanmlz() const noexcept;
-    inline float getBase() const noexcept;
-    inline float getGain() const noexcept;
-    inline const glm::vec3& getO() const noexcept;
-    inline const glm::vec3& getS() const noexcept;
-    inline const glm::vec3& getT() const noexcept;
-    inline int getTextres() const noexcept;
-    inline float getMult() const noexcept;
-    inline float getBoost() const noexcept;
-    inline float getMapaat() const noexcept;
+    inline const glm::vec3& getImfchanrgb() const;
+    inline const glm::vec3& getImfchanmlz() const;
+    inline float getBase() const;
+    inline float getGain() const;
+    inline const glm::vec3& getO() const;
+    inline const glm::vec3& getS() const;
+    inline const glm::vec3& getT() const;
+    inline int getTextres() const;
+    inline float getMult() const;
+    inline float getBoost() const;
+    inline float getMapaat() const;
 
-    inline void setBlendu(bool) noexcept;
-    inline void setBlendv(bool) noexcept;
+    inline void setBlendu(bool);
+    inline void setBlendv(bool);
     void setCc(bool);
     void setClamp(bool);
-    inline void setImfchanrgb(const glm::vec3&) noexcept;
-    inline void setImfchanmlz(const glm::vec3&) noexcept;
-    inline void setBase(float) noexcept;
-    inline void setGain(float) noexcept;
-    inline void setO(const glm::vec3&) noexcept;
-    inline void setS(const glm::vec3&) noexcept;
-    inline void setT(const glm::vec3&) noexcept;
-    inline void setTextres(int) noexcept;
-    inline void setMult(float) noexcept;
-    inline void setBoost(float) noexcept;
-    inline void setMapaat(bool) noexcept;
+    inline void setImfchanrgb(const glm::vec3&);
+    inline void setImfchanmlz(const glm::vec3&);
+    inline void setBase(float);
+    inline void setGain(float);
+    inline void setO(const glm::vec3&);
+    inline void setS(const glm::vec3&);
+    inline void setT(const glm::vec3&);
+    inline void setTextres(int);
+    inline void setMult(float);
+    inline void setBoost(float);
+    inline void setMapaat(bool);
 
-    std::ostream& print(std::ostream&) const noexcept;
+    std::ostream& print(std::ostream&) const;
 
 private:
 
@@ -99,139 +99,139 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream&, const Map&) noexcept;
+std::ostream& operator<<(std::ostream&, const Map&);
 
-inline const std::string& Map::getName() const noexcept
+inline const std::string& Map::getName() const
 {
     return m_name;
 }
 
-inline void Map::setBlendu(bool _blendu) noexcept
+inline void Map::setBlendu(bool _blendu)
 {
     m_blendu = _blendu;
 }
 
-inline void Map::setBlendv(bool _blendv) noexcept
+inline void Map::setBlendv(bool _blendv)
 {
     m_blendv = _blendv;
 }
 
-inline void Map::setImfchanrgb(const glm::vec3& _rgb) noexcept
+inline void Map::setImfchanrgb(const glm::vec3& _rgb)
 {
     m_imfchanrgb = _rgb;
 }
 
-inline void Map::setImfchanmlz(const glm::vec3& _mlz) noexcept
+inline void Map::setImfchanmlz(const glm::vec3& _mlz)
 {
     m_imfchanmlz = _mlz;
 }
 
-inline void Map::setBase(float _base) noexcept
+inline void Map::setBase(float _base)
 {
     m_base = _base;
 }
 
-inline void Map::setGain(float _gain) noexcept
+inline void Map::setGain(float _gain)
 {
     m_gain = _gain;
 }
 
-inline void Map::setO(const glm::vec3& _o) noexcept
+inline void Map::setO(const glm::vec3& _o)
 {
     m_o = _o;
 }
 
-inline void Map::setS(const glm::vec3& _s) noexcept
+inline void Map::setS(const glm::vec3& _s)
 {
     m_s = _s;
 }
 
-inline void Map::setT(const glm::vec3& _t) noexcept
+inline void Map::setT(const glm::vec3& _t)
 {
     m_t = _t;
 }
 
-inline void Map::setTextres(int _textres) noexcept
+inline void Map::setTextres(int _textres)
 {
     m_textres = _textres;
 }
 
-inline void Map::setMult(float _mult) noexcept
+inline void Map::setMult(float _mult)
 {
     m_mult = _mult;
 }
 
-inline void Map::setBoost(float _boost) noexcept
+inline void Map::setBoost(float _boost)
 {
     m_boost = _boost;
 }
 
-inline void Map::setMapaat(bool _aat) noexcept
+inline void Map::setMapaat(bool _aat)
 {
     m_mapAat = _aat;
 }
 
-inline bool Map::getBlendu() const noexcept
+inline bool Map::getBlendu() const
 {
     return m_blendu;
 }
 
-inline bool Map::getBlendv() const noexcept
+inline bool Map::getBlendv() const
 {
     return m_blendv;
 }
 
-inline const glm::vec3& Map::getImfchanrgb() const noexcept
+inline const glm::vec3& Map::getImfchanrgb() const
 {
     return m_imfchanrgb;
 }
 
-inline const glm::vec3& Map::getImfchanmlz() const noexcept
+inline const glm::vec3& Map::getImfchanmlz() const
 {
     return m_imfchanmlz;
 }
 
-inline float Map::getBase() const noexcept
+inline float Map::getBase() const
 {
     return m_base;
 }
 
-inline float Map::getGain() const noexcept
+inline float Map::getGain() const
 {
     return m_gain;
 }
 
-inline const glm::vec3& Map::getO() const noexcept
+inline const glm::vec3& Map::getO() const
 {
     return m_o;
 }
 
-inline const glm::vec3& Map::getS() const noexcept
+inline const glm::vec3& Map::getS() const
 {
     return m_s;
 }
 
-inline const glm::vec3& Map::getT() const noexcept
+inline const glm::vec3& Map::getT() const
 {
     return m_t;
 }
 
-inline int Map::getTextres() const noexcept
+inline int Map::getTextres() const
 {
     return m_textres;
 }
 
-inline float Map::getMult() const noexcept
+inline float Map::getMult() const
 {
     return m_mult;
 }
 
-inline float Map::getBoost() const noexcept
+inline float Map::getBoost() const
 {
     return m_boost;
 }
 
-inline float Map::getMapaat() const noexcept
+inline float Map::getMapaat() const
 {
     return m_mapAat;
 }

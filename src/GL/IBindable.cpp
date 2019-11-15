@@ -7,7 +7,7 @@ namespace GL
     {
     }
 
-    IBindable::~IBindable() noexcept
+    IBindable::~IBindable()
     {
     }
 

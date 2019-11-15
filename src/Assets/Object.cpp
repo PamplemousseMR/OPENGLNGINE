@@ -6,12 +6,12 @@ using namespace std;
 namespace Assets
 {
 
-    Object::Object(const string& _name) noexcept :
+    Object::Object(const string& _name) :
         m_name(_name)
     {
     }
 
-    ostream& Object::print(ostream& _o) const noexcept
+    ostream& Object::print(ostream& _o) const
     {
         _o << "[Object " << m_name << "]" << endl;
         for(Group* g : m_groups)
@@ -21,7 +21,7 @@ namespace Assets
         return _o;
     }
 
-    Object::~Object() noexcept
+    Object::~Object()
     {
         for(Group* g : m_groups)
         {
@@ -85,22 +85,22 @@ namespace Assets
         return *this;
     }
 
-    const vector<Group*>& Object::getGroups() const noexcept
+    const vector<Group*>& Object::getGroups() const
     {
         return m_groups;
     }
 
-    Group* Object::getLastGroup() const noexcept
+    Group* Object::getLastGroup() const
     {
         return m_groups.back();
     }
 
-    void Object::addGroup(const string& _name) noexcept
+    void Object::addGroup(const string& _name)
     {
         m_groups.push_back(new Group(_name));
     }
 
-    ostream& operator<<(ostream& _o, const Object& _m) noexcept
+    ostream& operator<<(ostream& _o, const Object& _m)
     {
         _m.print(_o);
         return _o;

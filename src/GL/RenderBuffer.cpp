@@ -27,7 +27,7 @@ namespace GL
         }
     }
 
-    RenderBuffer::~RenderBuffer() noexcept
+    RenderBuffer::~RenderBuffer()
     {
         glDeleteRenderbuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);

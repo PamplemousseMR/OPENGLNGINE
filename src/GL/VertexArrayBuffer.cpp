@@ -17,7 +17,7 @@ namespace GL
         }
     }
 
-    VertexArrayBuffer::~VertexArrayBuffer() noexcept
+    VertexArrayBuffer::~VertexArrayBuffer()
     {
         glDeleteBuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);

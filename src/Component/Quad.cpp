@@ -27,7 +27,7 @@ namespace Component
         m_vao->unbind();
     }
 
-    Quad::~Quad() noexcept
+    Quad::~Quad()
     {
         delete m_vao;
         delete m_vboVertex;
@@ -91,23 +91,23 @@ namespace Component
         return *this;
     }
 
-    void Quad::bind() const noexcept
+    void Quad::bind() const
     {
         m_vao->bind();
     }
 
-    void Quad::unbind() const noexcept
+    void Quad::unbind() const
     {
         m_vao->unbind();
     }
 
-    ostream& Quad::print(ostream& _o) const noexcept
+    ostream& Quad::print(ostream& _o) const
     {
         _o << "[Quad " << m_name << "]\n";
         return _o;
     }
 
-    ostream& operator<<(ostream& _o, const Quad& _m) noexcept
+    ostream& operator<<(ostream& _o, const Quad& _m)
     {
         _m.print(_o);
         return _o;

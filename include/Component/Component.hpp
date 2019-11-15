@@ -22,16 +22,16 @@ public :
     Component& operator=(Component&&);
 
     inline const std::string& getName() const;
-    inline const glm::mat4& getPositionMatrix() const noexcept;
-    inline const glm::mat4& getRotationMatrix() const noexcept;
-    inline const glm::mat4& getScaleMatrix() const noexcept;
-    inline const glm::vec3& getPositionData() const noexcept;
-    inline const glm::vec3& getRotationData() const noexcept;
-    inline const glm::vec3& getScaleData() const noexcept;
+    inline const glm::mat4& getPositionMatrix() const;
+    inline const glm::mat4& getRotationMatrix() const;
+    inline const glm::mat4& getScaleMatrix() const;
+    inline const glm::vec3& getPositionData() const;
+    inline const glm::vec3& getRotationData() const;
+    inline const glm::vec3& getScaleData() const;
 
-    void setPosition(const glm::vec3&) noexcept;
-    void setRotation(const glm::vec3&) noexcept;
-    void setScale(const glm::vec3&) noexcept;
+    void setPosition(const glm::vec3&);
+    void setRotation(const glm::vec3&);
+    void setScale(const glm::vec3&);
 
 protected:
 
@@ -53,32 +53,32 @@ inline const std::string& Component::getName() const
     return m_name;
 }
 
-inline const glm::mat4& Component::getPositionMatrix() const noexcept
+inline const glm::mat4& Component::getPositionMatrix() const
 {
     return m_positionMatrix;
 }
 
-inline const glm::mat4& Component::getRotationMatrix() const noexcept
+inline const glm::mat4& Component::getRotationMatrix() const
 {
     return m_rotationMatrix;
 }
 
-inline const glm::mat4& Component::getScaleMatrix() const noexcept
+inline const glm::mat4& Component::getScaleMatrix() const
 {
     return m_scaleMatrix;
 }
 
-inline const glm::vec3& Component::getPositionData() const noexcept
+inline const glm::vec3& Component::getPositionData() const
 {
     return m_positionData;
 }
 
-inline const glm::vec3& Component::getRotationData() const noexcept
+inline const glm::vec3& Component::getRotationData() const
 {
     return m_rotationData;
 }
 
-inline const glm::vec3& Component::getScaleData() const noexcept
+inline const glm::vec3& Component::getScaleData() const
 {
     return m_scaleData;
 }

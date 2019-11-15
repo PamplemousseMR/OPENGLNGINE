@@ -11,43 +11,43 @@ namespace GL
     GLint FrameBuffer::s_maxDraw = 0;
     bool FrameBuffer::s_first = true;
 
-    void FrameBuffer::bindDefault() noexcept
+    void FrameBuffer::bindDefault()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::unbindDefault() noexcept
+    void FrameBuffer::unbindDefault()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::bindDrawDefault() noexcept
+    void FrameBuffer::bindDrawDefault()
     {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::unbindDrawDefault() noexcept
+    void FrameBuffer::unbindDrawDefault()
     {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::bindReadDefault() noexcept
+    void FrameBuffer::bindReadDefault()
     {
         glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::unbindReadDefault() noexcept
+    void FrameBuffer::unbindReadDefault()
     {
         glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::blit(int _width, int _height, FRAMBUFFER_MASK _mask) noexcept
+    void FrameBuffer::blit(int _width, int _height, FRAMBUFFER_MASK _mask)
     {
         glBlitFramebuffer(0, 0, _width, _height, 0, 0, _width, _height, _mask, GL_NEAREST);
         assert(glGetError() == GL_NO_ERROR);
@@ -70,7 +70,7 @@ namespace GL
         }
     }
 
-    FrameBuffer::~FrameBuffer() noexcept
+    FrameBuffer::~FrameBuffer()
     {
         glDeleteFramebuffers(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
@@ -99,13 +99,13 @@ namespace GL
         }
         switch(_texture.getType())
         {
-        case Texture::TYPE_1D:
+        case Texture::TT_1D:
             glFramebufferTexture1D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_1D, _texture.getId(), 0);
             break;
-        case Texture::TYPE_2D:
+        case Texture::TT_2D:
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D, _texture.getId(), 0);
             break;
-        case Texture::TYPE_2DMULTISAMPLE:
+        case Texture::TT_2DMULTISAMPLE:
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
             break;
         }
@@ -117,34 +117,34 @@ namespace GL
         }
     }
 
-    void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const noexcept
+    void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const
     {
         switch(_texture.getType())
         {
-        case Texture::TYPE_1D:
+        case Texture::TT_1D:
             glFramebufferTexture1D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
             break;
-        case Texture::TYPE_2D:
+        case Texture::TT_2D:
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
             break;
-        case Texture::TYPE_2DMULTISAMPLE:
+        case Texture::TT_2DMULTISAMPLE:
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
             break;
         }
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void FrameBuffer::attachDepthStencilTexture(const GL::Texture& _texture) const noexcept
+    void FrameBuffer::attachDepthStencilTexture(const GL::Texture& _texture) const
     {
         switch(_texture.getType())
         {
-        case Texture::TYPE_1D:
+        case Texture::TT_1D:
             glFramebufferTexture1D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
             break;
-        case Texture::TYPE_2D:
+        case Texture::TT_2D:
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
             break;
-        case Texture::TYPE_2DMULTISAMPLE:
+        case Texture::TT_2DMULTISAMPLE:
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
             break;
         }

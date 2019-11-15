@@ -56,7 +56,7 @@ namespace GL
         genTexture();
     }
 
-    Texture::~Texture() noexcept
+    Texture::~Texture()
     {
         glDeleteTextures(1, &m_id);
         assert(glGetError() == GL_NO_ERROR);
@@ -77,19 +77,19 @@ namespace GL
         GLint destFormat;
         switch(m_type)
         {
-            case TYPE_1D :
+            case TT_1D :
                 glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_INTERNAL_FORMAT, &destFormat);
                 glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_WIDTH, &width);
                 glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_HEIGHT, &height);
                 glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_DEPTH, &depth);
             break;
-            case TYPE_2D :
+            case TT_2D :
                 glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &destFormat);
                 glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
                 glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
                 glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_DEPTH, &depth);
             break;
-            case TYPE_2DMULTISAMPLE :
+            case TT_2DMULTISAMPLE :
                 throw invalid_argument("[Texture] TODO");
         }
 
@@ -99,7 +99,7 @@ namespace GL
         {
             switch(m_type)
             {
-                case TYPE_1D :
+                case TT_1D :
                     {
                         glGetTexImage(GL_TEXTURE_1D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                         _texture.unbind();
@@ -107,7 +107,7 @@ namespace GL
                         glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                     }
                 break;
-                case TYPE_2D :
+                case TT_2D :
                     {
                         glGetTexImage(GL_TEXTURE_2D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                         _texture.unbind();
@@ -115,7 +115,7 @@ namespace GL
                         glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                     }
                 break;
-                case TYPE_2DMULTISAMPLE :
+                case TT_2DMULTISAMPLE :
                     throw invalid_argument("[Texture] TODO");
             }
             unbind();
@@ -142,19 +142,19 @@ namespace GL
             GLint destFormat;
             switch(m_type)
             {
-                case TYPE_1D :
+                case TT_1D :
                     glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_INTERNAL_FORMAT, &destFormat);
                     glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_WIDTH, &width);
                     glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_HEIGHT, &height);
                     glGetTexLevelParameteriv(GL_TEXTURE_1D, 0, GL_TEXTURE_DEPTH, &depth);
                 break;
-                case TYPE_2D :
+                case TT_2D :
                     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &destFormat);
                     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
                     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
                     glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_DEPTH, &depth);
                 break;
-                case TYPE_2DMULTISAMPLE :
+                case TT_2DMULTISAMPLE :
                     throw invalid_argument("[Texture] TODO");
             }
 
@@ -164,7 +164,7 @@ namespace GL
             {
                 switch(m_type)
                 {
-                    case TYPE_1D :
+                    case TT_1D :
                         {
                             glGetTexImage(GL_TEXTURE_1D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                             _texture.unbind();
@@ -172,7 +172,7 @@ namespace GL
                             glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                         }
                     break;
-                    case TYPE_2D :
+                    case TT_2D :
                         {
                             glGetTexImage(GL_TEXTURE_2D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                             _texture.unbind();
@@ -180,7 +180,7 @@ namespace GL
                             glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
                         }
                     break;
-                    case TYPE_2DMULTISAMPLE :
+                    case TT_2DMULTISAMPLE :
                         throw invalid_argument("[Texture] TODO");
                 }
                 unbind();
@@ -194,7 +194,7 @@ namespace GL
         return *this;
     }
 
-    int Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNALFORMAT _internalFormat)
+    int Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat)
     {
         if(!filesystem::exists(_path) || !filesystem::is_regular_file(_path))
         {
@@ -223,11 +223,11 @@ namespace GL
         int width, height, chanel;
         unsigned char* data;
         int soilFormat = SOIL_LOAD_RGB;
-        m_format = FORMAT_RGB;
+        m_format = TF_RGB;
         if(hasAlpha)
         {
             soilFormat = SOIL_LOAD_RGBA;
-            m_format = FORMAT_RGBA;
+            m_format = TF_RGBA;
         }
         data = SOIL_load_image(_path.string().c_str(), &width, &height, &chanel, soilFormat);
         if(width > s_maxSize || height > s_maxSize)
@@ -236,17 +236,17 @@ namespace GL
         }
         switch(m_type)
         {
-            case TYPE_1D :
+            case TT_1D :
                 if(height != 1)
                 {
                     throw invalid_argument("[Texture] not a 1D texture");
                 }
                 glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, width, 0, m_format, GL_UNSIGNED_BYTE, data);
             break;
-            case TYPE_2D :
+            case TT_2D :
                 glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, data);
             break;
-            case TYPE_2DMULTISAMPLE :
+            case TT_2DMULTISAMPLE :
                 throw std::invalid_argument("[Texture] Can't load image to multisampled textures");
         }
         assert(glGetError() == GL_NO_ERROR);
@@ -254,7 +254,7 @@ namespace GL
         return width;
     }
 
-    void Texture::allocate(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
+    void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {
@@ -263,24 +263,24 @@ namespace GL
         m_format = _format;
         switch (m_type)
         {
-            case TYPE_1D :
+            case TT_1D :
                 if(_height != 1)
                 {
                     throw invalid_argument("[Texture] Not a 1D texture");
                 }
                 glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, _format, _data, nullptr);
             break;
-            case TYPE_2D :
+            case TT_2D :
                 glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, _data, nullptr);
             break;
-            case TYPE_2DMULTISAMPLE :
+            case TT_2DMULTISAMPLE :
                 throw std::invalid_argument("[Texture] Can't allocate multisampled textures without sample");
             break;
         }
         assert(glGetError() == GL_NO_ERROR);
     }
 
-    void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNALFORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample)
+    void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample)
     {
         if(_width > s_maxSize || _height > s_maxSize)
         {
@@ -293,11 +293,11 @@ namespace GL
         m_format = _format;
         switch (m_type)
         {
-            case TYPE_1D :
-            case TYPE_2D :
+            case TT_1D :
+            case TT_2D :
                 throw std::invalid_argument("[Texture] Can't allocate multisample to no multisampled textures");
             break;
-            case TYPE_2DMULTISAMPLE :
+            case TT_2DMULTISAMPLE :
                 glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, GLenum(_internalFormat), _width, _height, GL_TRUE);
         }
         assert(glGetError() == GL_NO_ERROR);

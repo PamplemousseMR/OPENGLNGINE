@@ -9,12 +9,12 @@ using namespace Component;
 namespace Assets
 {
 
-    Group::Group(const string& _name) noexcept :
+    Group::Group(const string& _name) :
         m_name(_name)
     {
     }
 
-    Group::~Group() noexcept
+    Group::~Group()
     {
         for(Mesh* m : m_meshs)
         {
@@ -100,7 +100,7 @@ namespace Assets
         }
     }
 
-    ostream& Group::print(ostream& _o) const noexcept
+    ostream& Group::print(ostream& _o) const
     {
         _o << "[Group " << m_name << "]\n";
         for(size_t i = 0 ; i < m_meshs.size(); ++i)
@@ -114,12 +114,12 @@ namespace Assets
         return _o;
     }
 
-    const vector<Mesh*>& Group::getMeshs() const noexcept
+    const vector<Mesh*>& Group::getMeshs() const
     {
         return m_meshs;
     }
 
-    ostream& operator<<(ostream& _o, const Group& _m) noexcept
+    ostream& operator<<(ostream& _o, const Group& _m)
     {
         _m.print(_o);
         return _o;

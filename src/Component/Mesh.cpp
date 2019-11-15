@@ -22,7 +22,7 @@ namespace Component
         m_material = new Assets::Material(_name);
     }
 
-    Mesh::~Mesh() noexcept
+    Mesh::~Mesh()
     {
         delete m_vao;
         delete m_ebo;
@@ -160,7 +160,7 @@ namespace Component
         return *this;
     }
 
-    bool Mesh::getSimilarVertexIndex(const PackedVertex& _packed, const map<PackedVertex, unsigned int>& _vertexToOutIndex, unsigned int& _result) const noexcept
+    bool Mesh::getSimilarVertexIndex(const PackedVertex& _packed, const map<PackedVertex, unsigned int>& _vertexToOutIndex, unsigned int& _result) const
     {
         std::map<PackedVertex, unsigned int>::const_iterator it = _vertexToOutIndex.find(_packed);
         if(it == _vertexToOutIndex.end())
@@ -174,7 +174,7 @@ namespace Component
         }
     }
 
-    void Mesh::indexVBO(const vector<vec3>& _in_vertices, const vector<vec2>& _in_uvs, const vector<vec3>& _in_normals, vector<unsigned int>& _out_indices, vector<vec3>& _out_vertices, vector<vec2>& _out_uvs, vector<vec3>& _out_normals) const noexcept
+    void Mesh::indexVBO(const vector<vec3>& _in_vertices, const vector<vec2>& _in_uvs, const vector<vec3>& _in_normals, vector<unsigned int>& _out_indices, vector<vec3>& _out_vertices, vector<vec2>& _out_uvs, vector<vec3>& _out_normals) const
     {
         map<PackedVertex, unsigned int> vertexToOutIndex;
 
@@ -626,24 +626,24 @@ namespace Component
         m_vao->unbind();
     }
 
-    void Mesh::bind() const noexcept
+    void Mesh::bind() const
     {
         m_vao->bind();
     }
 
-    void Mesh::unbind() const noexcept
+    void Mesh::unbind() const
     {
         m_vao->unbind();
     }
 
-    ostream& Mesh::print(ostream& _o) const noexcept
+    ostream& Mesh::print(ostream& _o) const
     {
         _o << "[Mesh " << m_name << "]\n";
         _o << "\ttextCoord : " << m_textCoord << "\n";
         return _o;
     }
 
-    ostream& operator<<(ostream& _o, const Mesh& _m) noexcept
+    ostream& operator<<(ostream& _o, const Mesh& _m)
     {
         _m.print(_o);
         return _o;

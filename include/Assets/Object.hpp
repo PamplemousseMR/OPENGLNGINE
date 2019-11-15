@@ -13,20 +13,20 @@ class Object
 
 public:
 
-    Object(const std::string&) noexcept;
-    ~Object() noexcept;
+    Object(const std::string&);
+    ~Object();
     Object(const Object&);
     Object(Object&&);
     Object& operator=(const Object&);
     Object& operator=(Object&&);
 
-    void addGroup(const std::string&) noexcept;
+    void addGroup(const std::string&);
 
-    const std::vector<Group*>& getGroups() const noexcept;
-    Group* getLastGroup() const noexcept;
-    inline const std::string& getName() const noexcept;
+    const std::vector<Group*>& getGroups() const;
+    Group* getLastGroup() const;
+    inline const std::string& getName() const;
 
-    std::ostream& print(std::ostream&) const noexcept;
+    std::ostream& print(std::ostream&) const;
 
 private:
 
@@ -35,9 +35,9 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream&, const Object&) noexcept;
+std::ostream& operator<<(std::ostream&, const Object&);
 
-inline const std::string& Object::getName() const noexcept
+inline const std::string& Object::getName() const
 {
     return m_name;
 }

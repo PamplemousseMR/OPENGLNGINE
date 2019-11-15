@@ -6,12 +6,12 @@ using namespace glm;
 
 namespace Assets
 {
-    Material::Material(const string& _name) noexcept :
+    Material::Material(const string& _name) :
         m_name(_name)
     {
     }
 
-    Material::~Material() noexcept
+    Material::~Material()
     {
         if(m_kaMap)delete m_kaMap;
         if(m_kdMap)delete m_kdMap;
@@ -162,7 +162,7 @@ namespace Assets
         return *this;
     }
 
-    ostream& Material::print(ostream& _o) const noexcept
+    ostream& Material::print(ostream& _o) const
     {
         _o << "[Material " << m_name << "]\n";
         _o << "\tMaterial color & illumination statements :\n";
@@ -179,42 +179,42 @@ namespace Assets
         return _o;
     }
 
-    Map* Material::getKamap() const noexcept
+    Map* Material::getKamap() const
     {
         return m_kaMap;
     }
 
-    Map* Material::getKdmap() const noexcept
+    Map* Material::getKdmap() const
     {
         return m_kdMap;
     }
 
-    Map* Material::getKsmap() const noexcept
+    Map* Material::getKsmap() const
     {
         return m_ksMap;
     }
 
-    Map* Material::getNsmap() const noexcept
+    Map* Material::getNsmap() const
     {
         return m_nsMap;
     }
 
-    Map* Material::getdmap() const noexcept
+    Map* Material::getdmap() const
     {
         return m_dMap;
     }
 
-    Map* Material::getDispmap() const noexcept
+    Map* Material::getDispmap() const
     {
         return m_dispMap;
     }
 
-    Map* Material::getDecalmap() const noexcept
+    Map* Material::getDecalmap() const
     {
         return m_decalMap;
     }
 
-    Map* Material::getBumpmap() const noexcept
+    Map* Material::getBumpmap() const
     {
         return m_bumpMap;
     }
@@ -292,7 +292,7 @@ namespace Assets
     }
 
 
-    ostream& operator<<(ostream& _o, const Material& _m) noexcept
+    ostream& operator<<(ostream& _o, const Material& _m)
     {
         _m.print(_o);
         return _o;

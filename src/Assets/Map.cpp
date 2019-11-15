@@ -12,16 +12,16 @@ namespace Assets
         m_name(_path.filename().string()),
         m_mapType(_mapType)
     {
-        m_texture = new Texture(Texture::TYPE_2D);
+        m_texture = new Texture(Texture::TT_2D);
         m_texture->bind();
-        m_textres = m_texture->load(_path, Texture::INTERNALFORMAT_RGBA);
-        m_texture->setMagFilter(Texture::FILTER_LINEAR);
-        m_texture->setMinFilter(Texture::FILTER_LINEAR_MIPMAP_LINEAR);
+        m_textres = m_texture->load(_path, Texture::TIF_RGBA);
+        m_texture->setMagFilter(Texture::TF_LINEAR);
+        m_texture->setMinFilter(Texture::TF_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
         m_texture->unbind();
     }
 
-    Map::~Map() noexcept
+    Map::~Map()
     {
         delete m_texture;
     }
@@ -47,8 +47,8 @@ namespace Assets
         m_mapAat(_map.m_mapAat)
     {
         m_texture->bind();
-        m_texture->setMagFilter(Texture::FILTER_LINEAR);
-        m_texture->setMinFilter(Texture::FILTER_LINEAR_MIPMAP_LINEAR);
+        m_texture->setMagFilter(Texture::TF_LINEAR);
+        m_texture->setMinFilter(Texture::TF_LINEAR_MIPMAP_LINEAR);
         m_texture->generateMipmap();
         m_texture->unbind();
     }
@@ -100,8 +100,8 @@ namespace Assets
             m_boost = _map.m_boost;
             m_mapAat = _map.m_mapAat;
             m_texture->bind();
-            m_texture->setMagFilter(Texture::FILTER_LINEAR);
-            m_texture->setMinFilter(Texture::FILTER_LINEAR_MIPMAP_LINEAR);
+            m_texture->setMagFilter(Texture::TF_LINEAR);
+            m_texture->setMinFilter(Texture::TF_LINEAR_MIPMAP_LINEAR);
             m_texture->generateMipmap();
             m_texture->unbind();
         }
@@ -137,7 +137,7 @@ namespace Assets
         return *this;
     }
 
-    ostream& Map::print(ostream& _o) const noexcept
+    ostream& Map::print(ostream& _o) const
     {
         _o << "[Map " << m_name << "] " << m_mapType << "\n";
         _o << "\t" << "blendu " << m_blendu << "\n";
@@ -156,7 +156,7 @@ namespace Assets
         return _o;
     }
 
-    Texture& Map::getTexture() const noexcept
+    Texture& Map::getTexture() const
     {
         return *m_texture;
     }
@@ -209,7 +209,7 @@ namespace Assets
         }
     }
 
-    ostream& operator<<(ostream& _o, const Map& _m) noexcept
+    ostream& operator<<(ostream& _o, const Map& _m)
     {
         _m.print(_o);
         return _o;
