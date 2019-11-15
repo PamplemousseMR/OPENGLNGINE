@@ -15,9 +15,10 @@
 
 #include "Component/Component.hpp"
 #include "Component/Mesh.hpp"
-#include "Component/Light.hpp"
 #include "Component/Quad.hpp"
 
+#include "Scene/SceneManager.hpp"
+#include "Scene/Light.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <GL/glew.h>
@@ -119,11 +120,11 @@ int main()
          * =======================================
          */
 
-        GL::Shader deferredShadingVertex(GL::Shader::TYPE_VERTEX);
+        GL::Shader deferredShadingVertex(GL::Shader::ST_VERTEX);
         deferredShadingVertex.setSourceFromFile("GLSL/deferredShadingVertex.glsl");
         deferredShadingVertex.compile();
 
-        GL::Shader deferredShadingFragment(GL::Shader::TYPE_FRAGMENT);
+        GL::Shader deferredShadingFragment(GL::Shader::ST_FRAGMENT);
         deferredShadingFragment.setSourceFromFile("GLSL/deferredShadingFragment.glsl");
         deferredShadingFragment.compile();
 
@@ -158,11 +159,11 @@ int main()
          * =======================================
          */
 
-        GL::Shader quadBlinnPhongVertex(GL::Shader::TYPE_VERTEX);
+        GL::Shader quadBlinnPhongVertex(GL::Shader::ST_VERTEX);
         quadBlinnPhongVertex.setSourceFromFile("GLSL/quadBlinnPhongVertex.glsl");
         quadBlinnPhongVertex.compile();
 
-        GL::Shader quadBlinnPhongFragment(GL::Shader::TYPE_FRAGMENT);
+        GL::Shader quadBlinnPhongFragment(GL::Shader::ST_FRAGMENT);
         quadBlinnPhongFragment.setSourceFromFile("GLSL/quadBlinnPhongFragment.glsl");
         quadBlinnPhongFragment.compile();
 
@@ -196,15 +197,15 @@ int main()
          * =======================================
          */
 
-        GL::Shader normalVertex(GL::Shader::TYPE_VERTEX);
+        GL::Shader normalVertex(GL::Shader::ST_VERTEX);
         normalVertex.setSourceFromFile("GLSL/normalVertex.glsl");
         normalVertex.compile();
 
-        GL::Shader normalFragment(GL::Shader::TYPE_FRAGMENT);
+        GL::Shader normalFragment(GL::Shader::ST_FRAGMENT);
         normalFragment.setSourceFromFile("GLSL/normalFragment.glsl");
         normalFragment.compile();
 
-        GL::Shader normalGeometry(GL::Shader::TYPE_GEOMETRY);
+        GL::Shader normalGeometry(GL::Shader::ST_GEOMETRY);
         normalGeometry.setSourceFromFile("GLSL/normalGeometry.glsl");
         normalGeometry.compile();
 
@@ -227,29 +228,29 @@ int main()
          * =======================================
          */
 
-        GL::Texture renderPositionTexture(GL::Texture::TYPE_2DMULTISAMPLE);
+        GL::Texture renderPositionTexture(GL::Texture::TT_2DMULTISAMPLE);
         renderPositionTexture.bind();
-        renderPositionTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
+        renderPositionTexture.allocateMultisample(s_width, s_height, GL::Texture::TIF_RGB32F, GL::Texture::TF_RGB, s_sample);
 
-        GL::Texture renderNormalTexture(GL::Texture::TYPE_2DMULTISAMPLE);
+        GL::Texture renderNormalTexture(GL::Texture::TT_2DMULTISAMPLE);
         renderNormalTexture.bind();
-        renderNormalTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, s_sample);
+        renderNormalTexture.allocateMultisample(s_width, s_height, GL::Texture::TIF_RGBA32F, GL::Texture::TF_RGBA, s_sample);
 
-        GL::Texture renderAmbientTexture(GL::Texture::TYPE_2DMULTISAMPLE);
+        GL::Texture renderAmbientTexture(GL::Texture::TT_2DMULTISAMPLE);
         renderAmbientTexture.bind();
-        renderAmbientTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+        renderAmbientTexture.allocateMultisample(s_width, s_height, GL::Texture::TIF_RGB, GL::Texture::TF_RGB, s_sample);
 
-        GL::Texture renderDiffuseTexture(GL::Texture::TYPE_2DMULTISAMPLE);
+        GL::Texture renderDiffuseTexture(GL::Texture::TT_2DMULTISAMPLE);
         renderDiffuseTexture.bind();
-        renderDiffuseTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+        renderDiffuseTexture.allocateMultisample(s_width, s_height, GL::Texture::TIF_RGB, GL::Texture::TF_RGB, s_sample);
 
-        GL::Texture renderSpecularTexture(GL::Texture::TYPE_2DMULTISAMPLE);
+        GL::Texture renderSpecularTexture(GL::Texture::TT_2DMULTISAMPLE);
         renderSpecularTexture.bind();
-        renderSpecularTexture.allocateMultisample(s_width, s_height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+        renderSpecularTexture.allocateMultisample(s_width, s_height, GL::Texture::TIF_RGB, GL::Texture::TF_RGB, s_sample);
 
         GL::RenderBuffer renderDepthStencilBuffer;
         renderDepthStencilBuffer.bind();
-        renderDepthStencilBuffer.allocateMultisample(s_width, s_height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL, s_sample);
+        renderDepthStencilBuffer.allocateMultisample(s_width, s_height, GL::RenderBuffer::RF_DEPTH_STENCIL, s_sample);
 
         GL::FrameBuffer frameBuffer;
         frameBuffer.bind();
@@ -273,17 +274,17 @@ int main()
 
         GL::Viewport::addListener([&](int _width, int _height){
             renderPositionTexture.bind();
-            renderPositionTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB32F, GL::Texture::FORMAT_RGB, s_sample);
+            renderPositionTexture.allocateMultisample(_width, _height, GL::Texture::TIF_RGB32F, GL::Texture::TF_RGB, s_sample);
             renderNormalTexture.bind();
-            renderNormalTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGBA32F, GL::Texture::FORMAT_RGBA, s_sample);
+            renderNormalTexture.allocateMultisample(_width, _height, GL::Texture::TIF_RGBA32F, GL::Texture::TF_RGBA, s_sample);
             renderAmbientTexture.bind();
-            renderAmbientTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+            renderAmbientTexture.allocateMultisample(_width, _height, GL::Texture::TIF_RGB, GL::Texture::TF_RGB, s_sample);
             renderDiffuseTexture.bind();
-            renderDiffuseTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+            renderDiffuseTexture.allocateMultisample(_width, _height, GL::Texture::TIF_RGB, GL::Texture::TF_RGB, s_sample);
             renderSpecularTexture.bind();
-            renderSpecularTexture.allocateMultisample(_width, _height, GL::Texture::INTERNALFORMAT_RGB, GL::Texture::FORMAT_RGB, s_sample);
+            renderSpecularTexture.allocateMultisample(_width, _height, GL::Texture::TIF_RGB, GL::Texture::TF_RGB, s_sample);
             renderDepthStencilBuffer.bind();
-            renderDepthStencilBuffer.allocateMultisample(_width, _height, GL::RenderBuffer::FORMAT_DEPTH_STENCIL, s_sample);
+            renderDepthStencilBuffer.allocateMultisample(_width, _height, GL::RenderBuffer::RF_DEPTH_STENCIL, s_sample);
         });
 
         /*========================================
@@ -300,8 +301,8 @@ int main()
 
         Component::Quad quad("QuadRenderer");
 
-        Component::Light light("light");
-        light.setPosition(glm::vec3(0, 0, 100));
+        Scene::Light* light = ::Scene::SceneManager::getInstance().createLight("light");
+        light->setPosition(glm::vec3(0, 0, 100));
 
         /*========================================
          * =======================================
@@ -344,17 +345,17 @@ int main()
             frameBuffer.bind();
             GL::PixelOperation::enableDepthTest(true);
             GL::PixelOperation::enableDepthWrite(true);
-            GL::PixelOperation::setDepthFunc(GL::PixelOperation::DEPTH_LESS);
+            GL::PixelOperation::setDepthFunc(GL::PixelOperation::PD_LESS);
 
             GL::PixelOperation::enableStencilTest(true);
             GL::PixelOperation::setStencilMask(0xFF);
-            GL::PixelOperation::setStencilFunc(GL::PixelOperation::STENCIL_ALWAYS, 1, 0xFF);
-            GL::PixelOperation::setStencilOperation(GL::PixelOperation::STENCIL_KEEP, GL::PixelOperation::STENCIL_KEEP, GL::PixelOperation::STENCIL_REPLACE);
+            GL::PixelOperation::setStencilFunc(GL::PixelOperation::PSF_ALWAYS, 1, 0xFF);
+            GL::PixelOperation::setStencilOperation(GL::PixelOperation::PSO_KEEP, GL::PixelOperation::PSO_KEEP, GL::PixelOperation::PSO_REPLACE);
 
             GL::PixelOperation::enableBlendTest(false);
 
             GL::PixelOperation::setColorClearValue(0.0f, 0.0f, 0.0f, 1.0f);
-            GL::PixelOperation::clear(GL::PixelOperation::CLEAR_ALL);
+            GL::PixelOperation::clear(GL::PixelOperation::PC_ALL);
 
             frameBuffer.attachDrawBuffers();
 
@@ -456,8 +457,8 @@ int main()
 
             frameBuffer.bindRead();
             GL::FrameBuffer::bindDrawDefault();
-            GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::MASK_STENCIL);
-            GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::MASK_DEPTH);
+            GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::FM_STENCIL);
+            GL::FrameBuffer::blit(GL::Viewport::getWidth(), GL::Viewport::getHeight(), GL::FrameBuffer::FM_DEPTH);
             GL::FrameBuffer::unbindDrawDefault();
             frameBuffer.unbindRead();
 
@@ -477,13 +478,13 @@ int main()
 
             GL::PixelOperation::enableStencilTest(true);
             GL::PixelOperation::setStencilMask(0xFF);
-            GL::PixelOperation::setStencilFunc(GL::PixelOperation::STENCIL_EQUAL, 1, 0xFF);
-            GL::PixelOperation::setStencilOperation(GL::PixelOperation::STENCIL_KEEP, GL::PixelOperation::STENCIL_KEEP, GL::PixelOperation::STENCIL_KEEP);
+            GL::PixelOperation::setStencilFunc(GL::PixelOperation::PSF_EQUAL, 1, 0xFF);
+            GL::PixelOperation::setStencilOperation(GL::PixelOperation::PSO_KEEP, GL::PixelOperation::PSO_KEEP, GL::PixelOperation::PSO_KEEP);
 
             GL::PixelOperation::enableBlendTest(false);
 
             GL::PixelOperation::setColorClearValue(0.75f, 0.75f, 0.75f, 1.0f);
-            GL::PixelOperation::clear(GL::PixelOperation::CLEAR_COLOR);
+            GL::PixelOperation::clear(GL::PixelOperation::PC_COLOR);
 
             quadBlinnPhonProgram.bind();
             {
@@ -500,10 +501,10 @@ int main()
 
                 u_m4ViewDeferred = V;
 
-                u_f3LightPos_Ws = light.getPositionData();
-                u_f3LightAmbientCol = light.getAmbient();
-                u_f3LightDiffuseCol = light.getDiffuse();
-                u_f3LightSpecularCol = light.getSpecular();
+                u_f3LightPos_Ws = light->getPositionData();
+                u_f3LightAmbientCol = light->getAmbient();
+                u_f3LightDiffuseCol = light->getDiffuse();
+                u_f3LightSpecularCol = light->getSpecular();
 
                 u_sample = s_sample;
 
@@ -532,12 +533,12 @@ int main()
             GL::FrameBuffer::bindDefault();
             GL::PixelOperation::enableDepthTest(true);
             GL::PixelOperation::enableDepthWrite(true);
-            GL::PixelOperation::setDepthFunc(GL::PixelOperation::DEPTH_LESS);
+            GL::PixelOperation::setDepthFunc(GL::PixelOperation::PD_LESS);
 
             GL::PixelOperation::enableStencilTest(false);
 
             GL::PixelOperation::enableBlendTest(true);
-            GL::PixelOperation::setBlendFunc(GL::PixelOperation::BLEND_SRC_ALPHA, GL::PixelOperation::BLEND_ONE_MINUS_SRC_ALPHA);
+            GL::PixelOperation::setBlendFunc(GL::PixelOperation::PB_SRC_ALPHA, GL::PixelOperation::PB_ONE_MINUS_SRC_ALPHA);
 
             normalProgram.bind();
             {
