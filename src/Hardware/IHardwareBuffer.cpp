@@ -9,7 +9,7 @@ using namespace std;
 namespace Hardware
 {
 
-IHardwareBuffer::IHardwareBuffer(HardwareBufferManager* const _manager, GLenum _target, size_t _sizeInBytes, USAGE _usage):
+IHardwareBuffer::IHardwareBuffer(HardwareBufferManager* const _manager, GLenum _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage):
     m_manager(_manager),
     m_target(_target),
     m_sizeInBytes(_sizeInBytes),

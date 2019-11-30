@@ -14,144 +14,23 @@ namespace Component
     Mesh::Mesh(const string& _name) :
         Drawable(_name)
     {
-        m_vboVertex = new VertexBuffer();
-        m_vboNormal = new VertexBuffer();
-        m_vboTextCoord = new VertexBuffer();
         m_vao = new VertexArrayBuffer();
         m_material = new Assets::Material(_name);
+
+        m_vertexBufferBinding = ::Hardware::HardwareBufferManager::getInstance().createVertexBufferBinding();
+        m_vertexDeclaration = ::Hardware::HardwareBufferManager::getInstance().createVertexDeclaration();
     }
 
     Mesh::~Mesh()
     {
         delete m_vao;
-        delete m_vboVertex;
-        delete m_vboNormal;
-        delete m_vboTextCoord;
         m_ebo.reset();
         delete m_material;
+
+        ::Hardware::HardwareBufferManager::getInstance().destroyVertexBufferBinding(m_vertexBufferBinding);
+        ::Hardware::HardwareBufferManager::getInstance().destroyVertexDeclaration(m_vertexDeclaration);
     }
 
-    Mesh::Mesh(const Mesh& _mesh) :
-        Drawable(_mesh),
-        m_vboVertex(new VertexBuffer(*_mesh.m_vboVertex)),
-        m_vboNormal(new VertexBuffer(*_mesh.m_vboNormal)),
-        m_vboTextCoord(new VertexBuffer(*_mesh.m_vboTextCoord)),
-        m_vao(new VertexArrayBuffer()),
-        m_textCoord(_mesh.m_textCoord),
-        m_material(new Material(*_mesh.m_material))
-    {
-        m_vao->bind();
-        {
-            m_vboVertex->bind();
-            m_vboVertex->setLocation(S_VERTEXLOCATION);
-            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-            if(m_textCoord)
-            {
-                m_vboTextCoord->bind();
-                m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
-                m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
-            }
-
-            m_vboNormal->bind();
-            m_vboNormal->setLocation(S_NORMALLOCATION);
-            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-            m_ebo->lock();
-        }
-        m_vao->unbind();
-    }
-
-    Mesh::Mesh(Mesh&& _mesh) :
-        Drawable(move(_mesh)),
-        m_textCoord(move(_mesh.m_textCoord))
-    {
-        m_vboVertex = _mesh.m_vboVertex;
-        _mesh.m_vboVertex = nullptr;
-        m_vboNormal = _mesh.m_vboNormal;
-        _mesh.m_vboNormal = nullptr;
-        m_vboTextCoord = _mesh.m_vboTextCoord;
-        _mesh.m_vboTextCoord = nullptr;
-        m_ebo = _mesh.m_ebo;
-        _mesh.m_ebo = nullptr;
-        m_vao = _mesh.m_vao;
-        _mesh.m_vao = nullptr;
-        m_material = _mesh.m_material;
-        _mesh.m_material = nullptr;
-    }
-
-    Mesh& Mesh::operator=(const Mesh& _mesh)
-    {
-        if(this != &_mesh)
-        {
-            delete m_vao;
-            delete m_vboVertex;
-            delete m_vboNormal;
-            delete m_vboTextCoord;
-            m_ebo.reset();
-            delete m_material;
-
-            Drawable::operator=(_mesh);
-            m_vboVertex = new VertexBuffer(*_mesh.m_vboVertex);
-            m_vboNormal = new VertexBuffer(*_mesh.m_vboNormal);
-            m_vboTextCoord = new VertexBuffer(*_mesh.m_vboTextCoord);
-            m_vao = new VertexArrayBuffer();
-            m_textCoord = _mesh.m_textCoord;
-            m_material = new Material(*_mesh.m_material);
-
-            m_vao->bind();
-            {
-                m_vboVertex->bind();
-                m_vboVertex->setLocation(S_VERTEXLOCATION);
-                m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-                if(m_textCoord)
-                {
-                    m_vboTextCoord->bind();
-                    m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
-                    m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
-                }
-
-                m_vboNormal->bind();
-                m_vboNormal->setLocation(S_NORMALLOCATION);
-                m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-                m_ebo->lock();
-            }
-            m_vao->unbind();
-        }
-        return *this;
-    }
-
-    Mesh& Mesh::operator=(Mesh&& _mesh)
-    {
-        if(this != &_mesh)
-        {
-            delete m_vao;
-            delete m_vboVertex;
-            delete m_vboNormal;
-            delete m_vboTextCoord;
-            m_ebo.reset();
-            delete m_material;
-
-            Drawable::operator=(move(_mesh));
-            m_textCoord = move(_mesh.m_textCoord);
-
-            m_vboVertex = _mesh.m_vboVertex;
-            _mesh.m_vboVertex = nullptr;
-            m_vboNormal = _mesh.m_vboNormal;
-            _mesh.m_vboNormal = nullptr;
-            m_vboTextCoord = _mesh.m_vboTextCoord;
-            _mesh.m_vboTextCoord = nullptr;
-            m_ebo = _mesh.m_ebo;
-            _mesh.m_ebo = nullptr;
-            m_vao = _mesh.m_vao;
-            _mesh.m_vao = nullptr;
-            m_material = _mesh.m_material;
-            _mesh.m_material = nullptr;
-        }
-        return *this;
-    }
 
     bool Mesh::getSimilarVertexIndex(const PackedVertex& _packed, const map<PackedVertex, unsigned int>& _vertexToOutIndex, unsigned int& _result) const
     {
@@ -281,35 +160,47 @@ namespace Component
 
         m_textCoord = true;
 
-        m_vboVertex->bind();
-        m_vboVertex->setData(indexedVertex);
-        m_vboVertex->unbind();
+        ::Hardware::HardwareBufferManager& instance = ::Hardware::HardwareBufferManager::getInstance();
 
-        m_vboNormal->bind();
-        m_vboNormal->setData(indexedNormal);
-        m_vboNormal->unbind();
+        ::Hardware::HardwareVertexBufferPtr position= instance.createVertexBuffer(sizeof(float), indexedVertex.size()*3, ::Hardware::IHardwareBuffer::HBU_STATIC_DRAW);
+        position->writeData(0, position->getSizeInBytes(), indexedVertex.data(), false);
 
-        m_vboTextCoord->bind();
-        m_vboTextCoord->setData(indexedTextCoord);
-        m_vboTextCoord->unbind();
+        m_vertexDeclaration->addElement(0, 0, ::Hardware::VertexElement::VET_FLOAT3, ::Hardware::VertexElement::VES_POSITION);
+        m_vertexBufferBinding->setBinding(0, position);
 
-        m_ebo = ::Hardware::HardwareBufferManager::getInstance()
-                .createIndexBuffer(::Hardware::HardwareIndexBuffer::IT_UNSIGNED_INT, indexedIndex.size(), ::Hardware::IHardwareBuffer::U_STATIC_DRAW);
+        ::Hardware::HardwareVertexBufferPtr normal= instance.createVertexBuffer(sizeof(float), indexedVertex.size()*3, ::Hardware::IHardwareBuffer::HBU_STATIC_DRAW);
+        normal->writeData(0, normal->getSizeInBytes(), indexedNormal.data(), false);
+
+        m_vertexDeclaration->addElement(1, 0, ::Hardware::VertexElement::VET_FLOAT3, ::Hardware::VertexElement::VES_NORMAL);
+        m_vertexBufferBinding->setBinding(1, normal);
+
+        ::Hardware::HardwareVertexBufferPtr textCoord= instance.createVertexBuffer(sizeof(float), indexedVertex.size()*2, ::Hardware::IHardwareBuffer::HBU_STATIC_DRAW);
+        textCoord->writeData(0, textCoord->getSizeInBytes(), indexedTextCoord.data(), false);
+
+        m_vertexDeclaration->addElement(2, 0, ::Hardware::VertexElement::VET_FLOAT2, ::Hardware::VertexElement::VES_TEXTURE_COORDINATES);
+        m_vertexBufferBinding->setBinding(2, textCoord);
+
+        m_ebo = instance.createIndexBuffer(::Hardware::HardwareIndexBuffer::IT_UNSIGNED_INT, static_cast<GLsizei>(indexedIndex.size()), ::Hardware::IHardwareBuffer::HBU_STATIC_DRAW);
         m_ebo->writeData(0, m_ebo->getSizeInBytes(), indexedIndex.data(), false);
+
 
         m_vao->bind();
         {
-            m_vboVertex->bind();
-            m_vboVertex->setLocation(S_VERTEXLOCATION);
-            m_vboVertex->setAttrib(S_VERTEXLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            const ::Hardware::VertexElement* positionElem = m_vertexDeclaration->findElementBySemantic(::Hardware::VertexElement::VES_POSITION);
+            ::Hardware::HardwareVertexBufferPtr positionPtr = m_vertexBufferBinding->getBuffer(positionElem->getSource());
+            positionPtr->lock();
+            glEnableVertexAttribArray(S_VERTEXLOCATION);
+            glVertexAttribPointer(S_VERTEXLOCATION, positionElem->getTypeCount(), GL_FLOAT, GL_FALSE, static_cast<GLsizei>(positionElem->getTypeCount()*positionPtr->getVertexSizeInBytes()), BUFFER_OFFSET(positionElem->getOffsetInBytes()));
 
-            m_vboTextCoord->bind();
-            m_vboTextCoord->setLocation(S_TEXTCOORDLOCATION);
-            m_vboTextCoord->setAttrib(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+            const ::Hardware::VertexElement* textureElem = m_vertexDeclaration->findElementBySemantic(::Hardware::VertexElement::VES_TEXTURE_COORDINATES);
+            ::Hardware::HardwareVertexBufferPtr texturePtr = m_vertexBufferBinding->getBuffer(textureElem->getSource());
+            texturePtr->lock();            glEnableVertexAttribArray(S_TEXTCOORDLOCATION);
+            glVertexAttribPointer(S_TEXTCOORDLOCATION, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(textureElem->getOffsetInBytes()));
 
-            m_vboNormal->bind();
-            m_vboNormal->setLocation(S_NORMALLOCATION);
-            m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            const ::Hardware::VertexElement* normalElem = m_vertexDeclaration->findElementBySemantic(::Hardware::VertexElement::VES_NORMAL);
+            ::Hardware::HardwareVertexBufferPtr normalPtr = m_vertexBufferBinding->getBuffer(normalElem->getSource());
+            normalPtr->lock();            glEnableVertexAttribArray(S_NORMALLOCATION);
+            glVertexAttribPointer(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(normalElem->getOffsetInBytes()));
 
             m_ebo->lock();
         }
@@ -319,7 +210,7 @@ namespace Component
 
     void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec3>& _index)
     {
-        vector<vec3> newVertex;
+        /*vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
@@ -402,13 +293,12 @@ namespace Component
 
             m_ebo->lock();
         }
-        m_vao->unbind();
-
+        m_vao->unbind();*/
     }
 
     void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec2>& _textCoord, const vector<vec3>& _index)
     {
-        vector<vec3> newVertex;
+        /*vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
@@ -519,12 +409,12 @@ namespace Component
 
             m_ebo->lock();
         }
-        m_vao->unbind();
+        m_vao->unbind();*/
     }
 
     void Mesh::loadMesh(const vector<vec3>& _vertex, const vector<vec3>& _normal, const std::vector<vec3>& _index)
     {
-        vector<vec3> newVertex;
+        /*vector<vec3> newVertex;
         vector<vec2> newTextCoord;
         vector<vec3> newNormal;
 
@@ -612,7 +502,7 @@ namespace Component
 
             m_ebo->lock();
         }
-        m_vao->unbind();
+        m_vao->unbind();*/
     }
 
     void Mesh::bind() const

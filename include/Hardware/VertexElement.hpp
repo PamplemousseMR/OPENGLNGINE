@@ -21,11 +21,14 @@ public:
         VES_TEXTURE_COORDINATES
     };
 
+    static unsigned short getTypeCount(VERTEXELEMENT_TYPE);
+
     VertexElement(unsigned short, size_t, VERTEXELEMENT_TYPE, VERTEXELEMENT_SEMANTIC);
     ~VertexElement();
 
     inline unsigned short getSource() const;
     inline size_t getOffsetInBytes() const;
+    inline unsigned short getTypeCount() const;
     inline VERTEXELEMENT_TYPE getType() const;
     inline VERTEXELEMENT_SEMANTIC getSemantic() const;
 
@@ -46,6 +49,11 @@ unsigned short VertexElement::getSource() const
 size_t VertexElement::getOffsetInBytes() const
 {
     return m_offsetInBytes;
+}
+
+unsigned short VertexElement::getTypeCount() const
+{
+    return VertexElement::getTypeCount(m_type);
 }
 
 VertexElement::VERTEXELEMENT_TYPE VertexElement::getType() const

@@ -25,8 +25,8 @@ public:
     static HardwareBufferManager& getInstance();
     static HardwareBufferManager* getInstancePtr();
 
-    HardwareIndexBufferPtr createIndexBuffer(HardwareIndexBuffer::INDEX_TYPE, size_t, IHardwareBuffer::USAGE);
-    HardwareVertexBufferPtr createVertexBuffer(size_t, size_t, IHardwareBuffer::USAGE);
+    HardwareIndexBufferPtr createIndexBuffer(HardwareIndexBuffer::INDEX_TYPE, size_t, IHardwareBuffer::HARDWAREBUFFER_USAGE);
+    HardwareVertexBufferPtr createVertexBuffer(size_t, size_t, IHardwareBuffer::HARDWAREBUFFER_USAGE);
 
     VertexBufferBinding* createVertexBufferBinding();
     VertexDeclaration* createVertexDeclaration();

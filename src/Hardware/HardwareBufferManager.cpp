@@ -29,21 +29,21 @@ HardwareBufferManager::HardwareBufferManager()
 
 HardwareBufferManager::~HardwareBufferManager()
 {
-    m_vertexBuffers.clear();
-    m_indexBuffers.clear();
-
     this->destroyAllVertexBufferBinding();
     this->destroyAllVertexDeclaration();
+
+    m_vertexBuffers.clear();
+    m_indexBuffers.clear();
 }
 
-HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(HardwareIndexBuffer::INDEX_TYPE _type, size_t _size, IHardwareBuffer::USAGE _usage)
+HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(HardwareIndexBuffer::INDEX_TYPE _type, size_t _size, IHardwareBuffer::HARDWAREBUFFER_USAGE _usage)
 {
     HardwareIndexBuffer* ptr = new HardwareIndexBuffer(this, _type, _size, _usage);
     m_indexBuffers.insert(ptr);
     return HardwareIndexBufferPtr(ptr);
 }
 
-HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(size_t _vertexSizeInBytes, size_t _numVertices, IHardwareBuffer::USAGE _usage)
+HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(size_t _vertexSizeInBytes, size_t _numVertices, IHardwareBuffer::HARDWAREBUFFER_USAGE _usage)
 {
     HardwareVertexBuffer* ptr = new HardwareVertexBuffer(this, _vertexSizeInBytes, _numVertices, _usage);
     m_vertexBuffers.insert(ptr);

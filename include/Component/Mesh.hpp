@@ -12,7 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "Hardware/HardwareIndexBuffer.hpp"
+#include "Hardware/VertexBufferBinding.hpp"
+#include "Hardware/VertexDeclaration.hpp"
 #include "Hardware/HardwareBufferManager.hpp"
 
 namespace Assets
@@ -37,10 +38,6 @@ public:
 
     Mesh(const std::string&);
     ~Mesh();
-    Mesh(const Mesh&);
-    Mesh(Mesh&&);
-    Mesh& operator=(const Mesh&);
-    Mesh& operator=(Mesh&&);
 
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&, const std::vector<glm::vec2>&, const std::vector<glm::vec3>&);
     void loadMesh(const std::vector<glm::vec3>&, const std::vector<glm::vec3>&);
@@ -76,10 +73,9 @@ private:
 
 private:
 
-    GL::VertexBuffer* m_vboVertex {nullptr};
-    GL::VertexBuffer* m_vboNormal {nullptr};
-    GL::VertexBuffer* m_vboTextCoord {nullptr};
-    ::Hardware::HardwareIndexBufferPtr m_ebo{nullptr};
+    ::Hardware::VertexDeclaration* m_vertexDeclaration {nullptr};
+    ::Hardware::VertexBufferBinding* m_vertexBufferBinding {nullptr};
+    ::Hardware::HardwareIndexBufferPtr m_ebo {nullptr};
     GL::VertexArrayBuffer* m_vao {nullptr};
     bool m_textCoord {false};
     Assets::Material* m_material {nullptr};
@@ -100,7 +96,7 @@ inline bool Mesh::hasTextureCoord() const
 
 inline void Mesh::draw() const
 {
-    glDrawElements(GL_TRIANGLES, m_ebo->getNumIndex(), GL_UNSIGNED_INT, static_cast< void* >(nullptr));
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_ebo->getNumIndex()), GL_UNSIGNED_INT, static_cast< void* >(nullptr));
     assert(glGetError() == GL_NO_ERROR);
 }
 

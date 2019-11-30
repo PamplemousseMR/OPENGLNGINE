@@ -12,20 +12,20 @@ class IHardwareBuffer
 
 public:
 
-    enum USAGE
+    enum HARDWAREBUFFER_USAGE
     {
-        U_STREAM_DRAW = GL_STREAM_DRAW,
-        U_STREAM_READ = GL_STREAM_READ,
-        U_STREAM_COPY = GL_STREAM_COPY,
-        U_STATIC_DRAW = GL_STATIC_DRAW,
-        U_STATIC_READ = GL_STATIC_READ,
-        U_STATIC_COPY = GL_STATIC_COPY,
-        U_DYNAMIC_DRAW = GL_DYNAMIC_DRAW,
-        U_DYNAMIC_READ = GL_DYNAMIC_READ,
-        U_DYNAMIC_COPY = GL_DYNAMIC_COPY
+        HBU_STREAM_DRAW = GL_STREAM_DRAW,
+        HBU_STREAM_READ = GL_STREAM_READ,
+        HBU_STREAM_COPY = GL_STREAM_COPY,
+        HBU_STATIC_DRAW = GL_STATIC_DRAW,
+        HBU_STATIC_READ = GL_STATIC_READ,
+        HBU_STATIC_COPY = GL_STATIC_COPY,
+        HBU_DYNAMIC_DRAW = GL_DYNAMIC_DRAW,
+        HBU_DYNAMIC_READ = GL_DYNAMIC_READ,
+        HBU_DYNAMIC_COPY = GL_DYNAMIC_COPY
     };
 
-    inline USAGE getUsage() const;
+    inline HARDWAREBUFFER_USAGE getUsage() const;
     inline size_t getSizeInBytes() const;
 
     void lock();
@@ -37,7 +37,7 @@ public:
 
 protected:
 
-    IHardwareBuffer(HardwareBufferManager* const, GLenum, size_t, USAGE);
+    IHardwareBuffer(HardwareBufferManager* const, GLenum, size_t, HARDWAREBUFFER_USAGE);
     virtual ~IHardwareBuffer();
 
     HardwareBufferManager* const m_manager;
@@ -50,13 +50,13 @@ private:
     IHardwareBuffer& operator=(IHardwareBuffer&&) = delete;
 
     GLuint m_id;
-    GLenum m_target;
-    size_t m_sizeInBytes {0};
-    const USAGE m_usage {U_STATIC_DRAW};
+    const GLenum m_target;
+    const size_t m_sizeInBytes;
+    const HARDWAREBUFFER_USAGE m_usage;
 
 };
 
-IHardwareBuffer::USAGE IHardwareBuffer::getUsage() const
+IHardwareBuffer::HARDWAREBUFFER_USAGE IHardwareBuffer::getUsage() const
 {
     return m_usage;
 }

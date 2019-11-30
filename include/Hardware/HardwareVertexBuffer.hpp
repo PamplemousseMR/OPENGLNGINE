@@ -17,7 +17,7 @@ class HardwareVertexBuffer final : public IHardwareBuffer
 
 public:
 
-    HardwareVertexBuffer(HardwareBufferManager* const, size_t, size_t, USAGE);
+    HardwareVertexBuffer(HardwareBufferManager* const, size_t, size_t, HARDWAREBUFFER_USAGE);
     virtual ~HardwareVertexBuffer() override final;
 
     inline size_t getVertexSizeInBytes() const;

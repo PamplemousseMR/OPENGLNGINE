@@ -4,7 +4,7 @@
 namespace Hardware
 {
 
-HardwareVertexBuffer::HardwareVertexBuffer(HardwareBufferManager* const _manager, size_t _vertexSizeInBytes, size_t _numVertices, USAGE _usage):
+HardwareVertexBuffer::HardwareVertexBuffer(HardwareBufferManager* const _manager, size_t _vertexSizeInBytes, size_t _numVertices, HARDWAREBUFFER_USAGE _usage):
     IHardwareBuffer(_manager, GL_ARRAY_BUFFER, _vertexSizeInBytes*_numVertices, _usage),
     m_vertexSizeInBytes(_vertexSizeInBytes),
     m_numVertices(_numVertices)

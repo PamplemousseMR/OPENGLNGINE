@@ -24,7 +24,7 @@ public:
         IT_UNSIGNED_INT = sizeof(unsigned int)
     };
 
-    HardwareIndexBuffer(HardwareBufferManager* const, INDEX_TYPE, size_t, USAGE);
+    HardwareIndexBuffer(HardwareBufferManager* const, INDEX_TYPE, size_t, HARDWAREBUFFER_USAGE);
     virtual ~HardwareIndexBuffer() override final;
 
     inline INDEX_TYPE getIndexType() const;
