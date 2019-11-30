@@ -18,8 +18,6 @@ class IMovable :
 
 public:
 
-    friend class SceneNode;
-
     inline SceneNode* const getParent() const;
     inline bool const isInScene() const;
 
@@ -34,18 +32,24 @@ public:
     void setRotation(const glm::vec3&);
     void setScale(const glm::vec3&);
 
+    inline void _notifyParent(SceneNode* const);
+    inline void _notifyInSceneGraph(bool);
+
 protected:
 
     IMovable();
     IMovable(const std::string&);
     virtual ~IMovable();
 
+    SceneNode* m_parent {nullptr};
+
 private:
 
-    inline void _notifyParent(SceneNode* const);
-    inline void _notifyInSceneGraph(bool);
+    IMovable(const IMovable&) = delete;
+    IMovable(IMovable&&) = delete;
+    IMovable& operator=(const IMovable&) = delete;
+    IMovable& operator=(IMovable&&) = delete;
 
-    SceneNode* m_parent {nullptr};
     bool m_isInSceneGraph {false};
 
     glm::mat4 m_positionMatrix {1.0};

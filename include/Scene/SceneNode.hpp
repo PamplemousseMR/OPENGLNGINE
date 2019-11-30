@@ -17,10 +17,12 @@ class SceneNode final:
 
 public:
 
-    friend class SceneManager;
-
     typedef std::map<std::string, SceneNode*> ChildMap;
     typedef std::map<std::string, IMovableObject*> ObjectMap;
+
+    SceneNode(SceneManager* const);
+    SceneNode(SceneManager* const, const std::string&);
+    virtual ~SceneNode() final;
 
     SceneNode* createChild(const std::string&);
     SceneNode* createChild();
@@ -50,19 +52,15 @@ public:
     IMovableObject* getAttachedObject(ObjectMap::size_type) const;
 
     inline bool isRoot() const;
+    void _notifyRoot();
 
 private:
-
-    SceneNode(SceneManager* const);
-    SceneNode(SceneManager* const, const std::string&);
-    virtual ~SceneNode() final;
 
     SceneNode(const SceneNode&) = delete;
     SceneNode(SceneNode&&) = delete;
     SceneNode& operator=(const SceneNode&) = delete;
     SceneNode& operator=(SceneNode&&) = delete;
 
-    void _notifyRoot();
     void setInSceneGraph(bool);
 
     bool m_isRootSceneNode {false};

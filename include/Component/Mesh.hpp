@@ -12,6 +12,9 @@
 #include <string>
 #include <vector>
 
+#include "Hardware/HardwareIndexBuffer.hpp"
+#include "Hardware/HardwareBufferManager.hpp"
+
 namespace Assets
 {
     class Material;
@@ -73,11 +76,10 @@ private:
 
 private:
 
-    int m_dataSize {0};
     GL::VertexBuffer* m_vboVertex {nullptr};
     GL::VertexBuffer* m_vboNormal {nullptr};
     GL::VertexBuffer* m_vboTextCoord {nullptr};
-    GL::ElementsBuffer* m_ebo {nullptr};
+    ::Hardware::HardwareIndexBufferPtr m_ebo{nullptr};
     GL::VertexArrayBuffer* m_vao {nullptr};
     bool m_textCoord {false};
     Assets::Material* m_material {nullptr};
@@ -98,7 +100,7 @@ inline bool Mesh::hasTextureCoord() const
 
 inline void Mesh::draw() const
 {
-    glDrawElements(GL_TRIANGLES, m_dataSize, GL_UNSIGNED_INT, static_cast< void* >(nullptr));
+    glDrawElements(GL_TRIANGLES, m_ebo->getNumIndex(), GL_UNSIGNED_INT, static_cast< void* >(nullptr));
     assert(glGetError() == GL_NO_ERROR);
 }
 

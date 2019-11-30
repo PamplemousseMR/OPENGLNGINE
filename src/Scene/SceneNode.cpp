@@ -184,7 +184,7 @@ SceneNode* SceneNode::getChild(ChildMap::size_type _index) const
 
 void SceneNode::attachObject(IMovableObject* const _mo)
 {
-    if(_mo->m_parent != nullptr)
+    if(_mo->getParent() != nullptr)
     {
         throw invalid_argument("[SceneNode] The movable object is already the child of another scene node");
     }

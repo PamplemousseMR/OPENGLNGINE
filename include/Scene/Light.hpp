@@ -18,14 +18,16 @@ class Light final:
 
 public:
 
-    friend class SceneManager;
-
     enum LIGHT_TYPE
     {
         LT_POINT,
         LT_DIRECTIONAL,
         LT_SPOTLIGHT
     };
+
+    Light(LIGHT_TYPE = LT_POINT);
+    Light(const std::string&, LIGHT_TYPE = LT_POINT);
+    virtual ~Light() final;
 
     virtual std::ostream& print(std::ostream&) const final;
 
@@ -59,9 +61,10 @@ public:
 
 private:
 
-    Light(LIGHT_TYPE = LT_POINT);
-    Light(const std::string&, LIGHT_TYPE = LT_POINT);
-    virtual ~Light() final;
+    Light(const Light&) = delete;
+    Light(Light&&) = delete;
+    Light& operator=(const Light&) = delete;
+    Light& operator=(Light&&) = delete;
 
     LIGHT_TYPE m_type {LT_POINT};
 

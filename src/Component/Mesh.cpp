@@ -17,7 +17,6 @@ namespace Component
         m_vboVertex = new VertexBuffer();
         m_vboNormal = new VertexBuffer();
         m_vboTextCoord = new VertexBuffer();
-        m_ebo = new ElementsBuffer();
         m_vao = new VertexArrayBuffer();
         m_material = new Assets::Material(_name);
     }
@@ -25,20 +24,18 @@ namespace Component
     Mesh::~Mesh()
     {
         delete m_vao;
-        delete m_ebo;
         delete m_vboVertex;
         delete m_vboNormal;
         delete m_vboTextCoord;
+        m_ebo.reset();
         delete m_material;
     }
 
     Mesh::Mesh(const Mesh& _mesh) :
         Drawable(_mesh),
-        m_dataSize(_mesh.m_dataSize),
         m_vboVertex(new VertexBuffer(*_mesh.m_vboVertex)),
         m_vboNormal(new VertexBuffer(*_mesh.m_vboNormal)),
         m_vboTextCoord(new VertexBuffer(*_mesh.m_vboTextCoord)),
-        m_ebo(new ElementsBuffer(*_mesh.m_ebo)),
         m_vao(new VertexArrayBuffer()),
         m_textCoord(_mesh.m_textCoord),
         m_material(new Material(*_mesh.m_material))
@@ -60,14 +57,13 @@ namespace Component
             m_vboNormal->setLocation(S_NORMALLOCATION);
             m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-            m_ebo->bind();
+            m_ebo->lock();
         }
         m_vao->unbind();
     }
 
     Mesh::Mesh(Mesh&& _mesh) :
         Drawable(move(_mesh)),
-        m_dataSize(move(_mesh.m_dataSize)),
         m_textCoord(move(_mesh.m_textCoord))
     {
         m_vboVertex = _mesh.m_vboVertex;
@@ -89,18 +85,16 @@ namespace Component
         if(this != &_mesh)
         {
             delete m_vao;
-            delete m_ebo;
             delete m_vboVertex;
             delete m_vboNormal;
             delete m_vboTextCoord;
+            m_ebo.reset();
             delete m_material;
 
             Drawable::operator=(_mesh);
-            m_dataSize = _mesh.m_dataSize;
             m_vboVertex = new VertexBuffer(*_mesh.m_vboVertex);
             m_vboNormal = new VertexBuffer(*_mesh.m_vboNormal);
             m_vboTextCoord = new VertexBuffer(*_mesh.m_vboTextCoord);
-            m_ebo = new ElementsBuffer(*_mesh.m_ebo);
             m_vao = new VertexArrayBuffer();
             m_textCoord = _mesh.m_textCoord;
             m_material = new Material(*_mesh.m_material);
@@ -122,7 +116,7 @@ namespace Component
                 m_vboNormal->setLocation(S_NORMALLOCATION);
                 m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-                m_ebo->bind();
+                m_ebo->lock();
             }
             m_vao->unbind();
         }
@@ -134,14 +128,13 @@ namespace Component
         if(this != &_mesh)
         {
             delete m_vao;
-            delete m_ebo;
             delete m_vboVertex;
             delete m_vboNormal;
             delete m_vboTextCoord;
+            m_ebo.reset();
             delete m_material;
 
             Drawable::operator=(move(_mesh));
-            m_dataSize = move(_mesh.m_dataSize);
             m_textCoord = move(_mesh.m_textCoord);
 
             m_vboVertex = _mesh.m_vboVertex;
@@ -287,7 +280,6 @@ namespace Component
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
         m_textCoord = true;
-        m_dataSize = int(indexedIndex.size());
 
         m_vboVertex->bind();
         m_vboVertex->setData(indexedVertex);
@@ -301,9 +293,9 @@ namespace Component
         m_vboTextCoord->setData(indexedTextCoord);
         m_vboTextCoord->unbind();
 
-        m_ebo->bind();
-        m_ebo->setData(indexedIndex);
-        m_ebo->unbind();
+        m_ebo = ::Hardware::HardwareBufferManager::getInstance()
+                .createIndexBuffer(::Hardware::HardwareIndexBuffer::IT_UNSIGNED_INT, indexedIndex.size(), ::Hardware::IHardwareBuffer::U_STATIC_DRAW);
+        m_ebo->writeData(0, m_ebo->getSizeInBytes(), indexedIndex.data(), false);
 
         m_vao->bind();
         {
@@ -319,7 +311,7 @@ namespace Component
             m_vboNormal->setLocation(S_NORMALLOCATION);
             m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-            m_ebo->bind();
+            m_ebo->lock();
         }
         m_vao->unbind();
 
@@ -385,7 +377,6 @@ namespace Component
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
         m_textCoord = false;
-        m_dataSize = int(indexedIndex.size());
 
         m_vboVertex->bind();
         m_vboVertex->setData(indexedVertex);
@@ -395,9 +386,9 @@ namespace Component
         m_vboNormal->setData(indexedNormal);
         m_vboNormal->unbind();
 
-        m_ebo->bind();
-        m_ebo->setData(indexedIndex);
-        m_ebo->unbind();
+        m_ebo = ::Hardware::HardwareBufferManager::getInstance()
+                .createIndexBuffer(::Hardware::HardwareIndexBuffer::IT_UNSIGNED_INT, indexedIndex.size(), ::Hardware::IHardwareBuffer::U_STATIC_DRAW);
+        m_ebo->writeData(0, m_ebo->getSizeInBytes(), indexedIndex.data(), false);
 
         m_vao->bind();
         {
@@ -409,7 +400,7 @@ namespace Component
             m_vboNormal->setLocation(S_NORMALLOCATION);
             m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-            m_ebo->bind();
+            m_ebo->lock();
         }
         m_vao->unbind();
 
@@ -495,7 +486,6 @@ namespace Component
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
         m_textCoord = true;
-        m_dataSize = int(indexedIndex.size());
 
         m_vboVertex->bind();
         m_vboVertex->setData(indexedVertex);
@@ -509,9 +499,9 @@ namespace Component
         m_vboTextCoord->setData(indexedTextCoord);
         m_vboTextCoord->unbind();
 
-        m_ebo->bind();
-        m_ebo->setData(indexedIndex);
-        m_ebo->unbind();
+        m_ebo = ::Hardware::HardwareBufferManager::getInstance()
+                .createIndexBuffer(::Hardware::HardwareIndexBuffer::IT_UNSIGNED_INT, indexedIndex.size(), ::Hardware::IHardwareBuffer::U_STATIC_DRAW);
+        m_ebo->writeData(0, m_ebo->getSizeInBytes(), indexedIndex.data(), false);
 
         m_vao->bind();
         {
@@ -527,7 +517,7 @@ namespace Component
             m_vboNormal->setLocation(S_NORMALLOCATION);
             m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-            m_ebo->bind();
+            m_ebo->lock();
         }
         m_vao->unbind();
     }
@@ -597,7 +587,6 @@ namespace Component
         indexVBO(newVertex, newTextCoord, newNormal, indexedIndex, indexedVertex, indexedTextCoord, indexedNormal);
 
         m_textCoord = false;
-        m_dataSize = int(indexedIndex.size());
 
         m_vboVertex->bind();
         m_vboVertex->setData(indexedVertex);
@@ -607,9 +596,9 @@ namespace Component
         m_vboNormal->setData(indexedNormal);
         m_vboNormal->unbind();
 
-        m_ebo->bind();
-        m_ebo->setData(indexedIndex);
-        m_ebo->unbind();
+        m_ebo = ::Hardware::HardwareBufferManager::getInstance()
+                .createIndexBuffer(::Hardware::HardwareIndexBuffer::IT_UNSIGNED_INT, indexedIndex.size(), ::Hardware::IHardwareBuffer::U_STATIC_DRAW);
+        m_ebo->writeData(0, m_ebo->getSizeInBytes(), indexedIndex.data(), false);
 
         m_vao->bind();
         {
@@ -621,7 +610,7 @@ namespace Component
             m_vboNormal->setLocation(S_NORMALLOCATION);
             m_vboNormal->setAttrib(S_NORMALLOCATION, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-            m_ebo->bind();
+            m_ebo->lock();
         }
         m_vao->unbind();
     }

@@ -13,15 +13,21 @@ class IMovableObject :
 
 public:
 
-    friend class SceneManager;
-
     static const std::string s_FACTORY_TYPE_NAME;
+
+    virtual ~IMovableObject();
 
 protected:
 
     IMovableObject();
     IMovableObject(const std::string&);
-    virtual ~IMovableObject();
+
+private:
+
+    IMovableObject(const IMovableObject&) = delete;
+    IMovableObject(IMovableObject&&) = delete;
+    IMovableObject& operator=(const IMovableObject&) = delete;
+    IMovableObject& operator=(IMovableObject&&) = delete;
 
 };
 
