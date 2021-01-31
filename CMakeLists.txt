@@ -6,76 +6,32 @@ cmake_minimum_required(VERSION 3.8)
 project("OPENGLNGINE")
 
 #=======================================
-#                 INIT                 
-#======================================= 
-
-#---------------------------------------
-#               VARIABLES               
-#---------------------------------------
-
-set(OPENGLNGINE_SRC_DIR "src")
-set(OPENGLNGINE_HEADER_DIR "include")
-set(OPENGLNGINE_BIN_DIR "bin")
-set(OPENGLNGINE_PROJECT_NAME "openglngine")
-set(OPENGLNGINE_GLSL_DIR "${OPENGLNGINE_BIN_DIR}/GLSL")
-set(OPENGLNGINE_OBJ_DIR "${OPENGLNGINE_BIN_DIR}/obj")
-
-#---------------------------------------
-#                 FILES                 
-#---------------------------------------
-
-file(GLOB_RECURSE openglngine_src_files ${OPENGLNGINE_SRC_DIR}/*)
-file(GLOB_RECURSE openglngine_header_files ${OPENGLNGINE_HEADER_DIR}/*)
-file(GLOB_RECURSE openglngine_glsl_files ${OPENGLNGINE_GLSL_DIR}/*)
-
-#---------------------------------------
-#                 CONAN                 
-#---------------------------------------
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-#=======================================
-#                CREATE                
+#               LIBRARIES
 #=======================================
 
-#---------------------------------------
-#                PROJECT                
-#---------------------------------------
-
-add_executable(${OPENGLNGINE_PROJECT_NAME}  ${openglngine_src_files} ${openglngine_header_files} ${openglngine_glsl_files})
-target_include_directories(${OPENGLNGINE_PROJECT_NAME} PRIVATE ${OPENGLNGINE_HEADER_DIR} ${OPENGLNGINE_GLSL_DIR})
-
-#--------------------------------------- 
-#              PROPERTIES              
-#---------------------------------------
-
-set_target_properties(${OPENGLNGINE_PROJECT_NAME} PROPERTIES
-                        CXX_STANDARD 17
-                        CXX_STANDARD_REQUIRED ON
-                        CXX_EXTENSIONS OFF)
-
-if(NOT WIN32)
-    set_target_properties(${OPENGLNGINE_PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-lstdc++fs -std=c++17")
-endif(UNIX)
-
-#---------------------------------------
-#                OPENGL                
-#---------------------------------------
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 find_package(OpenGL REQUIRED)
+find_package(glfw3 REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glm REQUIRED)
+find_package(soil2 REQUIRED)
 
-target_link_libraries(${OPENGLNGINE_PROJECT_NAME} OpenGL::GL)
+#=======================================
+#                ENGINE
+#=======================================
 
-#---------------------------------------
-#                 CONAN                 
-#---------------------------------------
+add_subdirectory("OpenGLNgine")
 
-target_link_libraries(${OPENGLNGINE_PROJECT_NAME} ${CONAN_LIBS})
+#=======================================
+#                 BIN
+#=======================================
 
-#---------------------------------------
-#               BINARIES               
-#---------------------------------------
+add_subdirectory("bin")
 
-file(COPY ${OPENGLNGINE_GLSL_DIR} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-file(COPY ${OPENGLNGINE_OBJ_DIR} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+#=======================================
+#                 APPS
+#=======================================
+
+add_subdirectory("app")
