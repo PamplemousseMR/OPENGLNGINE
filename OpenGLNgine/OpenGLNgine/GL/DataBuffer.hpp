@@ -14,7 +14,7 @@ namespace GL
 enum DATABUFFER_TARGET : GLenum
 {
     DT_ARRAY = GL_ARRAY_BUFFER,
-    ET_ELEMENT = GL_ELEMENT_ARRAY_BUFFER
+    DT_ELEMENT = GL_ELEMENT_ARRAY_BUFFER
 };
 
 /// Manage all supported type.

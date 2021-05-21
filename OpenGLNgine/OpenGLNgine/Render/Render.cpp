@@ -1,3 +1,4 @@
+#include "OpenGLNgine/Render/Camera.hpp"
 #include "OpenGLNgine/Render/Render.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
@@ -51,39 +52,39 @@ void Render::destroyAllRenderWindow()
     }
 }
 
-SceneManager* Render::createSceneManager(const std::string& _name)
+Camera* Render::createCamera(const std::string& _name)
 {
-    if(m_sceneManagers.find(_name) != m_sceneManagers.end())
+    if(m_cameras.find(_name) != m_cameras.end())
     {
-        GLNGINE_EXCEPTION("A scene manager with the name '" + _name + "' already exists");
+        GLNGINE_EXCEPTION("A camera with the name '" + _name + "' already exists");
     }
 
-    auto sm = new SceneManager(this, _name);
-    m_sceneManagers.emplace(_name, sm);
-    return sm;
+    auto cam = new Camera(this, _name);
+    m_cameras.emplace(_name, cam);
+    return cam;
 }
 
-void Render::destroySceneManager(const SceneManager* const _sceneManager)
+void Render::destroyCamera(const Camera* const _camera)
 {
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
 
-    SceneManagerList::const_iterator it = m_sceneManagers.find(_sceneManager->getName());
-    if(it == m_sceneManagers.end())
+    CameraList::const_iterator it = m_cameras.find(_camera->getName());
+    if(it == m_cameras.end())
     {
-        GLNGINE_EXCEPTION("A scene manager with the name '" + _sceneManager->getName() + "' doesn't exists");
+        GLNGINE_EXCEPTION("A camera with the name '" + _camera->getName() + "' doesn't exists");
     }
 
-    m_sceneManagers.erase(it);
-    delete _sceneManager;
+    m_cameras.erase(it);
+    delete _camera;
 }
 
-void Render::destroyAllSceneManagers()
+void Render::destroyAllCamera()
 {
-    SceneManagerList::iterator it = m_sceneManagers.begin();
-    while(it != m_sceneManagers.end())
+    CameraList::iterator it = m_cameras.begin();
+    while(it != m_cameras.end())
     {
-        this->destroySceneManager(it->second);
-        it = m_sceneManagers.begin();
+        this->destroyCamera(it->second);
+        it = m_cameras.begin();
     }
 }
 
@@ -115,7 +116,6 @@ Render::Render()
 Render::~Render()
 {
     this->destroyAllRenderWindow();
-    this->destroyAllSceneManagers();
     glfwTerminate();
 }
 
