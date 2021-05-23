@@ -14,12 +14,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <GL/glew.h>
-
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-
 using namespace std;
 
 static const int s_width = 640;
