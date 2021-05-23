@@ -1,11 +1,11 @@
 #version 440 core
 
-in vec4 v_f4VertexCol;
+in vec4 v_f4Color;
 
-out vec4 v_f4OutCol;
+out vec4 f_f4OutCol;
 
 void main()
 {
-    v_f4OutCol = v_f4VertexCol;
+    f_f4OutCol = v_f4Color;
 }
 

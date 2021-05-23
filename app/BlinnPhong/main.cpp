@@ -56,7 +56,7 @@ int main()
 
     Render::Render& render = Render::Render::getInstance();
 
-    Render::RenderWindow* const renderWindow = render.createRenderWindow("Default", s_width, s_height);
+    Render::RenderWindow* const renderWindow = render.createRenderWindow("BlinnPhong", s_width, s_height);
     renderWindow->makeCurrent();
     renderWindow->setSamples(s_sample);
     renderWindow->addListener(new Listener);
@@ -73,11 +73,11 @@ int main()
     // Init shaders
 
     GL::Shader vertexShader(GL::ST_VERTEX);
-    vertexShader.setSourceFromFile(GLSL_PATH"/Default/Default_VP.glsl");
+    vertexShader.setSourceFromFile(GLSL_PATH"/BlinnPhong/BlinnPhong_VP.glsl");
     vertexShader.compile();
 
     GL::Shader fragmentShader(GL::ST_FRAGMENT);
-    fragmentShader.setSourceFromFile(GLSL_PATH"/Default/Default_FP.glsl");
+    fragmentShader.setSourceFromFile(GLSL_PATH"/BlinnPhong/BlinnPhong_FP.glsl");
     fragmentShader.compile();
 
     GL::Program program;
@@ -88,59 +88,176 @@ int main()
     GL::Uniform model("u_m4Model", program.getId());
     GL::Uniform view("u_m4View", program.getId());
     GL::Uniform projection("u_m4Projection", program.getId());
+    GL::Uniform lightPos_Ws("u_f3LightPos_Ws", program.getId());
+
+    program.bind();
+    lightPos_Ws = glm::vec3(0.f, 0.f, 1.f);
 
     // Init VBO EBO and VAO
 
     const std::vector<float> vertexData = {
-        0.25f, 0.25f, -0.25f,
-        1.0f, 1.0f, 1.0f, 0.5f,
-
-        -0.25f, 0.25f, -0.25f,
-        1.0f, 1.0f, 0.0f, 0.5f,
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
 
         0.25f, 0.25f, 0.25f,
         1.0f, 0.0f, 1.0f, 0.5f,
-
-        -0.25f, 0.25f, 0.25f,
-        0.0f, 1.0f, 1.0f, 0.5f,
-
-        0.25f, -0.25f, -0.25f,
-        1.0f, 0.0f, 0.0f, 0.5f,
-
-        -0.25f, -0.25f, -0.25f,
-        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
 
         -0.25f, -0.25f, 0.25f,
         0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
 
         0.25f, -0.25f, 0.25f,
         0.0f, 1.0f, 0.0f, 0.5f,
-    };
+        0.0f, 0.0f, 1.0f,
 
-    const std::vector<unsigned int> indexData = {
-        3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, 0.25f,
+        0.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, 0.25f,
+        0.0f, 1.0f, 0.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
     };
 
     GL::DataBuffer cubeVBO(GL::DT_ARRAY);
     cubeVBO.bind();
     cubeVBO.writeData(vertexData, GL::DT_STATIC_DRAW);
 
-    GL::DataBuffer cubeEBO(GL::DT_ELEMENT);
-    cubeEBO.bind();
-    cubeEBO.writeData(indexData, GL::DT_STATIC_DRAW);
-
     GL::VertexArrayBuffer cubeVAO;
     cubeVAO.bind();
 
     cubeVBO.bind();
 
-    GL::DataBuffer::setAttrib(0, 3, GL::DT_FLOAT, false, 7*sizeof(float), 0);
+    GL::DataBuffer::setAttrib(0, 3, GL::DT_FLOAT, false, 10*sizeof(float), 0);
     GL::DataBuffer::setLocation(0);
 
-    GL::DataBuffer::setAttrib(1, 4, GL::DT_FLOAT, false, 7*sizeof(float), 3*sizeof(float));
+    GL::DataBuffer::setAttrib(1, 4, GL::DT_FLOAT, false, 10*sizeof(float), 3*sizeof(float));
     GL::DataBuffer::setLocation(1);
 
-    cubeEBO.bind();
+    GL::DataBuffer::setAttrib(2, 3, GL::DT_FLOAT, false, 10*sizeof(float), 7*sizeof(float));
+    GL::DataBuffer::setLocation(2);
 
     // Init standar gl enable
 
@@ -167,7 +284,7 @@ int main()
 
             cubeVAO.bind();
             {
-                GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
+                GL::DrawCall::drawArrays(GL::DR_TRIANGLES, 0, 36);
             }
             cubeVAO.unbind();
         }
@@ -175,7 +292,7 @@ int main()
 
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(1.f, 1.f, 0.f));
+        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(1.f, 0.5f, 1.f));
     }
 
     renderWindow->removeViewport(viewport);

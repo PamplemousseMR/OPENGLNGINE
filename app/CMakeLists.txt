@@ -1,2 +1,3 @@
-add_subdirectory("default")
-add_subdirectory("viewports")
+add_subdirectory("BlinnPhong")
+add_subdirectory("Default")
+add_subdirectory("Viewports")
