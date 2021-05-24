@@ -1,7 +1,6 @@
 #version 440 core
 
 in vec4 v_f4Vertex_Vs;
-in vec4 v_f4Color;
 in vec4 v_f4Normal_Vs;
 
 in vec3 v_f3LightPos_Vs;
@@ -10,6 +9,7 @@ out vec4 f_f4OutCol;
 
 void main()
 {
+    vec4 v_f4Color = vec4(1.0, 0.0, 0.0, 1.0);
     vec3 f3CamDir_VsN = normalize(vec3(0.0, 0.0, 0.0) - v_f4Vertex_Vs.xyz);
 
     vec3 f3LightDir_Vs = v_f3LightPos_Vs - v_f4Vertex_Vs.xyz;
