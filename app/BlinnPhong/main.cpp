@@ -286,7 +286,7 @@ int main()
     GL::DataBuffer::setAttrib(2, 3, GL::DT_FLOAT, false, 10*sizeof(float), 7*sizeof(float));
     GL::DataBuffer::setLocation(2);
 
-    // Create light
+    // Create lights
 
     Render::Light light1;
     light1.setType(Render::LT_POINT);
@@ -339,7 +339,7 @@ int main()
     {
         GL::Rasterizer::enableScissorTest(false);
         GL::PixelOperation::setColorClearValue(0.f, 0.f, 0.f, 0.f);
-        GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
+        GL::DrawCall::clear(GL::DC_DEPTH);
         GL::Rasterizer::enableScissorTest(true);
 
         program.bind();

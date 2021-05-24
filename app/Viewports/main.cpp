@@ -173,6 +173,9 @@ int main()
 
         program.bind();
         {
+            model = cubeModel;
+            view = viewport1->getCamera()->getView();
+
             cubeVAO.bind();
             {
                 const auto& color = viewport1->getClearColor();
@@ -184,8 +187,6 @@ int main()
 
                 GL::DrawCall::clear(GL::DC_COLOR);
 
-                model = cubeModel;
-                view = viewport1->getCamera()->getView();
                 projection = viewport1->getCamera()->getProjection();
 
                 GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
@@ -200,8 +201,6 @@ int main()
 
                 GL::DrawCall::clear(GL::DC_COLOR);
 
-                model = cubeModel;
-                view = viewport2->getCamera()->getView();
                 projection = viewport2->getCamera()->getProjection();
 
                 GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
@@ -216,8 +215,6 @@ int main()
 
                 GL::DrawCall::clear(GL::DC_COLOR);
 
-                model = cubeModel;
-                view = viewport3->getCamera()->getView();
                 projection = viewport3->getCamera()->getProjection();
 
                 GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
