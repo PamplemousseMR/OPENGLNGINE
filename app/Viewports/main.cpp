@@ -170,59 +170,60 @@ int main()
         GL::Rasterizer::enableScissorTest(false);
         GL::DrawCall::clear(GL::DC_DEPTH);
         GL::Rasterizer::enableScissorTest(true);
+
         program.bind();
-        cubeVAO.bind();
-
         {
-            const auto& color = viewport1->getClearColor();
-            GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+            cubeVAO.bind();
+            {
+                const auto& color = viewport1->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
 
-            const auto& size = viewport1->getViewport();
-            GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-            GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+                const auto& size = viewport1->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
 
-            GL::DrawCall::clear(GL::DC_COLOR);
+                GL::DrawCall::clear(GL::DC_COLOR);
 
-            model = cubeModel;
-            view = viewport1->getCamera()->getView();
-            projection = viewport1->getCamera()->getProjection();
+                model = cubeModel;
+                view = viewport1->getCamera()->getView();
+                projection = viewport1->getCamera()->getProjection();
 
-            GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
+                GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
+            }
+            {
+                const auto& color = viewport2->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+
+                const auto& size = viewport2->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+                GL::DrawCall::clear(GL::DC_COLOR);
+
+                model = cubeModel;
+                view = viewport2->getCamera()->getView();
+                projection = viewport2->getCamera()->getProjection();
+
+                GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
+            }
+            {
+                const auto& color = viewport3->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+
+                const auto& size = viewport3->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+                GL::DrawCall::clear(GL::DC_COLOR);
+
+                model = cubeModel;
+                view = viewport3->getCamera()->getView();
+                projection = viewport3->getCamera()->getProjection();
+
+                GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
+            }
+            cubeVAO.unbind();
         }
-        {
-            const auto& color = viewport2->getClearColor();
-            GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
-
-            const auto& size = viewport2->getViewport();
-            GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-            GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
-
-            GL::DrawCall::clear(GL::DC_COLOR);
-
-            model = cubeModel;
-            view = viewport2->getCamera()->getView();
-            projection = viewport2->getCamera()->getProjection();
-
-            GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
-        }
-        {
-            const auto& color = viewport3->getClearColor();
-            GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
-
-            const auto& size = viewport3->getViewport();
-            GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-            GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
-
-            GL::DrawCall::clear(GL::DC_COLOR);
-
-            model = cubeModel;
-            view = viewport3->getCamera()->getView();
-            projection = viewport3->getCamera()->getProjection();
-
-            GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
-        }
-
-        cubeVAO.unbind();
         program.unbind();
 
         renderWindow->swapBuffers();
