@@ -20,6 +20,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/GL/Uniform.cpp
     ${GLNGINE_SOURCE}/GL/VertexArrayBuffer.cpp
     ${GLNGINE_SOURCE}/Render/Camera.cpp
+    ${GLNGINE_SOURCE}/Render/Light.cpp
     ${GLNGINE_SOURCE}/Render/Render.cpp
     ${GLNGINE_SOURCE}/Render/RenderWindow.cpp
     ${GLNGINE_SOURCE}/Render/Viewport.cpp)
@@ -40,6 +41,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/GL/Uniform.hpp
     ${GLNGINE_SOURCE}/GL/VertexArrayBuffer.hpp
     ${GLNGINE_SOURCE}/Render/Camera.hpp
+    ${GLNGINE_SOURCE}/Render/Light.hpp
     ${GLNGINE_SOURCE}/Render/Render.hpp
     ${GLNGINE_SOURCE}/Render/RenderWindow.hpp
     ${GLNGINE_SOURCE}/Render/Viewport.hpp)

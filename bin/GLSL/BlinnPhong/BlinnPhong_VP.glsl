@@ -8,13 +8,13 @@ uniform mat4 u_m4Model;
 uniform mat4 u_m4View;
 uniform mat4 u_m4Projection;
 
-uniform vec3 u_f3LightPos_Ws;
+uniform vec4 u_f4LightPos_Ws;
 
 out vec4 v_f4Vertex_Vs;
 out vec4 v_f4Color;
 out vec4 v_f4Normal_Vs;
 
-out vec3 v_f3LightPos_Vs;
+out vec3 v_f3LightDir_Vs;
 
 void main()
 {
@@ -24,6 +24,7 @@ void main()
     v_f4Color = a_f4Color;
     v_f4Normal_Vs = u_m4View * u_m4Model * vec4(a_f3Normal_Ms_N, 0.0);
 
-    v_f3LightPos_Vs = vec4(u_m4View * vec4(u_f3LightPos_Ws, 1.0)).xyz;
+    vec3 f3LightPos_Vs = vec4(u_m4View * vec4(u_f4LightPos_Ws.xyz, 1.0)).xyz;
+    v_f3LightDir_Vs = u_f4LightPos_Ws.w * v_f4Vertex_Vs.xyz - f3LightPos_Vs;
 }
 

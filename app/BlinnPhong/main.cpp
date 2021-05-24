@@ -9,10 +9,13 @@
 #include "OpenGLNgine/GL/DrawCall.hpp"
 #include "OpenGLNgine/GL/VertexArrayBuffer.hpp"
 #include "OpenGLNgine/Render/Camera.hpp"
+#include "OpenGLNgine/Render/Light.hpp"
 #include "OpenGLNgine/Render/Render.hpp"
 #include "OpenGLNgine/Render/RenderWindow.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <functional>
 
 using namespace std;
 
@@ -27,11 +30,23 @@ public:
 
     void sizeModified(Render::RenderWindow* const _rw, int _width, int _height) override
     {
-        Render::Viewport* const viewport = _rw->getViewport("Viewport");
-        viewport->setViewport(0, 0, _width, _height);
+        Render::Viewport* const viewport1 = _rw->getViewport("Viewport1");
+        viewport1->setViewport(1, 2 * (_height/3) + 1, _width/2 - 2, _height/3 - 2);
 
-        Render::Camera* const camera = viewport->getCamera();
-        camera->setProjection(camera->getFovy(), static_cast<float>(_width)/static_cast<float>(_height), camera->getNear(), camera->getFar());
+        Render::Viewport* const viewport2 = _rw->getViewport("Viewport2");
+        viewport2->setViewport(1, _height/3 + 1, _width/2 - 2, _height/3 - 2);
+
+        Render::Viewport* const viewport3 = _rw->getViewport("Viewport3");
+        viewport3->setViewport(1, 1, _width/2  - 2, _height/3 - 2);
+
+        Render::Viewport* const viewport4 = _rw->getViewport("Viewport4");
+        viewport4->setViewport(_width/2 + 1, 1, _width/2 - 2, _height - 2);
+
+        Render::Camera* const camera1 = viewport1->getCamera();
+        camera1->setProjection(camera1->getFovy(), static_cast<float>(_width/2)/static_cast<float>(_height/3), camera1->getNear(), camera1->getFar());
+
+        Render::Camera* const camera2 = viewport4->getCamera();
+        camera2->setProjection(camera2->getFovy(), static_cast<float>(_width/2)/static_cast<float>(_height), camera2->getNear(), camera2->getFar());
     }
 
     void keyPressed(Render::RenderWindow* const _rw, RENDERWINDOWLISTENER_KEY _key) override
@@ -55,14 +70,31 @@ int main()
     renderWindow->setSamples(s_sample);
     renderWindow->addListener(new Listener);
 
-    Render::Camera* const camera = render.createCamera("Camera");
-    camera->setProjection(45.f, static_cast<float>(s_width)/static_cast<float>(s_height), 0.1f, 10.f);
-    camera->setPosition({0.f, 0.f, 1.f});
-    camera->lookAt({0.f, 0.f, 0.f});
+    Render::Camera* const camera1 = render.createCamera("Camera1");
+    camera1->setProjection(45.f, static_cast<float>(s_width/2)/static_cast<float>(s_height/3), 0.1f, 10.f);
+    camera1->setPosition({0.f, 0.f, 1.f});
+    camera1->lookAt({0.f, 0.f, 0.f});
 
-    Render::Viewport* const viewport = renderWindow->addViewport("Viewport", camera);
-    viewport->setViewport(0, 0, s_width, s_height);
-    viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
+    Render::Viewport* const viewport1 = renderWindow->addViewport("Viewport1", camera1);
+    viewport1->setViewport(1, 2 * (s_height/3) + 1, s_width/2 - 2, s_height/3 - 2);
+    viewport1->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
+
+    Render::Viewport* const viewport2 = renderWindow->addViewport("Viewport2", camera1);
+    viewport2->setViewport(1, s_height/3 + 1, s_width/2 - 2, s_height/3 - 2);
+    viewport2->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
+
+    Render::Viewport* const viewport3 = renderWindow->addViewport("Viewport3", camera1);
+    viewport3->setViewport(1, 1, s_width/2 - 2, s_height/3 - 2);
+    viewport3->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
+
+    Render::Camera* const camera2 = render.createCamera("Camera2");
+    camera2->setProjection(45.f, static_cast<float>(s_width/2)/static_cast<float>(s_height), 0.1f, 10.f);
+    camera2->setPosition({0.f, 0.f, 1.f});
+    camera2->lookAt({0.f, 0.f, 0.f});
+
+    Render::Viewport* const viewport4 = renderWindow->addViewport("Viewport4", camera2);
+    viewport4->setViewport(s_width/2 + 1, 1, s_width/2 - 2, s_height - 2);
+    viewport4->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
     // Init shaders
 
@@ -82,10 +114,11 @@ int main()
     GL::Uniform model("u_m4Model", program.getId());
     GL::Uniform view("u_m4View", program.getId());
     GL::Uniform projection("u_m4Projection", program.getId());
-    GL::Uniform lightPos_Ws("u_f3LightPos_Ws", program.getId());
 
-    program.bind();
-    lightPos_Ws = glm::vec3(0.f, 0.f, 1.f);
+    GL::Uniform lightPos_Ws("u_f4LightPos_Ws", program.getId());
+    GL::Uniform lightAmbient("u_f3LightAmbient", program.getId());
+    GL::Uniform lightDiffuse("u_f3LightDiffuse", program.getId());
+    GL::Uniform lightSpecular("u_f3LightSpecular", program.getId());
 
     // Init VBO EBO and VAO
 
@@ -253,32 +286,121 @@ int main()
     GL::DataBuffer::setAttrib(2, 3, GL::DT_FLOAT, false, 10*sizeof(float), 7*sizeof(float));
     GL::DataBuffer::setLocation(2);
 
+    // Create light
+
+    Render::Light light1;
+    light1.setType(Render::LT_POINT);
+    light1.setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light1.setAmbient(::glm::vec3(1.f, 1.f, 1.f));
+    light1.setDiffuse(::glm::vec3(0.f, 0.f, 0.f));
+    light1.setSpecular(::glm::vec3(0.f, 0.f, 0.f));
+
+    Render::Light light2;
+    light2.setType(Render::LT_POINT);
+    light2.setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light2.setAmbient(::glm::vec3(0.f, 0.f, 0.f));
+    light2.setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
+    light2.setSpecular(::glm::vec3(0.f, 0.f, 0.f));
+
+    Render::Light light3;
+    light3.setType(Render::LT_POINT);
+    light3.setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light3.setAmbient(::glm::vec3(0.f, 0.f, 0.f));
+    light3.setDiffuse(::glm::vec3(0.f, 0.f, 0.f));
+    light3.setSpecular(::glm::vec3(1.f, 1.f, 1.f));
+
+    Render::Light light4;
+    light4.setType(Render::LT_POINT);
+    light4.setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light4.setAmbient(::glm::vec3(0.1f, 0.1f, 0.1f));
+    light4.setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
+    light4.setSpecular(::glm::vec3(1.f, 1.f, 1.f));
+
+    // Create the renderer
+
+    std::function<void(const Render::Light&)> blinnPhongRenderer = [&](const Render::Light& _light)
+    {
+        lightPos_Ws = _light.getShaderPosition();
+        lightAmbient = _light.getAmbient();
+        lightDiffuse = _light.getDiffuse();
+        lightSpecular = _light.getSpecular();
+
+        GL::DrawCall::drawArrays(GL::DR_TRIANGLES, 0, 36);
+    };
+
     // Init standar gl enable
 
     GL::PixelOperation::enableDepthTest(true);
     GL::PixelOperation::enableDepthWrite(true);
 
-    const auto& color = viewport->getClearColor();
-    GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
-
     glm::mat4 cubeModel(1.f);
 
     while(!renderWindow->shouldBeClose())
     {
-        const auto& size = viewport->getViewport();
-        GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-
+        GL::Rasterizer::enableScissorTest(false);
+        GL::PixelOperation::setColorClearValue(0.f, 0.f, 0.f, 0.f);
         GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
+        GL::Rasterizer::enableScissorTest(true);
 
         program.bind();
         {
             model = cubeModel;
-            view = camera->getView();
-            projection = camera->getProjection();
+
+            view = camera1->getView();
+            projection = camera1->getProjection();
 
             cubeVAO.bind();
             {
-                GL::DrawCall::drawArrays(GL::DR_TRIANGLES, 0, 36);
+                const auto& color = viewport1->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+
+                const auto& size = viewport1->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+                GL::DrawCall::clear(GL::DC_COLOR);
+
+                blinnPhongRenderer(light1);
+            }
+            {
+                const auto& color = viewport2->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+
+                const auto& size = viewport2->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+                GL::DrawCall::clear(GL::DC_COLOR);
+
+                blinnPhongRenderer(light2);
+            }
+            {
+                const auto& color = viewport3->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+
+                const auto& size = viewport3->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+                GL::DrawCall::clear(GL::DC_COLOR);
+
+                blinnPhongRenderer(light3);
+            }
+
+            view = camera2->getView();
+            projection = camera2->getProjection();
+
+            {
+                const auto& color = viewport4->getClearColor();
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+
+                const auto& size = viewport4->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+                GL::DrawCall::clear(GL::DC_COLOR);
+
+                blinnPhongRenderer(light4);
             }
             cubeVAO.unbind();
         }
@@ -286,11 +408,15 @@ int main()
 
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(1.f, 0.5f, 1.f));
+        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(0.8f, 0.5f, 1.f));
     }
 
-    renderWindow->removeViewport(viewport);
-    render.destroyCamera(camera);
+    renderWindow->removeViewport(viewport4);
+    render.destroyCamera(camera2);
+    renderWindow->removeViewport(viewport3);
+    renderWindow->removeViewport(viewport2);
+    renderWindow->removeViewport(viewport1);
+    render.destroyCamera(camera1);
     render.destroyRenderWindow(renderWindow);
 
     return EXIT_SUCCESS;

@@ -1,19 +1,22 @@
 #version 440 core
 
+uniform vec3 u_f3LightAmbient;
+uniform vec3 u_f3LightDiffuse;
+uniform vec3 u_f3LightSpecular;
+
 in vec4 v_f4Vertex_Vs;
+in vec4 v_f4Color;
 in vec4 v_f4Normal_Vs;
 
-in vec3 v_f3LightPos_Vs;
+in vec3 v_f3LightDir_Vs;
 
 out vec4 f_f4OutCol;
 
 void main()
 {
-    vec4 v_f4Color = vec4(1.0, 0.0, 0.0, 1.0);
     vec3 f3CamDir_VsN = normalize(vec3(0.0, 0.0, 0.0) - v_f4Vertex_Vs.xyz);
 
-    vec3 f3LightDir_Vs = v_f3LightPos_Vs - v_f4Vertex_Vs.xyz;
-    vec3 f3LightDir_VsN = normalize(f3LightDir_Vs);
+    vec3 f3LightDir_VsN = normalize(v_f3LightDir_Vs);
 
     vec3 f3NormalDir_VsN = normalize(v_f4Normal_Vs).xyz;
 
@@ -21,11 +24,11 @@ void main()
     vec3 f3CamReflectDir_VsN = reflect(-f3LightDir_VsN,f3NormalDir_VsN);
     float cosAlpha = clamp(dot(f3CamDir_VsN, f3CamReflectDir_VsN), 0, 1);
 
-    vec3 f3AmbientCol = 0.1 * v_f4Color.xyz;
+    vec3 f3AmbientCol = u_f3LightAmbient * v_f4Color.xyz;
 
-    vec3 f3DiffuseCol = vec3(v_f4Color.xyz * cosTheta);
+    vec3 f3DiffuseCol = u_f3LightDiffuse * vec3(v_f4Color.xyz * cosTheta);
 
-    vec3 f3SpecularCol = v_f4Color.xyz * pow(cosAlpha, 32.0);
+    vec3 f3SpecularCol = u_f3LightSpecular * pow(cosAlpha, 64.0);
 
     f_f4OutCol = vec4(f3AmbientCol + f3DiffuseCol + f3SpecularCol, f_f4OutCol.a);
 }

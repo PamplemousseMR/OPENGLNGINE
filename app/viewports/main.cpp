@@ -227,7 +227,7 @@ int main()
 
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(1.f, 1.f, 0.f));
+        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(0.8f, 0.5f, 1.f));
     }
 
     renderWindow->removeViewport(viewport3);
