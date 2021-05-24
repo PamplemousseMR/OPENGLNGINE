@@ -70,7 +70,9 @@ int main()
     renderWindow->setSamples(s_sample);
     renderWindow->addListener(new Listener);
 
-    Render::Camera* const camera1 = render.createCamera("Camera1");
+    Render::SceneManager* const sceneManager = render.createSceneManager("SseneManager");
+
+    Render::Camera* const camera1 = sceneManager->createCamera("Camera1");
     camera1->setProjection(45.f, static_cast<float>(s_width/2)/static_cast<float>(s_height/3), 0.1f, 10.f);
     camera1->setPosition({0.f, 0.f, 1.f});
     camera1->lookAt({0.f, 0.f, 0.f});
@@ -87,7 +89,7 @@ int main()
     viewport3->setViewport(1, 1, s_width/2 - 2, s_height/3 - 2);
     viewport3->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
-    Render::Camera* const camera2 = render.createCamera("Camera2");
+    Render::Camera* const camera2 = sceneManager->createCamera("Camera2");
     camera2->setProjection(45.f, static_cast<float>(s_width/2)/static_cast<float>(s_height), 0.1f, 10.f);
     camera2->setPosition({0.f, 0.f, 1.f});
     camera2->lookAt({0.f, 0.f, 0.f});
@@ -412,11 +414,11 @@ int main()
     }
 
     renderWindow->removeViewport(viewport4);
-    render.destroyCamera(camera2);
+    sceneManager->destroyCamera(camera2);
     renderWindow->removeViewport(viewport3);
     renderWindow->removeViewport(viewport2);
     renderWindow->removeViewport(viewport1);
-    render.destroyCamera(camera1);
+    sceneManager->destroyCamera(camera1);
     render.destroyRenderWindow(renderWindow);
 
     return EXIT_SUCCESS;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpenGLNgine/Render/RenderWindow.hpp"
+#include "OpenGLNgine/Render/SceneManager.hpp"
 
 #include <map>
 #include <string>
@@ -15,12 +16,13 @@ class Render final
 {
 
     friend RenderWindow;
-    friend Camera;
+    friend SceneManager;
 
 public:
 
     typedef std::map< std::string, RenderWindow* > RenderWindowList;
-    typedef std::map< std::string, Camera* > CameraList;
+
+    typedef std::map< std::string, SceneManager* > SceneManagerList;
 
     /**
      * @brief Gets the only instance of this class.
@@ -65,25 +67,26 @@ public:
     inline const RenderWindowList& getRenderWindows() const;
 
     /**
-     * @brief Creates a camera.
-     * @param _name The name of the camera.
+     * @brief Creates a scene manager.
+     * @param _name The name of the scene manager.
+     * @return The scene manager.
      */
-    Camera* createCamera(const std::string& _name);
+    SceneManager* createSceneManager(const std::string& _name);
 
     /**
-     * @brief Destroys a camera.
-     * @param _camera The camera to destroy.
+     * @brief Destroys a scene manager.
+     * @param _sceneManager The scene manager to destroy.
      */
-    void destroyCamera(const Camera* const _camera);
+    void destroySceneManager(const SceneManager* const _sceneManager);
 
-    /// Destroys all camera.
-    void destroyAllCamera();
+    /// Destroys all scene manager.
+    void destroyAllSceneManagers();
 
     /**
-     * @brief Gets all cameraw.
-     * @return All camera.
+     * @brief Gets all scene manager.
+     * @return All scene manager.
      */
-    inline const CameraList& getCamera() const;
+    inline const SceneManagerList& getSceneManagers() const;
 
 private:
 
@@ -111,8 +114,8 @@ private:
     /// Stores all render window.
     RenderWindowList m_renderWindows {};
 
-    /// Stores all camera.
-    CameraList m_cameras {};
+    /// Stores all scene manager.
+    SceneManagerList m_sceneManagers {};
 
 };
 
@@ -121,9 +124,9 @@ inline const Render::RenderWindowList& Render::getRenderWindows() const
     return m_renderWindows;
 }
 
-inline const Render::CameraList& Render::getCamera() const
+inline const Render::SceneManagerList& Render::getSceneManagers() const
 {
-    return m_cameras;
+    return m_sceneManagers;
 }
 
 }

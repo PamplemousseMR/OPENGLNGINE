@@ -8,6 +8,9 @@
 #include "OpenGLNgine/GL/FrameBuffer.hpp"
 #include "OpenGLNgine/GL/DrawCall.hpp"
 #include "OpenGLNgine/GL/VertexArrayBuffer.hpp"
+#include "OpenGLNgine/Hardware/HardwareBufferManager.hpp"
+#include "OpenGLNgine/Hardware/MaterialManager.hpp"
+#include "OpenGLNgine/Hardware/ProgramManager.hpp"
 #include "OpenGLNgine/Render/Camera.hpp"
 #include "OpenGLNgine/Render/Render.hpp"
 #include "OpenGLNgine/Render/RenderWindow.hpp"
@@ -46,8 +49,6 @@ public:
 
 int main()
 {
-    // Init window
-
     Render::Render& render = Render::Render::getInstance();
 
     Render::RenderWindow* const renderWindow = render.createRenderWindow("Default", s_width, s_height);
@@ -55,7 +56,9 @@ int main()
     renderWindow->setSamples(s_sample);
     renderWindow->addListener(new Listener);
 
-    Render::Camera* const camera = render.createCamera("Camera");
+    Render::SceneManager* const sceneManager = render.createSceneManager("SseneManager");
+
+    Render::Camera* const camera = sceneManager->createCamera("Camera");
     camera->setProjection(45.f, static_cast<float>(s_width)/static_cast<float>(s_height), 0.1f, 10.f);
     camera->setPosition({0.f, 0.f, 1.f});
     camera->lookAt({0.f, 0.f, 0.f});
@@ -64,26 +67,43 @@ int main()
     viewport->setViewport(0, 0, s_width, s_height);
     viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
-    // Init shaders
+    // MATERIAL
+    Hardware::ProgramManager& shaderMng = Hardware::ProgramManager::getInstance();
 
-    GL::Shader vertexShader(GL::ST_VERTEX);
-    vertexShader.setSourceFromFile(GLSL_PATH"/Default/Default_VP.glsl");
-    vertexShader.compile();
+    Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", Hardware::ST_VERTEX);
+    vertexShader->setSourceFromFile(GLSL_PATH"/Default/Default_VP.glsl");
+    vertexShader->load();
 
-    GL::Shader fragmentShader(GL::ST_FRAGMENT);
-    fragmentShader.setSourceFromFile(GLSL_PATH"/Default/Default_FP.glsl");
-    fragmentShader.compile();
+    Hardware::ShaderPtr fragmentShader = shaderMng.createShader("FragmentShader", Hardware::ST_FRAGMENT);
+    fragmentShader->setSourceFromFile(GLSL_PATH"/Default/Default_FP.glsl");
+    fragmentShader->load();
 
-    GL::Program program;
-    program.attach(vertexShader);
-    program.attach(fragmentShader);
-    program.link();
+    Hardware::ProgramPtr program = shaderMng.createProgram("Program");
+    program->attach(vertexShader);
+    program->attach(fragmentShader);
+    program->link();
 
-    GL::Uniform model("u_m4Model", program.getId());
-    GL::Uniform view("u_m4View", program.getId());
-    GL::Uniform projection("u_m4Projection", program.getId());
+    Hardware::MaterialManager& materialMng = Hardware::MaterialManager::getInstance();
+    Hardware::MaterialPtr material = materialMng.create("Material");
 
-    // Init VBO EBO and VAO
+    material->getPasses()[0]->setProgram(program);
+
+    material->getPasses()[0]->depthTest = true;
+    material->getPasses()[0]->blendTest = false;
+    material->getPasses()[0]->sourceFactor = Hardware::MB_ONE;
+    material->getPasses()[0]->destinationFactor = Hardware::MB_ONE_MINUS_SRC_ALPHA;
+
+    GL::Uniform model("u_m4Model", program->getIdTMP());
+    GL::Uniform view("u_m4View", program->getIdTMP());
+    GL::Uniform projection("u_m4Projection", program->getIdTMP());
+
+    // MESH
+    Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
+    node->setPosition({0.0f, 0.f, 0.f});
+
+    Render::Mesh* const mesh = sceneManager->createMesh("Mesh");
+    Render::SubMesh* subMesh = mesh->createSubMesh("SubMesh");
+    node->attach(mesh);
 
     const std::vector<float> vertexData = {
         0.25f, 0.25f, -0.25f,
@@ -115,66 +135,98 @@ int main()
         3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
     };
 
-    GL::DataBuffer cubeVBO(GL::DT_ARRAY);
-    cubeVBO.bind();
-    cubeVBO.writeData(vertexData, GL::DT_STATIC_DRAW);
+    Hardware::HardwareBufferManager& manager = Hardware::HardwareBufferManager::getInstance();
 
-    GL::DataBuffer cubeEBO(GL::DT_ELEMENT);
-    cubeEBO.bind();
-    cubeEBO.writeData(indexData, GL::DT_STATIC_DRAW);
+    subMesh->vertexData = manager.createVertexData();
+    subMesh->vertexData->m_renderOperation = Hardware::VR_TRIANGLE_STRIP;
 
-    GL::VertexArrayBuffer cubeVAO;
-    cubeVAO.bind();
+    Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(Hardware::VT_FLOAT, vertexData.size(), Hardware::HU_STATIC_DRAW);
+    vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
-    cubeVBO.bind();
+    subMesh->vertexData->m_vertexDeclaration->addElement(0, 0, Hardware::VET_FLOAT3, Hardware::VES_POSITION);
+    subMesh->vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, Hardware::VET_FLOAT4, Hardware::VES_COLOR);
 
-    GL::DataBuffer::setAttrib(0, 3, GL::DT_FLOAT, false, 7*sizeof(float), 0);
-    GL::DataBuffer::setLocation(0);
+    subMesh->vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
 
-    GL::DataBuffer::setAttrib(1, 4, GL::DT_FLOAT, false, 7*sizeof(float), 3*sizeof(float));
-    GL::DataBuffer::setLocation(1);
+    subMesh->vertexData->m_vertexCount = 8;
+    subMesh->vertexData->m_vertexStart = 0;
 
-    cubeEBO.bind();
+    subMesh->indexData = manager.createIndexData();
 
-    // Init standar gl enable
+    Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(Hardware::IT_UNSIGNED_INT, indexData.size(), Hardware::HU_STATIC_DRAW);
+    subMesh->indexData->m_indexBuffer = indexBuffer;
 
-    GL::PixelOperation::enableDepthTest(true);
-    GL::PixelOperation::enableDepthWrite(true);
+    indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indexData.data(), false);
+    subMesh->indexData->m_indexCount = 14;
+    subMesh->indexData->m_indexStart = 0;
 
-    const auto& color = viewport->getClearColor();
-    GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+    mesh->setMaterial(material);
 
-    glm::mat4 cubeModel(1.f);
+    // TMP TODO
+    glm::mat4 orientation(1.f);
 
+    // RENDER
     while(!renderWindow->shouldBeClose())
     {
-        const auto& size = viewport->getViewport();
-        GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-
-        GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
-
-        program.bind();
+        for(const auto& rw : render.getRenderWindows())
         {
-            model = cubeModel;
-            view = camera->getView();
-            projection = camera->getProjection();
+            rw.second->makeCurrent();
 
-            cubeVAO.bind();
+            for(const auto& vp : rw.second->getViewports())
             {
-                GL::DrawCall::drawElements(GL::DR_TRIANGLE_STRIP, 14, GL::DT_UNSIGNED_INT, 0);
-            }
-            cubeVAO.unbind();
-        }
-        program.unbind();
+                const auto& size = vp.second->getViewport();
+                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+                GL::Rasterizer::enableScissorTest(true);
+                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
 
+                const auto& color = vp.second->getClearColor();
+
+                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+                GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
+                GL::Rasterizer::enableScissorTest(false);
+
+                const Render::Camera* const cam = vp.second->getCamera();
+
+                const Render::SceneManager* const sm = cam->getSceneManager();
+
+                for(const auto& me : sm->getMeshes())
+                {
+                    if(me.second->isAttached())
+                    {
+                        Render::SceneNode* n = me.second->getParent();
+
+                        for(const Render::SubMesh* subMesh : me.second->getSubMeshes())
+                        {
+                            if(subMesh->material != nullptr)
+                            {
+                                const Hardware::MaterialPtr& mat = subMesh->material;
+                                for(Hardware::Pass* pass : mat->getPasses())
+                                {
+                                    pass->lock();
+
+                                    model = orientation * n->getFullTransform();
+                                    view = cam->getView();
+                                    projection = cam->getProjection();
+
+                                    GL::PixelOperation::enableDepthTest(pass->depthTest);
+                                    GL::PixelOperation::enableDepthWrite(pass->depthWrite);
+                                    GL::PixelOperation::setDepthFunc(Hardware::Pass::getType(pass->depthFunc));
+                                    GL::PixelOperation::enableBlendTest(pass->blendTest);
+                                    GL::PixelOperation::setBlendFunc(Hardware::Pass::getType(pass->sourceFactor), Hardware::Pass::getType(pass->destinationFactor));
+                                    GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
+
+                                    subMesh->render();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(0.8f, 0.5f, 1.f));
+        orientation = glm::rotate(orientation, 0.01f, glm::vec3(0.f, 1.f, 0.f));
     }
-
-    renderWindow->removeViewport(viewport);
-    render.destroyCamera(camera);
-    render.destroyRenderWindow(renderWindow);
 
     return EXIT_SUCCESS;
 }

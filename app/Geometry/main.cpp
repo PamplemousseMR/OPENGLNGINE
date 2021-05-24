@@ -56,7 +56,9 @@ int main()
     renderWindow->setSamples(s_sample);
     renderWindow->addListener(new Listener);
 
-    Render::Camera* const camera = render.createCamera("Camera");
+    Render::SceneManager* const sceneManager = render.createSceneManager("SseneManager");
+
+    Render::Camera* const camera = sceneManager->createCamera("Camera");
     camera->setProjection(45.f, static_cast<float>(s_width)/static_cast<float>(s_height), 0.1f, 10.f);
     camera->setPosition({0.f, 0.f, 1.f});
     camera->lookAt({0.f, 0.f, 0.f});
@@ -337,7 +339,7 @@ int main()
     }
 
     renderWindow->removeViewport(viewport);
-    render.destroyCamera(camera);
+    sceneManager->destroyCamera(camera);
     render.destroyRenderWindow(renderWindow);
 
     return EXIT_SUCCESS;

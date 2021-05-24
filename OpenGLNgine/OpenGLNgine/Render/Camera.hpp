@@ -1,34 +1,24 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Render/Component.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <map>
-#include <string>
 
 namespace Render
 {
 
-class Render;
 class Viewport;
 
-class Camera final : public Core::IResource
+class Camera final : public Component
 {
 
-    friend Render;
+    friend SceneManager;
     friend Viewport;
 
 public:
-
-    Camera(const Camera&) = delete;
-
-    Camera(Camera&&) = delete;
-
-    Camera& operator=(const Camera&) = delete;
-
-    Camera& operator=(Camera&&) = delete;
 
     void setProjection(float _fovy, float _aspect, float _near, float _far);
 
@@ -52,16 +42,21 @@ private:
 
     typedef std::map< std::string, Viewport* > ViewportList;
 
-    Camera(Render* const _render, const std::string& _name);
+    Camera(SceneManager* const _sceneManager, const std::string& _name);
+
+    Camera(const Camera&) = delete;
+
+    Camera(Camera&&) = delete;
+
+    Camera& operator=(const Camera&) = delete;
+
+    Camera& operator=(Camera&&) = delete;
 
     ~Camera();
 
     void notifyViewportCreated(Viewport* const _viewport);
 
     void notifyViewportDestroyed(Viewport* const _viewport);
-
-    /// Contains the render managing the camera.
-    Render* const m_render;
 
     ViewportList m_viewports {};
 

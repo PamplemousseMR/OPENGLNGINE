@@ -1,4 +1,3 @@
-#include "OpenGLNgine/Render/Camera.hpp"
 #include "OpenGLNgine/Render/Render.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
@@ -52,39 +51,39 @@ void Render::destroyAllRenderWindow()
     }
 }
 
-Camera* Render::createCamera(const std::string& _name)
+SceneManager* Render::createSceneManager(const std::string& _name)
 {
-    if(m_cameras.find(_name) != m_cameras.end())
+    if(m_sceneManagers.find(_name) != m_sceneManagers.end())
     {
-        GLNGINE_EXCEPTION("A camera with the name '" + _name + "' already exists");
+        GLNGINE_EXCEPTION("A scene manager with the name '" + _name + "' already exists");
     }
 
-    auto cam = new Camera(this, _name);
-    m_cameras.emplace(_name, cam);
-    return cam;
+    auto sm = new SceneManager(this, _name);
+    m_sceneManagers.emplace(_name, sm);
+    return sm;
 }
 
-void Render::destroyCamera(const Camera* const _camera)
+void Render::destroySceneManager(const SceneManager* const _sceneManager)
 {
-    GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
 
-    CameraList::const_iterator it = m_cameras.find(_camera->getName());
-    if(it == m_cameras.end())
+    SceneManagerList::const_iterator it = m_sceneManagers.find(_sceneManager->getName());
+    if(it == m_sceneManagers.end())
     {
-        GLNGINE_EXCEPTION("A camera with the name '" + _camera->getName() + "' doesn't exists");
+        GLNGINE_EXCEPTION("A scene manager with the name '" + _sceneManager->getName() + "' doesn't exists");
     }
 
-    m_cameras.erase(it);
-    delete _camera;
+    m_sceneManagers.erase(it);
+    delete _sceneManager;
 }
 
-void Render::destroyAllCamera()
+void Render::destroyAllSceneManagers()
 {
-    CameraList::iterator it = m_cameras.begin();
-    while(it != m_cameras.end())
+    SceneManagerList::iterator it = m_sceneManagers.begin();
+    while(it != m_sceneManagers.end())
     {
-        this->destroyCamera(it->second);
-        it = m_cameras.begin();
+        this->destroySceneManager(it->second);
+        it = m_sceneManagers.begin();
     }
 }
 
@@ -116,6 +115,7 @@ Render::Render()
 Render::~Render()
 {
     this->destroyAllRenderWindow();
+    this->destroyAllSceneManagers();
     glfwTerminate();
 }
 
