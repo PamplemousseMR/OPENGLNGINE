@@ -2,7 +2,7 @@
 #                EXECUTABLE
 #=======================================
 
-set(GLNGINE_APP_NAME Default)
+set(GLNGINE_APP_NAME RenderBase)
 
 set(GLNGINE_SRC
         main.cpp)
