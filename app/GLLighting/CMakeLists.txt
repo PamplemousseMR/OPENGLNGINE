@@ -2,7 +2,7 @@
 #                EXECUTABLE
 #=======================================
 
-set(GLNGINE_APP_NAME BlinnPhong)
+set(GLNGINE_APP_NAME GLLighting)
 
 set(GLNGINE_SRC
         main.cpp)

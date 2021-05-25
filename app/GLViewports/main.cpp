@@ -97,7 +97,7 @@ int main()
     program.attach(fragmentShader);
     program.link();
 
-    ::GL::Uniform mvp("u_m4MVP", program.getId());
+    ::GL::Uniform u_m4MVP("u_m4MVP", program.getId());
 
     // Init the mesh EBO, VBO and VAO.
     const std::vector<float> vertexData = {
@@ -143,11 +143,12 @@ int main()
 
     meshVBO.bind();
 
-    ::GL::DataBuffer::setAttrib(0, 3, ::GL::DT_FLOAT, false, 7*sizeof(float), 0);
-    ::GL::DataBuffer::setLocation(0);
+    ::GL::DataBuffer::setAttrib(::Hardware::VES_POSITION, 3, ::GL::DT_FLOAT, false, 7*sizeof(float), 0);
+    ::GL::DataBuffer::setLocation(::Hardware::VES_POSITION);
 
-    ::GL::DataBuffer::setAttrib(1, 4, ::GL::DT_FLOAT, false, 7*sizeof(float), 3*sizeof(float));
-    ::GL::DataBuffer::setLocation(1);
+    ::GL::DataBuffer::setAttrib(::Hardware::VES_COLOR, 4, ::GL::DT_FLOAT, false, 7*sizeof(float), 3*sizeof(float));
+    ::GL::DataBuffer::setLocation(::Hardware::VES_COLOR);
+
 
     meshEBO.bind();
 
@@ -176,7 +177,7 @@ int main()
 
                     program.bind();
                     {
-                        mvp = camera->getProjection() * camera->getView() * node->getFullTransform();
+                        u_m4MVP = camera->getProjection() * camera->getView() * node->getFullTransform();
 
                         meshVAO.bind();
                         {
