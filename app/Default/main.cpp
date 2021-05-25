@@ -19,10 +19,6 @@
 
 using namespace std;
 
-static const int s_width = 640;
-static const int s_height = 480;
-static const int s_sample = 8;
-
 class Listener : public Render::RenderWindowListener
 {
 
@@ -49,35 +45,44 @@ public:
 
 int main()
 {
+    const int width = 640;
+    const int height = 480;
+
+    // Create the render.
     Render::Render& render = Render::Render::getInstance();
 
-    Render::RenderWindow* const renderWindow = render.createRenderWindow("Default", s_width, s_height);
+    // Create a render window.
+    Render::RenderWindow* const renderWindow = render.createRenderWindow("Default", width, height);
     renderWindow->makeCurrent();
-    renderWindow->setSamples(s_sample);
+    renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
 
-    Render::SceneManager* const sceneManager = render.createSceneManager("SseneManager");
+    // Create a scene manager.
+    Render::SceneManager* const sceneManager = render.createSceneManager("SeneManager");
 
+    // Create a camera.
     Render::Camera* const camera = sceneManager->createCamera("Camera");
-    camera->setProjection(45.f, static_cast<float>(s_width)/static_cast<float>(s_height), 0.1f, 10.f);
+    camera->setProjection(45.f, static_cast<float>(width)/static_cast<float>(height), 0.1f, 10.f);
     camera->setPosition({0.f, 0.f, 1.f});
     camera->lookAt({0.f, 0.f, 0.f});
 
+    // Make the link between the camera, the scene manager and the viewport in the render window.
     Render::Viewport* const viewport = renderWindow->addViewport("Viewport", camera);
-    viewport->setViewport(0, 0, s_width, s_height);
+    viewport->setViewport(0, 0, width, height);
     viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
-    // MATERIAL
+    // Create the Program.
     Hardware::ProgramManager& shaderMng = Hardware::ProgramManager::getInstance();
 
     Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", Hardware::ST_VERTEX);
-    vertexShader->setSourceFromFile(GLSL_PATH"/Default/Default_VP.glsl");
+    vertexShader->setSourceFromFile(GLSL_PATH"/Common/Default_VP.glsl");
     vertexShader->load();
 
     Hardware::ShaderPtr fragmentShader = shaderMng.createShader("FragmentShader", Hardware::ST_FRAGMENT);
-    fragmentShader->setSourceFromFile(GLSL_PATH"/Default/Default_FP.glsl");
+    fragmentShader->setSourceFromFile(GLSL_PATH"/Common/Default_FP.glsl");
     fragmentShader->load();
 
+    // Create the material.
     Hardware::ProgramPtr program = shaderMng.createProgram("Program");
     program->attach(vertexShader);
     program->attach(fragmentShader);
@@ -89,15 +94,10 @@ int main()
     material->getPasses()[0]->setProgram(program);
 
     material->getPasses()[0]->depthTest = true;
-    material->getPasses()[0]->blendTest = false;
-    material->getPasses()[0]->sourceFactor = Hardware::MB_ONE;
-    material->getPasses()[0]->destinationFactor = Hardware::MB_ONE_MINUS_SRC_ALPHA;
 
-    GL::Uniform model("u_m4Model", program->getIdTMP());
-    GL::Uniform view("u_m4View", program->getIdTMP());
-    GL::Uniform projection("u_m4Projection", program->getIdTMP());
+    GL::Uniform mvp("u_m4MVP", program->getIdTMP());
 
-    // MESH
+    // Create the mesh.
     Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
     node->setPosition({0.0f, 0.f, 0.f});
 
@@ -162,9 +162,6 @@ int main()
 
     mesh->setMaterial(material);
 
-    // TMP TODO
-    glm::mat4 orientation(1.f);
-
     // RENDER
     while(!renderWindow->shouldBeClose())
     {
@@ -204,9 +201,7 @@ int main()
                                 {
                                     pass->lock();
 
-                                    model = orientation * n->getFullTransform();
-                                    view = cam->getView();
-                                    projection = cam->getProjection();
+                                    mvp = cam->getProjection() * cam->getView() * n->getFullTransform();
 
                                     GL::PixelOperation::enableDepthTest(pass->depthTest);
                                     GL::PixelOperation::enableDepthWrite(pass->depthWrite);
@@ -223,9 +218,9 @@ int main()
                 }
             }
         }
-        renderWindow->swapBuffers();
 
-        orientation = glm::rotate(orientation, 0.01f, glm::vec3(0.f, 1.f, 0.f));
+        node->setOrientation(node->getOrientation() + glm::vec3(0.1f, 0.5f, 0.2f));
+        renderWindow->swapBuffers();
     }
 
     return EXIT_SUCCESS;

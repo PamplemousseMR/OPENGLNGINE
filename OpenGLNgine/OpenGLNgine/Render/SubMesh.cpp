@@ -8,9 +8,9 @@ namespace Render
 
 void SubMesh::render() const
 {
-    if(m_dirty)
+    if(vertexData != nullptr)
     {
-        if(vertexData != nullptr)
+        if(m_dirty)
         {
             vertexData->m_vertexDeclaration->lock();
             for(const auto& binding : vertexData->m_vertexBufferBinding->getBufferBindings())
@@ -39,24 +39,24 @@ void SubMesh::render() const
                     }
                 }
             }
-            if(indexData != nullptr)
+            if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
             {
                 indexData->m_indexBuffer->lock();
             }
             vertexData->m_vertexDeclaration->unlock();
+            m_dirty = false;
         }
-        m_dirty = false;
-    }
 
-    vertexData->m_vertexDeclaration->lock();
-    if(indexData != nullptr)
-    {
-        const int offset = indexData->m_indexStart * indexData->m_indexBuffer->m_indexType;
-        GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
-    }
-    else
-    {
-        GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
+        vertexData->m_vertexDeclaration->lock();
+        if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
+        {
+            const int offset = indexData->m_indexStart * indexData->m_indexBuffer->m_indexType;
+            GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
+        }
+        else
+        {
+            GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
+        }
     }
 }
 

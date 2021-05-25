@@ -81,23 +81,34 @@ void SceneNode::dettachAll()
     }
 }
 
-void SceneNode::setPosition(const glm::vec3 _position)
+void SceneNode::setOrientation(const ::glm::vec3& _orientation)
 {
+    m_orientation = ::glm::radians(_orientation);
+    setNeedUpdate();
+}
+
+void SceneNode::setPosition(const ::glm::vec3& _position)
+{
+
     m_positon = _position;
     setNeedUpdate();
 }
 
-void SceneNode::setScale(const glm::vec3 _scale)
+void SceneNode::setScale(const ::glm::vec3& _scale)
 {
     m_scale = _scale;
     setNeedUpdate();
 }
 
-const glm::mat4 SceneNode::getFullTransform() const
+const ::glm::mat4 SceneNode::getFullTransform() const
 {
     if(m_needUpdate)
     {
-        m_fullTransform = glm::translate(m_positon) * glm::scale(m_scale);
+        ::glm::mat4 orientation(1.f);
+        orientation = ::glm::rotate(orientation, m_orientation.y, ::glm::vec3(0.f, 1.f, 0.f));
+        orientation = ::glm::rotate(orientation, m_orientation.x, ::glm::vec3(1.f, 0.f, 0.f));
+        orientation = ::glm::rotate(orientation, m_orientation.z, ::glm::vec3(0.f, 0.f, 1.f));
+        m_fullTransform = orientation * ::glm::scale(m_scale);
         if(!m_isRootSCeneNode)
         {
             m_fullTransform = m_parent->getFullTransform() * m_fullTransform;

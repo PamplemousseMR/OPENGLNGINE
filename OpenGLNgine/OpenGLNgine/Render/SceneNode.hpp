@@ -44,13 +44,15 @@ public:
 
     void dettachAll();
 
-    void setPosition(const glm::vec3 _position);
+    void setOrientation(const ::glm::vec3& _orientation);
 
-    inline const glm::vec3& getPosition() const;
+    inline ::glm::vec3 getOrientation() const;
 
-    void setScale(const glm::vec3 _scale);
+    void setPosition(const ::glm::vec3& _position);
 
-    const glm::mat4 getFullTransform() const;
+    void setScale(const ::glm::vec3& _scale);
+
+    const ::glm::mat4 getFullTransform() const;
 
 private:
 
@@ -72,11 +74,14 @@ private:
 
     SceneNode* m_parent { nullptr };
 
-    glm::vec3 m_positon { 0.f };
+    // Stores Euler orientation in radian.
+    ::glm::vec3 m_orientation { 0.f };
 
-    glm::vec3 m_scale { 1.f };
+    ::glm::vec3 m_positon { 0.f };
 
-    mutable glm::mat4 m_fullTransform { 1.f };
+    ::glm::vec3 m_scale { 1.f };
+
+    mutable ::glm::mat4 m_fullTransform { 1.f };
 
     mutable bool m_needUpdate { false };
 
@@ -91,9 +96,9 @@ inline const SceneNode::SceneNodeList& SceneNode::getChildren() const
     return m_children;
 }
 
-inline const glm::vec3& SceneNode::getPosition() const
+inline ::glm::vec3 SceneNode::getOrientation() const
 {
-    return m_positon;
+    return ::glm::degrees(m_orientation);
 }
 
 }
