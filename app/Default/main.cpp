@@ -1,13 +1,3 @@
-#include "OpenGLNgine/GL/PixelOperation.hpp"
-#include "OpenGLNgine/GL/Program.hpp"
-#include "OpenGLNgine/GL/Rasterizer.hpp"
-#include "OpenGLNgine/GL/Shader.hpp"
-#include "OpenGLNgine/GL/Uniform.hpp"
-#include "OpenGLNgine/GL/Texture.hpp"
-#include "OpenGLNgine/GL/RenderBuffer.hpp"
-#include "OpenGLNgine/GL/FrameBuffer.hpp"
-#include "OpenGLNgine/GL/DrawCall.hpp"
-#include "OpenGLNgine/GL/VertexArrayBuffer.hpp"
 #include "OpenGLNgine/Hardware/HardwareBufferManager.hpp"
 #include "OpenGLNgine/Hardware/MaterialManager.hpp"
 #include "OpenGLNgine/Hardware/ProgramManager.hpp"
@@ -162,75 +152,16 @@ int main()
 
     mesh->setMaterial(material);
 
-    // RENDER
+    // Render loop.
     while(!renderWindow->shouldBeClose())
     {
         for(const auto& rw : render.getRenderWindows())
         {
-            rw.second->makeCurrent();
-
-            for(const auto& vp : rw.second->getViewports())
-            {
-                const auto& size = vp.second->getViewport();
-                GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-                GL::Rasterizer::enableScissorTest(true);
-                GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
-
-                const auto& color = vp.second->getClearColor();
-
-                GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
-                GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
-                GL::Rasterizer::enableScissorTest(false);
-
-                const Render::Camera* const cam = vp.second->getCamera();
-
-                const Render::SceneManager* const sm = cam->getSceneManager();
-
-                for(const auto& me : sm->getMeshes())
-                {
-                    if(me.second->isAttached())
-                    {
-                        Render::SceneNode* n = me.second->getParent();
-
-                        for(const Render::SubMesh* subMesh : me.second->getSubMeshes())
-                        {
-                            if(subMesh->material != nullptr)
-                            {
-                                const Hardware::MaterialPtr& mat = subMesh->material;
-                                for(Hardware::Pass* pass : mat->getPasses())
-                                {
-                                    pass->lock();
-
-                                    for(std::pair<Hardware::PROGRAM_PARAMETER, GL::Uniform> parameter : pass->getProgramParameters())
-                                    {
-                                        switch(parameter.first)
-                                        {
-                                        case Hardware::PP_WORLDVIEWPROJ_MATRIX:
-                                            parameter.second = cam->getProjection() * cam->getView() * n->getFullTransform();
-                                            break;
-                                        default:
-                                            GLNGINE_EXCEPTION("Unhandle program parameter");
-                                        }
-                                    }
-
-                                    GL::PixelOperation::enableDepthTest(pass->depthTest);
-                                    GL::PixelOperation::enableDepthWrite(pass->depthWrite);
-                                    GL::PixelOperation::setDepthFunc(Hardware::Pass::getType(pass->depthFunc));
-                                    GL::PixelOperation::enableBlendTest(pass->blendTest);
-                                    GL::PixelOperation::setBlendFunc(Hardware::Pass::getType(pass->sourceFactor), Hardware::Pass::getType(pass->destinationFactor));
-                                    GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
-
-                                    subMesh->render();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            rw.second->render();
+            rw.second->swapBuffers();
         }
 
         node->setOrientation(node->getOrientation() + glm::vec3(0.1f, 0.5f, 0.2f));
-        renderWindow->swapBuffers();
     }
 
     return EXIT_SUCCESS;

@@ -25,7 +25,9 @@ public:
 
     SubMesh& operator=(SubMesh&&) = delete;
 
-    void render() const;
+    inline bool isDirty() const;
+
+    inline void _notifyDirty() const;
 
     Hardware::VertexData* vertexData { nullptr };
 
@@ -44,5 +46,15 @@ private:
     mutable bool m_dirty { true };
 
 };
+
+inline bool SubMesh::isDirty() const
+{
+    return m_dirty;
+}
+
+inline void SubMesh::_notifyDirty() const
+{
+    m_dirty = false;
+}
 
 }
