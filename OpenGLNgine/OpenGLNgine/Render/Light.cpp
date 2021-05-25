@@ -1,9 +1,20 @@
 #include "OpenGLNgine/Render/Light.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Render/SceneManager.hpp"
 
 namespace Render
 {
+
+Light::Light(SceneManager* const _sceneManager, const std::string& _name):
+    Component(_sceneManager, _name)
+{
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+}
+
+Light::~Light()
+{
+}
 
 ::glm::vec4 Light::getShaderPosition() const
 {

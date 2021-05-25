@@ -290,42 +290,42 @@ int main()
 
     // Create lights
 
-    Render::Light light1;
-    light1.setType(Render::LT_POINT);
-    light1.setPosition(::glm::vec3(0.f, 0.f, -100.f));
-    light1.setAmbient(::glm::vec3(1.f, 1.f, 1.f));
-    light1.setDiffuse(::glm::vec3(0.f, 0.f, 0.f));
-    light1.setSpecular(::glm::vec3(0.f, 0.f, 0.f));
+    Render::Light* light1 = sceneManager->createLight("Light1");
+    light1->setType(Render::LT_POINT);
+    light1->setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light1->setAmbient(::glm::vec3(1.f, 1.f, 1.f));
+    light1->setDiffuse(::glm::vec3(0.f, 0.f, 0.f));
+    light1->setSpecular(::glm::vec3(0.f, 0.f, 0.f));
 
-    Render::Light light2;
-    light2.setType(Render::LT_POINT);
-    light2.setPosition(::glm::vec3(0.f, 0.f, -100.f));
-    light2.setAmbient(::glm::vec3(0.f, 0.f, 0.f));
-    light2.setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
-    light2.setSpecular(::glm::vec3(0.f, 0.f, 0.f));
+    Render::Light* light2 = sceneManager->createLight("Light2");
+    light2->setType(Render::LT_POINT);
+    light2->setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light2->setAmbient(::glm::vec3(0.f, 0.f, 0.f));
+    light2->setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
+    light2->setSpecular(::glm::vec3(0.f, 0.f, 0.f));
 
-    Render::Light light3;
-    light3.setType(Render::LT_POINT);
-    light3.setPosition(::glm::vec3(0.f, 0.f, -100.f));
-    light3.setAmbient(::glm::vec3(0.f, 0.f, 0.f));
-    light3.setDiffuse(::glm::vec3(0.f, 0.f, 0.f));
-    light3.setSpecular(::glm::vec3(1.f, 1.f, 1.f));
+    Render::Light* light3 = sceneManager->createLight("Light3");
+    light3->setType(Render::LT_POINT);
+    light3->setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light3->setAmbient(::glm::vec3(0.f, 0.f, 0.f));
+    light3->setDiffuse(::glm::vec3(0.f, 0.f, 0.f));
+    light3->setSpecular(::glm::vec3(1.f, 1.f, 1.f));
 
-    Render::Light light4;
-    light4.setType(Render::LT_POINT);
-    light4.setPosition(::glm::vec3(0.f, 0.f, -100.f));
-    light4.setAmbient(::glm::vec3(0.1f, 0.1f, 0.1f));
-    light4.setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
-    light4.setSpecular(::glm::vec3(1.f, 1.f, 1.f));
+    Render::Light* light4 = sceneManager->createLight("Light4");
+    light4->setType(Render::LT_POINT);
+    light4->setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light4->setAmbient(::glm::vec3(0.1f, 0.1f, 0.1f));
+    light4->setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
+    light4->setSpecular(::glm::vec3(1.f, 1.f, 1.f));
 
     // Create the renderer
 
-    std::function<void(const Render::Light&)> blinnPhongRenderer = [&](const Render::Light& _light)
+    std::function<void(const Render::Light* const)> blinnPhongRenderer = [&](const Render::Light* const _light)
     {
-        lightPos_Ws = _light.getShaderPosition();
-        lightAmbient = _light.getAmbient();
-        lightDiffuse = _light.getDiffuse();
-        lightSpecular = _light.getSpecular();
+        lightPos_Ws = _light->getShaderPosition();
+        lightAmbient = _light->getAmbient();
+        lightDiffuse = _light->getDiffuse();
+        lightSpecular = _light->getSpecular();
 
         GL::DrawCall::drawArrays(GL::DR_TRIANGLES, 0, 36);
     };
@@ -335,7 +335,7 @@ int main()
     GL::PixelOperation::enableDepthTest(true);
     GL::PixelOperation::enableDepthWrite(true);
 
-    glm::mat4 cubeModel(1.f);
+    ::glm::mat4 cubeModel(1.f);
 
     while(!renderWindow->shouldBeClose())
     {
@@ -410,7 +410,7 @@ int main()
 
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(0.8f, 0.5f, 1.f));
+        cubeModel = ::glm::rotate(cubeModel, 0.01f, ::glm::vec3(0.8f, 0.5f, 1.f));
     }
 
     renderWindow->removeViewport(viewport4);

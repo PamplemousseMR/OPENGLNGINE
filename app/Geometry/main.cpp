@@ -281,19 +281,19 @@ int main()
 
     // Create lights
 
-    Render::Light light;
-    light.setType(Render::LT_POINT);
-    light.setPosition(::glm::vec3(0.f, 0.f, -100.f));
-    light.setAmbient(::glm::vec3(0.1f, 0.1f, 0.1f));
-    light.setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
-    light.setSpecular(::glm::vec3(1.f, 1.f, 1.f));
+    Render::Light* light = sceneManager->createLight("Light");;
+    light->setType(Render::LT_POINT);
+    light->setPosition(::glm::vec3(0.f, 0.f, -100.f));
+    light->setAmbient(::glm::vec3(0.1f, 0.1f, 0.1f));
+    light->setDiffuse(::glm::vec3(1.f, 1.f, 1.f));
+    light->setSpecular(::glm::vec3(1.f, 1.f, 1.f));
 
     // Init standar gl enable
 
     GL::PixelOperation::enableDepthTest(true);
     GL::PixelOperation::enableDepthWrite(true);
 
-    glm::mat4 cubeModel(1.f);
+    ::glm::mat4 cubeModel(1.f);
 
     while(!renderWindow->shouldBeClose())
     {
@@ -313,10 +313,10 @@ int main()
                 view = camera->getView();
                 projection = camera->getProjection();
 
-                lightPos_Ws = light.getShaderPosition();
-                lightAmbient = light.getAmbient();
-                lightDiffuse = light.getDiffuse();
-                lightSpecular = light.getSpecular();
+                lightPos_Ws = light->getShaderPosition();
+                lightAmbient = light->getAmbient();
+                lightDiffuse = light->getDiffuse();
+                lightSpecular = light->getSpecular();
 
                 GL::DrawCall::drawArrays(GL::DR_TRIANGLES, 0, 36);
             }
@@ -335,7 +335,7 @@ int main()
 
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(0.8f, 0.5f, 1.f));
+        cubeModel = ::glm::rotate(cubeModel, 0.01f, ::glm::vec3(0.8f, 0.5f, 1.f));
     }
 
     renderWindow->removeViewport(viewport);

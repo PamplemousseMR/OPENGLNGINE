@@ -27,7 +27,7 @@ RenderWindow* Render::createRenderWindow(const std::string& _name, int _width, i
     return rw;
 }
 
-void Render::destroyRenderWindow(const RenderWindow* const _renderWindow)
+Render::RenderWindowList::iterator Render::destroyRenderWindow(const RenderWindow* const _renderWindow)
 {
     GLNGINE_ASSERT_IF(!_renderWindow, "The render window mustn't be null");
 
@@ -37,8 +37,9 @@ void Render::destroyRenderWindow(const RenderWindow* const _renderWindow)
         GLNGINE_EXCEPTION("A render window with the name '" + _renderWindow->getName() + "' doesn't exists");
     }
 
-    m_renderWindows.erase(it);
+    Render::RenderWindowList::iterator eraseIt = m_renderWindows.erase(it);
     delete _renderWindow;
+    return eraseIt;
 }
 
 void Render::destroyAllRenderWindow()

@@ -16,21 +16,21 @@ void Camera::setProjection(float _fovy, float _aspect, float _near, float _far)
     m_aspect = _aspect;
     m_near = _near;
     m_far = _far;
-    m_projection = glm::perspective(_fovy, _aspect, _near, _far);
+    m_projection = ::glm::perspective(_fovy, _aspect, _near, _far);
 }
 
-void Camera::lookAt(const glm::vec3& _target)
+void Camera::lookAt(const ::glm::vec3& _target)
 {
     m_lookAt = _target;
 
-    m_view = glm::lookAt(m_position, m_lookAt, glm::vec3(0,1,0));
+    m_view = ::glm::lookAt(m_position, m_lookAt, ::glm::vec3(0,1,0));
 }
 
-void Camera::setPosition(const glm::vec3& _position)
+void Camera::setPosition(const ::glm::vec3& _position)
 {
    m_position = _position;
 
-   m_view = glm::lookAt(m_position, m_lookAt, glm::vec3(0,1,0));
+   m_view = ::glm::lookAt(m_position, m_lookAt, ::glm::vec3(0,1,0));
 }
 
 Camera::Camera(SceneManager* const _sceneManager, const std::string& _name):

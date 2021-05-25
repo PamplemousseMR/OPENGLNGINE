@@ -2,6 +2,7 @@
 
 #include "OpenGLNgine/Core/IResource.hpp"
 #include "OpenGLNgine/Render/Camera.hpp"
+#include "OpenGLNgine/Render/Light.hpp"
 #include "OpenGLNgine/Render/Mesh.hpp"
 #include "OpenGLNgine/Render/SceneNode.hpp"
 
@@ -22,6 +23,8 @@ class SceneManager final : public Core::IResource
 public:
 
     typedef std::map< std::string, Mesh* > MeshList;
+
+    typedef std::map< std::string, Light* > LightList;
 
     SceneManager(const SceneManager&) = delete;
 
@@ -47,6 +50,14 @@ public:
 
     inline const MeshList& getMeshes() const;
 
+    Light* createLight(const std::string& _name);
+
+    void destroyLight(const Light* const _light);
+
+    void destroyAllLights();
+
+    inline const LightList& getLights() const;
+
 private:
 
     typedef std::map< std::string, Camera* > CameraList;
@@ -61,6 +72,8 @@ private:
 
     MeshList m_meshes {};
 
+    LightList m_lights {};
+
     SceneNode* const m_rootSceneNode;
 
 };
@@ -74,6 +87,11 @@ inline SceneNode* SceneManager::getRootSceneNode() const
 inline const SceneManager::MeshList& SceneManager::getMeshes() const
 {
     return m_meshes;
+}
+
+inline const SceneManager::LightList& SceneManager::getLights() const
+{
+    return m_lights;
 }
 
 }

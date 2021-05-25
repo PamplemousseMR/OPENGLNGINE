@@ -55,7 +55,7 @@ public:
      * @brief Destroys a render window.
      * @param _renderWindow The render window to destroy.
      */
-    void destroyRenderWindow(const RenderWindow* const _renderWindow);
+    Render::RenderWindowList::iterator destroyRenderWindow(const RenderWindow* const _renderWindow);
 
     /// Destroys all render window.
     void destroyAllRenderWindow();

@@ -165,7 +165,7 @@ int main()
     GL::PixelOperation::enableDepthTest(true);
     GL::PixelOperation::enableDepthWrite(true);
 
-    glm::mat4 cubeModel(1.f);
+    ::glm::mat4 cubeModel(1.f);
 
     while(!renderWindow->shouldBeClose())
     {
@@ -227,7 +227,7 @@ int main()
 
         renderWindow->swapBuffers();
 
-        cubeModel = glm::rotate(cubeModel, 0.01f, glm::vec3(0.8f, 0.5f, 1.f));
+        cubeModel = ::glm::rotate(cubeModel, 0.01f, ::glm::vec3(0.8f, 0.5f, 1.f));
     }
 
     renderWindow->removeViewport(viewport3);

@@ -6,6 +6,121 @@
 namespace Render
 {
 
+void RenderWindow::render() const
+{
+    this->makeCurrent();
+
+    for(const auto& vp : m_viewports)
+    {
+        const auto& size = vp.second->getViewport();
+        GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+        GL::Rasterizer::enableScissorTest(true);
+        GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+
+        const auto& color = vp.second->getClearColor();
+
+        GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+        GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
+        GL::Rasterizer::enableScissorTest(false);
+
+        const Camera* const cam = vp.second->getCamera();
+
+        const SceneManager* const sm = cam->getSceneManager();
+
+        for(const auto& me : sm->getMeshes())
+        {
+            if(me.second->isAttached())
+            {
+                SceneNode* node = me.second->getParent();
+
+                for(const SubMesh* subMesh : me.second->getSubMeshes())
+                {
+                    if(subMesh->material != nullptr)
+                    {
+                        const Hardware::MaterialPtr& mat = subMesh->material;
+                        for(Hardware::Pass* pass : mat->getPasses())
+                        {
+                            pass->lock();
+
+                            for(const std::pair<Hardware::PROGRAM_PARAMETER, GL::Uniform>& parameter : pass->getProgramParameters())
+                            {
+                                switch(parameter.first)
+                                {
+                                case Hardware::PP_WORLDVIEWPROJ_MATRIX:
+                                    parameter.second = cam->getProjection() * cam->getView() * node->getFullTransform();
+                                    break;
+                                default:
+                                    GLNGINE_EXCEPTION("Unhandle program parameter");
+                                }
+                            }
+
+                            GL::PixelOperation::enableDepthTest(pass->depthTest);
+                            GL::PixelOperation::enableDepthWrite(pass->depthWrite);
+                            GL::PixelOperation::setDepthFunc(Hardware::Pass::getType(pass->depthFunc));
+                            GL::PixelOperation::enableBlendTest(pass->blendTest);
+                            GL::PixelOperation::setBlendFunc(Hardware::Pass::getType(pass->sourceFactor), Hardware::Pass::getType(pass->destinationFactor));
+                            GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
+
+                            const Hardware::VertexData* const vertexData = subMesh->vertexData;
+                            if(vertexData != nullptr)
+                            {
+                                const Hardware::IndexData* const indexData = subMesh->indexData;
+                                if(subMesh->isDirty())
+                                {
+                                    vertexData->m_vertexDeclaration->lock();
+                                    for(const auto& binding : vertexData->m_vertexBufferBinding->getBufferBindings())
+                                    {
+                                        const Hardware::HardwareVertexBufferPtr buffer = binding.second;
+                                        buffer->lock();
+
+                                        int stride = 0;
+
+                                        const Hardware::VertexDeclaration::VertexElementList& elements = vertexData->m_vertexDeclaration->getElements();
+                                        for(const Hardware::VertexElement& element : elements)
+                                        {
+                                            if(element.m_source == binding.first)
+                                            {
+                                                stride += element.getTypeCount();
+                                            }
+                                        }
+
+                                        for(const Hardware::VertexElement& element : elements)
+                                        {
+                                            if(element.m_source == binding.first)
+                                            {
+                                                const int offset = element.m_offsetInBytes + vertexData->m_vertexStart * buffer->m_vertexType;
+                                                GL::DataBuffer::setAttrib(element.m_semantic, element.getTypeCount(), element.getType(), false, buffer->m_vertexType*stride, offset);
+                                                GL::DataBuffer::setLocation(element.m_semantic);
+                                            }
+                                        }
+                                    }
+                                    if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
+                                    {
+                                        indexData->m_indexBuffer->lock();
+                                    }
+                                    vertexData->m_vertexDeclaration->unlock();
+                                    subMesh->_notifyDirty();
+                                }
+
+                                vertexData->m_vertexDeclaration->lock();
+                                if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
+                                {
+                                    const int offset = indexData->m_indexStart * indexData->m_indexBuffer->m_indexType;
+                                    GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
+                                }
+                                else
+                                {
+                                    GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void RenderWindow::swapBuffers()
 {
     glfwSwapBuffers(m_window);

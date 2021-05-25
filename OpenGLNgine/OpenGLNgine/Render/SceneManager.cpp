@@ -78,6 +78,42 @@ void SceneManager::destroyAllMeshs()
     }
 }
 
+Light* SceneManager::createLight(const std::string& _name)
+{
+    if(m_lights.find(_name) != m_lights.end())
+    {
+        GLNGINE_EXCEPTION("A light with the name '" + _name + "' already exists");
+    }
+
+    Light* light = new Light(this, _name);
+    m_lights.emplace(_name, light);
+    return light;
+}
+
+void SceneManager::destroyLight(const Light* const _light)
+{
+    GLNGINE_ASSERT_IF(!_light, "The light mustn't be null");
+
+    LightList::const_iterator it = m_lights.find(_light->getName());
+    if(it == m_lights.end())
+    {
+        GLNGINE_EXCEPTION("A light with the name '" + _light->getName() + "' doesn't exists");
+    }
+
+    m_lights.erase(it);
+    delete _light;
+}
+
+void SceneManager::destroyAllLights()
+{
+    LightList::iterator it = m_lights.begin();
+    while(it != m_lights.end())
+    {
+        this->destroyLight(it->second);
+        it = m_lights.begin();
+    }
+}
+
 SceneManager::SceneManager(Render* const _render, const std::string& _name):
     IResource(_name),
     m_render(_render),
@@ -90,6 +126,7 @@ SceneManager::~SceneManager()
 {
     this->destroyAllCameras();
     this->destroyAllMeshs();
+    this->destroyAllLights();
     delete m_rootSceneNode;
 }
 

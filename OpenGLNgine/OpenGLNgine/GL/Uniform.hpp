@@ -35,15 +35,15 @@ public:
 
     inline void operator=(float) const;
 
-    inline void operator=(const glm::vec2&) const;
+    inline void operator=(const ::glm::vec2&) const;
 
-    inline void operator=(const glm::vec3&) const;
+    inline void operator=(const ::glm::vec3&) const;
 
-    inline void operator=(const glm::vec4&) const;
+    inline void operator=(const ::glm::vec4&) const;
 
-    inline void operator=(const glm::mat4&) const;
+    inline void operator=(const ::glm::mat4&) const;
 
-    inline void operator=(const glm::mat3&) const;
+    inline void operator=(const ::glm::mat3&) const;
 
     inline GLint getLocation() const;
 
@@ -85,31 +85,31 @@ inline void Uniform::operator=(float _t) const
     GLNGINE_CHECK_GL;
 }
 
-inline void Uniform::operator=(const glm::vec2& _t) const
+inline void Uniform::operator=(const ::glm::vec2& _t) const
 {
     glUniform2f(m_location, _t.x, _t.y);
     GLNGINE_CHECK_GL;
 }
 
-inline void Uniform::operator=(const glm::vec3& _t) const
+inline void Uniform::operator=(const ::glm::vec3& _t) const
 {
     glUniform3f(m_location, _t.x, _t.y, _t.z);
     GLNGINE_CHECK_GL;
 }
 
-inline void Uniform::operator=(const glm::vec4& _t) const
+inline void Uniform::operator=(const ::glm::vec4& _t) const
 {
     glUniform4f(m_location, _t.x, _t.y, _t.z, _t.w);
     GLNGINE_CHECK_GL;
 }
 
-void Uniform::operator=(const glm::mat4& _t) const
+void Uniform::operator=(const ::glm::mat4& _t) const
 {
     glUniformMatrix4fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
     GLNGINE_CHECK_GL;
 }
 
-void Uniform::operator= (const glm::mat3& _t) const
+void Uniform::operator= (const ::glm::mat3& _t) const
 {
     glUniformMatrix3fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
     GLNGINE_CHECK_GL;

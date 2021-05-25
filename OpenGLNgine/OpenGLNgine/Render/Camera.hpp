@@ -22,13 +22,13 @@ public:
 
     void setProjection(float _fovy, float _aspect, float _near, float _far);
 
-    inline const glm::mat4 getProjection() const;
+    inline const ::glm::mat4 getProjection() const;
 
-    void lookAt(const glm::vec3& _target);
+    void lookAt(const ::glm::vec3& _target);
 
-    void setPosition(const glm::vec3& _position);
+    void setPosition(const ::glm::vec3& _position);
 
-    inline const glm::mat4 getView() const;
+    inline const ::glm::mat4 getView() const;
 
     inline float getFovy() const;
 
@@ -60,13 +60,13 @@ private:
 
     ViewportList m_viewports {};
 
-    glm::mat4 m_projection { 1.f };
+    ::glm::mat4 m_projection { 1.f };
 
-    glm::mat4 m_view { 1.f };
+    ::glm::mat4 m_view { 1.f };
 
-    glm::vec3 m_lookAt { 0.f };
+    ::glm::vec3 m_lookAt { 0.f };
 
-    glm::vec3 m_position { 0.f };
+    ::glm::vec3 m_position { 0.f };
 
     float m_fovy { 0.f };
 
@@ -78,12 +78,12 @@ private:
 
 };
 
-inline const glm::mat4 Camera::getProjection() const
+inline const ::glm::mat4 Camera::getProjection() const
 {
     return m_projection;
 }
 
-inline const glm::mat4 Camera::getView() const
+inline const ::glm::mat4 Camera::getView() const
 {
     return m_view;
 }

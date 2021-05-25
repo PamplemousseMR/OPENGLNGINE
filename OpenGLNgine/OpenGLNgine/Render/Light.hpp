@@ -1,5 +1,7 @@
 #pragma once
 
+#include "OpenGLNgine/Render/Component.hpp"
+
 #include <glm/glm.hpp>
 
 namespace Render
@@ -12,14 +14,20 @@ enum LIGHT_TYPE
     LT_DIRECTIONAL
 };
 
-class Light final
+class Light final : public Component
 {
+
+    friend SceneManager;
 
 public:
 
-    Light() = default;
+    Light(const Light&) = delete;
 
-    ~Light() = default;
+    Light(Light&&) = delete;
+
+    Light& operator=(const Light&) = delete;
+
+    Light& operator=(Light&&) = delete;
 
     inline void setAmbient(const ::glm::vec3& _ambient);
 
@@ -48,6 +56,10 @@ public:
     ::glm::vec4 getShaderPosition() const;
 
 private:
+
+    Light(SceneManager* const _sceneManager, const std::string& _name);
+
+    ~Light();
 
     ::glm::vec3 m_ambient { 1.f, 1.f, 1.f };
 
