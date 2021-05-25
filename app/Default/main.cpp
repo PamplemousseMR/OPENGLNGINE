@@ -88,14 +88,14 @@ int main()
     program->attach(fragmentShader);
     program->link();
 
+    program->setNamedAutoConstant(Hardware::PP_WORLDVIEWPROJ_MATRIX, "u_m4MVP");
+
     Hardware::MaterialManager& materialMng = Hardware::MaterialManager::getInstance();
     Hardware::MaterialPtr material = materialMng.create("Material");
 
     material->getPasses()[0]->setProgram(program);
 
     material->getPasses()[0]->depthTest = true;
-
-    GL::Uniform mvp("u_m4MVP", program->getIdTMP());
 
     // Create the mesh.
     Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
@@ -201,7 +201,17 @@ int main()
                                 {
                                     pass->lock();
 
-                                    mvp = cam->getProjection() * cam->getView() * n->getFullTransform();
+                                    for(std::pair<Hardware::PROGRAM_PARAMETER, GL::Uniform> parameter : pass->getProgramParameters())
+                                    {
+                                        switch(parameter.first)
+                                        {
+                                        case Hardware::PP_WORLDVIEWPROJ_MATRIX:
+                                            parameter.second = cam->getProjection() * cam->getView() * n->getFullTransform();
+                                            break;
+                                        default:
+                                            GLNGINE_EXCEPTION("Unhandle program parameter");
+                                        }
+                                    }
 
                                     GL::PixelOperation::enableDepthTest(pass->depthTest);
                                     GL::PixelOperation::enableDepthWrite(pass->depthWrite);

@@ -103,15 +103,15 @@ inline void Uniform::operator=(const glm::vec4& _t) const
     GLNGINE_CHECK_GL;
 }
 
-inline void Uniform::operator=(const glm::mat4& _t) const
+void Uniform::operator=(const glm::mat4& _t) const
 {
-    glUniformMatrix4fv(m_location, 1, false, value_ptr(_t));
+    glUniformMatrix4fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
     GLNGINE_CHECK_GL;
 }
 
-inline void Uniform::operator= (const glm::mat3& _t) const
+void Uniform::operator= (const glm::mat3& _t) const
 {
-    glUniformMatrix3fv(m_location, 1, false, value_ptr(_t));
+    glUniformMatrix3fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
     GLNGINE_CHECK_GL;
 }
 

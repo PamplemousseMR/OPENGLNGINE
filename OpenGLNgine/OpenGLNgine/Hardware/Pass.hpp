@@ -60,6 +60,8 @@ public:
 
     inline void unlock();
 
+    inline const Program::ProgramParamtersMap& getProgramParameters() const;
+
     std::array< bool, 4 > colorMask { true, true, true, true };
 
     bool depthTest { false };
@@ -97,6 +99,11 @@ inline void Pass::lock()
 inline void Pass::unlock()
 {
     m_program->unlock();
+}
+
+inline const Program::ProgramParamtersMap& Pass::getProgramParameters() const
+{
+    return m_program->getParameters();
 }
 
 }

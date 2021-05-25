@@ -2,12 +2,20 @@
 
 #include "OpenGLNgine/Core/IResource.hpp"
 #include "OpenGLNgine/GL/Program.hpp"
+#include "OpenGLNgine/GL/Uniform.hpp"
 #include "OpenGLNgine/Hardware/Shader.hpp"
 
+#include <map>
 #include <memory>
+#include <string>
 
 namespace Hardware
 {
+
+enum PROGRAM_PARAMETER
+{
+    PP_WORLDVIEWPROJ_MATRIX
+};
 
 class Program;
 class ProgramManager;
@@ -18,6 +26,8 @@ class Program final : public Core::IResource
 {
 
 public:
+
+    typedef std::map<PROGRAM_PARAMETER, GL::Uniform> ProgramParamtersMap;
 
     Program(ProgramManager* const _manager, const std::string& _name);
 
@@ -31,11 +41,6 @@ public:
 
     Program& operator=(Program&&) = delete;
 
-    int getIdTMP() const
-    {
-        return m_program.getId();
-    }
-
     inline void lock();
 
     inline void unlock();
@@ -43,6 +48,10 @@ public:
     void attach(ShaderPtr _shader);
 
     void link();
+
+    void setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::string& _name);
+
+    inline const ProgramParamtersMap& getParameters() const;
 
 private:
 
@@ -56,6 +65,8 @@ private:
 
     ShaderPtr m_fragmentShader { nullptr };
 
+    ProgramParamtersMap m_parameters {};
+
 };
 
 inline void Program::lock()
@@ -66,6 +77,11 @@ inline void Program::lock()
 inline void Program::unlock()
 {
     m_program.unbind();
+}
+
+inline const Program::ProgramParamtersMap& Program::getParameters() const
+{
+    return m_parameters;
 }
 
 }

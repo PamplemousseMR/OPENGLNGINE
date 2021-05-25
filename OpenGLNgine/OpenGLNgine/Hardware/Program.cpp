@@ -50,4 +50,9 @@ void Program::link()
     m_program.link();
 }
 
+void Program::setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::string& _name)
+{
+    m_parameters.emplace(_parameter, GL::Uniform(_name, m_program.getId()));
+}
+
 }
