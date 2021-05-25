@@ -107,7 +107,7 @@ set_target_properties(${GLNGINE_LIBRARY_NAME} PROPERTIES
     )
 
 if(NOT WIN32)
-    set_target_properties(${GLNGINE_LIBRARY_NAME} PROPERTIES COMPILE_FLAGS "-lstdc++fs")
+    target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE stdc++fs)
 endif(NOT WIN32)
 
 #=======================================

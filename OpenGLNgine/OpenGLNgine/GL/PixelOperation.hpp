@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 
 #include <array>
+#include <tuple>
 
 namespace GL 
 {

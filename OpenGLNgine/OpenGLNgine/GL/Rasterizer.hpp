@@ -4,6 +4,8 @@
 
 #include <GL/glew.h>
 
+#include <tuple>
+
 namespace GL 
 {
 

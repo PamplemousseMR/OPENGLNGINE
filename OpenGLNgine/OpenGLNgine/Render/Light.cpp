@@ -12,7 +12,7 @@ namespace Render
         return ::glm::vec4(m_position, 1.f);
         break;
     case LT_DIRECTIONAL:
-        ::glm::vec4 direction(-m_direction, 0.f);
+        return ::glm::vec4(-m_direction, 0.f);
         break;
     default:
         GLNGINE_EXCEPTION("Unhandle light type");

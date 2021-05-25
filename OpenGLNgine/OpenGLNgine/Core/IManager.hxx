@@ -28,7 +28,7 @@ void IManager< T >::remove(const std::shared_ptr< T >& _resource)
 {
     GLNGINE_ASSERT_IF(!_resource, "The resource mustn't be null");
 
-    ResourceList::const_iterator it = m_resources.find(_resource->getName());
+    typename ResourceList::const_iterator it = m_resources.find(_resource->getName());
     if(it == m_resources.end())
     {
         GLNGINE_EXCEPTION("A resource with the name '" + _resource->getName() + "' doesn't exists");
@@ -40,7 +40,7 @@ void IManager< T >::remove(const std::shared_ptr< T >& _resource)
 template< class T >
 void IManager< T >::removeAll()
 {
-    ResourceList::iterator itBeg, itEnd;
+    typename ResourceList::iterator itBeg, itEnd;
     itEnd = m_resources.end();
     for(itBeg=m_resources.begin() ; itBeg!=itEnd ; ++itBeg)
     {

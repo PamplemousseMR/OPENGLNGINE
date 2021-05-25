@@ -1,5 +1,6 @@
 #include "OpenGLNgine/GL/Program.hpp"
 
+#include <algorithm>
 #include <string>
 
 namespace GL
