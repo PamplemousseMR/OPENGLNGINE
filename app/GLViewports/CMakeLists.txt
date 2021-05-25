@@ -2,7 +2,7 @@
 #                EXECUTABLE
 #=======================================
 
-set(GLNGINE_APP_NAME Viewports)
+set(GLNGINE_APP_NAME GLViewports)
 
 set(GLNGINE_SRC
         main.cpp)
