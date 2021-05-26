@@ -13,15 +13,15 @@ void RenderWindow::render() const
     for(const auto& vp : m_viewports)
     {
         const auto& size = vp.second->getViewport();
-        GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-        GL::Rasterizer::enableScissorTest(true);
-        GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+        ::GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+        ::GL::Rasterizer::enableScissorTest(true);
+        ::GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
 
         const auto& color = vp.second->getClearColor();
 
-        GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
-        GL::DrawCall::clear(GL::DC_COLOR_DEPTH);
-        GL::Rasterizer::enableScissorTest(false);
+        ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+        ::GL::DrawCall::clear(::GL::DC_COLOR_DEPTH);
+        ::GL::Rasterizer::enableScissorTest(false);
 
         const Camera* const cam = vp.second->getCamera();
 
@@ -42,7 +42,7 @@ void RenderWindow::render() const
                         {
                             pass->lock();
 
-                            for(const std::pair<Hardware::PROGRAM_PARAMETER, GL::Uniform>& parameter : pass->getProgramParameters())
+                            for(const std::pair<Hardware::PROGRAM_PARAMETER, ::GL::Uniform>& parameter : pass->getProgramParameters())
                             {
                                 switch(parameter.first)
                                 {
@@ -118,12 +118,12 @@ void RenderWindow::render() const
                                 }
                             }
 
-                            GL::PixelOperation::enableDepthTest(pass->depthTest);
-                            GL::PixelOperation::enableDepthWrite(pass->depthWrite);
-                            GL::PixelOperation::setDepthFunc(Hardware::Pass::getType(pass->depthFunc));
-                            GL::PixelOperation::enableBlendTest(pass->blendTest);
-                            GL::PixelOperation::setBlendFunc(Hardware::Pass::getType(pass->sourceFactor), Hardware::Pass::getType(pass->destinationFactor));
-                            GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
+                            ::GL::PixelOperation::enableDepthTest(pass->depthTest);
+                            ::GL::PixelOperation::enableDepthWrite(pass->depthWrite);
+                            ::GL::PixelOperation::setDepthFunc(Hardware::Pass::getType(pass->depthFunc));
+                            ::GL::PixelOperation::enableBlendTest(pass->blendTest);
+                            ::GL::PixelOperation::setBlendFunc(Hardware::Pass::getType(pass->sourceFactor), Hardware::Pass::getType(pass->destinationFactor));
+                            ::GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
 
                             const Hardware::VertexData* const vertexData = subMesh->vertexData;
                             if(vertexData != nullptr)
@@ -153,8 +153,8 @@ void RenderWindow::render() const
                                             if(element.m_source == binding.first)
                                             {
                                                 const int offset = element.m_offsetInBytes + vertexData->m_vertexStart * buffer->m_vertexType;
-                                                GL::DataBuffer::setAttrib(element.m_semantic, element.getTypeCount(), element.getType(), false, buffer->m_vertexType*stride, offset);
-                                                GL::DataBuffer::setLocation(element.m_semantic);
+                                                ::GL::DataBuffer::setAttrib(element.m_semantic, element.getTypeCount(), element.getType(), false, buffer->m_vertexType*stride, offset);
+                                                ::GL::DataBuffer::setLocation(element.m_semantic);
                                             }
                                         }
                                     }
@@ -170,11 +170,11 @@ void RenderWindow::render() const
                                 if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
                                 {
                                     const int offset = indexData->m_indexStart * indexData->m_indexBuffer->m_indexType;
-                                    GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
+                                    ::GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
                                 }
                                 else
                                 {
-                                    GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
+                                    ::GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
                                 }
                             }
                         }

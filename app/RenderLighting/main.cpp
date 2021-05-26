@@ -89,7 +89,6 @@ int main()
     program->attach(fragmentShader);
     program->link();
 
-    program->setNamedAutoConstant(::Hardware::PP_VIEW_MATRIX, "u_m4View");
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEW_MATRIX, "u_m4MV");
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
 
