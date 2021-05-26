@@ -29,13 +29,16 @@ public:
 
 private:
 
+#ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+#endif
 
 };
 
 inline void VertexArrayBuffer::bind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || !m_isBinded)
@@ -44,10 +47,14 @@ inline void VertexArrayBuffer::bind() const
         m_isBinded = true;
         glBindVertexArray(m_id);
     }
+#else
+    glBindVertexArray(m_id);
+#endif
 }
 
 inline void VertexArrayBuffer::unbind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || m_isBinded)
@@ -55,7 +62,11 @@ inline void VertexArrayBuffer::unbind() const
         s_cache = add;
         m_isBinded = false;
         glBindVertexArray(0);
-    }}
+    }
+#else
+    glBindVertexArray(0);
+#endif
+}
 
 }
 

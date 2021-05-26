@@ -1,4 +1,10 @@
 #=======================================
+#                OPTION
+#=======================================
+
+option(GLNGINE_USE_STATE_CACHE "Use a cache system for OpenGL state" TRUE)
+
+#=======================================
 #                LIBRARY
 #=======================================
 
@@ -109,6 +115,10 @@ set_target_properties(${GLNGINE_LIBRARY_NAME} PROPERTIES
 if(NOT WIN32)
     target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE stdc++fs)
 endif(NOT WIN32)
+
+if(${GLNGINE_USE_STATE_CACHE})
+    target_compile_definitions(${GLNGINE_LIBRARY_NAME} PRIVATE GLNGINE_USE_STATE_CACHE)
+endif(${GLNGINE_USE_STATE_CACHE})
 
 #=======================================
 #               LIBRARIES

@@ -204,8 +204,10 @@ private:
 
     TEXTURE_FORMAT m_format {TF_RGBA};
 
+#ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+#endif
 
 };
 

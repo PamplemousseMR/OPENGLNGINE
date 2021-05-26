@@ -127,8 +127,10 @@ private:
     /// Defines the buffer target.
     const GLenum m_target;
 
+#ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+#endif
 
 };
 
@@ -165,6 +167,7 @@ inline void DataBuffer::writeData(size_t _offset, size_t _sizeInBytes, const voi
 
 inline void DataBuffer::bind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || !m_isBinded)
@@ -173,10 +176,14 @@ inline void DataBuffer::bind() const
         m_isBinded = true;
         glBindBuffer(m_target, m_id);
     }
+#else
+    glBindBuffer(m_target, m_id);
+#endif
 }
 
 inline void DataBuffer::unbind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || m_isBinded)
@@ -185,6 +192,9 @@ inline void DataBuffer::unbind() const
         m_isBinded = false;
         glBindBuffer(m_target, 0);
     }
+#else
+    glBindBuffer(m_target, 0);
+#endif
 }
 
 }

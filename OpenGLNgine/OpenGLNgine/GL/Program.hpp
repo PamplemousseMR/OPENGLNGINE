@@ -70,13 +70,16 @@ private:
     /// Contains all shaders attached to this program.
     std::vector<Shader*> m_shaders {};
 
+#ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+#endif
 
 };
 
 inline void Program::bind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || !m_isBinded)
@@ -85,10 +88,14 @@ inline void Program::bind() const
         m_isBinded = true;
         glUseProgram(m_id);
     }
+#else
+    glUseProgram(m_id);
+#endif
 }
 
 inline void Program::unbind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || m_isBinded)
@@ -97,6 +104,9 @@ inline void Program::unbind() const
         m_isBinded = false;
         glUseProgram(0);
     }
+#else
+    glUseProgram(0);
+#endif
 }
 
 }

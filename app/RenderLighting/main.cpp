@@ -65,11 +65,11 @@ int main()
     ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
-    vertexShader->setSourceFromFile(GLSL_PATH"/Lighting/BlinnPhong_VP.glsl");
+    vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Lighting/BlinnPhong_VP.glsl");
     vertexShader->load();
 
     ::Hardware::ShaderPtr fragmentShader = shaderMng.createShader("FragmentShader", ::Hardware::ST_FRAGMENT);
-    fragmentShader->setSourceFromFile(GLSL_PATH"/Lighting/BlinnPhong_FP.glsl");
+    fragmentShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Lighting/BlinnPhong_FP.glsl");
     fragmentShader->load();
 
     // Create lights

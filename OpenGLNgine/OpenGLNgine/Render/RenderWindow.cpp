@@ -42,7 +42,7 @@ void RenderWindow::render() const
                         {
                             pass->lock();
 
-                            for(const std::pair<Hardware::PROGRAM_PARAMETER, ::GL::Uniform>& parameter : pass->getProgramParameters())
+                            for(const std::pair< const Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getProgramParameters())
                             {
                                 switch(parameter.first)
                                 {
@@ -62,7 +62,7 @@ void RenderWindow::render() const
                                 {
                                     std::vector< ::glm::vec4 > lightPositionWorldSpaces;
                                     lightPositionWorldSpaces.reserve(sm->getLights().size());
-                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
                                     {
                                         lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
                                     }
@@ -73,7 +73,7 @@ void RenderWindow::render() const
                                 {
                                     std::vector< ::glm::vec4 > lightPositionViewSpaces;
                                     lightPositionViewSpaces.reserve(sm->getLights().size());
-                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
                                     {
                                         lightPositionViewSpaces.push_back(cam->getView() * light.second->getShaderPosition());
                                     }
@@ -84,7 +84,7 @@ void RenderWindow::render() const
                                 {
                                     std::vector< ::glm::vec3 > lightAmbientColors;
                                     lightAmbientColors.reserve(sm->getLights().size());
-                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
                                     {
                                         lightAmbientColors.push_back(light.second->getAmbient());
                                     }
@@ -95,7 +95,7 @@ void RenderWindow::render() const
                                 {
                                     std::vector< ::glm::vec3 > lightDiffuseColors;
                                     lightDiffuseColors.reserve(sm->getLights().size());
-                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
                                     {
                                         lightDiffuseColors.push_back(light.second->getDiffuse());
                                     }
@@ -106,7 +106,7 @@ void RenderWindow::render() const
                                 {
                                     std::vector< ::glm::vec3 > lightSpecularColors;
                                     lightSpecularColors.reserve(sm->getLights().size());
-                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
                                     {
                                         lightSpecularColors.push_back(light.second->getSpecular());
                                     }

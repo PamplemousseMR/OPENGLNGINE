@@ -85,11 +85,11 @@ int main()
 
     // Init shaders.
     ::GL::Shader vertexShader(::GL::ST_VERTEX);
-    vertexShader.setSourceFromFile(GLSL_PATH"/Common/Default_VP.glsl");
+    vertexShader.setSourceFromFile(GLNGINE_GLSL_PATH"/Common/Default_VP.glsl");
     vertexShader.compile();
 
     ::GL::Shader fragmentShader(::GL::ST_FRAGMENT);
-    fragmentShader.setSourceFromFile(GLSL_PATH"/Common/Default_FP.glsl");
+    fragmentShader.setSourceFromFile(GLNGINE_GLSL_PATH"/Common/Default_FP.glsl");
     fragmentShader.compile();
 
     ::GL::Program program;

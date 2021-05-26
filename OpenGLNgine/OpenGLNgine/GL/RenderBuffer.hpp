@@ -155,13 +155,16 @@ private:
     /// Defines the maximum of samples of a render buffer.
     static GLint s_MAX_SAMPLE;
 
+#ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+#endif
 
 };
 
 inline void RenderBuffer::bind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || !m_isBinded)
@@ -170,10 +173,14 @@ inline void RenderBuffer::bind() const
         m_isBinded = true;
         glBindRenderbuffer(GL_RENDERBUFFER, m_id);
     }
+#else
+    glBindRenderbuffer(GL_RENDERBUFFER, m_id);
+#endif
 }
 
 inline void RenderBuffer::unbind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || m_isBinded)
@@ -182,6 +189,9 @@ inline void RenderBuffer::unbind() const
         m_isBinded = false;
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
+#else
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+#endif
 }
 
 }

@@ -312,12 +312,16 @@ void Texture::generateMipmap() const
 
 void Texture::bind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || !m_isBinded)
+#endif
     {
+#ifdef GLNGINE_USE_STATE_CACHE
         s_cache = add;
         m_isBinded = true;
+#endif
         switch(m_type)
         {
         case TT_1D :
@@ -337,12 +341,16 @@ void Texture::bind() const
 
 void Texture::unbind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || m_isBinded)
+#endif
     {
+#ifdef GLNGINE_USE_STATE_CACHE
         s_cache = add;
         m_isBinded = false;
+#endif
         switch(m_type)
         {
         case TT_1D :

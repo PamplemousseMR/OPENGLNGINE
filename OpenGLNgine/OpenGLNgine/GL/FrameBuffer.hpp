@@ -150,8 +150,10 @@ private:
     /// Stores all attached color buffer.
     std::vector< unsigned > m_colorAttachement {};
 
+#ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+#endif
 
 };
 
@@ -190,6 +192,7 @@ inline void FrameBuffer::attachDepthStencilBuffer(const GL::RenderBuffer& _buffe
 
 inline void FrameBuffer::bind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || !m_isBinded)
@@ -198,10 +201,14 @@ inline void FrameBuffer::bind() const
         m_isBinded = true;
         glBindFramebuffer(GL_FRAMEBUFFER, m_id);
     }
+#else
+    glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+#endif
 }
 
 inline void FrameBuffer::unbind() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add)
@@ -209,10 +216,14 @@ inline void FrameBuffer::unbind() const
         s_cache = add;
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
+#else
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif
 }
 
 inline void FrameBuffer::bindDraw() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add || m_isBinded)
@@ -221,10 +232,14 @@ inline void FrameBuffer::bindDraw() const
         m_isBinded = false;
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
     }
+#else
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
+#endif
 }
 
 inline void FrameBuffer::bindRead() const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
     if(s_cache != add)
@@ -232,6 +247,9 @@ inline void FrameBuffer::bindRead() const
         s_cache = add;
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
     }
+#else
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+#endif
 }
 
 }

@@ -75,11 +75,11 @@ int main()
 
     // Init shaders.
     ::GL::Shader vertexShader(::GL::ST_VERTEX);
-    vertexShader.setSourceFromFile(GLSL_PATH"/Lighting/BlinnPhong_VP.glsl");
+    vertexShader.setSourceFromFile(GLNGINE_GLSL_PATH"/Lighting/BlinnPhong_VP.glsl");
     vertexShader.compile();
 
     ::GL::Shader fragmentShader(::GL::ST_FRAGMENT);
-    fragmentShader.setSourceFromFile(GLSL_PATH"/Lighting/BlinnPhong_FP.glsl");
+    fragmentShader.setSourceFromFile(GLNGINE_GLSL_PATH"/Lighting/BlinnPhong_FP.glsl");
     fragmentShader.compile();
 
     ::GL::Program program;
@@ -291,7 +291,7 @@ int main()
                     u_uiLightCount = static_cast< unsigned >(sceneManager->getLights().size());
                     std::vector< ::glm::vec4 > lightPositionViewSpaces;
                     lightPositionViewSpaces.reserve(sceneManager->getLights().size());
-                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    for(const std::pair< const std::string, ::Render::Light* >& light : sceneManager->getLights())
                     {
                         lightPositionViewSpaces.push_back(camera->getView() * light.second->getShaderPosition());
                     }
@@ -299,7 +299,7 @@ int main()
 
                     std::vector< ::glm::vec3 > lightAmbientColors;
                     lightAmbientColors.reserve(sceneManager->getLights().size());
-                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    for(const std::pair< const std::string, ::Render::Light* >& light : sceneManager->getLights())
                     {
                         lightAmbientColors.push_back(light.second->getAmbient());
                     }
@@ -307,7 +307,7 @@ int main()
 
                     std::vector< ::glm::vec3 > lightDiffuseColors;
                     lightDiffuseColors.reserve(sceneManager->getLights().size());
-                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    for(const std::pair< const std::string, ::Render::Light* >& light : sceneManager->getLights())
                     {
                         lightDiffuseColors.push_back(light.second->getDiffuse());
                     }
@@ -315,7 +315,7 @@ int main()
 
                     std::vector< ::glm::vec3 > lightSpecularColors;
                     lightSpecularColors.reserve(sceneManager->getLights().size());
-                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    for(const std::pair< const std::string, ::Render::Light* >& light : sceneManager->getLights())
                     {
                         lightSpecularColors.push_back(light.second->getSpecular());
                     }
