@@ -8,6 +8,7 @@
 #include <glm/mat4x4.hpp>
 
 #include <string>
+#include <vector>
 
 namespace GL
 {
@@ -29,21 +30,27 @@ public:
 
     Uniform& operator=(Uniform&&) = delete;
 
-    inline void operator=(bool) const;
+    inline void operator=(bool _t) const;
 
-    inline void operator=(int) const;
+    inline void operator=(int _t) const;
 
-    inline void operator=(float) const;
+    inline void operator=(unsigned _t) const;
 
-    inline void operator=(const ::glm::vec2&) const;
+    inline void operator=(float _t) const;
 
-    inline void operator=(const ::glm::vec3&) const;
+    inline void operator=(const ::glm::vec2& _t) const;
 
-    inline void operator=(const ::glm::vec4&) const;
+    inline void operator=(const ::glm::vec3& _t) const;
 
-    inline void operator=(const ::glm::mat4&) const;
+    inline void operator=(const std::vector< ::glm::vec3 >& _t) const;
 
-    inline void operator=(const ::glm::mat3&) const;
+    inline void operator=(const ::glm::vec4& _t) const;
+
+    inline void operator=(const std::vector< ::glm::vec4 >& _t) const;
+
+    inline void operator=(const ::glm::mat4& _t) const;
+
+    inline void operator=(const ::glm::mat3& _t) const;
 
     inline GLint getLocation() const;
 
@@ -79,6 +86,12 @@ inline void Uniform::operator=(int _t) const
     GLNGINE_CHECK_GL;
 }
 
+inline void Uniform::operator=(unsigned _t) const
+{
+    glUniform1ui(m_location, _t);
+    GLNGINE_CHECK_GL;
+}
+
 inline void Uniform::operator=(float _t) const
 {
     glUniform1f(m_location, _t);
@@ -97,19 +110,31 @@ inline void Uniform::operator=(const ::glm::vec3& _t) const
     GLNGINE_CHECK_GL;
 }
 
+inline void Uniform::operator=(const std::vector< ::glm::vec3 >& _t) const
+{
+    glUniform3fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
+    GLNGINE_CHECK_GL;
+}
+
 inline void Uniform::operator=(const ::glm::vec4& _t) const
 {
     glUniform4f(m_location, _t.x, _t.y, _t.z, _t.w);
     GLNGINE_CHECK_GL;
 }
 
-void Uniform::operator=(const ::glm::mat4& _t) const
+inline void Uniform::operator=(const std::vector< ::glm::vec4 >& _t) const
+{
+    glUniform4fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
+    GLNGINE_CHECK_GL;
+}
+
+inline void Uniform::operator=(const ::glm::mat4& _t) const
 {
     glUniformMatrix4fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
     GLNGINE_CHECK_GL;
 }
 
-void Uniform::operator= (const ::glm::mat3& _t) const
+inline void Uniform::operator= (const ::glm::mat3& _t) const
 {
     glUniformMatrix3fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
     GLNGINE_CHECK_GL;

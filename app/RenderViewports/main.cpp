@@ -99,7 +99,7 @@ int main()
     program->attach(fragmentShader);
     program->link();
 
-    program->setNamedAutoConstant(::Hardware::PP_WORLDVIEWPROJ_MATRIX, "u_m4MVP");
+    program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
 
     ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
     ::Hardware::MaterialPtr material = materialMng.create("Material");

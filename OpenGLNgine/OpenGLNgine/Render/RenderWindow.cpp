@@ -46,9 +46,73 @@ void RenderWindow::render() const
                             {
                                 switch(parameter.first)
                                 {
-                                case Hardware::PP_WORLDVIEWPROJ_MATRIX:
+                                case Hardware::PP_MODELVIEWPROJ_MATRIX:
                                     parameter.second = cam->getProjection() * cam->getView() * node->getFullTransform();
                                     break;
+                                case Hardware::PP_MODELVIEW_MATRIX:
+                                    parameter.second = cam->getView() * node->getFullTransform();
+                                    break;
+                                case Hardware::PP_VIEW_MATRIX:
+                                    parameter.second = cam->getView();
+                                    break;
+                                case Hardware::PP_LIGHT_COUNT:
+                                    parameter.second = static_cast< unsigned >(sm->getLights().size());
+                                    break;
+                                case Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
+                                {
+                                    std::vector< ::glm::vec4 > lightPositionWorldSpaces;
+                                    lightPositionWorldSpaces.reserve(sm->getLights().size());
+                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
+                                    }
+                                    parameter.second = lightPositionWorldSpaces;
+                                    break;
+                                }
+                                case Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY:
+                                {
+                                    std::vector< ::glm::vec4 > lightPositionViewSpaces;
+                                    lightPositionViewSpaces.reserve(sm->getLights().size());
+                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightPositionViewSpaces.push_back(cam->getView() * light.second->getShaderPosition());
+                                    }
+                                    parameter.second = lightPositionViewSpaces;
+                                    break;
+                                }
+                                case Hardware::PP_LIGHT_AMBIENT_COLOR_ARRAY:
+                                {
+                                    std::vector< ::glm::vec3 > lightAmbientColors;
+                                    lightAmbientColors.reserve(sm->getLights().size());
+                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightAmbientColors.push_back(light.second->getAmbient());
+                                    }
+                                    parameter.second = lightAmbientColors;
+                                    break;
+                                }
+                                case Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
+                                {
+                                    std::vector< ::glm::vec3 > lightDiffuseColors;
+                                    lightDiffuseColors.reserve(sm->getLights().size());
+                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightDiffuseColors.push_back(light.second->getDiffuse());
+                                    }
+                                    parameter.second = lightDiffuseColors;
+                                    break;
+                                }
+                                case Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY:
+                                {
+                                    std::vector< ::glm::vec3 > lightSpecularColors;
+                                    lightSpecularColors.reserve(sm->getLights().size());
+                                    for(const std::pair< std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightSpecularColors.push_back(light.second->getSpecular());
+                                    }
+                                    parameter.second = lightSpecularColors;
+                                    break;
+                                }
                                 default:
                                     GLNGINE_EXCEPTION("Unhandle program parameter");
                                 }

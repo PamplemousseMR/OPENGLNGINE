@@ -42,7 +42,7 @@ int main()
     ::Render::Render& render = ::Render::Render::getInstance();
 
     // Create a render window.
-    ::Render::RenderWindow* const renderWindow = render.createRenderWindow("RenderBase", width, height);
+    ::Render::RenderWindow* const renderWindow = render.createRenderWindow("RenderLighting", width, height);
     renderWindow->makeCurrent();
     renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
@@ -65,12 +65,23 @@ int main()
     ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
-    vertexShader->setSourceFromFile(GLSL_PATH"/Common/Default_VP.glsl");
+    vertexShader->setSourceFromFile(GLSL_PATH"/Lighting/BlinnPhong_VP.glsl");
     vertexShader->load();
 
     ::Hardware::ShaderPtr fragmentShader = shaderMng.createShader("FragmentShader", ::Hardware::ST_FRAGMENT);
-    fragmentShader->setSourceFromFile(GLSL_PATH"/Common/Default_FP.glsl");
+    fragmentShader->setSourceFromFile(GLSL_PATH"/Lighting/BlinnPhong_FP.glsl");
     fragmentShader->load();
+
+    // Create lights
+    ::Render::Light* light1 = sceneManager->createLight("Light_1");
+    light1->setType(::Render::LT_POINT);
+    light1->setPosition(::glm::vec3(0.4f, 0.4f, 1.f));
+    light1->setAmbient(::glm::vec3(0.f, 0.f, 0.f));
+
+    ::Render::Light* light2 = sceneManager->createLight("Light_2");
+    light2->setType(::Render::LT_POINT);
+    light2->setPosition(::glm::vec3(-0.4f, -0.4f, 1.f));
+    light2->setAmbient(::glm::vec3(0.f, 0.f, 0.f));
 
     // Create the material.
     ::Hardware::ProgramPtr program = shaderMng.createProgram("Program");
@@ -78,7 +89,15 @@ int main()
     program->attach(fragmentShader);
     program->link();
 
+    program->setNamedAutoConstant(::Hardware::PP_VIEW_MATRIX, "u_m4View");
+    program->setNamedAutoConstant(::Hardware::PP_MODELVIEW_MATRIX, "u_m4MV");
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
+
+    program->setNamedAutoConstant(::Hardware::PP_LIGHT_COUNT, "u_uiLightCount");
+    program->setNamedAutoConstant(::Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY, "u_f4LightPos_Vs");
+    program->setNamedAutoConstant(::Hardware::PP_LIGHT_AMBIENT_COLOR_ARRAY, "u_f3LightAmbient");
+    program->setNamedAutoConstant(::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY, "u_f3LightDiffuse");
+    program->setNamedAutoConstant(::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY, "u_f3LightSpecular");
 
     ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
     ::Hardware::MaterialPtr material = materialMng.create("Material");
@@ -96,33 +115,149 @@ int main()
     node->attach(mesh);
 
     const std::vector<float> vertexData = {
-        0.25f, 0.25f, -0.25f,
-        1.0f, 1.0f, 1.0f, 0.5f,
-
-        -0.25f, 0.25f, -0.25f,
-        1.0f, 1.0f, 0.0f, 0.5f,
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
 
         0.25f, 0.25f, 0.25f,
         1.0f, 0.0f, 1.0f, 0.5f,
-
-        -0.25f, 0.25f, 0.25f,
-        0.0f, 1.0f, 1.0f, 0.5f,
-
-        0.25f, -0.25f, -0.25f,
-        1.0f, 0.0f, 0.0f, 0.5f,
-
-        -0.25f, -0.25f, -0.25f,
-        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
 
         -0.25f, -0.25f, 0.25f,
         0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, 1.0f,
 
         0.25f, -0.25f, 0.25f,
         0.0f, 1.0f, 0.0f, 0.5f,
-    };
+        0.0f, 0.0f, 1.0f,
 
-    const std::vector<unsigned int> indexData = {
-        3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, 0.25f,
+        0.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, 0.25f,
+        0.0f, 1.0f, 0.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        1.0f, 0.0f, 0.0f,
+
+        0.25f, 0.25f, 0.25f,
+        1.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, 1.0f, 0.0f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.0f, 1.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        -1.0f, 0.0f, 0.0f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, -1.0f, 0.0f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.0f, 0.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        0.25f, -0.25f, -0.25f,
+        1.0f, 0.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 0.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
+
+        0.25f, 0.25f, -0.25f,
+        1.0f, 1.0f, 1.0f, 0.5f,
+        0.0f, 0.0f, -1.0f,
     };
 
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
@@ -135,20 +270,12 @@ int main()
 
     subMesh->vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
     subMesh->vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT4, ::Hardware::VES_COLOR);
+    subMesh->vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*7, ::Hardware::VET_FLOAT3, ::Hardware::VES_NORMAL);
 
     subMesh->vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
 
-    subMesh->vertexData->m_vertexCount = 8;
+    subMesh->vertexData->m_vertexCount = 36;
     subMesh->vertexData->m_vertexStart = 0;
-
-    subMesh->indexData = manager.createIndexData();
-
-    ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indexData.size(), ::Hardware::HU_STATIC_DRAW);
-    subMesh->indexData->m_indexBuffer = indexBuffer;
-
-    indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indexData.data(), false);
-    subMesh->indexData->m_indexCount = 14;
-    subMesh->indexData->m_indexStart = 0;
 
     mesh->setMaterial(material);
 

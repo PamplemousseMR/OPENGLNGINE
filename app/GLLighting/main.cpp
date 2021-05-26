@@ -62,12 +62,16 @@ int main()
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
     node->setPosition({0.0f, 0.f, 0.f});
 
-    // Create the light
-    ::Render::Light* light = sceneManager->createLight("Light");
-    light->setType(::Render::LT_POINT);
-    light->setPosition(::glm::vec3(0.f, 0.f, 1.f));
-    light->setDirection(::glm::vec3(0.f, 0.f, -1.f));
-    light->setAmbient(::glm::vec3(0.05f, 0.05f, 0.05f));
+    // Create lights
+    ::Render::Light* light1 = sceneManager->createLight("Light_1");
+    light1->setType(::Render::LT_POINT);
+    light1->setPosition(::glm::vec3(0.4f, 0.4f, 1.f));
+    light1->setAmbient(::glm::vec3(0.f, 0.f, 0.f));
+
+    ::Render::Light* light2 = sceneManager->createLight("Light_2");
+    light2->setType(::Render::LT_POINT);
+    light2->setPosition(::glm::vec3(-0.4f, -0.4f, 1.f));
+    light2->setAmbient(::glm::vec3(0.f, 0.f, 0.f));
 
     // Init shaders.
     ::GL::Shader vertexShader(::GL::ST_VERTEX);
@@ -87,7 +91,8 @@ int main()
     ::GL::Uniform u_m4MV("u_m4MV", program.getId());
     ::GL::Uniform u_m4MVP("u_m4MVP", program.getId());
 
-    ::GL::Uniform u_f4LightPos_Ws("u_f4LightPos_Ws", program.getId());
+    ::GL::Uniform u_uiLightCount("u_uiLightCount", program.getId());
+    ::GL::Uniform u_f4LightPos_Vs("u_f4LightPos_Vs", program.getId());
 
     ::GL::Uniform u_f3LightAmbient("u_f3LightAmbient", program.getId());
     ::GL::Uniform u_f3LightDiffuse("u_f3LightDiffuse", program.getId());
@@ -283,11 +288,38 @@ int main()
                     u_m4MV = camera->getView() * node->getFullTransform();
                     u_m4MVP = camera->getProjection() * camera->getView() * node->getFullTransform();
 
-                    u_f4LightPos_Ws = light->getShaderPosition();
+                    u_uiLightCount = static_cast< unsigned >(sceneManager->getLights().size());
+                    std::vector< ::glm::vec4 > lightPositionViewSpaces;
+                    lightPositionViewSpaces.reserve(sceneManager->getLights().size());
+                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    {
+                        lightPositionViewSpaces.push_back(camera->getView() * light.second->getShaderPosition());
+                    }
+                    u_f4LightPos_Vs = lightPositionViewSpaces;
 
-                    u_f3LightAmbient = light->getAmbient();
-                    u_f3LightDiffuse = light->getDiffuse();
-                    u_f3LightSpecular = light->getSpecular();
+                    std::vector< ::glm::vec3 > lightAmbientColors;
+                    lightAmbientColors.reserve(sceneManager->getLights().size());
+                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    {
+                        lightAmbientColors.push_back(light.second->getAmbient());
+                    }
+                    u_f3LightAmbient = lightAmbientColors;
+
+                    std::vector< ::glm::vec3 > lightDiffuseColors;
+                    lightDiffuseColors.reserve(sceneManager->getLights().size());
+                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    {
+                        lightDiffuseColors.push_back(light.second->getDiffuse());
+                    }
+                    u_f3LightDiffuse = lightDiffuseColors;
+
+                    std::vector< ::glm::vec3 > lightSpecularColors;
+                    lightSpecularColors.reserve(sceneManager->getLights().size());
+                    for(const std::pair< std::string, ::Render::Light* >& light : sceneManager->getLights())
+                    {
+                        lightSpecularColors.push_back(light.second->getSpecular());
+                    }
+                    u_f3LightSpecular = lightSpecularColors;
 
                     meshVAO.bind();
                     {
