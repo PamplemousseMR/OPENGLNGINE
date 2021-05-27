@@ -1,5 +1,6 @@
 add_subdirectory("GLBase")
 add_subdirectory("GLLighting")
+add_subdirectory("GLTexture")
 add_subdirectory("GLViewports")
 add_subdirectory("RenderBase")
 add_subdirectory("RenderLighting")

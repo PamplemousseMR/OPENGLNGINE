@@ -8,8 +8,8 @@ namespace GL
 {
 
 GLint Texture::s_MAX_SIZE = 0;
-
 GLint Texture::s_MAX_SAMPLE = 0;
+GLint Texture::s_MAX_LOCATION = 0;
 
 Texture::Texture(TEXTURE_TYPE type) :
     IBindable(),
