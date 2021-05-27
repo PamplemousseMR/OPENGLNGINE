@@ -151,6 +151,68 @@ void FrameBuffer::attachDrawBuffers() const
     GLNGINE_CHECK_GL;
 }
 
+void FrameBuffer::bind() const
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
+    if(s_cache != add || !m_isBinded)
+    {
+        s_cache = add;
+        m_isBinded = true;
+        glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+    }
+#else
+    glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+#endif
+}
+
+void FrameBuffer::unbind() const
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
+    if(s_cache != add)
+    {
+        s_cache = add;
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+#else
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif
+}
+
+void FrameBuffer::bindDraw() const
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
+    if(s_cache != add || m_isBinded)
+    {
+        s_cache = add;
+        m_isBinded = false;
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
+    }
+#else
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
+#endif
+}
+
+void FrameBuffer::bindRead() const
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
+    if(s_cache != add)
+    {
+        s_cache = add;
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+    }
+#else
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
+#endif
+}
+
 FrameBuffer::Initializer::Initializer()
 {
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &s_MAX_ATTACHEMENT);

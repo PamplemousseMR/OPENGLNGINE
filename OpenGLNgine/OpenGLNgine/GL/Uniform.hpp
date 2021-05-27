@@ -38,23 +38,23 @@ public:
 
     Uniform& operator=(Uniform&&) = delete;
 
-    inline void operator=(bool _t) const;
+    void operator=(bool _t) const;
 
-    inline void operator=(int _t) const;
+    void operator=(int _t) const;
 
-    inline void operator=(unsigned _t) const;
+    void operator=(unsigned _t) const;
 
-    inline void operator=(float _t) const;
+    void operator=(float _t) const;
 
-    inline void operator=(const ::glm::vec2& _t) const;
+    void operator=(const ::glm::vec2& _t) const;
 
-    inline void operator=(const ::glm::vec3& _t) const;
+    void operator=(const ::glm::vec3& _t) const;
 
-    inline void operator=(const std::vector< ::glm::vec3 >& _t) const;
+    void operator=(const std::vector< ::glm::vec3 >& _t) const;
 
-    inline void operator=(const ::glm::vec4& _t) const;
+    void operator=(const ::glm::vec4& _t) const;
 
-    inline void operator=(const std::vector< ::glm::vec4 >& _t) const;
+    void operator=(const std::vector< ::glm::vec4 >& _t) const;
 
     void operator=(const ::glm::mat3& _t) const;
 
@@ -100,132 +100,6 @@ inline GLint Uniform::getLocation() const
 inline const std::string& Uniform::getName() const
 {
     return m_name;
-}
-
-inline void Uniform::operator=(bool _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_bCache || m_bCache.value() != _t)
-    {
-        m_bCache = _t;
-        glUniform1i(m_location, _t ? 1 : 0);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform1i(m_location, _t ? 1 : 0);
-#endif
-}
-
-inline void Uniform::operator=(int _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_iCache || m_iCache.value() != _t)
-    {
-        m_iCache = _t;
-        glUniform1i(m_location, _t);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform1i(m_location, _t);
-#endif
-}
-
-inline void Uniform::operator=(unsigned _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_uiCache || m_uiCache.value() != _t)
-    {
-        m_uiCache = _t;
-        glUniform1ui(m_location, _t);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform1ui(m_location, _t);
-#endif
-}
-
-inline void Uniform::operator=(float _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_fCache || m_fCache.value() != _t)
-    {
-        m_fCache = _t;
-        glUniform1f(m_location, _t);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform1f(m_location, _t);
-#endif
-}
-
-inline void Uniform::operator=(const ::glm::vec2& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_f2Cache || m_f2Cache.value() != _t)
-    {
-        m_f2Cache = _t;
-        glUniform2f(m_location, _t.x, _t.y);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform2f(m_location, _t.x, _t.y);
-#endif
-}
-
-inline void Uniform::operator=(const ::glm::vec3& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_f3Cache || m_f3Cache.value() != _t)
-    {
-        m_f3Cache = _t;
-        glUniform3f(m_location, _t.x, _t.y, _t.z);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform3f(m_location, _t.x, _t.y, _t.z);
-#endif
-}
-
-inline void Uniform::operator=(const std::vector< ::glm::vec3 >& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_f3vCache || m_f3vCache.value() != _t)
-    {
-        m_f3vCache = _t;
-        glUniform3fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform3fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
-#endif
-}
-
-inline void Uniform::operator=(const ::glm::vec4& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_f4Cache || m_f4Cache.value() != _t)
-    {
-        m_f4Cache = _t;
-        glUniform4f(m_location, _t.x, _t.y, _t.z, _t.w);
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform4f(m_location, _t.x, _t.y, _t.z, _t.w);
-#endif
-}
-
-inline void Uniform::operator=(const std::vector< ::glm::vec4 >& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_f4vCache || m_f4vCache.value() != _t)
-    {
-        m_f4vCache = _t;
-        glUniform4fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniform4fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
-#endif
 }
 
 }

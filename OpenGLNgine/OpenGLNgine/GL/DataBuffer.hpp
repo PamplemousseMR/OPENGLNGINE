@@ -117,10 +117,10 @@ public:
     inline void writeData(size_t _offset, size_t _sizeInBytes, const void* _src) const;
 
     /// Binds the buffer.
-    inline virtual void bind() const override;
+    virtual void bind() const override;
 
     /// Unbinds the buffer.
-    inline virtual void unbind() const override;
+    virtual void unbind() const override;
 
 private:
 
@@ -163,38 +163,6 @@ inline void DataBuffer::writeData(size_t _offset, size_t _sizeInBytes, const voi
 {
     glBufferSubData(m_target, _offset, _sizeInBytes, _src);
     GLNGINE_CHECK_GL;
-}
-
-inline void DataBuffer::bind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = true;
-        glBindBuffer(m_target, m_id);
-    }
-#else
-    glBindBuffer(m_target, m_id);
-#endif
-}
-
-inline void DataBuffer::unbind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = false;
-        glBindBuffer(m_target, 0);
-    }
-#else
-    glBindBuffer(m_target, 0);
-#endif
 }
 
 }

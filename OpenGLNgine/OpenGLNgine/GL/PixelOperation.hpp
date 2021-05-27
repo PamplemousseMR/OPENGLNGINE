@@ -88,7 +88,7 @@ public:
      * @param _b Blue value used when color buffers are cleared.
      * @param _a Alpha value used when color buffers are cleared.
      */
-    inline static void setColorClearValue(float _r, float _g, float _b, float _a);
+    static void setColorClearValue(float _r, float _g, float _b, float _a);
 
     /**
      * @brief Enables and disables writing of frame buffer color components.
@@ -97,43 +97,43 @@ public:
      * @param _b Blue channel
      * @param _a Alpha channel.
      */
-    inline static void setColorMask(bool _r, bool _g, bool _b, bool _a);
+    static void setColorMask(bool _r, bool _g, bool _b, bool _a);
 
     /**
      * @brief Enables or disables the depth comparison.
      * @param _enable State of the depth test.
      */
-    inline static void enableDepthTest(bool _enable);
+    static void enableDepthTest(bool _enable);
 
     /**
      * @brief Enable or disables writing into the depth buffer.
      * @param _enable State of the depth writing.
      */
-    inline static void enableDepthWrite(bool _enable);
+    static void enableDepthWrite(bool _enable);
 
     /**
      * @brief Specifies the value used for depth buffer comparisons
      * @param _func Depth comparison function.
      */
-    inline static void setDepthFunc(PIXELOPERATION_DEPTH _func);
+    static void setDepthFunc(PIXELOPERATION_DEPTH _func);
 
     /**
      * @brief Specifies the clear value for the depth buffer
      * @param _value Depth value used when the depth buffer is cleared.
      */
-    inline static void setDepthClearValue(float _value);
+    static void setDepthClearValue(float _value);
 
     /**
      * @brief Specifies the clear value for the depth buffer
      * @param _value Depth value used when the depth buffer is cleared.
      */
-    inline static void setDepthClearValue(double _value);
+    static void setDepthClearValue(double _value);
 
     /**
      * @brief Enables or disables the stencil test.
      * @param _enable State of the stencil test.
      */
-    inline static void enableStencilTest(bool _enable);
+    static void enableStencilTest(bool _enable);
 
     /**
      * @brief Sets front and back stencil test actions.
@@ -149,246 +149,33 @@ public:
      * @param _ref Reference value for the stencil test.
      * @param _mask Mask that is ANDed with both the reference value and the stored stencil value when the test is done.
      */
-    inline static void setStencilFunc(PIXELOPERATION_STENCIL_FUNCTION _func, int _ref, unsigned _mask);
+    static void setStencilFunc(PIXELOPERATION_STENCIL_FUNCTION _func, int _ref, unsigned _mask);
 
     /**
      * @brief Control the front and back writing of individual bits in the stencil planes.
      * @param _mask Bit mask to enable and disable writing of individual bits in the stencil planes.
      */
-    inline static void setStencilMask(unsigned _mask);
+    static void setStencilMask(unsigned _mask);
 
     /**
      * @brief Specifies the clear value for the stencil buffer
      * @param _value Index used when the stencil buffer is cleared.
      */
-    inline static void seStencilClearValue(int _value);
+    static void seStencilClearValue(int _value);
 
     /**
      * @brief Enables or disables the blending the computed fragment color values with the values in the color buffers.
      * @param _enable State of the blending test.
      */
-    inline static void enableBlendTest(bool _enable);
+    static void enableBlendTest(bool _enable);
 
     /**
      * @brief Specifies pixel blending arithmetic.
      * @param _sfactor How the red, green, blue, and alpha source blending factors are computed.
      * @param _dfactor How the red, green, blue, and alpha destination blending factors are computed.
      */
-    inline static void setBlendFunc(PIXELOPERATION_BLEND _sfactor, PIXELOPERATION_BLEND _dfactor);
+    static void setBlendFunc(PIXELOPERATION_BLEND _sfactor, PIXELOPERATION_BLEND _dfactor);
 
 };
-
-inline void PixelOperation::setColorClearValue(float _r, float _g, float _b, float _a)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static std::array< float, 4 > s_cache = {0.f, 0.f, 0.f, 0.f};
-    if(_r != s_cache[0] || _g != s_cache[1] || _b != s_cache[2] || _a != s_cache[3])
-    {
-        s_cache = {_r, _g, _b, _a};
-        glClearColor(_r, _g, _b, _a);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glClearColor(_r, _g, _b, _a);
-#endif
-}
-
-inline void PixelOperation::setColorMask(bool _r, bool _g, bool _b, bool _a)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static std::array< bool, 4 > s_cache = {true, true, true, true};
-    if(_r != s_cache[0] || _g != s_cache[1] || _b != s_cache[2] || _a != s_cache[3])
-    {
-        s_cache = {_r, _g, _b, _a};
-        glColorMask(_r, _g, _b, _a);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glColorMask(_r, _g, _b, _a);
-#endif
-}
-
-inline void PixelOperation::enableDepthTest(bool _enable)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static bool s_cache = false;
-    if(s_cache != _enable)
-    {
-        s_cache = _enable;
-        _enable ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    _enable ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-#endif
-}
-
-inline void PixelOperation::enableDepthWrite(bool _enable)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static bool s_cache = false;
-    if(s_cache != _enable)
-    {
-        s_cache = _enable;
-        glDepthMask(_enable ? GL_TRUE : GL_FALSE);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glDepthMask(_enable ? GL_TRUE : GL_FALSE);
-#endif
-}
-
-inline void PixelOperation::setDepthFunc(PIXELOPERATION_DEPTH _func)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static PIXELOPERATION_DEPTH s_cache = PD_LESS;
-    if(s_cache != _func)
-    {
-        s_cache = _func;
-        glDepthFunc(_func);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glDepthFunc(_func);
-#endif
-}
-
-inline void PixelOperation::setDepthClearValue(float _value)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static float s_cache = 1.f;
-    if(s_cache != _value)
-    {
-        s_cache = _value;
-        glClearDepthf(_value);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glClearDepthf(_value);
-#endif
-}
-
-inline void PixelOperation::setDepthClearValue(double _value)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static double s_cache = 1.;
-    if(s_cache != _value)
-    {
-        s_cache = _value;
-        glClearDepth(_value);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glClearDepth(_value);
-#endif
-}
-
-inline void PixelOperation::enableStencilTest(bool _enable)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static bool s_cache = false;
-    if(s_cache != _enable)
-    {
-        s_cache = _enable;
-        _enable ? glEnable(GL_STENCIL_TEST) : glDisable(GL_STENCIL_TEST);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    _enable ? glEnable(GL_STENCIL_TEST) : glDisable(GL_STENCIL_TEST);
-#endif
-}
-
-inline void PixelOperation::setStencilOperation(PIXELOPERATION_STENCIL_OPERATION _stencilFail, PIXELOPERATION_STENCIL_OPERATION _depthFail, PIXELOPERATION_STENCIL_OPERATION _pass)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static std::tuple<PIXELOPERATION_STENCIL_OPERATION, PIXELOPERATION_STENCIL_OPERATION, PIXELOPERATION_STENCIL_OPERATION > s_cache = {PSO_KEEP, PSO_KEEP, PSO_KEEP};
-    const auto values = std::make_tuple(_stencilFail, _depthFail, _pass);
-    if(s_cache != values)
-    {
-        s_cache = values;
-        glStencilOp(_stencilFail, _depthFail, _pass);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glStencilOp(_stencilFail, _depthFail, _pass);
-#endif
-}
-
-inline void PixelOperation::setStencilFunc(PIXELOPERATION_STENCIL_FUNCTION _func, int _ref, unsigned _mask)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static std::tuple<PIXELOPERATION_STENCIL_FUNCTION, int, unsigned > s_cache = {PSF_ALWAYS, 0, 0xFF};
-    const auto values = std::make_tuple(_func, _ref, _mask);
-    if(s_cache != values)
-    {
-        s_cache = values;
-        glStencilFunc(_func, _ref, _mask);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glStencilFunc(_func, _ref, _mask);
-#endif
-}
-
-inline void PixelOperation::setStencilMask(unsigned _mask)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static unsigned s_cache = 0xFF;
-    if(s_cache != _mask)
-    {
-        s_cache = _mask;
-        glStencilMask(_mask);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glStencilMask(_mask);
-#endif
-}
-
-inline void PixelOperation::seStencilClearValue(int _value)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static int s_cache = 0;
-    if(s_cache != _value)
-    {
-        s_cache = _value;
-        glClearStencil(_value);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glClearStencil(_value);
-#endif
-}
-
-inline void PixelOperation::enableBlendTest(bool _enable)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static bool s_cache = false;
-    if(s_cache != _enable)
-    {
-        s_cache = _enable;
-        _enable ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    _enable ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
-#endif
-}
-
-inline void PixelOperation::setBlendFunc(PIXELOPERATION_BLEND _sfactor, PIXELOPERATION_BLEND _dfactor)
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static std::pair<PIXELOPERATION_BLEND, PIXELOPERATION_BLEND > s_cache = {PB_ONE, PB_ZERO};
-    const auto values = std::make_pair(_sfactor, _dfactor);
-    if(s_cache != values)
-    {
-        s_cache = values;
-        glBlendFunc(_sfactor, _dfactor);
-        GLNGINE_CHECK_GL;
-    }
-#else
-    glBlendFunc(_sfactor, _dfactor);
-#endif
-}
 
 }

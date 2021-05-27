@@ -121,16 +121,16 @@ public:
     void attachDrawBuffers() const;
 
     /// Binds the draw frame buffer.
-    inline void bindDraw() const;
+    void bindDraw() const;
 
     /// Binds the read frame buffer.
-    inline void bindRead() const;
+    void bindRead() const;
 
     /// Binds the frame buffer.
-    inline void bind() const override;
+    void bind() const override;
 
     /// Unbinds the frame buffer.
-    inline void unbind() const override;
+    void unbind() const override;
 
 private:
 
@@ -188,68 +188,6 @@ inline void FrameBuffer::attachDepthStencilBuffer(const GL::RenderBuffer& _buffe
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
-}
-
-inline void FrameBuffer::bind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = true;
-        glBindFramebuffer(GL_FRAMEBUFFER, m_id);
-    }
-#else
-    glBindFramebuffer(GL_FRAMEBUFFER, m_id);
-#endif
-}
-
-inline void FrameBuffer::unbind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add)
-    {
-        s_cache = add;
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    }
-#else
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#endif
-}
-
-inline void FrameBuffer::bindDraw() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = false;
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
-    }
-#else
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
-#endif
-}
-
-inline void FrameBuffer::bindRead() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add)
-    {
-        s_cache = add;
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-    }
-#else
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-#endif
 }
 
 }

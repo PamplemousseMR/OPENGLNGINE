@@ -27,6 +27,36 @@ void Rasterizer::setViewport(int _x, int _y, int _width, int _height)
 #endif
 }
 
+void Rasterizer::enableScissorTest(bool _enable)
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static bool s_cache = false;
+    if(s_cache != _enable)
+    {
+        s_cache = _enable;
+        _enable ? glEnable(GL_SCISSOR_TEST) : glDisable(GL_SCISSOR_TEST);
+        GLNGINE_CHECK_GL;
+    }
+#else
+    _enable ? glEnable(GL_SCISSOR_TEST) : glDisable(GL_SCISSOR_TEST);
+#endif
+}
+
+void Rasterizer::setScissor(int _x, int _y, int _width, int _height)
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static std::tuple<int, int, int, int > s_cache = {-1, -1, -1, -1};
+    const auto values = std::make_tuple(_x, _y, _width, _height);
+    if(s_cache != values)
+    {
+        s_cache = values;
+        glScissor(_x, _y, _width, _height);
+        GLNGINE_CHECK_GL;
+    }
+#else
+    glScissor(_x, _y, _width, _height);
+#endif
+}
 
 Rasterizer::Initializer::Initializer()
 {

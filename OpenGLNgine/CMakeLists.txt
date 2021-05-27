@@ -113,11 +113,11 @@ set_target_properties(${GLNGINE_LIBRARY_NAME} PROPERTIES
     )
 
 if(NOT WIN32)
-    target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE stdc++fs)
+    target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC stdc++fs)
 endif(NOT WIN32)
 
 if(${GLNGINE_USE_STATE_CACHE})
-    target_compile_definitions(${GLNGINE_LIBRARY_NAME} PRIVATE GLNGINE_USE_STATE_CACHE)
+    target_compile_definitions(${GLNGINE_LIBRARY_NAME} PUBLIC GLNGINE_USE_STATE_CACHE)
 endif(${GLNGINE_USE_STATE_CACHE})
 
 #=======================================

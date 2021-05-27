@@ -60,10 +60,10 @@ public:
     void link() const;
 
     /// Binds the program.
-    inline void bind() const override;
+    void bind() const override;
 
     /// Unbinds the program.
-    inline void unbind() const override;
+    void unbind() const override;
 
 private:
 
@@ -76,37 +76,5 @@ private:
 #endif
 
 };
-
-inline void Program::bind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = true;
-        glUseProgram(m_id);
-    }
-#else
-    glUseProgram(m_id);
-#endif
-}
-
-inline void Program::unbind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = false;
-        glUseProgram(0);
-    }
-#else
-    glUseProgram(0);
-#endif
-}
 
 }

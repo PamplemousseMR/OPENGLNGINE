@@ -135,10 +135,10 @@ public:
     void allocateMultisample(int _width, int _height, RENDERBUFFER_FORMAT _format, int _sample) const;
 
     /// Binds the render buffer.
-    inline void bind() const override;
+    void bind() const override;
 
     /// Unbinds the render buffer.
-    inline void unbind() const override;
+    void unbind() const override;
 
 private:
 
@@ -161,37 +161,5 @@ private:
 #endif
 
 };
-
-inline void RenderBuffer::bind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = true;
-        glBindRenderbuffer(GL_RENDERBUFFER, m_id);
-    }
-#else
-    glBindRenderbuffer(GL_RENDERBUFFER, m_id);
-#endif
-}
-
-inline void RenderBuffer::unbind() const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
-    {
-        s_cache = add;
-        m_isBinded = false;
-        glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    }
-#else
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-#endif
-}
 
 }
