@@ -56,9 +56,9 @@ public:
 
     inline void operator=(const std::vector< ::glm::vec4 >& _t) const;
 
-    inline void operator=(const ::glm::mat3& _t) const;
+    void operator=(const ::glm::mat3& _t) const;
 
-    inline void operator=(const ::glm::mat4& _t) const;
+    void operator=(const ::glm::mat4& _t) const;
 
 private:
 
@@ -225,34 +225,6 @@ inline void Uniform::operator=(const std::vector< ::glm::vec4 >& _t) const
     }
 #else
 glUniform4fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]));
-#endif
-}
-
-inline void Uniform::operator= (const ::glm::mat3& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_m3Cache || m_m3Cache.value() != _t)
-    {
-        m_m3Cache = _t;
-        glUniformMatrix3fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniformMatrix3fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
-#endif
-}
-
-inline void Uniform::operator=(const ::glm::mat4& _t) const
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    if(!m_m4Cache || m_m4Cache.value() != _t)
-    {
-        m_m4Cache = _t;
-        glUniformMatrix4fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
-        GLNGINE_CHECK_GL;
-    }
-#else
-glUniformMatrix4fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
 #endif
 }
 
