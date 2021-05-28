@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 
 #include <filesystem>
+#include <optional>
 
 namespace GL
 {
@@ -151,7 +152,7 @@ class Texture final : public IBindable
 
 public:
 
-    Texture(TEXTURE_TYPE);
+    Texture();
 
     ~Texture() override;
 
@@ -165,7 +166,7 @@ public:
 
     static void setLocation(int);
 
-    int load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat);
+    int load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
     void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
 
@@ -198,8 +199,6 @@ private:
 
     static GLint s_MAX_LOCATION;
 
-    void genTexture();
-
     TEXTURE_TYPE m_type {TT_2D};
 
     TEXTURE_FORMAT m_format {TF_RGBA};
@@ -207,6 +206,10 @@ private:
 #ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
+
+    mutable std::optional< TEXTURE_FILTER > m_minFilter { std::nullopt };
+
+    mutable std::optional< TEXTURE_FILTER > m_magFilter { std::nullopt };
 #endif
 
 };

@@ -11,9 +11,8 @@ GLint Texture::s_MAX_SIZE = 0;
 GLint Texture::s_MAX_SAMPLE = 0;
 GLint Texture::s_MAX_LOCATION = 0;
 
-Texture::Texture(TEXTURE_TYPE type) :
-    IBindable(),
-    m_type(type)
+Texture::Texture() :
+    IBindable()
 {
     const static Initializer s_INITIALIZER;
     glGenTextures(1, &m_id);
@@ -180,7 +179,7 @@ void Texture::setLocation(int _location)
 
 }
 
-int Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat)
+int Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
 
@@ -193,10 +192,6 @@ int Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _i
     else if(fileFormat == ".png" || fileFormat == ".tga" || fileFormat == ".psd" || fileFormat == ".DDS")
     {
         hasAlpha = true;
-    }
-    else if(fileFormat == ".hdr")
-    {
-        GLNGINE_EXCEPTION("TODO HDR");
     }
     else
     {
@@ -217,7 +212,7 @@ int Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _i
     {
         GLNGINE_EXCEPTION("Size too big");
     }
-    switch(m_type)
+    switch(_type)
     {
     case TT_1D :
         if(height != 1)
@@ -236,6 +231,8 @@ int Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _i
     }
     GLNGINE_CHECK_GL;
     SOIL_free_image_data(data);
+
+    m_type = _type;
     return width;
 }
 
@@ -370,38 +367,46 @@ void Texture::unbind() const
 
 void Texture::setMinFilter(TEXTURE_FILTER _filter) const
 {
-    switch(m_type)
+    if(!m_minFilter || m_minFilter.value() != _filter)
     {
-    case TT_1D :
-        glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, _filter);
-        break;
-    case TT_2D :
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);
-        break;
-    case TT_2DMULTISAMPLE :
-        GLNGINE_EXCEPTION("Can't set filter to multisampled textures");
-    default:
-        GLNGINE_EXCEPTION("Unhandle texture type");
+        m_minFilter = _filter;
+        switch(m_type)
+        {
+        case TT_1D :
+            glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, _filter);
+            break;
+        case TT_2D :
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);
+            break;
+        case TT_2DMULTISAMPLE :
+            GLNGINE_EXCEPTION("Can't set filter to multisampled textures");
+        default:
+            GLNGINE_EXCEPTION("Unhandle texture type");
+        }
+        GLNGINE_CHECK_GL;
     }
-    GLNGINE_CHECK_GL;
 }
 
 void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 {
-    switch(m_type)
+    if(!m_magFilter || m_magFilter.value() != _filter)
     {
-    case TT_1D :
-        glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, _filter);
-        break;
-    case TT_2D :
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filter);
-        break;
-    case TT_2DMULTISAMPLE :
-        GLNGINE_EXCEPTION("Can't set filter to multisampled textures");
-    default:
-        GLNGINE_EXCEPTION("Unhandle texture type");
+        m_magFilter = _filter;
+        switch(m_type)
+        {
+        case TT_1D :
+            glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, _filter);
+            break;
+        case TT_2D :
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filter);
+            break;
+        case TT_2DMULTISAMPLE :
+            GLNGINE_EXCEPTION("Can't set filter to multisampled textures");
+        default:
+            GLNGINE_EXCEPTION("Unhandle texture type");
+        }
+        GLNGINE_CHECK_GL;
     }
-    GLNGINE_CHECK_GL;
 }
 
 Texture::Initializer::Initializer()

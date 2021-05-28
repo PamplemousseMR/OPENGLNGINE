@@ -133,9 +133,9 @@ int main()
     meshEBO.bind();
 
     // Create the texture.
-    ::GL::Texture texture(::GL::TT_2D);
+    ::GL::Texture texture;
     texture.bind();
-    texture.load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::GL::TIF_RGBA);
+    texture.load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::GL::TT_2D, ::GL::TIF_RGBA);
     texture.setMinFilter(::GL::TF_LINEAR);
     texture.setMagFilter(::GL::TF_LINEAR);
 
