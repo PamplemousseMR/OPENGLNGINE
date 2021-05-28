@@ -35,7 +35,9 @@ class Program final : public ::Core::IResource
 
 public:
 
-    typedef std::map<PROGRAM_PARAMETER, ::GL::Uniform> ProgramParamtersMap;
+    typedef std::map<PROGRAM_PARAMETER, ::GL::Uniform> AutoConstantMap;
+
+    typedef std::map<std::string, std::pair< ::GL::Uniform, int > > NamedConstantMap;
 
     Program(ProgramManager* const _manager, const std::string& _name);
 
@@ -59,7 +61,11 @@ public:
 
     void setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::string& _name);
 
-    inline const ProgramParamtersMap& getParameters() const;
+    inline const AutoConstantMap& getAutoConstants() const;
+
+    void setNamedConstant(const std::string& _name, int _value);
+
+    inline const NamedConstantMap& getNamedConstants() const;
 
 private:
 
@@ -73,7 +79,9 @@ private:
 
     ShaderPtr m_fragmentShader { nullptr };
 
-    ProgramParamtersMap m_parameters {};
+    AutoConstantMap m_autoConstants {};
+
+    NamedConstantMap m_namedConstants {};
 
 };
 
@@ -87,9 +95,14 @@ inline void Program::unlock()
     m_program.unbind();
 }
 
-inline const Program::ProgramParamtersMap& Program::getParameters() const
+inline const Program::AutoConstantMap& Program::getAutoConstants() const
 {
-    return m_parameters;
+    return m_autoConstants;
+}
+
+inline const Program::NamedConstantMap& Program::getNamedConstants() const
+{
+    return m_namedConstants;
 }
 
 }

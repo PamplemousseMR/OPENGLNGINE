@@ -75,12 +75,58 @@ namespace Hardware
     }
 }
 
+void Pass::lock()
+{
+    if(m_program)
+    {
+        m_program->lock();
+    }
+}
+
+void Pass::unlock()
+{
+    if(m_program)
+    {
+        m_program->unlock();
+    }}
+
 Pass::Pass()
 {
 }
 
 Pass::~Pass()
 {
+}
+
+TextureUnitState* Pass::createTextureUnitState()
+{
+    TextureUnitState* ptr = new TextureUnitState();
+    m_textureUnitStates.push_back(ptr);
+    return ptr;
+}
+
+void Pass::destroyTextureUnitState(TextureUnitState* const _textureUnitState)
+{
+    GLNGINE_ASSERT_IF(!_textureUnitState, "The texture unit state mustn't be null");
+
+    TextureUnitStateList::const_iterator it = std::find(m_textureUnitStates.begin(), m_textureUnitStates.end(), _textureUnitState);
+    if(it == m_textureUnitStates.end())
+    {
+        GLNGINE_EXCEPTION("The texture unit state doesn't exists");
+    }
+    m_textureUnitStates.erase(it);
+    delete _textureUnitState;
+}
+
+void Pass::destroyAllTextureUnitStates()
+{
+    TextureUnitStateList::const_iterator itBeg, itEnd;
+    itEnd = m_textureUnitStates.end();
+    for(itBeg=m_textureUnitStates.begin() ; itBeg!=itEnd ; ++itBeg)
+    {
+        delete *itBeg;
+    }
+    m_textureUnitStates.clear();
 }
 
 }

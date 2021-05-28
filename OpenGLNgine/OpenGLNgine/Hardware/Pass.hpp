@@ -2,6 +2,7 @@
 
 #include "OpenGLNgine/GL/PixelOperation.hpp"
 #include "OpenGLNgine/Hardware/Program.hpp"
+#include "OpenGLNgine/Hardware/TextureUnitState.hpp"
 
 namespace Hardware
 {
@@ -50,17 +51,29 @@ class Pass
 
 public:
 
+    typedef std::vector< TextureUnitState* > TextureUnitStateList;
+
     static ::GL::PIXELOPERATION_DEPTH getType(MATERIAL_DEPTH _type);
 
     static ::GL::PIXELOPERATION_BLEND getType(MATERIAL_BLEND _type);
 
     inline void setProgram(const ProgramPtr& program);
 
-    inline void lock();
+    void lock();
 
-    inline void unlock();
+    void unlock();
 
-    inline const Program::ProgramParamtersMap& getProgramParameters() const;
+    inline const Program::AutoConstantMap& getAutoConstants() const;
+
+    inline const Program::NamedConstantMap& getNamedConstants() const;
+
+    TextureUnitState* createTextureUnitState();
+
+    void destroyTextureUnitState(TextureUnitState* const _textureUnitState);
+
+    void destroyAllTextureUnitStates();
+
+    inline const TextureUnitStateList& getTextureUnitStates() const;
 
     std::array< bool, 4 > colorMask { true, true, true, true };
 
@@ -84,6 +97,8 @@ private:
 
     ProgramPtr m_program { nullptr };
 
+    TextureUnitStateList m_textureUnitStates {};
+
 };
 
 void Pass::setProgram(const ProgramPtr& program)
@@ -91,19 +106,19 @@ void Pass::setProgram(const ProgramPtr& program)
     m_program = program;
 }
 
-inline void Pass::lock()
+inline const Program::AutoConstantMap& Pass::getAutoConstants() const
 {
-    m_program->lock();
+    return m_program->getAutoConstants();
 }
 
-inline void Pass::unlock()
+inline const Program::NamedConstantMap& Pass::getNamedConstants() const
 {
-    m_program->unlock();
+    return m_program->getNamedConstants();
 }
 
-inline const Program::ProgramParamtersMap& Pass::getProgramParameters() const
+inline const Pass::TextureUnitStateList& Pass::getTextureUnitStates() const
 {
-    return m_program->getParameters();
+    return m_textureUnitStates;
 }
 
 }

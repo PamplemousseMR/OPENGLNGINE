@@ -52,7 +52,12 @@ void Program::link()
 
 void Program::setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::string& _name)
 {
-    m_parameters.emplace(_parameter, ::GL::Uniform(_name, m_program.getId()));
+    m_autoConstants.emplace(_parameter, ::GL::Uniform(_name, m_program.getId()));
+}
+
+void Program::setNamedConstant(const std::string& _name, int _value)
+{
+    m_namedConstants.emplace(_name, std::make_pair( ::GL::Uniform(_name, m_program.getId()), _value));
 }
 
 }

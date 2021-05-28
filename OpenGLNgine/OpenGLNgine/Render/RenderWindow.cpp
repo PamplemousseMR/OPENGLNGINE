@@ -38,11 +38,11 @@ void RenderWindow::render() const
                     if(subMesh->material != nullptr)
                     {
                         const ::Hardware::MaterialPtr& mat = subMesh->material;
-                        for(::Hardware::Pass* pass : mat->getPasses())
+                        for(::Hardware::Pass* const pass : mat->getPasses())
                         {
                             pass->lock();
 
-                            for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getProgramParameters())
+                            for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getAutoConstants())
                             {
                                 switch(parameter.first)
                                 {
@@ -116,6 +116,18 @@ void RenderWindow::render() const
                                 default:
                                     GLNGINE_EXCEPTION("Unhandle program parameter");
                                 }
+                            }
+
+                            for(const std::pair< const std::string, std::pair< ::GL::Uniform, int > >& parameter : pass->getNamedConstants())
+                            {
+                                parameter.second.first = parameter.second.second;
+                            }
+
+                            for(::Hardware::TextureUnitState* const textureUnitState : pass->getTextureUnitStates())
+                            {
+                                textureUnitState->lock();
+                                textureUnitState->getTexture()->setMagFilter(textureUnitState->m_magFilter);
+                                textureUnitState->getTexture()->setMinFilter(textureUnitState->m_minFilter);
                             }
 
                             ::GL::PixelOperation::enableDepthTest(pass->depthTest);

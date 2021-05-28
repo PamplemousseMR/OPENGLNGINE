@@ -36,6 +36,9 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/Program.cpp
     ${GLNGINE_SOURCE}/Hardware/ProgramManager.cpp
     ${GLNGINE_SOURCE}/Hardware/Shader.cpp
+    ${GLNGINE_SOURCE}/Hardware/Texture.cpp
+    ${GLNGINE_SOURCE}/Hardware/TextureManager.cpp
+    ${GLNGINE_SOURCE}/Hardware/TextureUnitState.cpp
     ${GLNGINE_SOURCE}/Hardware/VertexBufferBinding.cpp
     ${GLNGINE_SOURCE}/Hardware/VertexData.cpp
     ${GLNGINE_SOURCE}/Hardware/VertexDeclaration.cpp
@@ -80,6 +83,9 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/Program.hpp
     ${GLNGINE_SOURCE}/Hardware/ProgramManager.hpp
     ${GLNGINE_SOURCE}/Hardware/Shader.hpp
+    ${GLNGINE_SOURCE}/Hardware/Texture.hpp
+    ${GLNGINE_SOURCE}/Hardware/TextureManager.hpp
+    ${GLNGINE_SOURCE}/Hardware/TextureUnitState.hpp
     ${GLNGINE_SOURCE}/Hardware/VertexBufferBinding.hpp
     ${GLNGINE_SOURCE}/Hardware/VertexData.hpp
     ${GLNGINE_SOURCE}/Hardware/VertexDeclaration.hpp
