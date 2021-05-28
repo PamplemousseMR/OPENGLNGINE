@@ -123,8 +123,10 @@ void RenderWindow::render() const
                                 parameter.second.first = parameter.second.second;
                             }
 
-                            for(::Hardware::TextureUnitState* const textureUnitState : pass->getTextureUnitStates())
+                            for(unsigned tus=0 ; tus<pass->getTextureUnitStates().size() ; ++tus)
                             {
+                                ::Hardware::TextureUnitState* textureUnitState = pass->getTextureUnitStates()[tus];
+                                ::GL::Texture::setLocation(tus);
                                 textureUnitState->lock();
                                 textureUnitState->getTexture()->setMagFilter(textureUnitState->m_magFilter);
                                 textureUnitState->getTexture()->setMinFilter(textureUnitState->m_minFilter);
