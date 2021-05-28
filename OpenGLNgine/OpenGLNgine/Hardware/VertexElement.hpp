@@ -27,15 +27,15 @@ public:
 
     static int getTypeCount(VERTEXELEMENT_TYPE _type);
 
-    static GL::DATABUFFER_TYPE getType(VERTEXELEMENT_TYPE _type);
+    static ::GL::DATABUFFER_TYPE getType(VERTEXELEMENT_TYPE _type);
 
-    VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic, unsigned short _index = 0);
+    VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
 
     ~VertexElement();
 
     inline int getTypeCount() const;
 
-    inline GL::DATABUFFER_TYPE getType() const;
+    inline ::GL::DATABUFFER_TYPE getType() const;
 
     const unsigned short m_source;
 
@@ -45,8 +45,6 @@ public:
 
     const VERTEXELEMENT_SEMANTIC m_semantic;
 
-    const unsigned short m_index;
-
 };
 
 inline int VertexElement::getTypeCount() const
@@ -54,7 +52,7 @@ inline int VertexElement::getTypeCount() const
     return VertexElement::getTypeCount(m_type);
 }
 
-inline GL::DATABUFFER_TYPE VertexElement::getType() const
+inline ::GL::DATABUFFER_TYPE VertexElement::getType() const
 {
     return VertexElement::getType(m_type);
 }

@@ -165,19 +165,19 @@ public:
 
     static void setLocation(int);
 
-    int load(const std::filesystem::path&, TEXTURE_INTERNAL_FORMAT);
+    int load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
-    void allocate(int, int, TEXTURE_INTERNAL_FORMAT, TEXTURE_FORMAT, TEXTURE_DATA);
+    void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
 
-    void allocateMultisample(int, int, TEXTURE_INTERNAL_FORMAT, TEXTURE_FORMAT, int);
+    void allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample);
 
     void generateMipmap() const;
 
     inline TEXTURE_TYPE getType() const;
 
-    void setMagFilter(TEXTURE_FILTER) const;
+    void setMagFilter(TEXTURE_FILTER _filter) const;
 
-    void setMinFilter(TEXTURE_FILTER) const;
+    void setMinFilter(TEXTURE_FILTER _filter) const;
 
     void bind() const override;
 

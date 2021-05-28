@@ -192,7 +192,7 @@ public:
 /**
  * @brief Manages a target window.
  */
-class RenderWindow final : public Core::IResource
+class RenderWindow final : public ::Core::IResource
 {
 
     friend Render;

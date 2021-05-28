@@ -31,7 +31,7 @@ class VertexData final
 
 public:
 
-    static GL::DRAWCALL_MODE getRenderType(VERTEXDATA_RENDERTYPE _type);
+    static ::GL::DRAWCALL_MODE getRenderType(VERTEXDATA_RENDERTYPE _type);
 
     VertexData(const VertexData&) = delete;
 
@@ -41,7 +41,7 @@ public:
 
     VertexData& operator=(VertexData&&) = delete;
 
-    inline GL::DRAWCALL_MODE getRenderType() const;
+    inline ::GL::DRAWCALL_MODE getRenderType() const;
 
     int m_vertexStart {0};
 
@@ -63,7 +63,7 @@ private:
 
 };
 
-inline GL::DRAWCALL_MODE VertexData::getRenderType() const
+inline ::GL::DRAWCALL_MODE VertexData::getRenderType() const
 {
     return getRenderType(m_renderOperation);
 }

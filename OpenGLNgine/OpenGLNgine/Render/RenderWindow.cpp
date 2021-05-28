@@ -37,28 +37,28 @@ void RenderWindow::render() const
                 {
                     if(subMesh->material != nullptr)
                     {
-                        const Hardware::MaterialPtr& mat = subMesh->material;
-                        for(Hardware::Pass* pass : mat->getPasses())
+                        const ::Hardware::MaterialPtr& mat = subMesh->material;
+                        for(::Hardware::Pass* pass : mat->getPasses())
                         {
                             pass->lock();
 
-                            for(const std::pair< const Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getProgramParameters())
+                            for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getProgramParameters())
                             {
                                 switch(parameter.first)
                                 {
-                                case Hardware::PP_MODELVIEWPROJ_MATRIX:
+                                case ::Hardware::PP_MODELVIEWPROJ_MATRIX:
                                     parameter.second = cam->getProjection() * cam->getView() * node->getFullTransform();
                                     break;
-                                case Hardware::PP_MODELVIEW_MATRIX:
+                                case ::Hardware::PP_MODELVIEW_MATRIX:
                                     parameter.second = cam->getView() * node->getFullTransform();
                                     break;
-                                case Hardware::PP_VIEW_MATRIX:
+                                case ::Hardware::PP_VIEW_MATRIX:
                                     parameter.second = cam->getView();
                                     break;
-                                case Hardware::PP_LIGHT_COUNT:
+                                case ::Hardware::PP_LIGHT_COUNT:
                                     parameter.second = static_cast< unsigned >(sm->getLights().size());
                                     break;
-                                case Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
+                                case ::Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
                                 {
                                     std::vector< ::glm::vec4 > lightPositionWorldSpaces;
                                     lightPositionWorldSpaces.reserve(sm->getLights().size());
@@ -69,7 +69,7 @@ void RenderWindow::render() const
                                     parameter.second = lightPositionWorldSpaces;
                                     break;
                                 }
-                                case Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY:
+                                case ::Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY:
                                 {
                                     std::vector< ::glm::vec4 > lightPositionViewSpaces;
                                     lightPositionViewSpaces.reserve(sm->getLights().size());
@@ -80,7 +80,7 @@ void RenderWindow::render() const
                                     parameter.second = lightPositionViewSpaces;
                                     break;
                                 }
-                                case Hardware::PP_LIGHT_AMBIENT_COLOR_ARRAY:
+                                case ::Hardware::PP_LIGHT_AMBIENT_COLOR_ARRAY:
                                 {
                                     std::vector< ::glm::vec3 > lightAmbientColors;
                                     lightAmbientColors.reserve(sm->getLights().size());
@@ -91,7 +91,7 @@ void RenderWindow::render() const
                                     parameter.second = lightAmbientColors;
                                     break;
                                 }
-                                case Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
+                                case ::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
                                 {
                                     std::vector< ::glm::vec3 > lightDiffuseColors;
                                     lightDiffuseColors.reserve(sm->getLights().size());
@@ -102,7 +102,7 @@ void RenderWindow::render() const
                                     parameter.second = lightDiffuseColors;
                                     break;
                                 }
-                                case Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY:
+                                case ::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY:
                                 {
                                     std::vector< ::glm::vec3 > lightSpecularColors;
                                     lightSpecularColors.reserve(sm->getLights().size());
@@ -120,27 +120,27 @@ void RenderWindow::render() const
 
                             ::GL::PixelOperation::enableDepthTest(pass->depthTest);
                             ::GL::PixelOperation::enableDepthWrite(pass->depthWrite);
-                            ::GL::PixelOperation::setDepthFunc(Hardware::Pass::getType(pass->depthFunc));
+                            ::GL::PixelOperation::setDepthFunc(::Hardware::Pass::getType(pass->depthFunc));
                             ::GL::PixelOperation::enableBlendTest(pass->blendTest);
-                            ::GL::PixelOperation::setBlendFunc(Hardware::Pass::getType(pass->sourceFactor), Hardware::Pass::getType(pass->destinationFactor));
+                            ::GL::PixelOperation::setBlendFunc(::Hardware::Pass::getType(pass->sourceFactor), ::Hardware::Pass::getType(pass->destinationFactor));
                             ::GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
 
-                            const Hardware::VertexData* const vertexData = subMesh->vertexData;
+                            const ::Hardware::VertexData* const vertexData = subMesh->vertexData;
                             if(vertexData != nullptr)
                             {
-                                const Hardware::IndexData* const indexData = subMesh->indexData;
+                                const ::Hardware::IndexData* const indexData = subMesh->indexData;
                                 if(subMesh->isDirty())
                                 {
                                     vertexData->m_vertexDeclaration->lock();
                                     for(const auto& binding : vertexData->m_vertexBufferBinding->getBufferBindings())
                                     {
-                                        const Hardware::HardwareVertexBufferPtr buffer = binding.second;
+                                        const ::Hardware::HardwareVertexBufferPtr buffer = binding.second;
                                         buffer->lock();
 
                                         int stride = 0;
 
-                                        const Hardware::VertexDeclaration::VertexElementList& elements = vertexData->m_vertexDeclaration->getElements();
-                                        for(const Hardware::VertexElement& element : elements)
+                                        const ::Hardware::VertexDeclaration::VertexElementList& elements = vertexData->m_vertexDeclaration->getElements();
+                                        for(const ::Hardware::VertexElement& element : elements)
                                         {
                                             if(element.m_source == binding.first)
                                             {
@@ -148,7 +148,7 @@ void RenderWindow::render() const
                                             }
                                         }
 
-                                        for(const Hardware::VertexElement& element : elements)
+                                        for(const ::Hardware::VertexElement& element : elements)
                                         {
                                             if(element.m_source == binding.first)
                                             {

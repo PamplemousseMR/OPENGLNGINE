@@ -14,7 +14,7 @@ class RenderWindow;
 /**
  * @brief Manages a viewport attached to a render window.
  */
-class Viewport final : public Core::IResource
+class Viewport final : public ::Core::IResource
 {
 
     friend RenderWindow;

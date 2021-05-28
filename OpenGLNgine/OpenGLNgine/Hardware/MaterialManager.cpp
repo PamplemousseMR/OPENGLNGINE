@@ -35,7 +35,7 @@ MaterialManager::Initializer::~Initializer()
 }
 
 MaterialManager::MaterialManager():
-    Core::IManager<Material>()
+    ::Core::IManager<Material>()
 {
 }
 

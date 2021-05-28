@@ -2,7 +2,6 @@
 
 #include "OpenGLNgine/Core/IResource.hpp"
 
-#include "OpenGLNgine/GL/Program.hpp"
 #include "OpenGLNgine/Hardware/Pass.hpp"
 
 #include <memory>
@@ -16,7 +15,7 @@ class MaterialManager;
 
 typedef std::shared_ptr< Material > MaterialPtr;
 
-class Material final : public Core::IResource
+class Material final : public ::Core::IResource
 {
 
 public:

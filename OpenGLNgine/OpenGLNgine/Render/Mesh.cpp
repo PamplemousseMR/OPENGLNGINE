@@ -42,7 +42,7 @@ void Mesh::destroyAllSubMeshes()
     m_subMeshes.clear();
 }
 
-void Mesh::setMaterial(Hardware::MaterialPtr _material)
+void Mesh::setMaterial(::Hardware::MaterialPtr _material)
 {
     SubMeshList::const_iterator itBeg, itEnd;
     itEnd = m_subMeshes.end();

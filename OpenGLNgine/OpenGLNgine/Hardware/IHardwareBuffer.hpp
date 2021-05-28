@@ -34,8 +34,6 @@ public:
 
     IHardwareBuffer& operator=(IHardwareBuffer&&) = delete;
 
-    inline HARDWAREBUFFER_USAGE getUsage() const;
-
     inline size_t getSizeInBytes() const;
 
     inline void lock();
@@ -46,7 +44,7 @@ public:
 
 protected:
 
-    IHardwareBuffer(HardwareBufferManager* const _manager, GL::DATABUFFER_TARGET _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage);
+    IHardwareBuffer(HardwareBufferManager* const _manager, ::GL::DATABUFFER_TARGET _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage);
 
     virtual ~IHardwareBuffer();
 
@@ -54,20 +52,15 @@ protected:
 
 private:
 
-    static GL::DATABUFFER_USAGE getUsage(HARDWAREBUFFER_USAGE _usage);
+    static ::GL::DATABUFFER_USAGE getUsage(HARDWAREBUFFER_USAGE _usage);
 
-    GL::DataBuffer m_dataBuffer;
+    ::GL::DataBuffer m_dataBuffer;
 
     const size_t m_sizeInBytes;
 
     const HARDWAREBUFFER_USAGE m_usage;
 
 };
-
-inline HARDWAREBUFFER_USAGE IHardwareBuffer::getUsage() const
-{
-    return m_usage;
-}
 
 inline size_t IHardwareBuffer::getSizeInBytes() const
 {

@@ -81,38 +81,38 @@ public:
      * @param _texture Texture to attach.
      * @param _attach Attachment point to which an image from texture should be attached.
      */
-    void attachColorTexture(const GL::Texture& _texture, unsigned _attach);
+    void attachColorTexture(const Texture& _texture, unsigned _attach);
 
     /**
      * @brief Attachs a depth texture to a framebuffer object.
      * @param _texture Depth texture to attach.
      */
-    void attachDepthTexture(const GL::Texture& _texture) const;
+    void attachDepthTexture(const Texture& _texture) const;
 
     /**
      * @brief Attachs a depth stencil texture to a framebuffer object.
      * @param _texture Depth stencil texture to attach.
      */
-    void attachDepthStencilTexture(const GL::Texture& _texture) const;
+    void attachDepthStencilTexture(const Texture& _texture) const;
 
     /**
      * @brief Attachs an image buffer to a framebuffer object.
      * @param _buffer Buffer to attach.
      * @param _attach Attachment point to which an image from texture should be attached.
      */
-    void attachColorBuffer(const GL::RenderBuffer& _buffer, unsigned _attach);
+    void attachColorBuffer(const RenderBuffer& _buffer, unsigned _attach);
 
     /**
      * @brief Attachs a depth buffer to a framebuffer object.
      * @param _buffer Depth buffer to attach.
      */
-    inline void attachDepthBuffer(const GL::RenderBuffer& _buffer) const;
+    inline void attachDepthBuffer(const RenderBuffer& _buffer) const;
 
     /**
      * @brief Attachs a depth stencil buffer to a framebuffer object.
      * @param _buffer Depth stencil buffer to attach.
      */
-    inline void attachDepthStencilBuffer(const GL::RenderBuffer& _buffer) const;
+    inline void attachDepthStencilBuffer(const RenderBuffer& _buffer) const;
 
     /// Checks the completeness status of a framebuffer.
     void checkStatus() const;
@@ -178,13 +178,13 @@ inline void FrameBuffer::blit(int _srcX0, int _srcY0, int _srcX1, int _srcY1, in
     GLNGINE_CHECK_GL;
 }
 
-inline void FrameBuffer::attachDepthBuffer(const GL::RenderBuffer& _buffer) const
+inline void FrameBuffer::attachDepthBuffer(const RenderBuffer& _buffer) const
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
 }
 
-inline void FrameBuffer::attachDepthStencilBuffer(const GL::RenderBuffer& _buffer) const
+inline void FrameBuffer::attachDepthStencilBuffer(const RenderBuffer& _buffer) const
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;

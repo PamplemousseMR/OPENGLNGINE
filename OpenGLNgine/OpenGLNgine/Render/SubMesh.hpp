@@ -10,7 +10,7 @@ namespace Render
 
 class Mesh;
 
-class SubMesh final : public Core::IResource
+class SubMesh final : public ::Core::IResource
 {
 
     friend Mesh;
@@ -29,11 +29,11 @@ public:
 
     inline void _notifyDirty() const;
 
-    Hardware::VertexData* vertexData { nullptr };
+    ::Hardware::VertexData* vertexData { nullptr };
 
-    Hardware::IndexData* indexData { nullptr };
+    ::Hardware::IndexData* indexData { nullptr };
 
-    Hardware::MaterialPtr material { nullptr };
+    ::Hardware::MaterialPtr material { nullptr };
 
     Mesh* const m_parent;
 

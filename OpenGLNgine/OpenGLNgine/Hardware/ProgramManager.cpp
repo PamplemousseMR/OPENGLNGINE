@@ -14,24 +14,24 @@ ProgramManager& ProgramManager::getInstance()
 ProgramPtr ProgramManager::createProgram(const std::string& _name)
 {
     ProgramPtr ptr = std::make_shared< Program >(this, _name);
-    Core::IManager< Program >::add(ptr);
+    ::Core::IManager< Program >::add(ptr);
     return ptr;
 }
 
 void ProgramManager::destroyProgram(const ProgramPtr& _program)
 {
-    Core::IManager< Program >::remove(_program);
+    ::Core::IManager< Program >::remove(_program);
 }
 ShaderPtr ProgramManager::createShader(const std::string& _name, SHADER_TYPE _type)
 {
     ShaderPtr ptr = std::make_shared< Shader >(this, _name, _type);
-    Core::IManager< Shader >::add(ptr);
+    ::Core::IManager< Shader >::add(ptr);
     return ptr;
 }
 
 void ProgramManager::destroyShader(const ShaderPtr& _Shader)
 {
-    Core::IManager< Shader >::remove(_Shader);
+    ::Core::IManager< Shader >::remove(_Shader);
 }
 
 ProgramManager::Initializer::Initializer()
@@ -46,7 +46,7 @@ ProgramManager::Initializer::~Initializer()
 }
 
 ProgramManager::ProgramManager():
-    Core::IManager<Shader>()
+    ::Core::IManager<Shader>()
 {
 }
 

@@ -13,7 +13,7 @@ namespace Render
 
 class SceneManager;
 
-class SceneNode final : public Core::IResource
+class SceneNode final : public ::Core::IResource
 {
 
     friend SceneManager;

@@ -8,8 +8,8 @@ namespace Hardware
 {
 
 class ProgramManager final :
-        public Core::IManager< Shader >,
-        public Core::IManager< Program >
+        public ::Core::IManager< Shader >,
+        public ::Core::IManager< Program >
 {
 
 public:

@@ -30,12 +30,12 @@ class ProgramManager;
 
 typedef std::shared_ptr< Program > ProgramPtr;
 
-class Program final : public Core::IResource
+class Program final : public ::Core::IResource
 {
 
 public:
 
-    typedef std::map<PROGRAM_PARAMETER, GL::Uniform> ProgramParamtersMap;
+    typedef std::map<PROGRAM_PARAMETER, ::GL::Uniform> ProgramParamtersMap;
 
     Program(ProgramManager* const _manager, const std::string& _name);
 
@@ -65,7 +65,7 @@ private:
 
     ProgramManager* const m_manager;
 
-    GL::Program m_program;
+    ::GL::Program m_program;
 
     ShaderPtr m_vertexShader { nullptr };
 

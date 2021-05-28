@@ -5,23 +5,23 @@
 namespace Hardware
 {
 
-GL::SHADER_TYPE Shader::getType(SHADER_TYPE _type)
+::GL::SHADER_TYPE Shader::getType(SHADER_TYPE _type)
 {
     switch(_type)
     {
     case ST_VERTEX:
-        return GL::ST_VERTEX;
+        return ::GL::ST_VERTEX;
     case ST_GEOMETRY:
-        return GL::ST_GEOMETRY;
+        return ::GL::ST_GEOMETRY;
     case ST_FRAGMENT:
-        return GL::ST_FRAGMENT;
+        return ::GL::ST_FRAGMENT;
     default:
         GLNGINE_EXCEPTION("Unhandle shader type");
     }
 }
 
 Shader::Shader(ProgramManager* const _manager, const std::string& _name, SHADER_TYPE _type):
-    Core::IResource(_name),
+    ::Core::IResource(_name),
     type(_type),
     m_manager(_manager),
     m_shader(getType(_type))

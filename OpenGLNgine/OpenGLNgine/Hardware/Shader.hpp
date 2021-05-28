@@ -22,14 +22,14 @@ class ProgramManager;
 
 typedef std::shared_ptr< Shader > ShaderPtr;
 
-class Shader final : public Core::IResource
+class Shader final : public ::Core::IResource
 {
 
     friend Program;
 
 public:
 
-    static GL::SHADER_TYPE getType(SHADER_TYPE _type);
+    static ::GL::SHADER_TYPE getType(SHADER_TYPE _type);
 
     Shader(ProgramManager* const _manager, const std::string& _name, SHADER_TYPE _type);
 
@@ -53,7 +53,7 @@ private:
 
     ProgramManager* const m_manager;
 
-    GL::Shader m_shader;
+    ::GL::Shader m_shader;
 
 };
 

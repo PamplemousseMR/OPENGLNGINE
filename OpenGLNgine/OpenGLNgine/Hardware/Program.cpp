@@ -6,7 +6,7 @@ namespace Hardware
 {
 
 Program::Program(ProgramManager* const _manager, const std::string& _name):
-    Core::IResource(_name),
+    ::Core::IResource(_name),
     m_manager(_manager)
 {
 }
@@ -52,7 +52,7 @@ void Program::link()
 
 void Program::setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::string& _name)
 {
-    m_parameters.emplace(_parameter, GL::Uniform(_name, m_program.getId()));
+    m_parameters.emplace(_parameter, ::GL::Uniform(_name, m_program.getId()));
 }
 
 }

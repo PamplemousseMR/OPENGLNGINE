@@ -8,7 +8,7 @@ namespace Render
 class SceneManager;
 class SceneNode;
 
-class Component : public Core::IResource
+class Component : public ::Core::IResource
 {
 
     friend SceneManager;

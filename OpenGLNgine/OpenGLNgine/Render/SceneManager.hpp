@@ -14,7 +14,7 @@ namespace Render
 
 class Render;
 
-class SceneManager final : public Core::IResource
+class SceneManager final : public ::Core::IResource
 {
 
     friend Camera;

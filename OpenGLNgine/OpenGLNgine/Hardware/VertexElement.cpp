@@ -18,25 +18,24 @@ int VertexElement::getTypeCount(VERTEXELEMENT_TYPE _type)
     }
 }
 
-GL::DATABUFFER_TYPE VertexElement::getType(VERTEXELEMENT_TYPE _type)
+::GL::DATABUFFER_TYPE VertexElement::getType(VERTEXELEMENT_TYPE _type)
 {
     switch(_type)
     {
     case VET_FLOAT2:
     case VET_FLOAT3:
     case VET_FLOAT4:
-        return GL::DATABUFFER_TYPE::DT_FLOAT;
+        return ::GL::DATABUFFER_TYPE::DT_FLOAT;
     default:
         GLNGINE_EXCEPTION("Unhandle vertex element type");
     }
 }
 
-VertexElement::VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic, unsigned short _index):
+VertexElement::VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic):
     m_source(_source),
     m_offsetInBytes(_offsetInBytes),
     m_type(_type),
-    m_semantic(_semantic),
-    m_index(_index)
+    m_semantic(_semantic)
 {
 }
 

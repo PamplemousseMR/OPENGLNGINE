@@ -23,7 +23,7 @@ public:
 
     inline void unlock();
 
-    const VertexElement& addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic, unsigned short _index = 0);
+    const VertexElement& addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
 
     inline void removeAllElements();
 
@@ -39,7 +39,7 @@ private:
 
     VertexElementList m_elements {};
 
-    GL::VertexArrayBuffer m_vertexArrayBuffer {};
+    ::GL::VertexArrayBuffer m_vertexArrayBuffer {};
 
 };
 

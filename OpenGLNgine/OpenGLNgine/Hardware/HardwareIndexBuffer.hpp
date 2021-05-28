@@ -24,7 +24,7 @@ class HardwareIndexBuffer final : public IHardwareBuffer
 
 public:
 
-    static GL::DATABUFFER_TYPE getType(INDEX_TYPE _type);
+    static ::GL::DATABUFFER_TYPE getType(INDEX_TYPE _type);
 
     HardwareIndexBuffer(HardwareBufferManager* const _manager, INDEX_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
 
@@ -38,7 +38,7 @@ public:
 
     HardwareIndexBuffer& operator=(HardwareIndexBuffer&&) = delete;
 
-    inline GL::DATABUFFER_TYPE getType() const;
+    inline ::GL::DATABUFFER_TYPE getType() const;
 
     const INDEX_TYPE m_indexType;
 
@@ -46,7 +46,7 @@ public:
 
 };
 
-inline GL::DATABUFFER_TYPE HardwareIndexBuffer::getType() const
+inline ::GL::DATABUFFER_TYPE HardwareIndexBuffer::getType() const
 {
     return HardwareIndexBuffer::getType(m_indexType);
 }

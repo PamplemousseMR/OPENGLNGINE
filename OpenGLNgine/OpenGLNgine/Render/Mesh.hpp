@@ -38,7 +38,7 @@ public:
 
     inline const SubMeshList& getSubMeshes() const;
 
-    void setMaterial(Hardware::MaterialPtr _material);
+    void setMaterial(::Hardware::MaterialPtr _material);
 
 private:
 

@@ -77,7 +77,7 @@ void Shader::setSourceFromFile(const std::filesystem::path& _path)
     m_sources = shaderCode;
 }
 
-void GL::Shader::compile() const
+void Shader::compile() const
 {
     const char* const vertexSourcePointer = m_sources.c_str();
     glShaderSource(m_id, 1, &vertexSourcePointer, nullptr);

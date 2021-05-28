@@ -3,9 +3,9 @@
 namespace Hardware
 {
 
-const VertexElement& VertexDeclaration::addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic, unsigned short _index)
+const VertexElement& VertexDeclaration::addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic)
 {
-    m_elements.push_back(VertexElement(_source, _offsetInBytes, _type, _semantic, _index));
+    m_elements.push_back(VertexElement(_source, _offsetInBytes, _type, _semantic));
     return m_elements.back();
 }
 

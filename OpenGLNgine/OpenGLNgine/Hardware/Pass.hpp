@@ -50,9 +50,9 @@ class Pass
 
 public:
 
-    static GL::PIXELOPERATION_DEPTH getType(MATERIAL_DEPTH _type);
+    static ::GL::PIXELOPERATION_DEPTH getType(MATERIAL_DEPTH _type);
 
-    static GL::PIXELOPERATION_BLEND getType(MATERIAL_BLEND _type);
+    static ::GL::PIXELOPERATION_BLEND getType(MATERIAL_BLEND _type);
 
     inline void setProgram(const ProgramPtr& program);
 

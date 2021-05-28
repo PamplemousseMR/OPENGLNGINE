@@ -52,7 +52,7 @@ void FrameBuffer::attachColorTexture(const Texture& _texture, unsigned _attach)
     }
 }
 
-void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const
+void FrameBuffer::attachDepthTexture(const Texture& _texture) const
 {
     switch(_texture.getType())
     {
@@ -71,7 +71,7 @@ void FrameBuffer::attachDepthTexture(const GL::Texture& _texture) const
     GLNGINE_CHECK_GL;
 }
 
-void FrameBuffer::attachDepthStencilTexture(const GL::Texture& _texture) const
+void FrameBuffer::attachDepthStencilTexture(const Texture& _texture) const
 {
     switch(_texture.getType())
     {

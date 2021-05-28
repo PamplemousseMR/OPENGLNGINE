@@ -8,7 +8,7 @@ namespace Hardware
 {
 
 Material::Material(MaterialManager* const _manager, const std::string& _name):
-    Core::IResource(_name),
+    ::Core::IResource(_name),
     m_manager(_manager)
 {
     this->createPass();
