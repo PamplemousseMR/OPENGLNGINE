@@ -13,7 +13,7 @@ class IResource
 
 public:
 
-    /// Destroyes the nameable resource.
+    /// Destroys the nameable resource.
     virtual ~IResource();
 
     /**

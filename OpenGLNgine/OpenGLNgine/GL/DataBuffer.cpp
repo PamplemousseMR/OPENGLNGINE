@@ -1,7 +1,5 @@
 #include "OpenGLNgine/GL/DataBuffer.hpp"
 
-using namespace std;
-
 namespace GL
 {
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "OpenGLNgine/Core/Exception.hpp"
-
 #include <GL/glew.h>
 
 #include <glm/ext/matrix_relational.hpp>
@@ -12,7 +10,6 @@
 #include <optional>
 #include <string>
 #include <vector>
-#include <iostream>
 
 namespace GL
 {

@@ -1,6 +1,9 @@
 #include "OpenGLNgine/GL/Rasterizer.hpp"
 
+#include "OpenGLNgine/Core/Exception.hpp"
+
 #include <array>
+#include <tuple>
 
 namespace GL
 {

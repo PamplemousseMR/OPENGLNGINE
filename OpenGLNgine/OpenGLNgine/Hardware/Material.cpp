@@ -2,8 +2,6 @@
 
 #include "OpenGLNgine/Core/Exception.hpp"
 
-#include <algorithm>
-
 namespace Hardware
 {
 

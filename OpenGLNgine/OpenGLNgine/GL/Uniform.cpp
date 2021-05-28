@@ -1,5 +1,7 @@
 #include "OpenGLNgine/GL/Uniform.hpp"
 
+#include "OpenGLNgine/Core/Exception.hpp"
+
 namespace GL
 {
 

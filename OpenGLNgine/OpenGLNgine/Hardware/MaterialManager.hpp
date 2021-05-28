@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpenGLNgine/Core/IManager.hpp"
+
 #include "OpenGLNgine/Hardware/Material.hpp"
 
 namespace Hardware

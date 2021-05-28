@@ -1,5 +1,6 @@
 #pragma once
 
+#include "OpenGLNgine/Core/Exception.hpp"
 #include "OpenGLNgine/Hardware/Texture.hpp"
 
 namespace Hardware

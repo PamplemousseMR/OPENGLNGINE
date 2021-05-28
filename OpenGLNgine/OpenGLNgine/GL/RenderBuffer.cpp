@@ -1,6 +1,6 @@
 #include "OpenGLNgine/GL/RenderBuffer.hpp"
 
-#include <stdexcept>
+#include "OpenGLNgine/Core/Exception.hpp"
 
 namespace GL
 {

@@ -1,6 +1,6 @@
-#include "OpenGLNgine/Render/Camera.hpp"
-#include "OpenGLNgine/Render/Render.hpp"
-#include "OpenGLNgine/Render/RenderWindow.hpp"
+#include <OpenGLNgine/Render/Camera.hpp>
+#include <OpenGLNgine/Render/Render.hpp>
+#include <OpenGLNgine/Render/RenderWindow.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 

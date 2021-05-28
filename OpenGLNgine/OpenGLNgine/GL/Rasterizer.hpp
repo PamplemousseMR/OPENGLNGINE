@@ -1,10 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/Exception.hpp"
-
 #include <GL/glew.h>
-
-#include <tuple>
 
 namespace GL 
 {

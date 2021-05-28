@@ -1,9 +1,8 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
-
 #include <map>
 #include <memory>
+#include <string>
 
 namespace Core
 {

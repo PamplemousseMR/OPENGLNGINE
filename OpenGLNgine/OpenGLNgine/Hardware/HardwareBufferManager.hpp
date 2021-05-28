@@ -2,7 +2,6 @@
 
 #include "OpenGLNgine/Hardware/HardwareIndexBuffer.hpp"
 #include "OpenGLNgine/Hardware/HardwareVertexBuffer.hpp"
-#include "OpenGLNgine/Hardware/IHardwareBuffer.hpp"
 #include "OpenGLNgine/Hardware/IndexData.hpp"
 #include "OpenGLNgine/Hardware/VertexBufferBinding.hpp"
 #include "OpenGLNgine/Hardware/VertexData.hpp"

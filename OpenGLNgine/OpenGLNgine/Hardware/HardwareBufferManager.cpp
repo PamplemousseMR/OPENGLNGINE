@@ -1,7 +1,5 @@
 #include "OpenGLNgine/Hardware/HardwareBufferManager.hpp"
 
-#include <algorithm>
-
 namespace Hardware
 {
 

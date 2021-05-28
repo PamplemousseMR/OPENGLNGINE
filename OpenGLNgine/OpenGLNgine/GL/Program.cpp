@@ -1,5 +1,7 @@
 #include "OpenGLNgine/GL/Program.hpp"
 
+#include "OpenGLNgine/Core/Exception.hpp"
+
 #include <algorithm>
 #include <string>
 

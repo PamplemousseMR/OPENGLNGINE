@@ -1,6 +1,5 @@
 #pragma once
 
-#include "OpenGLNgine/Core/Exception.hpp"
 #include "OpenGLNgine/GL/IBindable.hpp"
 #include "OpenGLNgine/GL/Shader.hpp"
 

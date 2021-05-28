@@ -4,6 +4,8 @@
 #include "OpenGLNgine/Hardware/Program.hpp"
 #include "OpenGLNgine/Hardware/TextureUnitState.hpp"
 
+#include <array>
+
 namespace Hardware
 {
 

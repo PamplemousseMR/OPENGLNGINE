@@ -1,5 +1,10 @@
 #include "OpenGLNgine/GL/PixelOperation.hpp"
 
+#include "OpenGLNgine/Core/Exception.hpp"
+
+#include <array>
+#include <tuple>
+
 namespace GL
 {
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "OpenGLNgine/GL/IBindable.hpp"
-#include "OpenGLNgine/Core/Exception.hpp"
 
 #include <GL/glew.h>
 

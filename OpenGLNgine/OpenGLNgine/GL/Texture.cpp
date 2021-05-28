@@ -1,8 +1,8 @@
 #include "OpenGLNgine/GL/Texture.hpp"
 
-#include <SOIL2/SOIL2.h>
+#include "OpenGLNgine/Core/Exception.hpp"
 
-#include <algorithm>
+#include <SOIL2/SOIL2.h>
 
 namespace GL
 {

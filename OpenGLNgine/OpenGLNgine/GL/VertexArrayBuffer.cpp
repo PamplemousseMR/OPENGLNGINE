@@ -1,6 +1,6 @@
 #include "OpenGLNgine/GL/VertexArrayBuffer.hpp"
 
-using namespace std;
+#include "OpenGLNgine/Core/Exception.hpp"
 
 namespace GL
 {

@@ -1,9 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/Exception.hpp"
 #include "OpenGLNgine/GL/IBindable.hpp"
-
-#include <vector>
 
 namespace GL
 {
