@@ -126,10 +126,13 @@ void RenderWindow::render() const
                             for(unsigned tus=0 ; tus<pass->getTextureUnitStates().size() ; ++tus)
                             {
                                 ::Hardware::TextureUnitState* textureUnitState = pass->getTextureUnitStates()[tus];
-                                ::GL::Texture::setLocation(tus);
-                                textureUnitState->lock();
-                                textureUnitState->getTexture()->setMagFilter(textureUnitState->m_magFilter);
-                                textureUnitState->getTexture()->setMinFilter(textureUnitState->m_minFilter);
+                                if(textureUnitState->getTexture())
+                                {
+                                    ::GL::Texture::setLocation(tus);
+                                    textureUnitState->lock();
+                                    textureUnitState->getTexture()->setMagFilter(textureUnitState->magFilter);
+                                    textureUnitState->getTexture()->setMinFilter(textureUnitState->minFilter);
+                                }
                             }
 
                             ::GL::PixelOperation::enableDepthTest(pass->depthTest);

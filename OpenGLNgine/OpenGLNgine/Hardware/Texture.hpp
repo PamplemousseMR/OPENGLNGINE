@@ -111,12 +111,6 @@ class Texture final : public ::Core::IResource
 
 public:
 
-    static ::GL::TEXTURE_INTERNAL_FORMAT getType(TEXTURE_INTERNAL_FORMAT _format);
-
-    static ::GL::TEXTURE_TYPE getType(TEXTURE_TYPE _format);
-
-    static ::GL::TEXTURE_FILTER getType(TEXTURE_FILTER _filter);
-
     Texture(TextureManager* const _manager, const std::string& _name);
 
     ~Texture();
@@ -140,6 +134,12 @@ public:
     inline void setMinFilter(TEXTURE_FILTER _filter) const;
 
 private:
+
+    static ::GL::TEXTURE_INTERNAL_FORMAT getType(TEXTURE_INTERNAL_FORMAT _format);
+
+    static ::GL::TEXTURE_TYPE getType(TEXTURE_TYPE _format);
+
+    static ::GL::TEXTURE_FILTER getType(TEXTURE_FILTER _filter);
 
     TextureManager* const m_manager;
 

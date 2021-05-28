@@ -96,6 +96,7 @@ Pass::Pass()
 
 Pass::~Pass()
 {
+    this->destroyAllTextureUnitStates();
 }
 
 TextureUnitState* Pass::createTextureUnitState()

@@ -23,9 +23,9 @@ public:
 
     inline TexturePtr getTexture() const;
 
-    TEXTURE_FILTER m_minFilter { TF_NEAREST };
+    TEXTURE_FILTER minFilter { TF_NEAREST };
 
-    TEXTURE_FILTER m_magFilter { TF_NEAREST };
+    TEXTURE_FILTER magFilter { TF_NEAREST };
 
 private:
 

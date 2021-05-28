@@ -95,6 +95,8 @@ int main()
 
     ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState();
     unitSate->setTexture(texture);
+    unitSate->minFilter = ::Hardware::TF_LINEAR;
+    unitSate->magFilter = ::Hardware::TF_LINEAR;
 
     // Create the mesh.
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
@@ -105,39 +107,119 @@ int main()
     node->attach(mesh);
 
     const std::vector<float> vertexData = {
-        0.25f, 0.25f, -0.25f,
+        -0.25f, 0.25f, 0.25f,
+        0.f, 1.f,
+
+        0.25f, 0.25f, 0.25f,
         1.f, 1.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 0.f,
+
+        0.25f, 0.25f, 0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, 0.25f,
+        1.f, 0.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 0.f,
 
         -0.25f, 0.25f, -0.25f,
         0.f, 1.f,
 
-        0.25f, 0.25f, 0.25f,
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.f, 0.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, -0.25f,
+        1.f, 0.f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.f, 0.f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 1.f,
+
+        -0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, 0.25f, -0.25f,
         1.f, 0.f,
 
         -0.25f, 0.25f, 0.25f,
         0.f, 0.f,
 
+        0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        0.25f, -0.25f, 0.25f,
+        0.f, 1.f,
+
         0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 0.f,
+
+        0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        0.25f, 0.25f, 0.25f,
+        0.f, 1.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.f, 0.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 1.f,
+
+        0.25f, -0.25f, 0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, -0.25f,
+        1.f, 0.f,
+
+        -0.25f, -0.25f, 0.25f,
         0.f, 1.f,
 
         -0.25f, -0.25f, -0.25f,
         0.f, 0.f,
 
-        -0.25f, -0.25f, 0.25f,
+        0.25f, -0.25f, -0.25f,
         1.f, 0.f,
-
-        0.25f, -0.25f, 0.25f,
-        1.f, 1.f,
-    };
-
-    const std::vector<unsigned int> indexData = {
-        3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
     };
 
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
 
     subMesh->vertexData = manager.createVertexData();
-    subMesh->vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
+    subMesh->vertexData->m_renderOperation = ::Hardware::VR_TRIANGLES;
 
     ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
@@ -147,17 +229,10 @@ int main()
 
     subMesh->vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
 
-    subMesh->vertexData->m_vertexCount = 8;
+    subMesh->vertexData->m_vertexCount = 36;
     subMesh->vertexData->m_vertexStart = 0;
 
     subMesh->indexData = manager.createIndexData();
-
-    ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indexData.size(), ::Hardware::HU_STATIC_DRAW);
-    subMesh->indexData->m_indexBuffer = indexBuffer;
-
-    indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indexData.data(), false);
-    subMesh->indexData->m_indexCount = 14;
-    subMesh->indexData->m_indexStart = 0;
 
     mesh->setMaterial(material);
 

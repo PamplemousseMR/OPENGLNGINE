@@ -82,42 +82,118 @@ int main()
 
     // Init the mesh EBO, VBO and VAO.
     const std::vector<float> vertexData = {
-        0.25f, 0.25f, -0.25f,
+        -0.25f, 0.25f, 0.25f,
+        0.f, 1.f,
+
+        0.25f, 0.25f, 0.25f,
         1.f, 1.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 0.f,
+
+        0.25f, 0.25f, 0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, 0.25f,
+        1.f, 0.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 0.f,
 
         -0.25f, 0.25f, -0.25f,
         0.f, 1.f,
 
-        0.25f, 0.25f, 0.25f,
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.f, 0.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, -0.25f,
+        1.f, 0.f,
+
+        -0.25f, -0.25f, -0.25f,
+        0.f, 0.f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 1.f,
+
+        -0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, 0.25f, -0.25f,
         1.f, 0.f,
 
         -0.25f, 0.25f, 0.25f,
         0.f, 0.f,
 
+        0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        0.25f, -0.25f, 0.25f,
+        0.f, 1.f,
+
         0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, -0.25f,
+        1.f, 1.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 0.f,
+
+        0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        0.25f, 0.25f, 0.25f,
+        0.f, 1.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, 0.25f, 0.25f,
+        0.f, 0.f,
+
+        -0.25f, 0.25f, -0.25f,
+        1.f, 0.f,
+
+        0.25f, 0.25f, -0.25f,
+        1.f, 1.f,
+
+        -0.25f, -0.25f, 0.25f,
+        0.f, 1.f,
+
+        0.25f, -0.25f, 0.25f,
+        1.f, 1.f,
+
+        0.25f, -0.25f, -0.25f,
+        1.f, 0.f,
+
+        -0.25f, -0.25f, 0.25f,
         0.f, 1.f,
 
         -0.25f, -0.25f, -0.25f,
         0.f, 0.f,
 
-        -0.25f, -0.25f, 0.25f,
+        0.25f, -0.25f, -0.25f,
         1.f, 0.f,
-
-        0.25f, -0.25f, 0.25f,
-        1.f, 1.f,
-    };
-
-    const std::vector<unsigned int> indexData = {
-        3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
     };
 
     ::GL::DataBuffer meshVBO(::GL::DT_ARRAY);
     meshVBO.bind();
     meshVBO.writeData(vertexData, ::GL::DT_STATIC_DRAW);
-
-    ::GL::DataBuffer meshEBO(::GL::DT_ELEMENT);
-    meshEBO.bind();
-    meshEBO.writeData(indexData, ::GL::DT_STATIC_DRAW);
 
     ::GL::VertexArrayBuffer meshVAO;
     meshVAO.bind();
@@ -129,8 +205,6 @@ int main()
 
     ::GL::DataBuffer::setAttrib(::Hardware::VES_TEXTURE_COORDINATES, 2, ::GL::DT_FLOAT, false, 5*sizeof(float), 3*sizeof(float));
     ::GL::DataBuffer::setLocation(::Hardware::VES_TEXTURE_COORDINATES);
-
-    meshEBO.bind();
 
     // Create the texture.
     ::GL::Texture texture;
@@ -169,7 +243,7 @@ int main()
 
                     meshVAO.bind();
                     {
-                        ::GL::DrawCall::drawElements(::GL::DR_TRIANGLE_STRIP, 14, ::GL::DT_UNSIGNED_INT, 0);
+                        ::GL::DrawCall::drawArrays(::GL::DR_TRIANGLES, 0, 36);
                     }
                     meshVAO.unbind();
                 }
