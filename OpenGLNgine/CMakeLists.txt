@@ -103,10 +103,7 @@ set(GLNGINE_HEADER
 
 add_library(${GLNGINE_LIBRARY_NAME} ${GLNGINE_SRC} ${GLNGINE_HEADER})
 
-target_include_directories(${GLNGINE_LIBRARY_NAME}
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    )
+target_include_directories(${GLNGINE_LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 #=======================================
 #               PROPERTIES
