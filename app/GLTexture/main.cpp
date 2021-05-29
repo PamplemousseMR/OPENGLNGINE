@@ -211,7 +211,7 @@ int main()
     texture.bind();
     texture.load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::GL::TT_2D, ::GL::TIF_RGBA);
     texture.generateMipmap();
-    texture.setMinFilter(::GL::TF_LINEAR);
+    texture.setMinFilter(::GL::TF_LINEAR_MIPMAP_LINEAR);
     texture.setMagFilter(::GL::TF_LINEAR);
 
     // Render loop.

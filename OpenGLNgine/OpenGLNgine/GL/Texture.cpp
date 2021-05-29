@@ -173,7 +173,7 @@ void Texture::setActiveTexture(int _location)
 {
     if(_location > s_MAX_LOCATION)
     {
-        GLNGINE_EXCEPTION("Location too hight");
+        GLNGINE_EXCEPTION("Active location overflow");
     }
     glActiveTexture(GLenum(GL_TEXTURE0 + _location));
 

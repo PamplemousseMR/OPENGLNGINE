@@ -208,6 +208,10 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
 {
     m_texture.bind();
     m_texture.load(_path, getType(_type), getType(_internalFormat));
+    if(m_mipMaps)
+    {
+        m_texture.generateMipmap();
+    }
     m_texture.unbind();
 }
 

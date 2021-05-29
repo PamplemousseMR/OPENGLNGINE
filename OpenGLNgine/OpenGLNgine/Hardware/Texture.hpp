@@ -127,6 +127,8 @@ public:
 
     inline void unlock();
 
+    inline void enableMipMaps(bool _enable);
+
     void load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
     inline void setMagFilter(TEXTURE_FILTER _filter) const;
@@ -143,6 +145,8 @@ private:
 
     TextureManager* const m_manager;
 
+    bool m_mipMaps { false };
+
     ::GL::Texture m_texture;
 
 };
@@ -155,6 +159,11 @@ inline void Texture::lock()
 inline void Texture::unlock()
 {
     m_texture.unbind();
+}
+
+inline void Texture::enableMipMaps(bool _enable)
+{
+    m_mipMaps = _enable;
 }
 
 inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const

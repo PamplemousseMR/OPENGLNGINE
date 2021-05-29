@@ -76,6 +76,7 @@ int main()
     // Create the texture.
     ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
     ::Hardware::TexturePtr texture = textureManager.create("Texture");
+    texture->enableMipMaps(true);
     texture->load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
 
     // Create the material.
@@ -93,9 +94,10 @@ int main()
     material->getPasses()[0]->setProgram(program);
     material->getPasses()[0]->depthTest = true;
 
+    // Create the texture unit state
     ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState();
     unitSate->setTexture(texture);
-    unitSate->minFilter = ::Hardware::TF_LINEAR;
+    unitSate->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
     unitSate->magFilter = ::Hardware::TF_LINEAR;
 
     // Create the mesh.
