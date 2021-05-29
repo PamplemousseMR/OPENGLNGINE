@@ -169,7 +169,7 @@ Texture& Texture::operator=(const Texture& _texture)
     return *this;
 }
 
-void Texture::setLocation(int _location)
+void Texture::setActiveTexture(int _location)
 {
     if(_location > s_MAX_LOCATION)
     {
@@ -179,7 +179,7 @@ void Texture::setLocation(int _location)
 
 }
 
-int Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
+void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
 
@@ -233,7 +233,6 @@ int Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTUR
     SOIL_free_image_data(data);
 
     m_type = _type;
-    return width;
 }
 
 void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
@@ -389,6 +388,7 @@ void Texture::setMinFilter(TEXTURE_FILTER _filter) const
 
 void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 {
+    GLNGINE_ASSERT_IF(!(_filter == TF_LINEAR || _filter == TF_NEAREST), "Unhandle filter type");
     if(!m_magFilter || m_magFilter.value() != _filter)
     {
         m_magFilter = _filter;

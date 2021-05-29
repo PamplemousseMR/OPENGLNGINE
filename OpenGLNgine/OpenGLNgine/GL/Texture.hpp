@@ -10,6 +10,7 @@
 namespace GL
 {
 
+/// Manages all texture types.
 enum TEXTURE_TYPE
 {
     TT_1D,
@@ -17,6 +18,7 @@ enum TEXTURE_TYPE
     TT_2DMULTISAMPLE
 };
 
+/// Manages the number of color components in the texture.
 enum TEXTURE_INTERNAL_FORMAT : GLint
 {
     TIF_DEPTH = GL_DEPTH_COMPONENT,
@@ -93,6 +95,7 @@ enum TEXTURE_INTERNAL_FORMAT : GLint
     TIF_RGBA32UI = GL_RGBA32UI
 };
 
+/// Manages the format of the pixel data.
 enum TEXTURE_FORMAT : GLenum
 {
     TF_RED = GL_RED,
@@ -112,6 +115,7 @@ enum TEXTURE_FORMAT : GLenum
     TF_DEPTH_STENCIL = GL_DEPTH_STENCIL
 };
 
+/// Manages the data type of the pixel data.
 enum TEXTURE_DATA : GLenum
 {
     TD_UNSIGNED_BYTE = GL_UNSIGNED_BYTE,
@@ -136,6 +140,7 @@ enum TEXTURE_DATA : GLenum
     TD_UNSIGNED_INT_2_10_10_10_REV = GL_UNSIGNED_INT_2_10_10_10_REV
 };
 
+/// Manages texture filter function.
 enum TEXTURE_FILTER : GLint
 {
     TF_LINEAR = GL_LINEAR,
@@ -146,41 +151,98 @@ enum TEXTURE_FILTER : GLint
     TF_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST
 };
 
+/**
+ * @brief Manages a texture object.
+ */
 class Texture final : public IBindable
 {
 
 public:
 
+    /// Creates a texture object.
     Texture();
 
+    /// Deletes a texture object.
     ~Texture() override;
 
+    /**
+     * @brief Creates a texture copied from the parameter.
+     * @param _texture The texture to copy.
+     */
     Texture(const Texture&);
 
+    /**
+     * @brief Destroys and creates a texture copied from the parameter.
+     * @param _texture The texture to copy.
+     * @return The current texture.
+     */
     Texture& operator=(const Texture&);
 
+    /// Deleted move constructor.
     Texture(Texture&&) = delete;
 
+    /// Deleted move operator.
     Texture& operator=(Texture&&) = delete;
 
-    static void setLocation(int);
+    /**
+     * @brief Selects active texture unit.
+     * @param _location Specifies which texture unit to make active.
+     */
+    static void setActiveTexture(int _location);
 
-    int load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
+    /**
+     * @brief Loads a texture from a file.
+     * @param _path Path of the texture to load.
+     * @param _type Type of the texture.
+     * @param _internalFormat Format of the texture.
+     */
+    void load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
+    /**
+     * @brief Allocates a texture.
+     * @param _width Width of the texture.
+     * @param _height Height of the texture.
+     * @param _internalFormat Internal format of the texture.
+     * @param _format Format of the texture.
+     * @param _data Type of the texture data.
+     */
     void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
 
+    /**
+     * @brief Allocates a multisampled texture.
+     * @param _width Width of the texture.
+     * @param _height Height of the texture.
+     * @param _internalFormat Internal format of the texture.
+     * @param _format Format of the texture.
+     * @param _sample Number of sample.
+     */
     void allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample);
 
+    /// Generates mipmap of the texture.
     void generateMipmap() const;
 
+    /**
+     * @brief Gets the texture type.
+     * @return The texture type.
+     */
     inline TEXTURE_TYPE getType() const;
 
-    void setMagFilter(TEXTURE_FILTER _filter) const;
-
+    /**
+     * @brief Set the mignification filter of the texture.
+     * @param _filter The filter to apply.
+     */
     void setMinFilter(TEXTURE_FILTER _filter) const;
 
+    /**
+     * @brief Set the magnification filter of the texture.
+     * @param _filter The filter to apply.
+     */
+    void setMagFilter(TEXTURE_FILTER _filter) const;
+
+    /// Binds the texture.
     void bind() const override;
 
+    /// Unbinds the texture.
     void unbind() const override;
 
 private:
@@ -192,23 +254,30 @@ private:
         Initializer();
     };
 
+    /// Defines the maximum size of a texture.
     static GLint s_MAX_SIZE;
 
+    /// Defines the maximum number of sample for multisampled textures.
     static GLint s_MAX_SAMPLE;
 
+    /// Defines the maximum number of active texture.
     static GLint s_MAX_LOCATION;
 
+    /// Stores the type of the texture.
     TEXTURE_TYPE m_type {TT_2D};
 
+    /// Stores the format of the texture.
     TEXTURE_FORMAT m_format {TF_RGBA};
 
 #ifdef GLNGINE_USE_STATE_CACHE
     /// Defines the bind status.
     mutable bool m_isBinded { false };
 
-    mutable std::optional< TEXTURE_FILTER > m_minFilter { std::nullopt };
-
+    /// Store the last magnification filter used.
     mutable std::optional< TEXTURE_FILTER > m_magFilter { std::nullopt };
+
+    /// Store the last mignification filter used.
+    mutable std::optional< TEXTURE_FILTER > m_minFilter { std::nullopt };
 #endif
 
 };

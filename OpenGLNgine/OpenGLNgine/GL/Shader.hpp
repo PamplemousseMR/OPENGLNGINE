@@ -17,7 +17,7 @@ enum SHADER_TYPE : GLenum
 };
 
 /**
- * @brief Manage a shader object
+ * @brief Manages a shader object
  */
 class Shader final
 {

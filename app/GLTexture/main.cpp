@@ -210,6 +210,7 @@ int main()
     ::GL::Texture texture;
     texture.bind();
     texture.load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::GL::TT_2D, ::GL::TIF_RGBA);
+    texture.generateMipmap();
     texture.setMinFilter(::GL::TF_LINEAR);
     texture.setMagFilter(::GL::TF_LINEAR);
 
@@ -236,7 +237,7 @@ int main()
                 {
                     u_m4MVP = camera->getProjection() * camera->getView() * node->getFullTransform();
 
-                    texture.setLocation(0);
+                    texture.setActiveTexture(0);
                     texture.bind();
 
                     u_s2Texture = 0;

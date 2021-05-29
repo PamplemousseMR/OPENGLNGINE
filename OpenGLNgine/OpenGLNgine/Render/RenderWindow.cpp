@@ -128,7 +128,7 @@ void RenderWindow::render() const
                                 ::Hardware::TextureUnitState* textureUnitState = pass->getTextureUnitStates()[tus];
                                 if(textureUnitState->getTexture())
                                 {
-                                    ::GL::Texture::setLocation(tus);
+                                    ::GL::Texture::setActiveTexture(tus);
                                     textureUnitState->lock();
                                     textureUnitState->getTexture()->setMagFilter(textureUnitState->magFilter);
                                     textureUnitState->getTexture()->setMinFilter(textureUnitState->minFilter);

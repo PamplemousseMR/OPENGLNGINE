@@ -20,6 +20,7 @@ enum DRAWCALL_CLEAR : GLbitfield
     DC_ALL = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
 };
 
+/// Manages render operations.
 enum DRAWCALL_MODE : GLenum
 {
     DR_POINTS = GL_POINTS,
@@ -36,7 +37,7 @@ enum DRAWCALL_MODE : GLenum
 };
 
 /**
- * @brief Manages the draw call.
+ * @brief Manages draw calls.
  */
 class DrawCall final
 {
@@ -49,8 +50,21 @@ public:
      */
     inline static void clear(DRAWCALL_CLEAR _mask);
 
+    /**
+     * @brief Renders primitives from element data.
+     * @param _mode Specifies what kind of primitives to render.
+     * @param _count Specifies the number of elements to be rendered.
+     * @param _type Specifies the type of the values in indices.
+     * @param _offset Specifies a pointer to the location where the indices are stored.
+     */
     inline static void drawElements(DRAWCALL_MODE _mode, int _count, DATABUFFER_TYPE _type, int _offset);
 
+    /**
+     * @brief Render primitives from array data.
+     * @param _mode Specifies what kind of primitives to render.
+     * @param _first Specifies the starting index in the enabled arrays.
+     * @param _count Specifies the number of indices to be rendered.
+     */
     inline static void drawArrays(DRAWCALL_MODE _mode, int _first, int _count);
 
 };
