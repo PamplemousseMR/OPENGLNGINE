@@ -270,9 +270,6 @@ private:
     TEXTURE_FORMAT m_format {TF_RGBA};
 
 #ifdef GLNGINE_USE_STATE_CACHE
-    /// Defines the bind status.
-    mutable bool m_isBinded { false };
-
     /// Store the last magnification filter used.
     mutable std::optional< TEXTURE_FILTER > m_magFilter { std::nullopt };
 

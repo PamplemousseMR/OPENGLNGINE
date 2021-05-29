@@ -308,59 +308,37 @@ void Texture::generateMipmap() const
 
 void Texture::bind() const
 {
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
-#endif
+    switch(m_type)
     {
-#ifdef GLNGINE_USE_STATE_CACHE
-        s_cache = add;
-        m_isBinded = true;
-#endif
-        switch(m_type)
-        {
-        case TT_1D :
-            glBindTexture(GL_TEXTURE_1D, m_id);
-            break;
-        case TT_2D :
-            glBindTexture(GL_TEXTURE_2D, m_id);
-            break;
-        case TT_2DMULTISAMPLE :
-            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_id);
-            break;
-        default:
-            GLNGINE_EXCEPTION("Unhandle texture type");
-        }
+    case TT_1D :
+        glBindTexture(GL_TEXTURE_1D, m_id);
+        break;
+    case TT_2D :
+        glBindTexture(GL_TEXTURE_2D, m_id);
+        break;
+    case TT_2DMULTISAMPLE :
+        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_id);
+        break;
+    default:
+        GLNGINE_EXCEPTION("Unhandle texture type");
     }
 }
 
 void Texture::unbind() const
 {
-#ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
-#endif
+    switch(m_type)
     {
-#ifdef GLNGINE_USE_STATE_CACHE
-        s_cache = add;
-        m_isBinded = false;
-#endif
-        switch(m_type)
-        {
-        case TT_1D :
-            glBindTexture(GL_TEXTURE_1D, 0);
-            break;
-        case TT_2D :
-            glBindTexture(GL_TEXTURE_2D, 0);
-            break;
-        case TT_2DMULTISAMPLE :
-            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
-            break;
-        default:
-            GLNGINE_EXCEPTION("Unhandle texture type");
-        }
+    case TT_1D :
+        glBindTexture(GL_TEXTURE_1D, 0);
+        break;
+    case TT_2D :
+        glBindTexture(GL_TEXTURE_2D, 0);
+        break;
+    case TT_2DMULTISAMPLE :
+        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+        break;
+    default:
+        GLNGINE_EXCEPTION("Unhandle texture type");
     }
 }
 
