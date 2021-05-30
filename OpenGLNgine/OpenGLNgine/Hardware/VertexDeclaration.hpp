@@ -17,7 +17,7 @@ class VertexDeclaration final
 
 public:
 
-    typedef std::list<VertexElement*> VertexElementList;
+    typedef std::list< VertexElement* > VertexElementList;
 
     VertexDeclaration(const VertexDeclaration&) = delete;
 

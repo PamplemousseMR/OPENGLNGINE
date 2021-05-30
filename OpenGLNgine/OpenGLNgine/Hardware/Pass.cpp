@@ -99,24 +99,22 @@ Pass::~Pass()
     this->destroyAllTextureUnitStates();
 }
 
-TextureUnitState* Pass::createTextureUnitState()
+TextureUnitState* Pass::createTextureUnitState(TEXTUREUNITSTATE_SEMANTIC _semantic)
 {
-    TextureUnitState* ptr = new TextureUnitState();
-    m_textureUnitStates.push_back(ptr);
-    return ptr;
-}
-
-void Pass::destroyTextureUnitState(TextureUnitState* const _textureUnitState)
-{
-    GLNGINE_ASSERT_IF(!_textureUnitState, "The texture unit state mustn't be null");
-
-    TextureUnitStateList::const_iterator it = std::find(m_textureUnitStates.begin(), m_textureUnitStates.end(), _textureUnitState);
-    if(it == m_textureUnitStates.end())
+    TextureUnitStateList::const_iterator it, itEnd;
+    itEnd = m_textureUnitStates.end();
+    for(it=m_textureUnitStates.begin() ; it!=itEnd ; ++it)
     {
-        GLNGINE_EXCEPTION("The texture unit state doesn't exists");
+        if((*it)->m_semantic == _semantic)
+        {
+            delete *it;
+            m_textureUnitStates.erase(it);
+            break;
+        }
     }
-    m_textureUnitStates.erase(it);
-    delete _textureUnitState;
+
+    m_textureUnitStates.push_back(new TextureUnitState(_semantic));
+    return m_textureUnitStates.back();
 }
 
 void Pass::destroyAllTextureUnitStates()

@@ -118,17 +118,17 @@ void RenderWindow::render() const
                                 }
                             }
 
-                            for(const std::pair< const std::string, std::pair< ::GL::Uniform, int > >& parameter : pass->getNamedConstants())
+                            for(const std::pair< const std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > >& parameter : pass->getTextureConstants())
                             {
-                                parameter.second.first = parameter.second.second;
+                                parameter.second.first = static_cast< int >(parameter.second.second);
                             }
 
-                            for(unsigned tus=0 ; tus<pass->getTextureUnitStates().size() ; ++tus)
+                            const ::Hardware::Pass::TextureUnitStateList& textureUnitStates = pass->getTextureUnitStates();
+                            for(::Hardware::TextureUnitState* const textureUnitState : textureUnitStates)
                             {
-                                ::Hardware::TextureUnitState* textureUnitState = pass->getTextureUnitStates()[tus];
                                 if(textureUnitState->getTexture())
                                 {
-                                    ::GL::Texture::setActiveTexture(tus);
+                                    ::GL::Texture::setActiveTexture(textureUnitState->m_semantic);
                                     textureUnitState->lock();
                                     textureUnitState->getTexture()->setMagFilter(textureUnitState->magFilter);
                                     textureUnitState->getTexture()->setMinFilter(textureUnitState->minFilter);

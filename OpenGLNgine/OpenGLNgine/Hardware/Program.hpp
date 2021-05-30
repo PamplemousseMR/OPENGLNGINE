@@ -4,6 +4,7 @@
 #include "OpenGLNgine/GL/Program.hpp"
 #include "OpenGLNgine/GL/Uniform.hpp"
 #include "OpenGLNgine/Hardware/Shader.hpp"
+#include "OpenGLNgine/Hardware/TextureUnitState.hpp"
 
 #include <map>
 #include <memory>
@@ -37,7 +38,7 @@ public:
 
     typedef std::map<PROGRAM_PARAMETER, ::GL::Uniform> AutoConstantMap;
 
-    typedef std::map<std::string, std::pair< ::GL::Uniform, int > > NamedConstantMap;
+    typedef std::map<std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > > TextureConstantMap;
 
     Program(ProgramManager* const _manager, const std::string& _name);
 
@@ -63,9 +64,9 @@ public:
 
     inline const AutoConstantMap& getAutoConstants() const;
 
-    void setNamedConstant(const std::string& _name, int _value);
+    void setTextureConstant(const std::string& _name, ::Hardware::TEXTUREUNITSTATE_SEMANTIC _semantic);
 
-    inline const NamedConstantMap& getNamedConstants() const;
+    inline const TextureConstantMap& getTextureConstants() const;
 
 private:
 
@@ -81,7 +82,7 @@ private:
 
     AutoConstantMap m_autoConstants {};
 
-    NamedConstantMap m_namedConstants {};
+    TextureConstantMap m_textureConstants {};
 
 };
 
@@ -100,9 +101,9 @@ inline const Program::AutoConstantMap& Program::getAutoConstants() const
     return m_autoConstants;
 }
 
-inline const Program::NamedConstantMap& Program::getNamedConstants() const
+inline const Program::TextureConstantMap& Program::getTextureConstants() const
 {
-    return m_namedConstants;
+    return m_textureConstants;
 }
 
 }

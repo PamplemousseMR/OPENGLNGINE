@@ -8,6 +8,22 @@ namespace Hardware
 
 class Pass;
 
+enum TEXTUREUNITSTATE_SEMANTIC : unsigned
+{
+    TS_DIFFUSE = 0,
+    TS_SPECULAR = 1,
+    TS_AMBIENT = 2,
+    TS_EMISSIVE = 3,
+    TS_HEIGHT = 4,
+    TS_NORMALS = 5,
+    TS_SHININESS = 6,
+    TS_OPACITY = 7,
+    TS_DISPLACEMENT = 8,
+    TS_LIGHTMAP = 9,
+    TS_REFLECTION = 10,
+    TS_NONE = 11
+};
+
 class TextureUnitState
 {
 
@@ -35,9 +51,11 @@ public:
 
     TEXTURE_FILTER magFilter { TF_NEAREST };
 
+    const TEXTUREUNITSTATE_SEMANTIC m_semantic;
+
 private:
 
-    TextureUnitState();
+    TextureUnitState(TEXTUREUNITSTATE_SEMANTIC _semantic);
 
     ~TextureUnitState();
 

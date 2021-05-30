@@ -53,7 +53,7 @@ class Pass
 
 public:
 
-    typedef std::vector< TextureUnitState* > TextureUnitStateList;
+    typedef std::list< TextureUnitState* > TextureUnitStateList;
 
     static ::GL::PIXELOPERATION_DEPTH getType(MATERIAL_DEPTH _type);
 
@@ -75,11 +75,9 @@ public:
 
     inline const Program::AutoConstantMap& getAutoConstants() const;
 
-    inline const Program::NamedConstantMap& getNamedConstants() const;
+    inline const Program::TextureConstantMap& getTextureConstants() const;
 
-    TextureUnitState* createTextureUnitState();
-
-    void destroyTextureUnitState(TextureUnitState* const _textureUnitState);
+    TextureUnitState* createTextureUnitState(TEXTUREUNITSTATE_SEMANTIC _semantic);
 
     void destroyAllTextureUnitStates();
 
@@ -121,9 +119,9 @@ inline const Program::AutoConstantMap& Pass::getAutoConstants() const
     return m_program->getAutoConstants();
 }
 
-inline const Program::NamedConstantMap& Pass::getNamedConstants() const
+inline const Program::TextureConstantMap& Pass::getTextureConstants() const
 {
-    return m_program->getNamedConstants();
+    return m_program->getTextureConstants();
 }
 
 inline const Pass::TextureUnitStateList& Pass::getTextureUnitStates() const

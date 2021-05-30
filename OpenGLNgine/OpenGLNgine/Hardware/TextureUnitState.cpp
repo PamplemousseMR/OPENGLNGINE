@@ -19,7 +19,8 @@ void TextureUnitState::unlock()
     }
 }
 
-TextureUnitState::TextureUnitState()
+TextureUnitState::TextureUnitState(TEXTUREUNITSTATE_SEMANTIC _semantic):
+    m_semantic(_semantic)
 {
 }
 

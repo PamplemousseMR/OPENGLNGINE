@@ -80,7 +80,7 @@ int main()
     program->link();
 
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
-    program->setNamedConstant("u_s2Texture", 0);
+    program->setTextureConstant("u_s2Texture", ::Hardware::TS_AMBIENT);
 
     // Create the mesh.
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
@@ -108,7 +108,7 @@ int main()
         material->getPasses()[0]->depthTest = true;
 
         // Create the texture unit state
-        ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState();
+        ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState(::Hardware::TS_AMBIENT);
         unitSate->setTexture(texture);
         unitSate->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
         unitSate->magFilter = ::Hardware::TF_LINEAR;
