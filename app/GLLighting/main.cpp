@@ -257,8 +257,8 @@ int main()
     GL::DataBuffer::setAttrib(::Hardware::VES_POSITION, 3, GL::DT_FLOAT, false, 10*sizeof(float), 0);
     GL::DataBuffer::setLocation(::Hardware::VES_POSITION);
 
-    GL::DataBuffer::setAttrib(::Hardware::VES_COLOR, 4, GL::DT_FLOAT, false, 10*sizeof(float), 3*sizeof(float));
-    GL::DataBuffer::setLocation(::Hardware::VES_COLOR);
+    GL::DataBuffer::setAttrib(::Hardware::VES_COLOR_0, 4, GL::DT_FLOAT, false, 10*sizeof(float), 3*sizeof(float));
+    GL::DataBuffer::setLocation(::Hardware::VES_COLOR_0);
 
     GL::DataBuffer::setAttrib(::Hardware::VES_NORMAL, 3, GL::DT_FLOAT, false, 10*sizeof(float), 7*sizeof(float));
     GL::DataBuffer::setLocation(::Hardware::VES_NORMAL);

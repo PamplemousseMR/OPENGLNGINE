@@ -19,3 +19,4 @@ set_target_properties(${GLNGINE_APP_NAME} PROPERTIES
                         CXX_EXTENSIONS OFF)
 
 target_compile_definitions(${GLNGINE_APP_NAME} PRIVATE GLNGINE_GLSL_PATH="${CMAKE_SOURCE_DIR}/bin/GLSL")
+target_compile_definitions(${GLNGINE_APP_NAME} PRIVATE MODEL_PATH="${CMAKE_SOURCE_DIR}/bin/Model")

@@ -46,6 +46,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Render/Camera.cpp
     ${GLNGINE_SOURCE}/Render/Component.cpp
     ${GLNGINE_SOURCE}/Render/Light.cpp
+    ${GLNGINE_SOURCE}/Render/MaterialInfo.cpp
     ${GLNGINE_SOURCE}/Render/Mesh.cpp
     ${GLNGINE_SOURCE}/Render/Render.cpp
     ${GLNGINE_SOURCE}/Render/RenderWindow.cpp
@@ -53,10 +54,12 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Render/SceneNode.cpp
     ${GLNGINE_SOURCE}/Render/SceneNode.cpp
     ${GLNGINE_SOURCE}/Render/SubMesh.cpp
+    ${GLNGINE_SOURCE}/Render/TextureInfo.cpp
     ${GLNGINE_SOURCE}/Render/Viewport.cpp)
 
 set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Core/Exception.hpp
+    ${GLNGINE_SOURCE}/Core/Helper.hpp
     ${GLNGINE_SOURCE}/Core/IManager.hpp
     ${GLNGINE_SOURCE}/Core/IManager.hxx
     ${GLNGINE_SOURCE}/Core/IResource.hpp
@@ -93,12 +96,14 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Render/Camera.hpp
     ${GLNGINE_SOURCE}/Render/Component.hpp
     ${GLNGINE_SOURCE}/Render/Light.hpp
+    ${GLNGINE_SOURCE}/Render/MaterialInfo.hpp
     ${GLNGINE_SOURCE}/Render/Mesh.hpp
     ${GLNGINE_SOURCE}/Render/Render.hpp
     ${GLNGINE_SOURCE}/Render/RenderWindow.hpp
     ${GLNGINE_SOURCE}/Render/SceneManager.hpp
     ${GLNGINE_SOURCE}/Render/SceneNode.hpp
     ${GLNGINE_SOURCE}/Render/SubMesh.hpp
+    ${GLNGINE_SOURCE}/Render/TextureInfo.hpp
     ${GLNGINE_SOURCE}/Render/Viewport.hpp)
 
 add_library(${GLNGINE_LIBRARY_NAME} ${GLNGINE_SRC} ${GLNGINE_HEADER})
@@ -132,3 +137,8 @@ target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glfw::glfw)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC GLEW::GLEW)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glm::glm)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE soil2::soil2)
+target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC assimp::assimp)
+
+if(${OpenMP_FOUND})
+    target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE OpenMP::OpenMP_CXX)
+endif()

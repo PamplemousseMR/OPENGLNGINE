@@ -1,7 +1,7 @@
 #version 440 core
 
 layout(location = 0) in vec3 a_f3Vertex_Ms;
-layout(location = 3) in vec2 a_f2TextCoord_Ts;
+layout(location = 8) in vec2 a_f2TextCoord_Ts;
 
 uniform mat4 u_m4MVP = mat4(1.);
 

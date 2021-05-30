@@ -155,7 +155,7 @@ int main()
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
     subMesh->m_vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
-    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT4, ::Hardware::VES_COLOR);
+    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT4, ::Hardware::VES_COLOR_0);
 
     subMesh->m_vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
 
