@@ -320,13 +320,11 @@ void keyCallback(GLFWwindow* _window, int _key, int, int _action, int)
     }
 }
 
-RenderWindow::RenderWindow(Render* const _render, const std::string& _name, int _width, int _height) :
+RenderWindow::RenderWindow(const std::string& _name, int _width, int _height) :
     IResource(_name),
-    m_render(_render),
     m_width(_width),
     m_height(_height)
 {
-    GLNGINE_ASSERT_IF(!_render, "The render mustn't be null");
     m_window = glfwCreateWindow(_width, _height, m_name.c_str(), m_monitor, nullptr);
     if(!m_window)
     {

@@ -316,18 +316,14 @@ private:
 
     /**
      * @brief Creates a render window.
-     * @param _render The renderer managing this render window.
      * @param _name The name of the window.
      * @param _width The width of the window.
      * @param _height The height of the window.
      */
-    RenderWindow(Render* const _render, const std::string& _name, int _width, int _height);
+    RenderWindow(const std::string& _name, int _width, int _height);
 
     /// Destroys the render window.
     ~RenderWindow();
-
-    /// Contains the render managing the render window.
-    Render* const m_render;
 
     /// Stores all listener.
     RenderWindowListeners m_listeners {};

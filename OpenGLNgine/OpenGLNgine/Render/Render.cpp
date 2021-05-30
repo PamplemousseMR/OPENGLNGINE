@@ -22,7 +22,7 @@ RenderWindow* Render::createRenderWindow(const std::string& _name, int _width, i
         GLNGINE_EXCEPTION("A render window with the name '" + _name + "' already exists");
     }
 
-    auto rw = new RenderWindow(this, _name, _width, _height);
+    auto rw = new RenderWindow(_name, _width, _height);
     m_renderWindows.emplace(_name, rw);
     return rw;
 }
@@ -59,7 +59,7 @@ SceneManager* Render::createSceneManager(const std::string& _name)
         GLNGINE_EXCEPTION("A scene manager with the name '" + _name + "' already exists");
     }
 
-    auto sm = new SceneManager(this, _name);
+    auto sm = new SceneManager(_name);
     m_sceneManagers.emplace(_name, sm);
     return sm;
 }
@@ -85,6 +85,42 @@ void Render::destroyAllSceneManagers()
     {
         this->destroySceneManager(it->second);
         it = m_sceneManagers.begin();
+    }
+}
+
+MaterialInfo* Render::createMaterialInfo(const std::string& _name)
+{
+    if(m_materialInfos.find(_name) != m_materialInfos.end())
+    {
+        GLNGINE_EXCEPTION("A material with the name '" + _name + "' already exists");
+    }
+
+    auto mat = new MaterialInfo(_name);
+    m_materialInfos.emplace(_name, mat);
+    return mat;
+}
+
+void Render::destroyMaterialInfo(const MaterialInfo* const _matInfo)
+{
+    GLNGINE_ASSERT_IF(!_matInfo, "The material mustn't be null");
+
+    MaterialInfoList::const_iterator it = m_materialInfos.find(_matInfo->getName());
+    if(it == m_materialInfos.end())
+    {
+        GLNGINE_EXCEPTION("A scene manager with the name '" + _matInfo->getName() + "' doesn't exists");
+    }
+
+    m_materialInfos.erase(it);
+    delete _matInfo;
+}
+
+void Render::destroyAllMaterialInfos()
+{
+    MaterialInfoList::iterator it = m_materialInfos.begin();
+    while(it != m_materialInfos.end())
+    {
+        this->destroyMaterialInfo(it->second);
+        it = m_materialInfos.begin();
     }
 }
 
