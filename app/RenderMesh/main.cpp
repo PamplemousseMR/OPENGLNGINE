@@ -1,6 +1,7 @@
 #include <OpenGLNgine/Hardware/HardwareBufferManager.hpp>
 #include <OpenGLNgine/Hardware/MaterialManager.hpp>
 #include <OpenGLNgine/Hardware/ProgramManager.hpp>
+#include <OpenGLNgine/Hardware/TextureManager.hpp>
 #include <OpenGLNgine/Render/Camera.hpp>
 #include <OpenGLNgine/Render/Render.hpp>
 #include <OpenGLNgine/Render/RenderWindow.hpp>
@@ -42,7 +43,7 @@ int main()
     ::Render::Render& render = ::Render::Render::getInstance();
 
     // Create a render window.
-    ::Render::RenderWindow* const renderWindow = render.createRenderWindow("RenderBase", width, height);
+    ::Render::RenderWindow* const renderWindow = render.createRenderWindow("RenderMesh", width, height);
     renderWindow->makeCurrent();
     renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
@@ -52,8 +53,8 @@ int main()
 
     // Create a camera.
     ::Render::Camera* const camera = sceneManager->createCamera("Camera");
-    camera->setProjection(45.f, static_cast<float>(width)/static_cast<float>(height), 0.1f, 10.f);
-    camera->setPosition({0.f, 0.f, 1.f});
+    camera->setProjection(45.f, static_cast<float>(width)/static_cast<float>(height), 0.1f, 1000.f);
+    camera->setPosition({0.f, 0.f, 100.f});
     camera->lookAt({0.f, 0.f, 0.f});
 
     // Make the link between the camera, the scene manager and the viewport in the render window.
@@ -65,11 +66,11 @@ int main()
     ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
-    vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Common/Default_VP.glsl");
+    vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Texture/SamplerMap_VP.glsl");
     vertexShader->load();
 
     ::Hardware::ShaderPtr fragmentShader = shaderMng.createShader("FragmentShader", ::Hardware::ST_FRAGMENT);
-    fragmentShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Common/Default_FP.glsl");
+    fragmentShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Texture/SamplerMap_FP.glsl");
     fragmentShader->load();
 
     // Create the material.
@@ -79,78 +80,41 @@ int main()
     program->link();
 
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
-
-    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
-    ::Hardware::MaterialPtr material = materialMng.create("Material");
-
-    material->getPasses()[0]->setProgram(program);
-
-    material->getPasses()[0]->depthTest = true;
+    program->setNamedConstant("u_s2Texture", 0);
 
     // Create the mesh.
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
     node->setPosition({0.0f, 0.f, 0.f});
 
     ::Render::Mesh* const mesh = sceneManager->createMesh("Mesh");
-    ::Render::SubMesh* subMesh = mesh->createSubMesh("SubMesh");
     node->attach(mesh);
 
-    const std::vector<float> vertexData = {
-        0.25f, 0.25f, -0.25f,
-        1.0f, 1.0f, 1.0f, 0.5f,
+    mesh->load(MODEL_PATH"/Flamethrower/Flamethrower.obj");
 
-        -0.25f, 0.25f, -0.25f,
-        1.0f, 1.0f, 0.0f, 0.5f,
+    for(::Render::SubMesh* subMesh : mesh->getSubMeshes())
+    {
+        ::Render::TextureInfo* textInfo = subMesh->getMaterialInfo()->getTextureInfo(::Render::TT_AMBIENT);
 
-        0.25f, 0.25f, 0.25f,
-        1.0f, 0.0f, 1.0f, 0.5f,
+        // Create the texture.
+        ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
+        ::Hardware::TexturePtr texture = textureManager.create(textInfo->m_path.u8string());
+        texture->enableMipMaps(true);
+        texture->load(textInfo->m_path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
 
-        -0.25f, 0.25f, 0.25f,
-        0.0f, 1.0f, 1.0f, 0.5f,
+        ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+        ::Hardware::MaterialPtr material = materialMng.create("Material_" + subMesh->getName());
 
-        0.25f, -0.25f, -0.25f,
-        1.0f, 0.0f, 0.0f, 0.5f,
+        material->getPasses()[0]->setProgram(program);
+        material->getPasses()[0]->depthTest = true;
 
-        -0.25f, -0.25f, -0.25f,
-        0.0f, 0.0f, 1.0f, 0.5f,
+        // Create the texture unit state
+        ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState();
+        unitSate->setTexture(texture);
+        unitSate->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
+        unitSate->magFilter = ::Hardware::TF_LINEAR;
 
-        -0.25f, -0.25f, 0.25f,
-        0.0f, 0.0f, 1.0f, 0.5f,
-
-        0.25f, -0.25f, 0.25f,
-        0.0f, 1.0f, 0.0f, 0.5f,
-    };
-
-    const std::vector<unsigned int> indexData = {
-        3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
-    };
-
-    ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
-
-    subMesh->m_vertexData = manager.createVertexData();
-    subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
-
-    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
-    vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
-
-    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
-    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT4, ::Hardware::VES_COLOR_0);
-
-    subMesh->m_vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
-
-    subMesh->m_vertexData->m_vertexCount = 8;
-    subMesh->m_vertexData->m_vertexStart = 0;
-
-    subMesh->m_indexData = manager.createIndexData();
-
-    ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indexData.size(), ::Hardware::HU_STATIC_DRAW);
-    subMesh->m_indexData->m_indexBuffer = indexBuffer;
-
-    indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indexData.data(), false);
-    subMesh->m_indexData->m_indexCount = 14;
-    subMesh->m_indexData->m_indexStart = 0;
-
-    mesh->setMaterial(material);
+        subMesh->m_material = material;
+    }
 
     // Render loop.
     while(render.getRenderWindows().size() > 0)
@@ -171,7 +135,7 @@ int main()
             }
         }
 
-        node->setOrientation(node->getOrientation() + ::glm::vec3(0.1f, 0.5f, 0.2f));
+        node->setOrientation(node->getOrientation() + ::glm::vec3(0.f, 0.5f, 0.f));
     }
 
     return EXIT_SUCCESS;
