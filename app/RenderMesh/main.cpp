@@ -93,13 +93,13 @@ int main()
 
     for(::Render::SubMesh* subMesh : mesh->getSubMeshes())
     {
-        ::Render::TextureInfo* textInfo = subMesh->getMaterialInfo()->getTextureInfo(::Render::TT_AMBIENT);
+        /*::Render::TextureInfo* textInfo = subMesh->getMaterialInfo()->getTextureInfo(::Render::TT_AMBIENT);
 
         // Create the texture.
         ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
         ::Hardware::TexturePtr texture = textureManager.create(textInfo->m_path.u8string());
         texture->enableMipMaps(true);
-        texture->load(textInfo->m_path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+        texture->load(textInfo->m_path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);*/
 
         ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
         ::Hardware::MaterialPtr material = materialMng.create("Material_" + subMesh->getName());
@@ -108,10 +108,10 @@ int main()
         material->getPasses()[0]->depthTest = true;
 
         // Create the texture unit state
-        ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState(::Hardware::TS_AMBIENT);
+        /*::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState(::Hardware::TS_AMBIENT);
         unitSate->setTexture(texture);
         unitSate->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
-        unitSate->magFilter = ::Hardware::TF_LINEAR;
+        unitSate->magFilter = ::Hardware::TF_LINEAR;*/
 
         subMesh->m_material = material;
     }

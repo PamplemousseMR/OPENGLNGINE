@@ -6,16 +6,6 @@
 namespace Render
 {
 
-void SubMesh::setMaterialInfo(MaterialInfo* const _matInfo)
-{
-    if(m_materialInfo != nullptr)
-    {
-        m_materialInfo->_notifySubMeshRemoved(this);
-    }
-    m_materialInfo = _matInfo;
-    m_materialInfo->_notifySubMeshAdded(this);
-}
-
 SubMesh::SubMesh(Mesh* const _mesh, const std::string& _name):
     IResource(_name),
     m_parent(_mesh)
@@ -25,11 +15,6 @@ SubMesh::SubMesh(Mesh* const _mesh, const std::string& _name):
 
 SubMesh::~SubMesh()
 {
-}
-
-void SubMesh::_notifyMaterialInfoDestroyed()
-{
-    m_materialInfo = nullptr;
 }
 
 }
