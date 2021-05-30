@@ -21,6 +21,18 @@ class Viewport final : public ::Core::IResource
 
 public:
 
+    /// Deleted copy constructor.
+    Viewport(const Viewport&) = delete;
+
+    /// Deleted move constructor.
+    Viewport(Viewport&&) = delete;
+
+    /// Deleted copy operator.
+    Viewport& operator=(const Viewport&) = delete;
+
+    /// Deleted move operator.
+    Viewport& operator=(Viewport&&) = delete;
+
     /**
      * @brief Gets the camera attached to this viewport.
      * @return The attached camera.
@@ -72,18 +84,6 @@ private:
      * @param _name The name of the viewport.
      */
     Viewport(RenderWindow* const _renderWindow, Camera* const _camera, const std::string& _name);
-
-    /// Deleted copy constructor.
-    Viewport(const Viewport&) = delete;
-
-    /// Deleted move constructor.
-    Viewport(Viewport&&) = delete;
-
-    /// Deleted copy operator.
-    Viewport& operator=(const Viewport&) = delete;
-
-    /// Deleted move operator.
-    Viewport& operator=(Viewport&&) = delete;
 
     /// Destroys the viewport and notifies the attached camera.
     ~Viewport();

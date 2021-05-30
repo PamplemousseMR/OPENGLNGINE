@@ -15,9 +15,6 @@ namespace Render
 class Render final
 {
 
-    friend RenderWindow;
-    friend SceneManager;
-
 public:
 
     typedef std::map< std::string, RenderWindow* > RenderWindowList;

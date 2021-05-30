@@ -20,6 +20,14 @@ class Camera final : public Component
 
 public:
 
+    Camera(const Camera&) = delete;
+
+    Camera(Camera&&) = delete;
+
+    Camera& operator=(const Camera&) = delete;
+
+    Camera& operator=(Camera&&) = delete;
+
     void setProjection(float _fovy, float _aspect, float _near, float _far);
 
     inline const ::glm::mat4 getProjection() const;
@@ -44,19 +52,11 @@ private:
 
     Camera(SceneManager* const _sceneManager, const std::string& _name);
 
-    Camera(const Camera&) = delete;
-
-    Camera(Camera&&) = delete;
-
-    Camera& operator=(const Camera&) = delete;
-
-    Camera& operator=(Camera&&) = delete;
-
     ~Camera();
 
-    void notifyViewportCreated(Viewport* const _viewport);
+    void _notifyViewportCreated(Viewport* const _viewport);
 
-    void notifyViewportDestroyed(Viewport* const _viewport);
+    void _notifyViewportDestroyed(Viewport* const _viewport);
 
     ViewportList m_viewports {};
 

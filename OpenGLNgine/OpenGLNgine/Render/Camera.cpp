@@ -47,7 +47,7 @@ Camera::~Camera()
     }
 }
 
-void Camera::notifyViewportCreated(Viewport* const _viewport)
+void Camera::_notifyViewportCreated(Viewport* const _viewport)
 {
     if(m_viewports.find(_viewport->getName()) != m_viewports.end())
     {
@@ -56,7 +56,7 @@ void Camera::notifyViewportCreated(Viewport* const _viewport)
     m_viewports.emplace(_viewport->getName(), _viewport);
 }
 
-void Camera::notifyViewportDestroyed(Viewport* const _viewport)
+void Camera::_notifyViewportDestroyed(Viewport* const _viewport)
 {
     ViewportList::const_iterator it = m_viewports.find(_viewport->getName());
     if(it == m_viewports.end())
