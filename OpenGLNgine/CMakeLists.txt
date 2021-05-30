@@ -54,6 +54,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Render/SceneNode.cpp
     ${GLNGINE_SOURCE}/Render/SceneNode.cpp
     ${GLNGINE_SOURCE}/Render/SubMesh.cpp
+    ${GLNGINE_SOURCE}/Render/TextureInfo.cpp
     ${GLNGINE_SOURCE}/Render/Viewport.cpp)
 
 set(GLNGINE_HEADER
@@ -101,6 +102,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Render/SceneManager.hpp
     ${GLNGINE_SOURCE}/Render/SceneNode.hpp
     ${GLNGINE_SOURCE}/Render/SubMesh.hpp
+    ${GLNGINE_SOURCE}/Render/TextureInfo.hpp
     ${GLNGINE_SOURCE}/Render/Viewport.hpp)
 
 add_library(${GLNGINE_LIBRARY_NAME} ${GLNGINE_SRC} ${GLNGINE_HEADER})

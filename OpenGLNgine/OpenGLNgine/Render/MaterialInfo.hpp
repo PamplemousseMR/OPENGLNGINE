@@ -1,9 +1,11 @@
 #pragma once
 
 #include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Render/TextureInfo.hpp"
 
 #include <glm/glm.hpp>
 
+#include <list>
 #include <map>
 
 namespace Render
@@ -19,6 +21,8 @@ class MaterialInfo final : public ::Core::IResource
 
 public:
 
+    typedef std::map<TEXTURE_TYPE, TextureInfo*> TextureInfoList;
+
     MaterialInfo(const MaterialInfo&) = delete;
 
     MaterialInfo(MaterialInfo&&) = delete;
@@ -26,6 +30,10 @@ public:
     MaterialInfo& operator=(const MaterialInfo&) = delete;
 
     MaterialInfo& operator=(MaterialInfo&&) = delete;
+
+    TextureInfo* addTextureInfo(TEXTURE_TYPE _type);
+
+    void removeAllTextureInfos();
 
     /// Specifies whether meshes using this material must be rendered with backface culling.
     bool m_twoSided { true };
@@ -82,6 +90,8 @@ private:
     void _notifySubMeshRemoved(SubMesh* const _subMesh);
 
     SubMeshList m_subMeshes {};
+
+    TextureInfoList m_textureInfos {};
 
 };
 
