@@ -46,6 +46,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Render/Camera.cpp
     ${GLNGINE_SOURCE}/Render/Component.cpp
     ${GLNGINE_SOURCE}/Render/Light.cpp
+    ${GLNGINE_SOURCE}/Render/MaterialInfo.cpp
     ${GLNGINE_SOURCE}/Render/Mesh.cpp
     ${GLNGINE_SOURCE}/Render/Render.cpp
     ${GLNGINE_SOURCE}/Render/RenderWindow.cpp
@@ -93,6 +94,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Render/Camera.hpp
     ${GLNGINE_SOURCE}/Render/Component.hpp
     ${GLNGINE_SOURCE}/Render/Light.hpp
+    ${GLNGINE_SOURCE}/Render/MaterialInfo.hpp
     ${GLNGINE_SOURCE}/Render/Mesh.hpp
     ${GLNGINE_SOURCE}/Render/Render.hpp
     ${GLNGINE_SOURCE}/Render/RenderWindow.hpp

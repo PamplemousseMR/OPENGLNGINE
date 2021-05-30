@@ -114,12 +114,10 @@ void SceneManager::destroyAllLights()
     }
 }
 
-SceneManager::SceneManager(Render* const _render, const std::string& _name):
+SceneManager::SceneManager(const std::string& _name):
     IResource(_name),
-    m_render(_render),
     m_rootSceneNode(new SceneNode(this))
 {
-    GLNGINE_ASSERT_IF(!_render, "The render mustn't be null");
 }
 
 SceneManager::~SceneManager()
