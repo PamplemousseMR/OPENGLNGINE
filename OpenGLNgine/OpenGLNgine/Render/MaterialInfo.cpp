@@ -24,6 +24,19 @@ TextureInfo* MaterialInfo::addTextureInfo(TEXTURE_TYPE _type)
     return textInfo;
 }
 
+TextureInfo* MaterialInfo::getTextureInfo(TEXTURE_TYPE _type)
+{
+    TextureInfoList::const_iterator it, itEnd;
+    itEnd = m_textureInfos.end();
+    for(it=m_textureInfos.begin() ; it!=itEnd ; ++it)
+    {
+        if((*it).second->m_type == _type)
+        {
+            return (*it).second;
+        }
+    }
+}
+
 void MaterialInfo::removeAllTextureInfos()
 {
     TextureInfoList::const_iterator it, itEnd;

@@ -33,6 +33,8 @@ public:
 
     TextureInfo* addTextureInfo(TEXTURE_TYPE _type);
 
+    TextureInfo* getTextureInfo(TEXTURE_TYPE _type);
+
     void removeAllTextureInfos();
 
     /// Specifies whether meshes using this material must be rendered with backface culling.

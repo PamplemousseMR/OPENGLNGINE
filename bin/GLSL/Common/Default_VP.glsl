@@ -1,7 +1,7 @@
 #version 440 core
 
 layout(location = 0) in vec3 a_f3Vertex_Ms;
-layout(location = 7) in vec4 a_f4Color;
+layout(location = 1) in vec4 a_f4Color;
 
 uniform mat4 u_m4MVP = mat4(1.);
 

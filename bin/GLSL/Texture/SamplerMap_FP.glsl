@@ -8,6 +8,6 @@ out vec3 f_f3OutCol;
 
 void main()
 {
-    f_f3OutCol = texture(u_s2Texture, v_f2TextCoord_Ts).rbg;
+    f_f3OutCol = texture(u_s2Texture, v_f2TextCoord_Ts).rgb;
 }
 
