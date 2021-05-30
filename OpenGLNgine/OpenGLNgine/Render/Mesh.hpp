@@ -56,7 +56,7 @@ private:
 
     void loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* const _scene, const aiMesh* const mesh, const std::filesystem::path& _directory);
 
-    void loadTexture(const ::aiMaterial* const _material, ::aiTextureType _type, const std::filesystem::path& _directory);
+    void loadTexture(const ::aiMaterial* const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory);
 
     SubMeshList m_subMeshes {};
 

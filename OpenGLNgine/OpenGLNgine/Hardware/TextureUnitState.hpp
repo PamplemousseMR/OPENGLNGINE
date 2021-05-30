@@ -24,6 +24,14 @@ enum TEXTUREUNITSTATE_SEMANTIC : unsigned
     TS_NONE = 11
 };
 
+enum WRAP_MODE
+{
+    WM_REPEAT,
+    WM_CLAMP,
+    WM_BORDER,
+    WM_MIRROR
+};
+
 class TextureUnitState
 {
 
@@ -47,11 +55,15 @@ public:
 
     inline TexturePtr getTexture() const;
 
+    const TEXTUREUNITSTATE_SEMANTIC m_semantic;
+
     TEXTURE_FILTER minFilter { TF_NEAREST };
 
     TEXTURE_FILTER magFilter { TF_NEAREST };
 
-    const TEXTUREUNITSTATE_SEMANTIC m_semantic;
+    WRAP_MODE m_uWrap { WM_REPEAT };
+
+    WRAP_MODE m_vWrap { WM_REPEAT };
 
 private:
 
