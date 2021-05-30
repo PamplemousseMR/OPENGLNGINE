@@ -132,3 +132,8 @@ target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glfw::glfw)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC GLEW::GLEW)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glm::glm)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE soil2::soil2)
+target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC assimp::assimp)
+
+if(${OpenMP_FOUND})
+    target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE OpenMP::OpenMP_CXX)
+endif()

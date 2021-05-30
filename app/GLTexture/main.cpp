@@ -203,8 +203,8 @@ int main()
     ::GL::DataBuffer::setAttrib(::Hardware::VES_POSITION, 3, ::GL::DT_FLOAT, false, 5*sizeof(float), 0);
     ::GL::DataBuffer::setLocation(::Hardware::VES_POSITION);
 
-    ::GL::DataBuffer::setAttrib(::Hardware::VES_TEXTURE_COORDINATES, 2, ::GL::DT_FLOAT, false, 5*sizeof(float), 3*sizeof(float));
-    ::GL::DataBuffer::setLocation(::Hardware::VES_TEXTURE_COORDINATES);
+    ::GL::DataBuffer::setAttrib(::Hardware::VES_TEXTURE_COORDINATES_0, 2, ::GL::DT_FLOAT, false, 5*sizeof(float), 3*sizeof(float));
+    ::GL::DataBuffer::setLocation(::Hardware::VES_TEXTURE_COORDINATES_0);
 
     // Create the texture.
     ::GL::Texture texture;

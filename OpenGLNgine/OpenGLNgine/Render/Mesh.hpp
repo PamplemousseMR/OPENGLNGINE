@@ -6,6 +6,10 @@
 #include "OpenGLNgine/Render/Component.hpp"
 #include "OpenGLNgine/Render/SubMesh.hpp"
 
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
 #include <set>
 
 namespace Render
@@ -40,11 +44,15 @@ public:
 
     void setMaterial(::Hardware::MaterialPtr _material);
 
+    bool load(const std::filesystem::path& _path);
+
 private:
 
     Mesh(SceneManager* const _sceneManager, const std::string& _name);
 
     ~Mesh();
+
+    void loadNode(const ::aiNode* const _node, const ::aiScene* const _scene);
 
     SubMeshList m_subMeshes {};
 
