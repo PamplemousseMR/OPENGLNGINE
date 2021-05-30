@@ -220,21 +220,21 @@ int main()
 
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
 
-    subMesh->vertexData = manager.createVertexData();
-    subMesh->vertexData->m_renderOperation = ::Hardware::VR_TRIANGLES;
+    subMesh->m_vertexData = manager.createVertexData();
+    subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLES;
 
     ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
-    subMesh->vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
-    subMesh->vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT2, ::Hardware::VES_TEXTURE_COORDINATES);
+    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
+    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT2, ::Hardware::VES_TEXTURE_COORDINATES);
 
-    subMesh->vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
+    subMesh->m_vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
 
-    subMesh->vertexData->m_vertexCount = 36;
-    subMesh->vertexData->m_vertexStart = 0;
+    subMesh->m_vertexData->m_vertexCount = 36;
+    subMesh->m_vertexData->m_vertexStart = 0;
 
-    subMesh->indexData = manager.createIndexData();
+    subMesh->m_indexData = manager.createIndexData();
 
     mesh->setMaterial(material);
 

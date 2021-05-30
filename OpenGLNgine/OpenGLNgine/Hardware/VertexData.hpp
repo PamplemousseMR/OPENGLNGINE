@@ -49,9 +49,9 @@ public:
 
     VERTEXDATA_RENDERTYPE m_renderOperation { VR_TRIANGLES };
 
-    VertexDeclaration* m_vertexDeclaration { nullptr };
+    VertexDeclaration* const m_vertexDeclaration { nullptr };
 
-    VertexBufferBinding* m_vertexBufferBinding { nullptr };
+    VertexBufferBinding* const m_vertexBufferBinding { nullptr };
 
 private:
 

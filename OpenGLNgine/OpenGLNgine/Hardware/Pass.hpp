@@ -59,6 +59,14 @@ public:
 
     static ::GL::PIXELOPERATION_BLEND getType(MATERIAL_BLEND _type);
 
+    Pass(const Pass&) = delete;
+
+    Pass(Pass&&) = delete;
+
+    Pass& operator=(const Pass&) = delete;
+
+    Pass& operator=(Pass&&) = delete;
+
     inline void setProgram(const ProgramPtr& program);
 
     void lock();

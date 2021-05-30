@@ -39,20 +39,6 @@ IndexData* HardwareBufferManager::createIndexData()
     return ptr;
 }
 
-VertexBufferBinding* HardwareBufferManager::createVertexBufferBinding()
-{
-    VertexBufferBinding* ptr = new VertexBufferBinding();
-    m_vertexBufferBindings.insert(ptr);
-    return ptr;
-}
-
-VertexDeclaration* HardwareBufferManager::createVertexDeclaration()
-{
-    VertexDeclaration* ptr = new VertexDeclaration();
-    m_vertexDeclarations.insert(ptr);
-    return ptr;
-}
-
 void HardwareBufferManager::destroyVertexData(VertexData* _data)
 {
     GLNGINE_ASSERT_IF(!_data, "The vertex data mustn't be null");
@@ -67,22 +53,6 @@ void HardwareBufferManager::destroyIndexData(IndexData* _data)
 
     m_indexData.erase(_data);
     delete _data;
-}
-
-void HardwareBufferManager::destroyVertexBufferBinding(VertexBufferBinding* _binding)
-{
-    GLNGINE_ASSERT_IF(!_binding, "The vertex buffer binding mustn't be null");
-
-    m_vertexBufferBindings.erase(_binding);
-    delete _binding;
-}
-
-void HardwareBufferManager::destroyVertexDeclaration(VertexDeclaration* _declaration)
-{
-    GLNGINE_ASSERT_IF(!_declaration, "The vertex declaration mustn't be null");
-
-    m_vertexDeclarations.erase(_declaration);
-    delete _declaration;
 }
 
 void HardwareBufferManager::destroyAllVertexData()
@@ -105,28 +75,6 @@ void HardwareBufferManager::destroyAllIndexData()
         delete *itBeg;
     }
     m_vertexData.clear();
-}
-
-void HardwareBufferManager::destroyAllVertexBufferBinding()
-{
-    VertexBufferBindingList::const_iterator itBeg, itEnd;
-    itEnd = m_vertexBufferBindings.end();
-    for(itBeg=m_vertexBufferBindings.begin() ; itBeg!=itEnd ; ++itBeg)
-    {
-        delete *itBeg;
-    }
-    m_vertexBufferBindings.clear();
-}
-
-void HardwareBufferManager::destroyAllVertexDeclaration()
-{
-    VertexDeclarationList::const_iterator itBeg, itEnd;
-    itEnd = m_vertexDeclarations.end();
-    for(itBeg=m_vertexDeclarations.begin() ; itBeg!=itEnd ; ++itBeg)
-    {
-        delete *itBeg;
-    }
-    m_vertexDeclarations.clear();
 }
 
 void HardwareBufferManager::_notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer)
@@ -171,8 +119,6 @@ HardwareBufferManager::~HardwareBufferManager()
 {
     this->destroyAllVertexData();
     this->destroyAllIndexData();
-    this->destroyAllVertexBufferBinding();
-    this->destroyAllVertexDeclaration();
 
     m_vertexBuffers.clear();
     m_indexBuffers.clear();

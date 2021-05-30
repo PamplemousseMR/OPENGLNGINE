@@ -37,17 +37,17 @@ namespace Hardware
 }
 
 VertexData::VertexData(HardwareBufferManager* const _manager) :
+    m_vertexDeclaration(new VertexDeclaration()),
+    m_vertexBufferBinding(new VertexBufferBinding()),
     m_manager(_manager)
 {
     GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager mustn't be null");
-    m_vertexDeclaration = _manager->createVertexDeclaration();
-    m_vertexBufferBinding = _manager->createVertexBufferBinding();
 }
 
 VertexData::~VertexData()
 {
-    m_manager->destroyVertexBufferBinding(m_vertexBufferBinding);
-    m_manager->destroyVertexDeclaration(m_vertexDeclaration);
+    delete m_vertexDeclaration;
+    delete m_vertexBufferBinding;
 }
 
 }

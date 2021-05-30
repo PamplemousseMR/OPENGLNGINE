@@ -261,20 +261,20 @@ int main()
 
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
 
-    subMesh->vertexData = manager.createVertexData();
-    subMesh->vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
+    subMesh->m_vertexData = manager.createVertexData();
+    subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
 
     ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
-    subMesh->vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
-    subMesh->vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT4, ::Hardware::VES_COLOR);
-    subMesh->vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*7, ::Hardware::VET_FLOAT3, ::Hardware::VES_NORMAL);
+    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
+    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*3, ::Hardware::VET_FLOAT4, ::Hardware::VES_COLOR);
+    subMesh->m_vertexData->m_vertexDeclaration->addElement(0, sizeof(float)*7, ::Hardware::VET_FLOAT3, ::Hardware::VES_NORMAL);
 
-    subMesh->vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
+    subMesh->m_vertexData->m_vertexBufferBinding->setBinding(0, vertexBuffer);
 
-    subMesh->vertexData->m_vertexCount = 36;
-    subMesh->vertexData->m_vertexStart = 0;
+    subMesh->m_vertexData->m_vertexCount = 36;
+    subMesh->m_vertexData->m_vertexStart = 0;
 
     mesh->setMaterial(material);
 

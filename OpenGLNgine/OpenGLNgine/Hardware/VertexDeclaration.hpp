@@ -8,24 +8,32 @@
 namespace Hardware
 {
 
-class HardwareBufferManager;
+class VertexData;
 
 class VertexDeclaration final
 {
 
-    friend HardwareBufferManager;
+    friend VertexData;
 
 public:
 
-    typedef std::list<VertexElement> VertexElementList;
+    typedef std::list<VertexElement*> VertexElementList;
+
+    VertexDeclaration(const VertexDeclaration&) = delete;
+
+    VertexDeclaration(VertexDeclaration&&) = delete;
+
+    VertexDeclaration& operator=(const VertexDeclaration&) = delete;
+
+    VertexDeclaration& operator=(VertexDeclaration&&) = delete;
 
     inline void lock();
 
     inline void unlock();
 
-    const VertexElement& addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
+    const VertexElement* addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
 
-    inline void removeAllElements();
+    void removeAllElements();
 
     const VertexElement* findElementBySemantic(VERTEXELEMENT_SEMANTIC _semantic) const;
 
@@ -51,11 +59,6 @@ inline void VertexDeclaration::lock()
 inline void VertexDeclaration::unlock()
 {
     m_vertexArrayBuffer.unbind();
-}
-
-inline void VertexDeclaration::removeAllElements()
-{
-    m_elements.clear();
 }
 
 inline const VertexDeclaration::VertexElementList& VertexDeclaration::getElements() const

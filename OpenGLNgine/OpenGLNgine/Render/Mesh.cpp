@@ -38,7 +38,7 @@ void Mesh::setMaterial(::Hardware::MaterialPtr _material)
     itEnd = m_subMeshes.end();
     for(itBeg=m_subMeshes.begin() ; itBeg!=itEnd ; ++itBeg)
     {
-        (*itBeg)->material = _material;
+        (*itBeg)->m_material = _material;
     }
 }
 
