@@ -52,7 +52,11 @@ private:
 
     ~Mesh();
 
-    void loadNode(const ::aiNode* const _node, const ::aiScene* const _scene);
+    void loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, const std::filesystem::path& _directory);
+
+    void loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* const _scene, const aiMesh* const mesh, const std::filesystem::path& _directory);
+
+    void loadTexture(const ::aiMaterial* const _material, ::aiTextureType _type, MaterialInfo* const _matInfo, const std::filesystem::path& _directory);
 
     SubMeshList m_subMeshes {};
 

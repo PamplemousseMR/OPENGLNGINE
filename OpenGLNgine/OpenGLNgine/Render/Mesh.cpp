@@ -1,11 +1,70 @@
 #include "OpenGLNgine/Render/Mesh.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Core/Helper.hpp"
 #include "OpenGLNgine/Hardware/HardwareBufferManager.hpp"
+#include "OpenGLNgine/Render/Render.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
 
 namespace Render
 {
+
+TEXTURE_TYPE fromAI(::aiTextureType _type)
+{
+    switch (_type) {
+    case ::aiTextureType::aiTextureType_DIFFUSE:
+        return TEXTURE_TYPE::TT_DIFFUSE;
+        break;
+    case ::aiTextureType::aiTextureType_SPECULAR:
+        return TEXTURE_TYPE::TT_SPECULAR;
+        break;
+    case ::aiTextureType::aiTextureType_AMBIENT:
+        return TEXTURE_TYPE::TT_AMBIENT;
+        break;
+    case ::aiTextureType::aiTextureType_EMISSIVE:
+        return TEXTURE_TYPE::TT_EMISSIVE;
+        break;
+    case ::aiTextureType::aiTextureType_HEIGHT:
+        return TEXTURE_TYPE::TT_HEIGHT;
+        break;
+    case ::aiTextureType::aiTextureType_NORMALS:
+        return TEXTURE_TYPE::TT_NORMALS;
+        break;
+    case ::aiTextureType::aiTextureType_SHININESS:
+        return TEXTURE_TYPE::TT_SHININESS;
+        break;
+    case ::aiTextureType::aiTextureType_OPACITY:
+        return TEXTURE_TYPE::TT_OPACITY;
+        break;
+    case ::aiTextureType::aiTextureType_DISPLACEMENT:
+        return TEXTURE_TYPE::TT_DISPLACEMENT;
+        break;
+    case ::aiTextureType::aiTextureType_LIGHTMAP:
+        return TEXTURE_TYPE::TT_LIGHTMAP;
+        break;
+    case ::aiTextureType::aiTextureType_REFLECTION:
+        return TEXTURE_TYPE::TT_REFLECTION;
+        break;
+    default:
+        GLNGINE_EXCEPTION("Unhandle texture type");
+    }
+}
+
+WRAP_MODE fromAI(::aiTextureMapMode _mode)
+{
+    switch (_mode) {
+    case ::aiTextureMapMode::aiTextureMapMode_Wrap:
+        return WRAP_MODE::WM_REPEAT;
+    case ::aiTextureMapMode::aiTextureMapMode_Clamp:
+        return WRAP_MODE::WM_CLAMP;
+    case ::aiTextureMapMode::aiTextureMapMode_Decal:
+        return WRAP_MODE::WM_BORDER;
+    case ::aiTextureMapMode::aiTextureMapMode_Mirror:
+        return WRAP_MODE::WM_MIRROR;
+    default:
+        GLNGINE_EXCEPTION("Unhandle wrapping mode");
+    }
+}
 
 SubMesh* Mesh::createSubMesh(const std::string& _name)
 {
@@ -54,11 +113,11 @@ bool Mesh::load(const std::filesystem::path& _path)
         return false;
     }
 
-    this->loadNode(scene->mRootNode, scene);
+    this->loadNode(scene->mRootNode, scene, _path.parent_path());
     return true;
 }
 
-void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene)
+void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, const std::filesystem::path& _directory)
 {
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
 
@@ -235,11 +294,101 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene)
 
             subMesh->m_vertexData->m_vertexBufferBinding->setBinding(::Hardware::VES_BITANGENT, tangentBuffer);
         }
+
+        if(mesh->mMaterialIndex >= 0)
+        {
+            this->loadMaterial(subMesh, _scene, mesh, _directory);
+        }
     }
 
     for(unsigned i=0; i<_node->mNumChildren; ++i)
     {
-        this->loadNode(_node->mChildren[i], _scene);
+        this->loadNode(_node->mChildren[i], _scene, _directory);
+    }
+}
+
+void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* const _scene, const aiMesh* const _mesh, const std::filesystem::path& _directory)
+{
+    ::aiMaterial* const material = _scene->mMaterials[_mesh->mMaterialIndex];
+
+    MaterialInfo* matInfo = Render::getInstance().createMaterialInfo(material->GetName().C_Str());
+    _subMesh->m_materialInfo = matInfo;
+
+    material->Get(AI_MATKEY_TWOSIDED, matInfo->m_twoSided);
+    material->Get(AI_MATKEY_OPACITY, matInfo->m_opacity);
+    material->Get(AI_MATKEY_TRANSPARENCYFACTOR, matInfo->m_transparencyfactor);
+    material->Get(AI_MATKEY_BUMPSCALING, matInfo->m_bumpScaling);
+    material->Get(AI_MATKEY_SHININESS, matInfo->m_shininess);
+    material->Get(AI_MATKEY_REFLECTIVITY, matInfo->m_reflectivity);
+    material->Get(AI_MATKEY_SHININESS_STRENGTH, matInfo->m_shininessStrenght);
+    material->Get(AI_MATKEY_REFRACTI, matInfo->m_refracti);
+    //material->Get(AI_MATKEY_SHADING_MODEL, matInfo->m_shadingModel);
+    //material->Get(AI_MATKEY_ENABLE_WIREFRAME, matInfo->m_wireframe);
+    //material->Get(AI_MATKEY_BLEND_FUNC, matInfo->m_blendFunc);
+
+    ::aiColor3D data = ::Core::toAI(matInfo->m_ambient);
+    material->Get(AI_MATKEY_COLOR_AMBIENT, data);
+    matInfo->m_ambient = ::Core::fromAI(data);
+
+    data = ::Core::toAI(matInfo->m_diffuse);
+    material->Get(AI_MATKEY_COLOR_DIFFUSE, data);
+    matInfo->m_diffuse = ::Core::fromAI(data);
+
+    data = ::Core::toAI(matInfo->m_specular);
+    material->Get(AI_MATKEY_COLOR_SPECULAR, data);
+    matInfo->m_specular = ::Core::fromAI(data);
+
+    data = ::Core::toAI(matInfo->m_emissive);
+    material->Get(AI_MATKEY_COLOR_EMISSIVE, data);
+    matInfo->m_emissive = ::Core::fromAI(data);
+
+    data = ::Core::toAI(matInfo->m_transparent);
+    material->Get(AI_MATKEY_COLOR_TRANSPARENT, data);
+    matInfo->m_transparent = ::Core::fromAI(data);
+
+    data = ::Core::toAI(matInfo->m_colorReflective);
+    material->Get(AI_MATKEY_COLOR_REFLECTIVE, data);
+    matInfo->m_colorReflective = ::Core::fromAI(data);
+
+    loadTexture(material, ::aiTextureType::aiTextureType_DIFFUSE, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_SPECULAR, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_AMBIENT, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_EMISSIVE, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_HEIGHT, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_NORMALS, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_SHININESS, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_OPACITY, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_DISPLACEMENT, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_LIGHTMAP, matInfo, _directory);
+    loadTexture(material, ::aiTextureType::aiTextureType_REFLECTION, matInfo, _directory);
+}
+
+void Mesh::loadTexture(const ::aiMaterial* const _material, ::aiTextureType _type, MaterialInfo* const _matInfo, const std::filesystem::path& _directory)
+{
+    GLNGINE_ASSERT_IF(_material->GetTextureCount(_type) > 1, "Unhandle multiple textures");
+    for(unsigned int i = 0; i < _material->GetTextureCount(_type); i++)
+    {
+        TextureInfo* const textInfo = _matInfo->addTextureInfo(fromAI(_type));
+
+        ::aiTextureMapMode data = ::aiTextureMapMode::aiTextureMapMode_Wrap;
+        _material->Get(_AI_MATKEY_MAPPINGMODE_U_BASE, _type, i, data);
+        textInfo->m_uWrap = fromAI(data);
+
+        data = ::aiTextureMapMode::aiTextureMapMode_Wrap;
+        _material->Get(_AI_MATKEY_MAPPINGMODE_V_BASE, _type, i, data);
+        textInfo->m_vWrap = fromAI(data);
+
+        ::aiString path;
+        _material->Get(_AI_MATKEY_TEXTURE_BASE, _type, i, path);
+        textInfo->m_path = _directory/path.C_Str();
+
+        // _material->Get(_AI_MATKEY_UVWSRC_BASE, _type, i, data);
+        // _material->Get(_AI_MATKEY_TEXOP_BASE, _type, i, data);
+        // _material->Get(_AI_MATKEY_MAPPING_BASE, _type, i, data);
+        // _material->Get(_AI_MATKEY_TEXBLEND_BASE, _type, i, data);
+        // _material->Get(_AI_MATKEY_TEXMAP_AXIS_BASE, _type, i, data);
+        // _material->Get(_AI_MATKEY_TEXFLAGS_BASE, _type, i, data);
+        // _material->Get(_AI_MATKEY_UVTRANSFORM_BASE, _type, i, data);
     }
 }
 

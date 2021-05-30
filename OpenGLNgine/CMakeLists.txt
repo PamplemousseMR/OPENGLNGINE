@@ -59,6 +59,7 @@ set(GLNGINE_SRC
 
 set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Core/Exception.hpp
+    ${GLNGINE_SOURCE}/Core/Helper.hpp
     ${GLNGINE_SOURCE}/Core/IManager.hpp
     ${GLNGINE_SOURCE}/Core/IManager.hxx
     ${GLNGINE_SOURCE}/Core/IResource.hpp
