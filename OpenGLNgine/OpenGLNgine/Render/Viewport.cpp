@@ -20,12 +20,12 @@ Viewport::Viewport(RenderWindow* const _renderWindow, Camera* const _camera, con
     GLNGINE_ASSERT_IF(!_renderWindow, "The render window mustn't be null");
     GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
     m_viewport = {0, 0, m_renderWindow->getWidth(), m_renderWindow->getHeight()};
-    m_camera->notifyViewportCreated(this);
+    m_camera->_notifyViewportCreated(this);
 }
 
 Viewport::~Viewport()
 {
-    m_camera->notifyViewportDestroyed(this);
+    m_camera->_notifyViewportDestroyed(this);
 }
 
 }

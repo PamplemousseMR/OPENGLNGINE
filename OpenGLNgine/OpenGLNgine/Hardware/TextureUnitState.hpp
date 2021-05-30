@@ -15,6 +15,14 @@ class TextureUnitState
 
 public:
 
+    TextureUnitState(const TextureUnitState&) = delete;
+
+    TextureUnitState(TextureUnitState&&) = delete;
+
+    TextureUnitState& operator=(const TextureUnitState&) = delete;
+
+    TextureUnitState& operator=(TextureUnitState&&) = delete;
+
     inline void setTexture(TexturePtr _texture);
 
     void lock();

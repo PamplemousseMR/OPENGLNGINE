@@ -5,6 +5,8 @@
 namespace Hardware
 {
 
+class VertexDeclaration;
+
 enum VERTEXELEMENT_TYPE
 {
     VET_FLOAT2,
@@ -23,15 +25,21 @@ enum VERTEXELEMENT_SEMANTIC : unsigned
 class VertexElement final
 {
 
+    friend VertexDeclaration;
+
 public:
 
     static int getTypeCount(VERTEXELEMENT_TYPE _type);
 
     static ::GL::DATABUFFER_TYPE getType(VERTEXELEMENT_TYPE _type);
 
-    VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
+    VertexElement(const VertexElement&) = delete;
 
-    ~VertexElement();
+    VertexElement(VertexElement&&) = delete;
+
+    VertexElement& operator=(const VertexElement&) = delete;
+
+    VertexElement& operator=(VertexElement&&) = delete;
 
     inline int getTypeCount() const;
 
@@ -44,6 +52,12 @@ public:
     const VERTEXELEMENT_TYPE m_type;
 
     const VERTEXELEMENT_SEMANTIC m_semantic;
+
+private:
+
+    VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
+
+    ~VertexElement();
 
 };
 

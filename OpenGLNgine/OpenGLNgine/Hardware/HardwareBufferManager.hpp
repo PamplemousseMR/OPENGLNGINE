@@ -3,9 +3,7 @@
 #include "OpenGLNgine/Hardware/HardwareIndexBuffer.hpp"
 #include "OpenGLNgine/Hardware/HardwareVertexBuffer.hpp"
 #include "OpenGLNgine/Hardware/IndexData.hpp"
-#include "OpenGLNgine/Hardware/VertexBufferBinding.hpp"
 #include "OpenGLNgine/Hardware/VertexData.hpp"
-#include "OpenGLNgine/Hardware/VertexDeclaration.hpp"
 
 #include <set>
 
@@ -14,6 +12,9 @@ namespace Hardware
 
 class HardwareBufferManager final
 {
+
+    friend HardwareVertexBuffer;
+    friend HardwareIndexBuffer;
 
 public:
 
@@ -35,29 +36,13 @@ public:
 
     IndexData* createIndexData();
 
-    VertexBufferBinding* createVertexBufferBinding();
-
-    VertexDeclaration* createVertexDeclaration();
-
     void destroyVertexData(VertexData* _data);
 
     void destroyIndexData(IndexData* _data);
 
-    void destroyVertexBufferBinding(VertexBufferBinding* _binding);
-
-    void destroyVertexDeclaration(VertexDeclaration* _declaration);
-
     void destroyAllVertexData();
 
     void destroyAllIndexData();
-
-    void destroyAllVertexBufferBinding();
-
-    void destroyAllVertexDeclaration();
-
-    void _notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer);
-
-    void _notifyVertexBufferDestroyed(HardwareVertexBuffer* _vertexBuffer);
 
 private:
 
@@ -68,10 +53,6 @@ private:
     typedef std::set<HardwareIndexBuffer*> IndexBufferList;
 
     typedef std::set<HardwareVertexBuffer*> VertexBufferList;
-
-    typedef std::set<VertexDeclaration*> VertexDeclarationList;
-
-    typedef std::set<VertexBufferBinding*> VertexBufferBindingList;
 
     struct Initializer final
     {
@@ -86,6 +67,10 @@ private:
 
     ~HardwareBufferManager();
 
+    void _notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer);
+
+    void _notifyVertexBufferDestroyed(HardwareVertexBuffer* _vertexBuffer);
+
     VertexDataList m_vertexData {};
 
     IndexDataList m_indexData {};
@@ -93,10 +78,6 @@ private:
     IndexBufferList m_indexBuffers {};
 
     VertexBufferList m_vertexBuffers {};
-
-    VertexDeclarationList m_vertexDeclarations {};
-
-    VertexBufferBindingList m_vertexBufferBindings {};
 
 };
 

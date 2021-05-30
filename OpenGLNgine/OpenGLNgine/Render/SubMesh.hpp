@@ -29,11 +29,11 @@ public:
 
     inline void _notifyDirty() const;
 
-    ::Hardware::VertexData* vertexData { nullptr };
+    ::Hardware::VertexData* m_vertexData { nullptr };
 
-    ::Hardware::IndexData* indexData { nullptr };
+    ::Hardware::IndexData* m_indexData { nullptr };
 
-    ::Hardware::MaterialPtr material { nullptr };
+    ::Hardware::MaterialPtr m_material { nullptr };
 
     Mesh* const m_parent;
 

@@ -6,16 +6,6 @@
 namespace Render
 {
 
-Mesh::Mesh(SceneManager* const _sceneManager, const std::string& _name):
-    Component(_sceneManager, _name)
-{
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
-}
-
-Mesh::~Mesh()
-{
-}
-
 SubMesh* Mesh::createSubMesh(const std::string& _name)
 {
     SubMesh* ptr = new SubMesh(this, _name);
@@ -48,8 +38,20 @@ void Mesh::setMaterial(::Hardware::MaterialPtr _material)
     itEnd = m_subMeshes.end();
     for(itBeg=m_subMeshes.begin() ; itBeg!=itEnd ; ++itBeg)
     {
-        (*itBeg)->material = _material;
+        (*itBeg)->m_material = _material;
     }
+}
+
+
+Mesh::Mesh(SceneManager* const _sceneManager, const std::string& _name):
+    Component(_sceneManager, _name)
+{
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+}
+
+Mesh::~Mesh()
+{
+    this->destroyAllSubMeshes();
 }
 
 }

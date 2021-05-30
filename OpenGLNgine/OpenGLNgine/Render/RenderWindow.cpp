@@ -35,9 +35,9 @@ void RenderWindow::render() const
 
                 for(const SubMesh* subMesh : me.second->getSubMeshes())
                 {
-                    if(subMesh->material != nullptr)
+                    if(subMesh->m_material != nullptr)
                     {
-                        const ::Hardware::MaterialPtr& mat = subMesh->material;
+                        const ::Hardware::MaterialPtr& mat = subMesh->m_material;
                         for(::Hardware::Pass* const pass : mat->getPasses())
                         {
                             pass->lock();
@@ -142,10 +142,10 @@ void RenderWindow::render() const
                             ::GL::PixelOperation::setBlendFunc(::Hardware::Pass::getType(pass->sourceFactor), ::Hardware::Pass::getType(pass->destinationFactor));
                             ::GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
 
-                            const ::Hardware::VertexData* const vertexData = subMesh->vertexData;
+                            const ::Hardware::VertexData* const vertexData = subMesh->m_vertexData;
                             if(vertexData != nullptr)
                             {
-                                const ::Hardware::IndexData* const indexData = subMesh->indexData;
+                                const ::Hardware::IndexData* const indexData = subMesh->m_indexData;
                                 if(subMesh->isDirty())
                                 {
                                     vertexData->m_vertexDeclaration->lock();
@@ -157,21 +157,21 @@ void RenderWindow::render() const
                                         int stride = 0;
 
                                         const ::Hardware::VertexDeclaration::VertexElementList& elements = vertexData->m_vertexDeclaration->getElements();
-                                        for(const ::Hardware::VertexElement& element : elements)
+                                        for(const ::Hardware::VertexElement* const element : elements)
                                         {
-                                            if(element.m_source == binding.first)
+                                            if(element->m_source == binding.first)
                                             {
-                                                stride += element.getTypeCount();
+                                                stride += element->getTypeCount();
                                             }
                                         }
 
-                                        for(const ::Hardware::VertexElement& element : elements)
+                                        for(const ::Hardware::VertexElement* const element : elements)
                                         {
-                                            if(element.m_source == binding.first)
+                                            if(element->m_source == binding.first)
                                             {
-                                                const int offset = element.m_offsetInBytes + vertexData->m_vertexStart * buffer->m_vertexType;
-                                                ::GL::DataBuffer::setAttrib(element.m_semantic, element.getTypeCount(), element.getType(), false, buffer->m_vertexType*stride, offset);
-                                                ::GL::DataBuffer::setLocation(element.m_semantic);
+                                                const int offset = element->m_offsetInBytes + vertexData->m_vertexStart * buffer->m_vertexType;
+                                                ::GL::DataBuffer::setAttrib(element->m_semantic, element->getTypeCount(), element->getType(), false, buffer->m_vertexType*stride, offset);
+                                                ::GL::DataBuffer::setLocation(element->m_semantic);
                                             }
                                         }
                                     }

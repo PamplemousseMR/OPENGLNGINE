@@ -7,12 +7,12 @@
 namespace Hardware
 {
 
-class HardwareBufferManager;
+class VertexData;
 
 class VertexBufferBinding final
 {
 
-    friend HardwareBufferManager;
+    friend VertexData;
 
 public:
 
