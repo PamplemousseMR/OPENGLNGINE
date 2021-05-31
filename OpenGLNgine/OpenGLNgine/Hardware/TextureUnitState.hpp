@@ -24,14 +24,6 @@ enum TEXTUREUNITSTATE_SEMANTIC : unsigned
     TS_NONE = 11
 };
 
-enum WRAP_MODE
-{
-    WM_REPEAT,
-    WM_CLAMP,
-    WM_BORDER,
-    WM_MIRROR
-};
-
 class TextureUnitState
 {
 
@@ -48,10 +40,6 @@ public:
     TextureUnitState& operator=(TextureUnitState&&) = delete;
 
     void setTexture(TexturePtr _texture);
-
-    void lock();
-
-    void unlock();
 
     inline TexturePtr getTexture() const;
 

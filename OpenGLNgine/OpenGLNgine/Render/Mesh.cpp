@@ -380,6 +380,8 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
     loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DISPLACEMENT, pass, _directory);
     loadTexture(aiMaterial, ::aiTextureType::aiTextureType_LIGHTMAP, pass, _directory);
     loadTexture(aiMaterial, ::aiTextureType::aiTextureType_REFLECTION, pass, _directory);
+
+    _subMesh->m_material = material;
 }
 
 void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory)
@@ -411,9 +413,15 @@ void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _ty
         ::aiString path;
         _aiMaterial->Get(_AI_MATKEY_TEXTURE_BASE, _type, i, path);
 
-        ::Hardware::TexturePtr texture = textureManager.create(path.C_Str());
-        texture->enableMipMaps(true);
-        texture->load(_directory/path.C_Str(), ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+        ::Hardware::TexturePtr texture = textureManager.getByName(path.C_Str());
+        if(!texture)
+        {
+            texture = textureManager.create(path.C_Str());
+            texture->enableMipMaps(true);
+            texture->load(_directory/path.C_Str(), ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+        }
+
+        textUnitState->setTexture(texture);
     }
 }
 

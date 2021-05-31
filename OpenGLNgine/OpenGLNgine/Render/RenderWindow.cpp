@@ -126,12 +126,15 @@ void RenderWindow::render() const
                             const ::Hardware::Pass::TextureUnitStateList& textureUnitStates = pass->getTextureUnitStates();
                             for(::Hardware::TextureUnitState* const textureUnitState : textureUnitStates)
                             {
-                                if(textureUnitState->getTexture())
+                                const ::Hardware::TexturePtr texture = textureUnitState->getTexture();
+                                if(texture)
                                 {
                                     ::GL::Texture::setActiveTexture(textureUnitState->m_semantic);
-                                    textureUnitState->lock();
-                                    textureUnitState->getTexture()->setMagFilter(textureUnitState->magFilter);
-                                    textureUnitState->getTexture()->setMinFilter(textureUnitState->minFilter);
+                                    texture->lock();
+                                    texture->setMagFilter(textureUnitState->magFilter);
+                                    texture->setMinFilter(textureUnitState->minFilter);
+                                    texture->setUWrap(textureUnitState->m_uWrap);
+                                    texture->setVWrap(textureUnitState->m_vWrap);
                                 }
                             }
 

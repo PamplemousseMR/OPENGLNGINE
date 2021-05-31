@@ -101,6 +101,14 @@ enum TEXTURE_FILTER
     TF_NEAREST_MIPMAP_NEAREST
 };
 
+enum WRAP_MODE
+{
+    WM_REPEAT,
+    WM_CLAMP,
+    WM_BORDER,
+    WM_MIRROR
+};
+
 class Texture;
 class TextureManager;
 
@@ -135,6 +143,10 @@ public:
 
     inline void setMinFilter(TEXTURE_FILTER _filter) const;
 
+    inline void setUWrap(WRAP_MODE _mode) const;
+
+    inline void setVWrap(WRAP_MODE _mode) const;
+
 private:
 
     static ::GL::TEXTURE_INTERNAL_FORMAT getType(TEXTURE_INTERNAL_FORMAT _format);
@@ -142,6 +154,8 @@ private:
     static ::GL::TEXTURE_TYPE getType(TEXTURE_TYPE _format);
 
     static ::GL::TEXTURE_FILTER getType(TEXTURE_FILTER _filter);
+
+    static ::GL::WRAP_MODE getType(WRAP_MODE _mode);
 
     TextureManager* const m_manager;
 
@@ -174,6 +188,16 @@ inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const
 {
     m_texture.setMinFilter(getType(_filter));
+}
+
+inline void Texture::setUWrap(WRAP_MODE _mode) const
+{
+    m_texture.setUWrap(getType(_mode));
+}
+
+inline void Texture::setVWrap(WRAP_MODE _mode) const
+{
+    m_texture.setVWrap(getType(_mode));
 }
 
 }

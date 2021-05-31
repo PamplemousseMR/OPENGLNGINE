@@ -43,7 +43,7 @@ void RenderBuffer::allocate(int _width, int _height, RENDERBUFFER_FORMAT _format
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
-        GLNGINE_EXCEPTION("Size too big");
+        GLNGINE_EXCEPTION("Texture size too large");
     }
     glRenderbufferStorage(GL_RENDERBUFFER, _format, _width, _height);
     GLNGINE_CHECK_GL;
@@ -53,11 +53,11 @@ void RenderBuffer::allocateMultisample(int _width, int _height, RENDERBUFFER_FOR
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
-        GLNGINE_EXCEPTION("Size too big");
+        GLNGINE_EXCEPTION("Texture size too large");
     }
     if(_sample > s_MAX_SAMPLE)
     {
-        GLNGINE_EXCEPTION("Sample too hight");
+        GLNGINE_EXCEPTION("Sample value too large");
     }
     glRenderbufferStorageMultisample(GL_RENDERBUFFER, _sample, _format, _width, _height);
     GLNGINE_CHECK_GL;
