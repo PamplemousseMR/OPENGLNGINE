@@ -347,7 +347,6 @@ private:
 
 inline void RenderWindow::setSamples(int _samples) const
 {
-    makeCurrent();
     glfwWindowHint(GLFW_SAMPLES, _samples);
 }
 
