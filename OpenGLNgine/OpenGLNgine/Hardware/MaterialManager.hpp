@@ -24,6 +24,8 @@ public:
 
     MaterialPtr create(const std::string& _name);
 
+    MaterialPtr getByName(const std::string& _name);
+
     void destroy(const MaterialPtr& _material);
 
 private:

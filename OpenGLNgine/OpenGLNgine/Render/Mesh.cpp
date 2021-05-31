@@ -330,56 +330,60 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
     ::aiMaterial* const aiMaterial = _scene->mMaterials[_mesh->mMaterialIndex];
 
     ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
-    ::Hardware::MaterialPtr material = materialMng.create(aiMaterial->GetName().C_Str());
-    ::Hardware::Pass* pass = material->getPasses()[0];
+    ::Hardware::MaterialPtr material = materialMng.getByName(aiMaterial->GetName().C_Str());
+    if(!material)
+    {
+        material = materialMng.create(aiMaterial->GetName().C_Str());
+        ::Hardware::Pass* pass = material->getPasses()[0];
 
-    aiMaterial->Get(AI_MATKEY_TWOSIDED, pass->m_twoSided);
-    aiMaterial->Get(AI_MATKEY_OPACITY, pass->m_opacity);
-    aiMaterial->Get(AI_MATKEY_TRANSPARENCYFACTOR, pass->m_transparencyfactor);
-    aiMaterial->Get(AI_MATKEY_BUMPSCALING, pass->m_bumpScaling);
-    aiMaterial->Get(AI_MATKEY_SHININESS, pass->m_shininess);
-    aiMaterial->Get(AI_MATKEY_REFLECTIVITY, pass->m_reflectivity);
-    aiMaterial->Get(AI_MATKEY_SHININESS_STRENGTH, pass->m_shininessStrenght);
-    aiMaterial->Get(AI_MATKEY_REFRACTI, pass->m_refracti);
-    //material->Get(AI_MATKEY_SHADING_MODEL, pass->m_shadingModel);
-    //material->Get(AI_MATKEY_ENABLE_WIREFRAME, pass->m_wireframe);
-    //material->Get(AI_MATKEY_BLEND_FUNC, pass->m_blendFunc);
+        aiMaterial->Get(AI_MATKEY_TWOSIDED, pass->m_twoSided);
+        aiMaterial->Get(AI_MATKEY_OPACITY, pass->m_opacity);
+        aiMaterial->Get(AI_MATKEY_TRANSPARENCYFACTOR, pass->m_transparencyfactor);
+        aiMaterial->Get(AI_MATKEY_BUMPSCALING, pass->m_bumpScaling);
+        aiMaterial->Get(AI_MATKEY_SHININESS, pass->m_shininess);
+        aiMaterial->Get(AI_MATKEY_REFLECTIVITY, pass->m_reflectivity);
+        aiMaterial->Get(AI_MATKEY_SHININESS_STRENGTH, pass->m_shininessStrenght);
+        aiMaterial->Get(AI_MATKEY_REFRACTI, pass->m_refracti);
+        //material->Get(AI_MATKEY_SHADING_MODEL, pass->m_shadingModel);
+        //material->Get(AI_MATKEY_ENABLE_WIREFRAME, pass->m_wireframe);
+        //material->Get(AI_MATKEY_BLEND_FUNC, pass->m_blendFunc);
 
-    ::aiColor3D data = ::Core::toAI(pass->m_ambient);
-    aiMaterial->Get(AI_MATKEY_COLOR_AMBIENT, data);
-    pass->m_ambient = ::Core::fromAI(data);
+        ::aiColor3D data = ::Core::toAI(pass->m_ambient);
+        aiMaterial->Get(AI_MATKEY_COLOR_AMBIENT, data);
+        pass->m_ambient = ::Core::fromAI(data);
 
-    data = ::Core::toAI(pass->m_diffuse);
-    aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, data);
-    pass->m_diffuse = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_diffuse);
+        aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, data);
+        pass->m_diffuse = ::Core::fromAI(data);
 
-    data = ::Core::toAI(pass->m_specular);
-    aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, data);
-    pass->m_specular = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_specular);
+        aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, data);
+        pass->m_specular = ::Core::fromAI(data);
 
-    data = ::Core::toAI(pass->m_emissive);
-    aiMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, data);
-    pass->m_emissive = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_emissive);
+        aiMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, data);
+        pass->m_emissive = ::Core::fromAI(data);
 
-    data = ::Core::toAI(pass->m_transparent);
-    aiMaterial->Get(AI_MATKEY_COLOR_TRANSPARENT, data);
-    pass->m_transparent = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_transparent);
+        aiMaterial->Get(AI_MATKEY_COLOR_TRANSPARENT, data);
+        pass->m_transparent = ::Core::fromAI(data);
 
-    data = ::Core::toAI(pass->m_colorReflective);
-    aiMaterial->Get(AI_MATKEY_COLOR_REFLECTIVE, data);
-    pass->m_colorReflective = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_colorReflective);
+        aiMaterial->Get(AI_MATKEY_COLOR_REFLECTIVE, data);
+        pass->m_colorReflective = ::Core::fromAI(data);
 
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DIFFUSE, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_SPECULAR, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_AMBIENT, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_EMISSIVE, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_HEIGHT, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_NORMALS, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_SHININESS, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_OPACITY, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DISPLACEMENT, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_LIGHTMAP, pass, _directory);
-    loadTexture(aiMaterial, ::aiTextureType::aiTextureType_REFLECTION, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DIFFUSE, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_SPECULAR, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_AMBIENT, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_EMISSIVE, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_HEIGHT, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_NORMALS, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_SHININESS, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_OPACITY, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DISPLACEMENT, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_LIGHTMAP, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_REFLECTION, pass, _directory);
+    }
 
     _subMesh->m_material = material;
 }
@@ -410,15 +414,22 @@ void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _ty
         // _material->Get(_AI_MATKEY_TEXFLAGS_BASE, _type, i, data);
         // _material->Get(_AI_MATKEY_UVTRANSFORM_BASE, _type, i, data);
 
-        ::aiString path;
-        _aiMaterial->Get(_AI_MATKEY_TEXTURE_BASE, _type, i, path);
+        ::aiString aiPath;
+        _aiMaterial->Get(_AI_MATKEY_TEXTURE_BASE, _type, i, aiPath);
 
-        ::Hardware::TexturePtr texture = textureManager.getByName(path.C_Str());
+        std::filesystem::path path(aiPath.C_Str());
+        if(path.is_relative())
+        {
+            path = _directory/path;
+        }
+
+        const std::string textName = path.stem().u8string();
+        ::Hardware::TexturePtr texture = textureManager.getByName(textName);
         if(!texture)
         {
-            texture = textureManager.create(path.C_Str());
+            texture = textureManager.create(textName);
             texture->enableMipMaps(true);
-            texture->load(_directory/path.C_Str(), ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+            texture->load(path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
         }
 
         textUnitState->setTexture(texture);
