@@ -5,6 +5,7 @@
 #include "OpenGLNgine/Hardware/TextureUnitState.hpp"
 
 #include <array>
+#include <list>
 
 namespace Hardware
 {

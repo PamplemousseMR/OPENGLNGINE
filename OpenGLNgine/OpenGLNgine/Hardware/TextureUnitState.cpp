@@ -3,6 +3,12 @@
 namespace Hardware
 {
 
+void TextureUnitState::setTexture(TexturePtr _texture)
+{
+    GLNGINE_ASSERT_IF(!_texture, "The texture mustn't be null");
+    m_texture = _texture;
+}
+
 void TextureUnitState::lock()
 {
     if(m_texture)
