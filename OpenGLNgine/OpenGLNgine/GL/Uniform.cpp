@@ -161,7 +161,7 @@ glUniform4fv(m_location, static_cast< GLsizei >(_t.size()), glm::value_ptr(_t[0]
 void Uniform::operator=(const ::glm::mat3& _t) const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    //if(!m_m3Cache || m_m3Cache.value() != _t)
+    if(!m_m3Cache || m_m3Cache.value() != _t)
     {
         m_m3Cache = _t;
         glUniformMatrix3fv(m_location, 1, false, reinterpret_cast<const GLfloat*>(&_t));
