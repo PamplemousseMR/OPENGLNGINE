@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpenGLNgine/GL/PixelOperation.hpp"
+#include "OpenGLNgine/GL/Rasterizer.hpp"
 #include "OpenGLNgine/Hardware/Program.hpp"
 #include "OpenGLNgine/Hardware/TextureUnitState.hpp"
 
@@ -10,39 +11,47 @@
 namespace Hardware
 {
 
-enum MATERIAL_DEPTH
+enum PASS_DEPTH
 {
-    MD_NEVER,
-    MD_LESS,
-    MD_EQUAL,
-    MD_LEQUAL,
-    MD_GREATER,
-    MD_NOTEQUAL,
-    MD_GEQUAL,
-    MD_ALWAYS
+    PD_NEVER,
+    PD_LESS,
+    PD_EQUAL,
+    PD_LEQUAL,
+    PD_GREATER,
+    PD_NOTEQUAL,
+    PD_GEQUAL,
+    PD_ALWAYS
 };
 
-enum MATERIAL_BLEND
+enum PASS_BLEND
 {
-    MB_ZERO,
-    MB_ONE,
-    MB_SRC_COLOR,
-    MB_ONE_MINUS_SRC_COLOR,
-    MB_DST_COLOR,
-    MB_ONE_MINUS_DST_COLOR,
-    MB_SRC_ALPHA,
-    MB_ONE_MINUS_SRC_ALPHA,
-    MB_DST_ALPHA,
-    MB_ONE_MINUS_DST_ALPHA,
-    MB_CONSTANT_COLOR,
-    MB_ONE_MINUS_CONSTANT_COLOR,
-    MB_CONSTANT_ALPHA,
-    MB_ONE_MINUS_CONSTANT_ALPHA,
-    MB_SRC_ALPHA_SATURATE,
-    MB_SRC1_COLOR,
-    MB_ONE_MINUS_SRC1_COLOR,
-    MB_SRC1_ALPHA,
-    MB_ONE_MINUS_SRC1_ALPHA,
+    PB_ZERO,
+    PB_ONE,
+    PB_SRC_COLOR,
+    PB_ONE_MINUS_SRC_COLOR,
+    PB_DST_COLOR,
+    PB_ONE_MINUS_DST_COLOR,
+    PB_SRC_ALPHA,
+    PB_ONE_MINUS_SRC_ALPHA,
+    PB_DST_ALPHA,
+    PB_ONE_MINUS_DST_ALPHA,
+    PB_CONSTANT_COLOR,
+    PB_ONE_MINUS_CONSTANT_COLOR,
+    PB_CONSTANT_ALPHA,
+    PB_ONE_MINUS_CONSTANT_ALPHA,
+    PB_SRC_ALPHA_SATURATE,
+    PB_SRC1_COLOR,
+    PB_ONE_MINUS_SRC1_COLOR,
+    PB_SRC1_ALPHA,
+    PB_ONE_MINUS_SRC1_ALPHA,
+};
+
+enum PASS_CULLING
+{
+    PC_NONE,
+    PC_FRONT,
+    PC_BACK,
+    PC_FRONT_AND_BACK
 };
 
 class Material;
@@ -56,9 +65,11 @@ public:
 
     typedef std::list< TextureUnitState* > TextureUnitStateList;
 
-    static ::GL::PIXELOPERATION_DEPTH getType(MATERIAL_DEPTH _type);
+    static ::GL::PIXELOPERATION_DEPTH getType(PASS_DEPTH _type);
 
-    static ::GL::PIXELOPERATION_BLEND getType(MATERIAL_BLEND _type);
+    static ::GL::PIXELOPERATION_BLEND getType(PASS_BLEND _type);
+
+    static ::GL::RASTERIZER_CULLFACE getType(PASS_CULLING _type);
 
     Pass(const Pass&) = delete;
 
@@ -84,22 +95,21 @@ public:
 
     inline const TextureUnitStateList& getTextureUnitStates() const;
 
-    std::array< bool, 4 > colorMask { true, true, true, true };
+    std::array< bool, 4 > m_colorMask { true, true, true, true };
 
-    bool depthTest { false };
+    bool m_depthTest { false };
 
-    bool depthWrite { true };
+    bool m_depthWrite { true };
 
-    MATERIAL_DEPTH depthFunc { MD_LESS };
+    PASS_DEPTH m_depthFunc { PD_LESS };
 
-    bool blendTest { false };
+    bool m_blendTest { false };
 
-    MATERIAL_BLEND sourceFactor { MB_ONE };
+    PASS_BLEND m_sourceFactor { PB_ONE };
 
-    MATERIAL_BLEND destinationFactor { MB_ZERO };
+    PASS_BLEND m_destinationFactor { PB_ZERO };
 
-    /// Specifies whether meshes using this material must be rendered with backface culling.
-    bool m_twoSided { true };
+    PASS_CULLING m_culling { PC_NONE };
 
     /// Defines the opacity of the material.
     float m_opacity { 1.f };

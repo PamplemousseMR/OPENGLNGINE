@@ -106,7 +106,7 @@ int main()
 
     material->getPasses()[0]->setProgram(program);
 
-    material->getPasses()[0]->depthTest = true;
+    material->getPasses()[0]->m_depthTest = true;
 
     // Create the mesh.
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
@@ -151,7 +151,7 @@ int main()
     subMesh->m_vertexData = manager.createVertexData();
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
 
-    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
+    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
     vertexBuffer->lock();
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
@@ -165,7 +165,7 @@ int main()
 
     subMesh->m_indexData = manager.createIndexData();
 
-    ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indexData.size(), ::Hardware::HU_STATIC_DRAW);
+    ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::HT_UNSIGNED_INT, indexData.size(), ::Hardware::HU_STATIC_DRAW);
     subMesh->m_indexData->m_indexBuffer = indexBuffer;
 
     indexBuffer->lock();

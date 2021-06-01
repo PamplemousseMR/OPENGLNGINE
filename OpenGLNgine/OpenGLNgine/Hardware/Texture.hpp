@@ -101,12 +101,12 @@ enum TEXTURE_FILTER
     TF_NEAREST_MIPMAP_NEAREST
 };
 
-enum WRAP_MODE
+enum TEXTURE_WRAP
 {
-    WM_REPEAT,
-    WM_CLAMP,
-    WM_BORDER,
-    WM_MIRROR
+    TW_REPEAT,
+    TW_CLAMP,
+    TW_BORDER,
+    TW_MIRROR
 };
 
 class Texture;
@@ -145,9 +145,9 @@ public:
 
     inline void setMinFilter(TEXTURE_FILTER _filter) const;
 
-    inline void setUWrap(WRAP_MODE _mode) const;
+    inline void setUWrap(TEXTURE_WRAP _mode) const;
 
-    inline void setVWrap(WRAP_MODE _mode) const;
+    inline void setVWrap(TEXTURE_WRAP _mode) const;
 
 private:
 
@@ -157,7 +157,7 @@ private:
 
     static ::GL::TEXTURE_FILTER getType(TEXTURE_FILTER _filter);
 
-    static ::GL::WRAP_MODE getType(WRAP_MODE _mode);
+    static ::GL::TEXTURE_WRAP getType(TEXTURE_WRAP _mode);
 
     TextureManager* const m_manager;
 
@@ -192,12 +192,12 @@ inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const
     m_texture.setMinFilter(getType(_filter));
 }
 
-inline void Texture::setUWrap(WRAP_MODE _mode) const
+inline void Texture::setUWrap(TEXTURE_WRAP _mode) const
 {
     m_texture.setUWrap(getType(_mode));
 }
 
-inline void Texture::setVWrap(WRAP_MODE _mode) const
+inline void Texture::setVWrap(TEXTURE_WRAP _mode) const
 {
     m_texture.setVWrap(getType(_mode));
 }

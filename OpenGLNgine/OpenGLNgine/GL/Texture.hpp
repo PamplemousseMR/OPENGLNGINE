@@ -150,12 +150,12 @@ enum TEXTURE_FILTER : GLint
     TF_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST
 };
 
-enum WRAP_MODE : GLint
+enum TEXTURE_WRAP : GLint
 {
-    WM_REPEAT = GL_REPEAT,
-    WM_CLAMP = GL_CLAMP_TO_EDGE,
-    WM_BORDER = GL_CLAMP_TO_BORDER,
-    WM_MIRROR = GL_MIRRORED_REPEAT
+    TW_REPEAT = GL_REPEAT,
+    TW_CLAMP = GL_CLAMP_TO_EDGE,
+    TW_BORDER = GL_CLAMP_TO_BORDER,
+    TW_MIRROR = GL_MIRRORED_REPEAT
 };
 
 /**
@@ -251,13 +251,13 @@ public:
      * @brief Set the u wrap mode of the texture.
      * @param _mode The mode to apply.
      */
-    void setUWrap(WRAP_MODE _mode) const;
+    void setUWrap(TEXTURE_WRAP _mode) const;
 
     /**
      * @brief Set the v wrap mode of the texture.
      * @param _mode The mode to apply.
      */
-    void setVWrap(WRAP_MODE _mode) const;
+    void setVWrap(TEXTURE_WRAP _mode) const;
 
     /// Binds the texture.
     void bind() const override;
@@ -297,10 +297,10 @@ private:
     mutable TEXTURE_FILTER m_magFilter { TF_LINEAR };
 
     /// Store the last u wrap mode used.
-    mutable WRAP_MODE m_uWrap { WM_REPEAT };
+    mutable TEXTURE_WRAP m_uWrap { TW_REPEAT };
 
     /// Store the last v wrap mode used.
-    mutable WRAP_MODE m_vWrap { WM_REPEAT };
+    mutable TEXTURE_WRAP m_vWrap { TW_REPEAT };
 #endif
 
 };

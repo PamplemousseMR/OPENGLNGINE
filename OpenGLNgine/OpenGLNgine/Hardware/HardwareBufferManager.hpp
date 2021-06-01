@@ -28,9 +28,9 @@ public:
 
     HardwareBufferManager& operator=(HardwareBufferManager&&) = delete;
 
-    HardwareIndexBufferPtr createIndexBuffer(INDEX_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage);
+    HardwareIndexBufferPtr createIndexBuffer(HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage);
 
-    HardwareVertexBufferPtr createVertexBuffer(VERTEX_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage);
+    HardwareVertexBufferPtr createVertexBuffer(HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage);
 
     VertexData* createVertexData();
 

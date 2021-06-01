@@ -140,12 +140,18 @@ void RenderWindow::render() const
                                     }
                                 }
 
-                                ::GL::PixelOperation::enableDepthTest(pass->depthTest);
-                                ::GL::PixelOperation::enableDepthWrite(pass->depthWrite);
-                                ::GL::PixelOperation::setDepthFunc(::Hardware::Pass::getType(pass->depthFunc));
-                                ::GL::PixelOperation::enableBlendTest(pass->blendTest);
-                                ::GL::PixelOperation::setBlendFunc(::Hardware::Pass::getType(pass->sourceFactor), ::Hardware::Pass::getType(pass->destinationFactor));
-                                ::GL::PixelOperation::setColorMask(pass->colorMask[0], pass->colorMask[1], pass->colorMask[2], pass->colorMask[3]);
+                                ::GL::PixelOperation::enableDepthTest(pass->m_depthTest);
+                                ::GL::PixelOperation::enableDepthWrite(pass->m_depthWrite);
+                                ::GL::PixelOperation::setDepthFunc(::Hardware::Pass::getType(pass->m_depthFunc));
+                                ::GL::PixelOperation::enableBlendTest(pass->m_blendTest);
+                                ::GL::PixelOperation::setBlendFunc(::Hardware::Pass::getType(pass->m_sourceFactor), ::Hardware::Pass::getType(pass->m_destinationFactor));
+                                ::GL::PixelOperation::setColorMask(pass->m_colorMask[0], pass->m_colorMask[1], pass->m_colorMask[2], pass->m_colorMask[3]);
+
+                                ::GL::Rasterizer::enableCulling(pass->m_culling != ::Hardware::PC_NONE);
+                                if(pass->m_culling != ::Hardware::PC_NONE)
+                                {
+                                    ::GL::Rasterizer::setCullFace(::Hardware::Pass::getType(pass->m_culling));
+                                }
 
                                 const ::Hardware::VertexData* const vertexData = subMesh->m_vertexData;
                                 if(vertexData != nullptr)

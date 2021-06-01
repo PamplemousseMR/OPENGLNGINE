@@ -5,6 +5,13 @@
 namespace GL 
 {
 
+enum RASTERIZER_CULLFACE : GLint
+{
+    RC_BACK = GL_BACK,
+    RC_FRONT = GL_FRONT,
+    RC_BACK_AND_FRONT = GL_FRONT_AND_BACK
+};
+
 /**
  * @brief Manages the rasterizer state.
  */
@@ -36,6 +43,18 @@ public:
      * @param _height Height of the scissor.
      */
     static void setScissor(int _x, int _y, int _width, int _height);
+
+    /**
+     * @brief Enables the culling mode.
+     * @param _enable State of the culling.
+     */
+    static void enableCulling(bool _enable);
+
+    /**
+     * @brief Sets the cull face
+     * @param _cullface The cullface
+     */
+    static void setCullFace(RASTERIZER_CULLFACE _cullface);
 
 private:
 

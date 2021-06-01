@@ -61,6 +61,36 @@ void Rasterizer::setScissor(int _x, int _y, int _width, int _height)
 #endif
 }
 
+void Rasterizer::enableCulling(bool _enable)
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static bool s_cache = false;
+    if(s_cache != _enable)
+    {
+        s_cache = _enable;
+        _enable ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+        GLNGINE_CHECK_GL;
+    }
+#else
+    _enable ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+#endif
+}
+
+void Rasterizer::setCullFace(RASTERIZER_CULLFACE _cullface)
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    static RASTERIZER_CULLFACE s_cache = RC_BACK;
+    if(s_cache != _cullface)
+    {
+        s_cache = _cullface;
+        glCullFace(_cullface);
+        GLNGINE_CHECK_GL;
+    }
+#else
+    glCullFace(_cullface);
+#endif
+}
+
 Rasterizer::Initializer::Initializer()
 {
     glGetIntegerv(GL_MAX_VIEWPORT_DIMS, s_MAX_SIZE);

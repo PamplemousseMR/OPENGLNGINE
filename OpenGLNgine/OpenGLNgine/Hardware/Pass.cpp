@@ -3,75 +3,90 @@
 namespace Hardware
 {
 
-::GL::PIXELOPERATION_DEPTH Pass::getType(MATERIAL_DEPTH _type)
+::GL::PIXELOPERATION_DEPTH Pass::getType(PASS_DEPTH _type)
 {
     switch(_type)
     {
-    case MD_NEVER:
+    case PD_NEVER:
         return ::GL::PD_NEVER;
-    case MD_LESS:
+    case PD_LESS:
         return ::GL::PD_LESS;
-    case MD_EQUAL:
+    case PD_EQUAL:
         return ::GL::PD_EQUAL;
-    case MD_LEQUAL:
+    case PD_LEQUAL:
         return ::GL::PD_LEQUAL;
-    case MD_GREATER:
+    case PD_GREATER:
         return ::GL::PD_GREATER;
-    case MD_NOTEQUAL:
+    case PD_NOTEQUAL:
         return ::GL::PD_NOTEQUAL;
-    case MD_GEQUAL:
+    case PD_GEQUAL:
         return ::GL::PD_GEQUAL;
-    case MD_ALWAYS:
+    case PD_ALWAYS:
         return ::GL::PD_ALWAYS;
     default:
         GLNGINE_EXCEPTION("Unhandle depth function");
     }
 }
 
-::GL::PIXELOPERATION_BLEND Pass::getType(MATERIAL_BLEND _type)
+::GL::PIXELOPERATION_BLEND Pass::getType(PASS_BLEND _type)
 {
     switch(_type)
     {
-    case MB_ZERO:
+    case PB_ZERO:
         return ::GL::PB_ZERO;
-    case MB_ONE:
+    case PB_ONE:
         return ::GL::PB_ONE;
-    case MB_SRC_COLOR:
+    case PB_SRC_COLOR:
         return ::GL::PB_SRC_COLOR;
-    case MB_ONE_MINUS_SRC_COLOR:
+    case PB_ONE_MINUS_SRC_COLOR:
         return ::GL::PB_ONE_MINUS_SRC_COLOR;
-    case MB_DST_COLOR:
+    case PB_DST_COLOR:
         return ::GL::PB_DST_COLOR;
-    case MB_ONE_MINUS_DST_COLOR:
+    case PB_ONE_MINUS_DST_COLOR:
         return ::GL::PB_ONE_MINUS_DST_COLOR;
-    case MB_SRC_ALPHA:
+    case PB_SRC_ALPHA:
         return ::GL::PB_SRC_ALPHA;
-    case MB_ONE_MINUS_SRC_ALPHA:
+    case PB_ONE_MINUS_SRC_ALPHA:
         return ::GL::PB_ONE_MINUS_SRC_ALPHA;
-    case MB_DST_ALPHA:
+    case PB_DST_ALPHA:
         return ::GL::PB_DST_ALPHA;
-    case MB_ONE_MINUS_DST_ALPHA:
+    case PB_ONE_MINUS_DST_ALPHA:
         return ::GL::PB_ONE_MINUS_DST_ALPHA;
-    case MB_CONSTANT_COLOR:
+    case PB_CONSTANT_COLOR:
         return ::GL::PB_CONSTANT_COLOR;
-    case MB_ONE_MINUS_CONSTANT_COLOR:
+    case PB_ONE_MINUS_CONSTANT_COLOR:
         return ::GL::PB_ONE_MINUS_CONSTANT_COLOR;
-    case MB_CONSTANT_ALPHA:
+    case PB_CONSTANT_ALPHA:
         return ::GL::PB_CONSTANT_ALPHA;
-    case MB_ONE_MINUS_CONSTANT_ALPHA:
+    case PB_ONE_MINUS_CONSTANT_ALPHA:
         return ::GL::PB_ONE_MINUS_CONSTANT_ALPHA;
-    case MB_SRC_ALPHA_SATURATE:
+    case PB_SRC_ALPHA_SATURATE:
         return ::GL::PB_SRC_ALPHA_SATURATE;
-    case MB_SRC1_COLOR:
+    case PB_SRC1_COLOR:
         return ::GL::PB_SRC1_COLOR;
-    case MB_ONE_MINUS_SRC1_COLOR:
+    case PB_ONE_MINUS_SRC1_COLOR:
         return ::GL::PB_ONE_MINUS_SRC1_COLOR;
-    case MB_SRC1_ALPHA:
+    case PB_SRC1_ALPHA:
         return ::GL::PB_SRC1_ALPHA;
-    case MB_ONE_MINUS_SRC1_ALPHA:
+    case PB_ONE_MINUS_SRC1_ALPHA:
         return ::GL::PB_ONE_MINUS_SRC1_ALPHA;
     default:
         GLNGINE_EXCEPTION("Unhandle blend type");
+    }
+}
+
+::GL::RASTERIZER_CULLFACE Pass::getType(PASS_CULLING _type)
+{
+    switch(_type)
+    {
+    case PC_BACK:
+        return ::GL::RC_BACK;
+    case PC_FRONT:
+        return ::GL::RC_FRONT;
+    case PC_FRONT_AND_BACK:
+        return ::GL::RC_BACK_AND_FRONT;
+    default:
+        GLNGINE_EXCEPTION("Unhandle culling mode");
     }
 }
 

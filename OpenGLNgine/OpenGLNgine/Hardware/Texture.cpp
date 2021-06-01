@@ -194,17 +194,17 @@ namespace Hardware
     }
 }
 
-::GL::WRAP_MODE Texture::getType(WRAP_MODE _mode)
+::GL::TEXTURE_WRAP Texture::getType(TEXTURE_WRAP _mode)
 {
     switch(_mode) {
-    case WM_REPEAT:
-        return ::GL::WM_REPEAT;
-    case WM_CLAMP:
-        return ::GL::WM_CLAMP;
-    case WM_BORDER:
-        return ::GL::WM_BORDER;
-    case WM_MIRROR:
-        return ::GL::WM_MIRROR;
+    case TW_REPEAT:
+        return ::GL::TW_REPEAT;
+    case TW_CLAMP:
+        return ::GL::TW_CLAMP;
+    case TW_BORDER:
+        return ::GL::TW_BORDER;
+    case TW_MIRROR:
+        return ::GL::TW_MIRROR;
     default:
         GLNGINE_EXCEPTION("Unhandle wrapt mode");
     }

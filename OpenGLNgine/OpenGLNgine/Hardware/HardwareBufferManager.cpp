@@ -13,14 +13,14 @@ HardwareBufferManager& HardwareBufferManager::getInstance()
     return *s_instance;
 }
 
-HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(INDEX_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
+HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
 {
     HardwareIndexBuffer* ptr = new HardwareIndexBuffer(this, _type, _size, _usage);
     m_indexBuffers.insert(ptr);
     return HardwareIndexBufferPtr(ptr);
 }
 
-HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(VERTEX_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage)
+HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage)
 {
     HardwareVertexBuffer* ptr = new HardwareVertexBuffer(this, _type, _numVertices, _usage);
     m_vertexBuffers.insert(ptr);

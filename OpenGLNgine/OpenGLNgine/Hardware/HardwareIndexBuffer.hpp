@@ -7,11 +7,11 @@
 namespace Hardware
 {
 
-enum INDEX_TYPE : int
+enum HARDWREINDEXBUFFER_TYPE : int
 {
-    IT_UNSIGNED_BYTE = sizeof(unsigned char),
-    IT_UNSIGNED_SHORT = sizeof(unsigned short),
-    IT_UNSIGNED_INT = sizeof(unsigned int)
+    HT_UNSIGNED_BYTE = sizeof(unsigned char),
+    HT_UNSIGNED_SHORT = sizeof(unsigned short),
+    HT_UNSIGNED_INT = sizeof(unsigned int)
 };
 
 class HardwareBufferManager;
@@ -24,9 +24,9 @@ class HardwareIndexBuffer final : public IHardwareBuffer
 
 public:
 
-    static ::GL::DATABUFFER_TYPE getType(INDEX_TYPE _type);
+    static ::GL::DATABUFFER_TYPE getType(HARDWREINDEXBUFFER_TYPE _type);
 
-    HardwareIndexBuffer(HardwareBufferManager* const _manager, INDEX_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
+    HardwareIndexBuffer(HardwareBufferManager* const _manager, HARDWREINDEXBUFFER_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
 
     ~HardwareIndexBuffer() override;
 
@@ -40,7 +40,7 @@ public:
 
     inline ::GL::DATABUFFER_TYPE getType() const;
 
-    const INDEX_TYPE m_indexType;
+    const HARDWREINDEXBUFFER_TYPE m_indexType;
 
     const size_t m_numIndex;
 

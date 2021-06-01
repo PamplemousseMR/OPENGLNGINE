@@ -389,7 +389,7 @@ void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 #endif
 }
 
-void Texture::setUWrap(WRAP_MODE _mode) const
+void Texture::setUWrap(TEXTURE_WRAP _mode) const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
     if(m_uWrap != _mode)
@@ -415,7 +415,7 @@ void Texture::setUWrap(WRAP_MODE _mode) const
 #endif
 }
 
-void Texture::setVWrap(WRAP_MODE _mode) const
+void Texture::setVWrap(TEXTURE_WRAP _mode) const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
     if(m_vWrap != _mode)

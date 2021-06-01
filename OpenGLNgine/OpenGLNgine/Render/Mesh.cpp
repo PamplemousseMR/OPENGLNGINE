@@ -52,33 +52,33 @@ namespace Render
     }
 }
 
-::aiTextureMapMode toAI(::Hardware::WRAP_MODE _mode)
+::aiTextureMapMode toAI(::Hardware::TEXTURE_WRAP _mode)
 {
     switch (_mode) {
-    case ::Hardware::WRAP_MODE::WM_REPEAT:
+    case ::Hardware::TEXTURE_WRAP::TW_REPEAT:
         return ::aiTextureMapMode::aiTextureMapMode_Wrap;
-    case ::Hardware::WRAP_MODE::WM_CLAMP:
+    case ::Hardware::TEXTURE_WRAP::TW_CLAMP:
         return ::aiTextureMapMode::aiTextureMapMode_Clamp;
-    case ::Hardware::WRAP_MODE::WM_BORDER:
+    case ::Hardware::TEXTURE_WRAP::TW_BORDER:
         return ::aiTextureMapMode::aiTextureMapMode_Decal;
-    case ::Hardware::WRAP_MODE::WM_MIRROR:
+    case ::Hardware::TEXTURE_WRAP::TW_MIRROR:
         return ::aiTextureMapMode::aiTextureMapMode_Mirror;
     default:
         GLNGINE_EXCEPTION("Unhandle wrapping mode");
     }
 }
 
-::Hardware::WRAP_MODE fromAI(::aiTextureMapMode _mode)
+::Hardware::TEXTURE_WRAP fromAI(::aiTextureMapMode _mode)
 {
     switch (_mode) {
     case ::aiTextureMapMode::aiTextureMapMode_Wrap:
-        return ::Hardware::WRAP_MODE::WM_REPEAT;
+        return ::Hardware::TEXTURE_WRAP::TW_REPEAT;
     case ::aiTextureMapMode::aiTextureMapMode_Clamp:
-        return ::Hardware::WRAP_MODE::WM_CLAMP;
+        return ::Hardware::TEXTURE_WRAP::TW_CLAMP;
     case ::aiTextureMapMode::aiTextureMapMode_Decal:
-        return ::Hardware::WRAP_MODE::WM_BORDER;
+        return ::Hardware::TEXTURE_WRAP::TW_BORDER;
     case ::aiTextureMapMode::aiTextureMapMode_Mirror:
-        return ::Hardware::WRAP_MODE::WM_MIRROR;
+        return ::Hardware::TEXTURE_WRAP::TW_MIRROR;
     default:
         GLNGINE_EXCEPTION("Unhandle wrapping mode");
     }
@@ -252,7 +252,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         if(mesh->HasPositions())
         {
-            const ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertices.size()*3, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertices.size()*3, ::Hardware::HU_STATIC_DRAW);
             vertexBuffer->lock();
             vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertices.data(), false);
 
@@ -265,7 +265,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         {
             subMesh->m_indexData = manager.createIndexData();
 
-            const ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indices.size(), ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::HT_UNSIGNED_INT, indices.size(), ::Hardware::HU_STATIC_DRAW);
             subMesh->m_indexData->m_indexBuffer = indexBuffer;
             indexBuffer->lock();
             indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indices.data(), false);
@@ -275,7 +275,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         for(unsigned col=0; col<mesh->GetNumColorChannels() && col<6; ++col)
         {
-            const ::Hardware::HardwareVertexBufferPtr colorBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, colors[col].size()*4, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr colorBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, colors[col].size()*4, ::Hardware::HU_STATIC_DRAW);
             colorBuffer->lock();
             colorBuffer->writeData(0, colorBuffer->getSizeInBytes(), colors[col].data(), false);
 
@@ -286,7 +286,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         if(mesh->HasNormals())
         {
-            const ::Hardware::HardwareVertexBufferPtr normalBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, normals.size()*3, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr normalBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, normals.size()*3, ::Hardware::HU_STATIC_DRAW);
             normalBuffer->lock();
             normalBuffer->writeData(0, normalBuffer->getSizeInBytes(), normals.data(), false);
 
@@ -297,7 +297,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         for(unsigned uv=0; uv<mesh->GetNumUVChannels() && uv<6; ++uv)
         {
-            const ::Hardware::HardwareVertexBufferPtr textCoordBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, textCoords[uv].size()*2, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr textCoordBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, textCoords[uv].size()*2, ::Hardware::HU_STATIC_DRAW);
             textCoordBuffer->lock();
             textCoordBuffer->writeData(0, textCoordBuffer->getSizeInBytes(), textCoords[uv].data(), false);
 
@@ -308,7 +308,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         if(mesh->HasTangentsAndBitangents())
         {
-            const ::Hardware::HardwareVertexBufferPtr tangentBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertices.size()*3*2, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr tangentBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertices.size()*3*2, ::Hardware::HU_STATIC_DRAW);
             tangentBuffer->lock();
             tangentBuffer->writeData(0, tangentBuffer->getSizeInBytes(), tangents.data(), false);
 
@@ -341,7 +341,6 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
         material = materialMng.create(aiMaterial->GetName().C_Str());
         ::Hardware::Pass* pass = material->getPasses()[0];
 
-        aiMaterial->Get(AI_MATKEY_TWOSIDED, pass->m_twoSided);
         aiMaterial->Get(AI_MATKEY_OPACITY, pass->m_opacity);
         aiMaterial->Get(AI_MATKEY_TRANSPARENCYFACTOR, pass->m_transparencyfactor);
         aiMaterial->Get(AI_MATKEY_BUMPSCALING, pass->m_bumpScaling);
@@ -349,9 +348,10 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
         aiMaterial->Get(AI_MATKEY_REFLECTIVITY, pass->m_reflectivity);
         aiMaterial->Get(AI_MATKEY_SHININESS_STRENGTH, pass->m_shininessStrenght);
         aiMaterial->Get(AI_MATKEY_REFRACTI, pass->m_refracti);
-        //material->Get(AI_MATKEY_SHADING_MODEL, pass->m_shadingModel);
-        //material->Get(AI_MATKEY_ENABLE_WIREFRAME, pass->m_wireframe);
-        //material->Get(AI_MATKEY_BLEND_FUNC, pass->m_blendFunc);
+        //aiMaterial->Get(AI_MATKEY_TWOSIDED, pass->m_culling);
+        //aiMaterial->Get(AI_MATKEY_SHADING_MODEL, pass->m_shadingModel);
+        //aiMaterial->Get(AI_MATKEY_ENABLE_WIREFRAME, pass->m_wireframe);
+        //aiMaterial->Get(AI_MATKEY_BLEND_FUNC, pass->m_blendFunc);
 
         ::aiColor3D data = ::Core::toAI(pass->m_ambient);
         aiMaterial->Get(AI_MATKEY_COLOR_AMBIENT, data);

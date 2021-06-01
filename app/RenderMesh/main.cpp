@@ -102,7 +102,7 @@ int main()
         }
 
         material->getPasses()[0]->setProgram(program);
-        material->getPasses()[0]->depthTest = true;
+        material->getPasses()[0]->m_depthTest = true;
 
         for(::Hardware::TextureUnitState* textUnit : material->getPasses()[0]->getTextureUnitStates())
         {

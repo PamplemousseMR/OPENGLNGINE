@@ -49,9 +49,9 @@ public:
 
     TEXTURE_FILTER magFilter { TF_NEAREST };
 
-    WRAP_MODE m_uWrap { WM_REPEAT };
+    TEXTURE_WRAP m_uWrap { TW_REPEAT };
 
-    WRAP_MODE m_vWrap { WM_REPEAT };
+    TEXTURE_WRAP m_vWrap { TW_REPEAT };
 
 private:
 

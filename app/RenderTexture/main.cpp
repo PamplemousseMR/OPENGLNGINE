@@ -93,7 +93,7 @@ int main()
     ::Hardware::MaterialPtr material = materialMng.create("Material");
 
     material->getPasses()[0]->setProgram(program);
-    material->getPasses()[0]->depthTest = true;
+    material->getPasses()[0]->m_depthTest = true;
 
     // Create the texture unit state
     ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState(::Hardware::TS_AMBIENT);
@@ -224,7 +224,7 @@ int main()
     subMesh->m_vertexData = manager.createVertexData();
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLES;
 
-    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);    
+    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
     vertexBuffer->lock();
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
