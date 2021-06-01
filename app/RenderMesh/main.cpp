@@ -103,6 +103,12 @@ int main()
 
         material->getPasses()[0]->setProgram(program);
         material->getPasses()[0]->depthTest = true;
+
+        for(::Hardware::TextureUnitState* textUnit : material->getPasses()[0]->getTextureUnitStates())
+        {
+            textUnit->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
+            textUnit->magFilter = ::Hardware::TF_LINEAR;
+        }
     }
 
     // Render loop.
