@@ -18,6 +18,11 @@ TexturePtr TextureManager::create(const std::string& _name)
     return ptr;
 }
 
+TexturePtr TextureManager::getByName(const std::string& _name)
+{
+    return this->get(_name);
+}
+
 void TextureManager::destroy(const TexturePtr& _texture)
 {
     this->remove(_texture);

@@ -101,6 +101,14 @@ enum TEXTURE_FILTER
     TF_NEAREST_MIPMAP_NEAREST
 };
 
+enum WRAP_MODE
+{
+    WM_REPEAT,
+    WM_CLAMP,
+    WM_BORDER,
+    WM_MIRROR
+};
+
 class Texture;
 class TextureManager;
 
@@ -127,13 +135,19 @@ public:
 
     inline void unlock();
 
-    inline void enableMipMaps(bool _enable);
+    void generateMipMaps();
+
+    inline bool isMipMapsGenerated() const;
 
     void load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
     inline void setMagFilter(TEXTURE_FILTER _filter) const;
 
     inline void setMinFilter(TEXTURE_FILTER _filter) const;
+
+    inline void setUWrap(WRAP_MODE _mode) const;
+
+    inline void setVWrap(WRAP_MODE _mode) const;
 
 private:
 
@@ -143,9 +157,11 @@ private:
 
     static ::GL::TEXTURE_FILTER getType(TEXTURE_FILTER _filter);
 
+    static ::GL::WRAP_MODE getType(WRAP_MODE _mode);
+
     TextureManager* const m_manager;
 
-    bool m_mipMaps { false };
+    bool m_mipMapsGenerated { false };
 
     ::GL::Texture m_texture;
 
@@ -161,9 +177,9 @@ inline void Texture::unlock()
     m_texture.unbind();
 }
 
-inline void Texture::enableMipMaps(bool _enable)
+inline bool Texture::isMipMapsGenerated() const
 {
-    m_mipMaps = _enable;
+    return m_mipMapsGenerated;
 }
 
 inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const
@@ -174,6 +190,16 @@ inline void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 inline void Texture::setMinFilter(TEXTURE_FILTER _filter) const
 {
     m_texture.setMinFilter(getType(_filter));
+}
+
+inline void Texture::setUWrap(WRAP_MODE _mode) const
+{
+    m_texture.setUWrap(getType(_mode));
+}
+
+inline void Texture::setVWrap(WRAP_MODE _mode) const
+{
+    m_texture.setVWrap(getType(_mode));
 }
 
 }

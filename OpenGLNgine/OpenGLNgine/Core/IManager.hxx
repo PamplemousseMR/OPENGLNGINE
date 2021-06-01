@@ -24,6 +24,13 @@ void IManager< T >::add(const std::shared_ptr< T >& _resource)
 }
 
 template< class T >
+std::shared_ptr< T > IManager< T >::get(const std::string& _name) const
+{
+    typename ResourceList::const_iterator it = m_resources.find(_name);
+    return it != m_resources.end() ? it->second : nullptr;
+}
+
+template< class T >
 void IManager< T >::remove(const std::shared_ptr< T >& _resource)
 {
     GLNGINE_ASSERT_IF(!_resource, "The resource mustn't be null");

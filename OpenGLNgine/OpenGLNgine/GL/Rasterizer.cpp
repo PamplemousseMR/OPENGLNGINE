@@ -15,7 +15,7 @@ void Rasterizer::setViewport(int _x, int _y, int _width, int _height)
     const static Initializer s_INITIALIZER;
     if(_width > s_MAX_SIZE[0] || _height > s_MAX_SIZE[1])
     {
-        GLNGINE_EXCEPTION("The size too big");
+        GLNGINE_EXCEPTION("Viewport size too large");
     }
 #ifdef GLNGINE_USE_STATE_CACHE
     static std::array< int, 4 > s_cache = {-1, -1, -1, -1};

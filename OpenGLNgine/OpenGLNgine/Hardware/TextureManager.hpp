@@ -23,6 +23,8 @@ public:
 
     TexturePtr create(const std::string& _name);
 
+    TexturePtr getByName(const std::string& _name);
+
     void destroy(const TexturePtr& _Texture);
 
 private:

@@ -17,7 +17,7 @@ namespace Hardware
     case TT_2DMULTISAMPLE:
         return ::GL::TT_2DMULTISAMPLE;
     default:
-        GLNGINE_EXCEPTION("Unhandle type");
+        GLNGINE_EXCEPTION("Unhandle texture type");
     }
 }
 
@@ -170,7 +170,7 @@ namespace Hardware
     case TIF_RGBA32UI:
         return ::GL::TIF_RGBA32UI;
     default:
-        GLNGINE_EXCEPTION("Unhandle format");
+        GLNGINE_EXCEPTION("Unhandle texture format");
     }
 }
 
@@ -190,7 +190,23 @@ namespace Hardware
     case TF_NEAREST_MIPMAP_NEAREST:
         return ::GL::TF_NEAREST_MIPMAP_NEAREST;
     default:
-        GLNGINE_EXCEPTION("Unhandle filter");
+        GLNGINE_EXCEPTION("Unhandle texture filter");
+    }
+}
+
+::GL::WRAP_MODE Texture::getType(WRAP_MODE _mode)
+{
+    switch(_mode) {
+    case WM_REPEAT:
+        return ::GL::WM_REPEAT;
+    case WM_CLAMP:
+        return ::GL::WM_CLAMP;
+    case WM_BORDER:
+        return ::GL::WM_BORDER;
+    case WM_MIRROR:
+        return ::GL::WM_MIRROR;
+    default:
+        GLNGINE_EXCEPTION("Unhandle wrapt mode");
     }
 }
 
@@ -204,15 +220,15 @@ Texture::~Texture()
 {
 }
 
+void Texture::generateMipMaps()
+{
+    m_texture.generateMipmap();
+    m_mipMapsGenerated = true;
+}
+
 void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
-    m_texture.bind();
     m_texture.load(_path, getType(_type), getType(_internalFormat));
-    if(m_mipMaps)
-    {
-        m_texture.generateMipmap();
-    }
-    m_texture.unbind();
 }
 
 }

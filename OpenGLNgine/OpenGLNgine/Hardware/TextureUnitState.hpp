@@ -41,17 +41,17 @@ public:
 
     void setTexture(TexturePtr _texture);
 
-    void lock();
-
-    void unlock();
-
     inline TexturePtr getTexture() const;
+
+    const TEXTUREUNITSTATE_SEMANTIC m_semantic;
 
     TEXTURE_FILTER minFilter { TF_NEAREST };
 
     TEXTURE_FILTER magFilter { TF_NEAREST };
 
-    const TEXTUREUNITSTATE_SEMANTIC m_semantic;
+    WRAP_MODE m_uWrap { WM_REPEAT };
+
+    WRAP_MODE m_vWrap { WM_REPEAT };
 
 private:
 

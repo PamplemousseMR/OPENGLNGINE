@@ -131,6 +131,7 @@ int main()
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
 
     ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
+    vertexBuffer->lock();
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
     subMesh->m_vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
@@ -146,6 +147,7 @@ int main()
     ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indexData.size(), ::Hardware::HU_STATIC_DRAW);
     subMesh->m_indexData->m_indexBuffer = indexBuffer;
 
+    indexBuffer->lock();
     indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indexData.data(), false);
     subMesh->m_indexData->m_indexCount = 14;
     subMesh->m_indexData->m_indexStart = 0;

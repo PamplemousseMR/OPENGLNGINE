@@ -5,7 +5,6 @@
 #include <GL/glew.h>
 
 #include <filesystem>
-#include <optional>
 
 namespace GL
 {
@@ -151,6 +150,14 @@ enum TEXTURE_FILTER : GLint
     TF_NEAREST_MIPMAP_NEAREST = GL_NEAREST_MIPMAP_NEAREST
 };
 
+enum WRAP_MODE : GLint
+{
+    WM_REPEAT = GL_REPEAT,
+    WM_CLAMP = GL_CLAMP_TO_EDGE,
+    WM_BORDER = GL_CLAMP_TO_BORDER,
+    WM_MIRROR = GL_MIRRORED_REPEAT
+};
+
 /**
  * @brief Manages a texture object.
  */
@@ -200,23 +207,24 @@ public:
 
     /**
      * @brief Allocates a texture.
+     * @param _type Type of the texture.
      * @param _width Width of the texture.
      * @param _height Height of the texture.
      * @param _internalFormat Internal format of the texture.
-     * @param _format Format of the texture.
-     * @param _data Type of the texture data.
+     * @param _format Format of the source texture.
+     * @param _data Type of the texture source.
      */
-    void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
+    void allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
 
     /**
      * @brief Allocates a multisampled texture.
+     * @param _type Type of the texture.
      * @param _width Width of the texture.
      * @param _height Height of the texture.
      * @param _internalFormat Internal format of the texture.
-     * @param _format Format of the texture.
      * @param _sample Number of sample.
      */
-    void allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample);
+    void allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample);
 
     /// Generates mipmap of the texture.
     void generateMipmap() const;
@@ -238,6 +246,18 @@ public:
      * @param _filter The filter to apply.
      */
     void setMagFilter(TEXTURE_FILTER _filter) const;
+
+    /**
+     * @brief Set the u wrap mode of the texture.
+     * @param _mode The mode to apply.
+     */
+    void setUWrap(WRAP_MODE _mode) const;
+
+    /**
+     * @brief Set the v wrap mode of the texture.
+     * @param _mode The mode to apply.
+     */
+    void setVWrap(WRAP_MODE _mode) const;
 
     /// Binds the texture.
     void bind() const override;
@@ -266,15 +286,21 @@ private:
     /// Stores the type of the texture.
     TEXTURE_TYPE m_type {TT_2D};
 
-    /// Stores the format of the texture.
+    /// Stores the format of the texture (Not used for multisampled textures).
     TEXTURE_FORMAT m_format {TF_RGBA};
 
 #ifdef GLNGINE_USE_STATE_CACHE
-    /// Store the last magnification filter used.
-    mutable std::optional< TEXTURE_FILTER > m_magFilter { std::nullopt };
-
     /// Store the last mignification filter used.
-    mutable std::optional< TEXTURE_FILTER > m_minFilter { std::nullopt };
+    mutable TEXTURE_FILTER m_minFilter { TF_NEAREST_MIPMAP_LINEAR };
+
+    /// Store the last magnification filter used.
+    mutable TEXTURE_FILTER m_magFilter { TF_LINEAR };
+
+    /// Store the last u wrap mode used.
+    mutable WRAP_MODE m_uWrap { WM_REPEAT };
+
+    /// Store the last v wrap mode used.
+    mutable WRAP_MODE m_vWrap { WM_REPEAT };
 #endif
 
 };

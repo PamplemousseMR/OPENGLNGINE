@@ -88,42 +88,6 @@ void Render::destroyAllSceneManagers()
     }
 }
 
-MaterialInfo* Render::createMaterialInfo(const std::string& _name)
-{
-    if(m_materialInfos.find(_name) != m_materialInfos.end())
-    {
-        GLNGINE_EXCEPTION("A material with the name '" + _name + "' already exists");
-    }
-
-    auto mat = new MaterialInfo(_name);
-    m_materialInfos.emplace(_name, mat);
-    return mat;
-}
-
-void Render::destroyMaterialInfo(const MaterialInfo* const _matInfo)
-{
-    GLNGINE_ASSERT_IF(!_matInfo, "The material mustn't be null");
-
-    MaterialInfoList::const_iterator it = m_materialInfos.find(_matInfo->getName());
-    if(it == m_materialInfos.end())
-    {
-        GLNGINE_EXCEPTION("A scene manager with the name '" + _matInfo->getName() + "' doesn't exists");
-    }
-
-    m_materialInfos.erase(it);
-    delete _matInfo;
-}
-
-void Render::destroyAllMaterialInfos()
-{
-    MaterialInfoList::iterator it = m_materialInfos.begin();
-    while(it != m_materialInfos.end())
-    {
-        this->destroyMaterialInfo(it->second);
-        it = m_materialInfos.begin();
-    }
-}
-
 Render::Initializer::Initializer()
 {
     Render::s_instance = new Render();

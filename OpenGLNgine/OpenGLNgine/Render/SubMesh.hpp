@@ -4,7 +4,6 @@
 #include "OpenGLNgine/Hardware/IndexData.hpp"
 #include "OpenGLNgine/Hardware/Material.hpp"
 #include "OpenGLNgine/Hardware/VertexData.hpp"
-#include "OpenGLNgine/Render/MaterialInfo.hpp"
 
 namespace Render
 {
@@ -14,7 +13,6 @@ class Mesh;
 class SubMesh final : public ::Core::IResource
 {
 
-    friend MaterialInfo;
     friend Mesh;
 
 public:
@@ -31,10 +29,6 @@ public:
 
     inline void _notifyDirty() const;
 
-    void setMaterialInfo(MaterialInfo* const _matInfo);
-
-    inline MaterialInfo* getMaterialInfo() const;
-
     ::Hardware::VertexData* m_vertexData { nullptr };
 
     ::Hardware::IndexData* m_indexData { nullptr };
@@ -49,11 +43,7 @@ private:
 
     ~SubMesh();
 
-    void _notifyMaterialInfoDestroyed();
-
     mutable bool m_dirty { true };
-
-    MaterialInfo* m_materialInfo { nullptr };
 
 };
 
@@ -65,11 +55,6 @@ inline bool SubMesh::isDirty() const
 inline void SubMesh::_notifyDirty() const
 {
     m_dirty = false;
-}
-
-inline MaterialInfo* SubMesh::getMaterialInfo() const
-{
-    return m_materialInfo;
 }
 
 }

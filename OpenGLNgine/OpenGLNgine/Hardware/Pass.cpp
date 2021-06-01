@@ -75,21 +75,6 @@ namespace Hardware
     }
 }
 
-void Pass::lock()
-{
-    if(m_program)
-    {
-        m_program->lock();
-    }
-}
-
-void Pass::unlock()
-{
-    if(m_program)
-    {
-        m_program->unlock();
-    }}
-
 Pass::Pass()
 {
 }
@@ -115,6 +100,20 @@ TextureUnitState* Pass::createTextureUnitState(TEXTUREUNITSTATE_SEMANTIC _semant
 
     m_textureUnitStates.push_back(new TextureUnitState(_semantic));
     return m_textureUnitStates.back();
+}
+
+TextureUnitState* Pass::findTextureUnitStateBySemantic(TEXTUREUNITSTATE_SEMANTIC _semantic) const
+{
+    TextureUnitStateList::const_iterator it, itEnd;
+    itEnd = m_textureUnitStates.end();
+    for(it=m_textureUnitStates.begin() ; it!=itEnd ; ++it)
+    {
+        if((*it)->m_semantic == _semantic)
+        {
+            return *it;
+        }
+    }
+    return nullptr;
 }
 
 void Pass::destroyAllTextureUnitStates()

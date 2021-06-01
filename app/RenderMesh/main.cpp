@@ -91,29 +91,31 @@ int main()
 
     mesh->load(MODEL_PATH"/Flamethrower/Flamethrower.obj");
 
+    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
     for(::Render::SubMesh* subMesh : mesh->getSubMeshes())
     {
-        ::Render::TextureInfo* textInfo = subMesh->getMaterialInfo()->getTextureInfo(::Render::TT_AMBIENT);
-
-        // Create the texture.
-        ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
-        ::Hardware::TexturePtr texture = textureManager.create(textInfo->m_path.u8string());
-        texture->enableMipMaps(true);
-        texture->load(textInfo->m_path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
-
-        ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
-        ::Hardware::MaterialPtr material = materialMng.create("Material_" + subMesh->getName());
+        ::Hardware::MaterialPtr material = subMesh->m_material;
+        if(!material)
+        {
+            material = materialMng.create("Material_" + subMesh->getName());
+            subMesh->m_material = material;
+        }
 
         material->getPasses()[0]->setProgram(program);
         material->getPasses()[0]->depthTest = true;
 
-        // Create the texture unit state
-        ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState(::Hardware::TS_AMBIENT);
-        unitSate->setTexture(texture);
-        unitSate->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
-        unitSate->magFilter = ::Hardware::TF_LINEAR;
+        for(::Hardware::TextureUnitState* textUnit : material->getPasses()[0]->getTextureUnitStates())
+        {
+            textUnit->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
+            textUnit->magFilter = ::Hardware::TF_LINEAR;
 
-        subMesh->m_material = material;
+            const ::Hardware::TexturePtr texture = textUnit->getTexture();
+            if(texture && !texture->isMipMapsGenerated())
+            {
+                texture->lock();
+                texture->generateMipMaps();
+            }
+        }
     }
 
     // Render loop.

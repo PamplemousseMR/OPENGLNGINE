@@ -3,64 +3,82 @@
 #include "OpenGLNgine/Core/Exception.hpp"
 #include "OpenGLNgine/Core/Helper.hpp"
 #include "OpenGLNgine/Hardware/HardwareBufferManager.hpp"
+#include <OpenGLNgine/Hardware/MaterialManager.hpp>
+#include <OpenGLNgine/Hardware/TextureManager.hpp>
 #include "OpenGLNgine/Render/Render.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
 
 namespace Render
 {
 
-TEXTURE_TYPE fromAI(::aiTextureType _type)
+::Hardware::TEXTUREUNITSTATE_SEMANTIC fromAI(::aiTextureType _type)
 {
     switch (_type) {
     case ::aiTextureType::aiTextureType_DIFFUSE:
-        return TEXTURE_TYPE::TT_DIFFUSE;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_DIFFUSE;
         break;
     case ::aiTextureType::aiTextureType_SPECULAR:
-        return TEXTURE_TYPE::TT_SPECULAR;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_SPECULAR;
         break;
     case ::aiTextureType::aiTextureType_AMBIENT:
-        return TEXTURE_TYPE::TT_AMBIENT;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_AMBIENT;
         break;
     case ::aiTextureType::aiTextureType_EMISSIVE:
-        return TEXTURE_TYPE::TT_EMISSIVE;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_EMISSIVE;
         break;
     case ::aiTextureType::aiTextureType_HEIGHT:
-        return TEXTURE_TYPE::TT_HEIGHT;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_HEIGHT;
         break;
     case ::aiTextureType::aiTextureType_NORMALS:
-        return TEXTURE_TYPE::TT_NORMALS;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_NORMALS;
         break;
     case ::aiTextureType::aiTextureType_SHININESS:
-        return TEXTURE_TYPE::TT_SHININESS;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_SHININESS;
         break;
     case ::aiTextureType::aiTextureType_OPACITY:
-        return TEXTURE_TYPE::TT_OPACITY;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_OPACITY;
         break;
     case ::aiTextureType::aiTextureType_DISPLACEMENT:
-        return TEXTURE_TYPE::TT_DISPLACEMENT;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_DISPLACEMENT;
         break;
     case ::aiTextureType::aiTextureType_LIGHTMAP:
-        return TEXTURE_TYPE::TT_LIGHTMAP;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_LIGHTMAP;
         break;
     case ::aiTextureType::aiTextureType_REFLECTION:
-        return TEXTURE_TYPE::TT_REFLECTION;
+        return ::Hardware::TEXTUREUNITSTATE_SEMANTIC::TS_REFLECTION;
         break;
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
     }
 }
 
-WRAP_MODE fromAI(::aiTextureMapMode _mode)
+::aiTextureMapMode toAI(::Hardware::WRAP_MODE _mode)
+{
+    switch (_mode) {
+    case ::Hardware::WRAP_MODE::WM_REPEAT:
+        return ::aiTextureMapMode::aiTextureMapMode_Wrap;
+    case ::Hardware::WRAP_MODE::WM_CLAMP:
+        return ::aiTextureMapMode::aiTextureMapMode_Clamp;
+    case ::Hardware::WRAP_MODE::WM_BORDER:
+        return ::aiTextureMapMode::aiTextureMapMode_Decal;
+    case ::Hardware::WRAP_MODE::WM_MIRROR:
+        return ::aiTextureMapMode::aiTextureMapMode_Mirror;
+    default:
+        GLNGINE_EXCEPTION("Unhandle wrapping mode");
+    }
+}
+
+::Hardware::WRAP_MODE fromAI(::aiTextureMapMode _mode)
 {
     switch (_mode) {
     case ::aiTextureMapMode::aiTextureMapMode_Wrap:
-        return WRAP_MODE::WM_REPEAT;
+        return ::Hardware::WRAP_MODE::WM_REPEAT;
     case ::aiTextureMapMode::aiTextureMapMode_Clamp:
-        return WRAP_MODE::WM_CLAMP;
+        return ::Hardware::WRAP_MODE::WM_CLAMP;
     case ::aiTextureMapMode::aiTextureMapMode_Decal:
-        return WRAP_MODE::WM_BORDER;
+        return ::Hardware::WRAP_MODE::WM_BORDER;
     case ::aiTextureMapMode::aiTextureMapMode_Mirror:
-        return WRAP_MODE::WM_MIRROR;
+        return ::Hardware::WRAP_MODE::WM_MIRROR;
     default:
         GLNGINE_EXCEPTION("Unhandle wrapping mode");
     }
@@ -235,6 +253,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         if(mesh->HasPositions())
         {
             const ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertices.size()*3, ::Hardware::HU_STATIC_DRAW);
+            vertexBuffer->lock();
             vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertices.data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_POSITION, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
@@ -248,7 +267,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
             const ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indices.size(), ::Hardware::HU_STATIC_DRAW);
             subMesh->m_indexData->m_indexBuffer = indexBuffer;
-
+            indexBuffer->lock();
             indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indices.data(), false);
             subMesh->m_indexData->m_indexCount = indices.size();
             subMesh->m_indexData->m_indexStart = 0;
@@ -257,6 +276,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         for(unsigned col=0; col<mesh->GetNumColorChannels() && col<6; ++col)
         {
             const ::Hardware::HardwareVertexBufferPtr colorBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, colors[col].size()*4, ::Hardware::HU_STATIC_DRAW);
+            colorBuffer->lock();
             colorBuffer->writeData(0, colorBuffer->getSizeInBytes(), colors[col].data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_COLOR_0+col, 0, ::Hardware::VET_FLOAT4, ::Hardware::VERTEXELEMENT_SEMANTIC(::Hardware::VES_COLOR_0+col));
@@ -267,6 +287,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         if(mesh->HasNormals())
         {
             const ::Hardware::HardwareVertexBufferPtr normalBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, normals.size()*3, ::Hardware::HU_STATIC_DRAW);
+            normalBuffer->lock();
             normalBuffer->writeData(0, normalBuffer->getSizeInBytes(), normals.data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_NORMAL, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_NORMAL);
@@ -277,6 +298,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         for(unsigned uv=0; uv<mesh->GetNumUVChannels() && uv<6; ++uv)
         {
             const ::Hardware::HardwareVertexBufferPtr textCoordBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, textCoords[uv].size()*2, ::Hardware::HU_STATIC_DRAW);
+            textCoordBuffer->lock();
             textCoordBuffer->writeData(0, textCoordBuffer->getSizeInBytes(), textCoords[uv].data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_TEXTURE_COORDINATES_0+uv, 0, ::Hardware::VET_FLOAT2, ::Hardware::VERTEXELEMENT_SEMANTIC(::Hardware::VES_TEXTURE_COORDINATES_0+uv));
@@ -287,6 +309,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         if(mesh->HasTangentsAndBitangents())
         {
             const ::Hardware::HardwareVertexBufferPtr tangentBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertices.size()*3*2, ::Hardware::HU_STATIC_DRAW);
+            tangentBuffer->lock();
             tangentBuffer->writeData(0, tangentBuffer->getSizeInBytes(), tangents.data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_BITANGENT, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_TANGENT);
@@ -309,78 +332,84 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
 void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* const _scene, const aiMesh* const _mesh, const std::filesystem::path& _directory)
 {
-    ::aiMaterial* const material = _scene->mMaterials[_mesh->mMaterialIndex];
+    ::aiMaterial* const aiMaterial = _scene->mMaterials[_mesh->mMaterialIndex];
 
-    MaterialInfo* matInfo = Render::getInstance().createMaterialInfo(material->GetName().C_Str());
-    _subMesh->m_materialInfo = matInfo;
+    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+    ::Hardware::MaterialPtr material = materialMng.getByName(aiMaterial->GetName().C_Str());
+    if(!material)
+    {
+        material = materialMng.create(aiMaterial->GetName().C_Str());
+        ::Hardware::Pass* pass = material->getPasses()[0];
 
-    material->Get(AI_MATKEY_TWOSIDED, matInfo->m_twoSided);
-    material->Get(AI_MATKEY_OPACITY, matInfo->m_opacity);
-    material->Get(AI_MATKEY_TRANSPARENCYFACTOR, matInfo->m_transparencyfactor);
-    material->Get(AI_MATKEY_BUMPSCALING, matInfo->m_bumpScaling);
-    material->Get(AI_MATKEY_SHININESS, matInfo->m_shininess);
-    material->Get(AI_MATKEY_REFLECTIVITY, matInfo->m_reflectivity);
-    material->Get(AI_MATKEY_SHININESS_STRENGTH, matInfo->m_shininessStrenght);
-    material->Get(AI_MATKEY_REFRACTI, matInfo->m_refracti);
-    //material->Get(AI_MATKEY_SHADING_MODEL, matInfo->m_shadingModel);
-    //material->Get(AI_MATKEY_ENABLE_WIREFRAME, matInfo->m_wireframe);
-    //material->Get(AI_MATKEY_BLEND_FUNC, matInfo->m_blendFunc);
+        aiMaterial->Get(AI_MATKEY_TWOSIDED, pass->m_twoSided);
+        aiMaterial->Get(AI_MATKEY_OPACITY, pass->m_opacity);
+        aiMaterial->Get(AI_MATKEY_TRANSPARENCYFACTOR, pass->m_transparencyfactor);
+        aiMaterial->Get(AI_MATKEY_BUMPSCALING, pass->m_bumpScaling);
+        aiMaterial->Get(AI_MATKEY_SHININESS, pass->m_shininess);
+        aiMaterial->Get(AI_MATKEY_REFLECTIVITY, pass->m_reflectivity);
+        aiMaterial->Get(AI_MATKEY_SHININESS_STRENGTH, pass->m_shininessStrenght);
+        aiMaterial->Get(AI_MATKEY_REFRACTI, pass->m_refracti);
+        //material->Get(AI_MATKEY_SHADING_MODEL, pass->m_shadingModel);
+        //material->Get(AI_MATKEY_ENABLE_WIREFRAME, pass->m_wireframe);
+        //material->Get(AI_MATKEY_BLEND_FUNC, pass->m_blendFunc);
 
-    ::aiColor3D data = ::Core::toAI(matInfo->m_ambient);
-    material->Get(AI_MATKEY_COLOR_AMBIENT, data);
-    matInfo->m_ambient = ::Core::fromAI(data);
+        ::aiColor3D data = ::Core::toAI(pass->m_ambient);
+        aiMaterial->Get(AI_MATKEY_COLOR_AMBIENT, data);
+        pass->m_ambient = ::Core::fromAI(data);
 
-    data = ::Core::toAI(matInfo->m_diffuse);
-    material->Get(AI_MATKEY_COLOR_DIFFUSE, data);
-    matInfo->m_diffuse = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_diffuse);
+        aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, data);
+        pass->m_diffuse = ::Core::fromAI(data);
 
-    data = ::Core::toAI(matInfo->m_specular);
-    material->Get(AI_MATKEY_COLOR_SPECULAR, data);
-    matInfo->m_specular = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_specular);
+        aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, data);
+        pass->m_specular = ::Core::fromAI(data);
 
-    data = ::Core::toAI(matInfo->m_emissive);
-    material->Get(AI_MATKEY_COLOR_EMISSIVE, data);
-    matInfo->m_emissive = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_emissive);
+        aiMaterial->Get(AI_MATKEY_COLOR_EMISSIVE, data);
+        pass->m_emissive = ::Core::fromAI(data);
 
-    data = ::Core::toAI(matInfo->m_transparent);
-    material->Get(AI_MATKEY_COLOR_TRANSPARENT, data);
-    matInfo->m_transparent = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_transparent);
+        aiMaterial->Get(AI_MATKEY_COLOR_TRANSPARENT, data);
+        pass->m_transparent = ::Core::fromAI(data);
 
-    data = ::Core::toAI(matInfo->m_colorReflective);
-    material->Get(AI_MATKEY_COLOR_REFLECTIVE, data);
-    matInfo->m_colorReflective = ::Core::fromAI(data);
+        data = ::Core::toAI(pass->m_colorReflective);
+        aiMaterial->Get(AI_MATKEY_COLOR_REFLECTIVE, data);
+        pass->m_colorReflective = ::Core::fromAI(data);
 
-    loadTexture(material, ::aiTextureType::aiTextureType_DIFFUSE, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_SPECULAR, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_AMBIENT, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_EMISSIVE, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_HEIGHT, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_NORMALS, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_SHININESS, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_OPACITY, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_DISPLACEMENT, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_LIGHTMAP, matInfo, _directory);
-    loadTexture(material, ::aiTextureType::aiTextureType_REFLECTION, matInfo, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DIFFUSE, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_SPECULAR, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_AMBIENT, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_EMISSIVE, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_HEIGHT, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_NORMALS, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_SHININESS, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_OPACITY, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_DISPLACEMENT, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_LIGHTMAP, pass, _directory);
+        loadTexture(aiMaterial, ::aiTextureType::aiTextureType_REFLECTION, pass, _directory);
+    }
+
+    _subMesh->m_material = material;
 }
 
-void Mesh::loadTexture(const ::aiMaterial* const _material, ::aiTextureType _type, MaterialInfo* const _matInfo, const std::filesystem::path& _directory)
+void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory)
 {
-    GLNGINE_ASSERT_IF(_material->GetTextureCount(_type) > 1, "Unhandle multiple textures");
-    for(unsigned int i = 0; i < _material->GetTextureCount(_type); i++)
+    GLNGINE_ASSERT_IF(_aiMaterial->GetTextureCount(_type) > 1, "Unhandle multiple textures");
+
+    ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
+
+    for(unsigned int i = 0; i < _aiMaterial->GetTextureCount(_type); i++)
     {
-        TextureInfo* const textInfo = _matInfo->addTextureInfo(fromAI(_type));
+        ::Hardware::TextureUnitState* textUnitState = _pass->createTextureUnitState(fromAI(_type));
 
-        ::aiTextureMapMode data = ::aiTextureMapMode::aiTextureMapMode_Wrap;
-        _material->Get(_AI_MATKEY_MAPPINGMODE_U_BASE, _type, i, data);
-        textInfo->m_uWrap = fromAI(data);
+        ::aiTextureMapMode data = toAI(textUnitState->m_uWrap);
+        _aiMaterial->Get(_AI_MATKEY_MAPPINGMODE_U_BASE, _type, i, data);
+        textUnitState->m_uWrap = fromAI(data);
 
-        data = ::aiTextureMapMode::aiTextureMapMode_Wrap;
-        _material->Get(_AI_MATKEY_MAPPINGMODE_V_BASE, _type, i, data);
-        textInfo->m_vWrap = fromAI(data);
-
-        ::aiString path;
-        _material->Get(_AI_MATKEY_TEXTURE_BASE, _type, i, path);
-        textInfo->m_path = _directory/path.C_Str();
+        data = toAI(textUnitState->m_vWrap);
+        _aiMaterial->Get(_AI_MATKEY_MAPPINGMODE_V_BASE, _type, i, data);
+        textUnitState->m_vWrap = fromAI(data);
 
         // _material->Get(_AI_MATKEY_UVWSRC_BASE, _type, i, data);
         // _material->Get(_AI_MATKEY_TEXOP_BASE, _type, i, data);
@@ -389,6 +418,26 @@ void Mesh::loadTexture(const ::aiMaterial* const _material, ::aiTextureType _typ
         // _material->Get(_AI_MATKEY_TEXMAP_AXIS_BASE, _type, i, data);
         // _material->Get(_AI_MATKEY_TEXFLAGS_BASE, _type, i, data);
         // _material->Get(_AI_MATKEY_UVTRANSFORM_BASE, _type, i, data);
+
+        ::aiString aiPath;
+        _aiMaterial->Get(_AI_MATKEY_TEXTURE_BASE, _type, i, aiPath);
+
+        std::filesystem::path path(aiPath.C_Str());
+        if(path.is_relative())
+        {
+            path = _directory/path;
+        }
+
+        const std::string textName = path.stem().u8string();
+        ::Hardware::TexturePtr texture = textureManager.getByName(textName);
+        if(!texture)
+        {
+            texture = textureManager.create(textName);
+            texture->lock();
+            texture->load(path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+        }
+
+        textUnitState->setTexture(texture);
     }
 }
 

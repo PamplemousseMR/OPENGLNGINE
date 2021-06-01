@@ -18,6 +18,11 @@ MaterialPtr MaterialManager::create(const std::string& _name)
     return ptr;
 }
 
+MaterialPtr MaterialManager::getByName(const std::string& _name)
+{
+    return this->get(_name);
+}
+
 void MaterialManager::destroy(const MaterialPtr& _material)
 {
     this->remove(_material);

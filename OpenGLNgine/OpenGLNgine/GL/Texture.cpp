@@ -72,7 +72,6 @@ Texture::Texture(const Texture& _texture) :
         case TT_1D :
         {
             glGetTexImage(GL_TEXTURE_1D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-            _texture.unbind();
             bind();
             glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
         }
@@ -80,7 +79,6 @@ Texture::Texture(const Texture& _texture) :
         case TT_2D :
         {
             glGetTexImage(GL_TEXTURE_2D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-            _texture.unbind();
             bind();
             glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
         }
@@ -91,10 +89,6 @@ Texture::Texture(const Texture& _texture) :
             GLNGINE_EXCEPTION("Unhandle texture type");
         }
         unbind();
-    }
-    else
-    {
-        _texture.unbind();
     }
     GLNGINE_CHECK_GL;
 }
@@ -140,7 +134,6 @@ Texture& Texture::operator=(const Texture& _texture)
             case TT_1D :
             {
                 glGetTexImage(GL_TEXTURE_1D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-                _texture.unbind();
                 bind();
                 glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
             }
@@ -148,7 +141,6 @@ Texture& Texture::operator=(const Texture& _texture)
             case TT_2D :
             {
                 glGetTexImage(GL_TEXTURE_2D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-                _texture.unbind();
                 bind();
                 glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
             }
@@ -159,10 +151,6 @@ Texture& Texture::operator=(const Texture& _texture)
                 GLNGINE_EXCEPTION("Unhandle texture type");
             }
             unbind();
-        }
-        else
-        {
-            _texture.unbind();
         }
         GLNGINE_CHECK_GL;
     }
@@ -182,6 +170,8 @@ void Texture::setActiveTexture(int _location)
 void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
+
+    m_type = _type;
 
     bool hasAlpha;
     const std::string fileFormat = _path.extension().string();
@@ -210,7 +200,7 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
     data = SOIL_load_image(_path.string().c_str(), &width, &height, &chanel, soilFormat);
     if(width < 0 || width > s_MAX_SIZE || height < 0 || height > s_MAX_SIZE)
     {
-        GLNGINE_EXCEPTION("Size too big");
+        GLNGINE_EXCEPTION("Texture size too large");
     }
     switch(_type)
     {
@@ -231,17 +221,18 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
     }
     GLNGINE_CHECK_GL;
     SOIL_free_image_data(data);
-
-    m_type = _type;
 }
 
-void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
+void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
-        GLNGINE_EXCEPTION("Size too big");
+        GLNGINE_EXCEPTION("Texture size too large");
     }
+
     m_format = _format;
+    m_type = _type;
+
     switch (m_type)
     {
     case TT_1D :
@@ -263,7 +254,7 @@ void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _interna
     GLNGINE_CHECK_GL;
 }
 
-void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, int _sample)
+void Texture::allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
@@ -273,7 +264,9 @@ void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORM
     {
         GLNGINE_EXCEPTION("Sample too hight");
     }
-    m_format = _format;
+
+    m_type = _type;
+
     switch (m_type)
     {
     case TT_1D :
@@ -344,9 +337,12 @@ void Texture::unbind() const
 
 void Texture::setMinFilter(TEXTURE_FILTER _filter) const
 {
-    if(!m_minFilter || m_minFilter.value() != _filter)
+#ifdef GLNGINE_USE_STATE_CACHE
+
+    if(m_minFilter != _filter)
     {
         m_minFilter = _filter;
+#endif
         switch(m_type)
         {
         case TT_1D :
@@ -361,15 +357,19 @@ void Texture::setMinFilter(TEXTURE_FILTER _filter) const
             GLNGINE_EXCEPTION("Unhandle texture type");
         }
         GLNGINE_CHECK_GL;
+#ifdef GLNGINE_USE_STATE_CACHE
     }
+#endif
 }
 
 void Texture::setMagFilter(TEXTURE_FILTER _filter) const
 {
+#ifdef GLNGINE_USE_STATE_CACHE
     GLNGINE_ASSERT_IF(!(_filter == TF_LINEAR || _filter == TF_NEAREST), "Unhandle filter type");
-    if(!m_magFilter || m_magFilter.value() != _filter)
+    if(m_magFilter != _filter)
     {
         m_magFilter = _filter;
+#endif
         switch(m_type)
         {
         case TT_1D :
@@ -384,7 +384,61 @@ void Texture::setMagFilter(TEXTURE_FILTER _filter) const
             GLNGINE_EXCEPTION("Unhandle texture type");
         }
         GLNGINE_CHECK_GL;
+#ifdef GLNGINE_USE_STATE_CACHE
     }
+#endif
+}
+
+void Texture::setUWrap(WRAP_MODE _mode) const
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    if(m_uWrap != _mode)
+    {
+        m_uWrap = _mode;
+#endif
+        switch(m_type)
+        {
+        case TT_1D :
+            glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, _mode);
+            break;
+        case TT_2D :
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _mode);
+            break;
+        case TT_2DMULTISAMPLE :
+            glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, _mode);
+        default:
+            GLNGINE_EXCEPTION("Unhandle wrap mode");
+        }
+        GLNGINE_CHECK_GL;
+#ifdef GLNGINE_USE_STATE_CACHE
+    }
+#endif
+}
+
+void Texture::setVWrap(WRAP_MODE _mode) const
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    if(m_vWrap != _mode)
+    {
+        m_vWrap = _mode;
+#endif
+        switch(m_type)
+        {
+        case TT_1D :
+            glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, _mode);
+            break;
+        case TT_2D :
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _mode);
+            break;
+        case TT_2DMULTISAMPLE :
+            glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, _mode);
+        default:
+            GLNGINE_EXCEPTION("Unhandle wrap mode");
+        }
+        GLNGINE_CHECK_GL;
+#ifdef GLNGINE_USE_STATE_CACHE
+    }
+#endif
 }
 
 Texture::Initializer::Initializer()

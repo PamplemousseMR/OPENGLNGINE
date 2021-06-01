@@ -2,7 +2,6 @@
 
 #include "OpenGLNgine/Render/RenderWindow.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
-#include "OpenGLNgine/Render/MaterialInfo.hpp"
 
 #include <map>
 #include <string>
@@ -21,8 +20,6 @@ public:
     typedef std::map< std::string, RenderWindow* > RenderWindowList;
 
     typedef std::map< std::string, SceneManager* > SceneManagerList;
-
-    typedef std::map< std::string, MaterialInfo* > MaterialInfoList;
 
     /**
      * @brief Gets the only instance of this class.
@@ -88,25 +85,6 @@ public:
      */
     inline const SceneManagerList& getSceneManagers() const;
 
-    /**
-     * @brief Creates a material information.
-     * @param _name The name of the material information.
-     * @return The render material.
-     */
-    MaterialInfo* createMaterialInfo(const std::string& _name);
-
-    /// Destroys a material information.
-    void destroyMaterialInfo(const MaterialInfo* const _matInfo);
-
-    /// Destroys all material information.
-    void destroyAllMaterialInfos();
-
-    /**
-     * @brief Gets all material information.
-     * @return All material.
-     */
-    inline const MaterialInfoList& getMaterialInfos() const;
-
 private:
 
     /**
@@ -136,9 +114,6 @@ private:
     /// Stores all scene manager.
     SceneManagerList m_sceneManagers {};
 
-    /// Stores all material information.
-    MaterialInfoList m_materialInfos {};
-
 };
 
 inline const Render::RenderWindowList& Render::getRenderWindows() const
@@ -149,11 +124,6 @@ inline const Render::RenderWindowList& Render::getRenderWindows() const
 inline const Render::SceneManagerList& Render::getSceneManagers() const
 {
     return m_sceneManagers;
-}
-
-inline const Render::MaterialInfoList& Render::getMaterialInfos() const
-{
-    return m_materialInfos;
 }
 
 }

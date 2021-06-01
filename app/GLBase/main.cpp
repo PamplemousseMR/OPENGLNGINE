@@ -157,9 +157,7 @@ int main()
                     {
                         ::GL::DrawCall::drawElements(::GL::DR_TRIANGLE_STRIP, 14, ::GL::DT_UNSIGNED_INT, 0);
                     }
-                    meshVAO.unbind();
                 }
-                program.unbind();
 
                 renderWindow->swapBuffers();
 
