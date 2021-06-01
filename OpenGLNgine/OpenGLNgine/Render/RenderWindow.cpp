@@ -83,17 +83,6 @@ void RenderWindow::render() const
                                         parameter.second = lightPositionViewSpaces;
                                         break;
                                     }
-                                    case ::Hardware::PP_LIGHT_AMBIENT_COLOR_ARRAY:
-                                    {
-                                        std::vector< ::glm::vec3 > lightAmbientColors;
-                                        lightAmbientColors.reserve(sm->getLights().size());
-                                        for(const std::pair< const std::string, Light* >& light : sm->getLights())
-                                        {
-                                            lightAmbientColors.push_back(light.second->getAmbient());
-                                        }
-                                        parameter.second = lightAmbientColors;
-                                        break;
-                                    }
                                     case ::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
                                     {
                                         std::vector< ::glm::vec3 > lightDiffuseColors;
@@ -122,11 +111,20 @@ void RenderWindow::render() const
                                     case ::Hardware::PP_MATERIAL_AMBIENT:
                                         parameter.second = pass->m_ambient;
                                         break;
+                                    case ::Hardware::PP_MATERIAL_HAS_TS_AMBIENT:
+                                        parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_AMBIENT) ? 1.f : 0.f;
+                                        break;
                                     case ::Hardware::PP_MATERIAL_DIFFUSE:
                                         parameter.second = pass->m_diffuse;
                                         break;
+                                    case ::Hardware::PP_MATERIAL_HAS_TF_DIFFUSE:
+                                        parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_DIFFUSE) ? 1.f : 0.f;
+                                        break;
                                     case ::Hardware::PP_MATERIAL_SPECULAR:
                                         parameter.second = pass->m_specular;
+                                        break;
+                                    case ::Hardware::PP_MATERIAL_HAS_TS_SPECULAR:
+                                        parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_SPECULAR) ? 1.f : 0.f;
                                         break;
                                     default:
                                         GLNGINE_EXCEPTION("Unhandle program parameter");

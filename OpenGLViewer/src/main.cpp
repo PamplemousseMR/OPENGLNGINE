@@ -65,7 +65,7 @@ int main()
     // Create a light.
     ::Render::Light* const light = sceneManager->createLight("Light");
     light->setType(::Render::LT_DIRECTIONAL);
-    light->setDirection(::glm::vec3(0.f, 0.f, -1.f));
+    light->setDirection(::glm::vec3(-1.f, 0.f, -1.f));
 
     // Create the Program.
     ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
@@ -89,7 +89,6 @@ int main()
 
     program->setNamedAutoConstant(::Hardware::PP_LIGHT_COUNT, "u_uiLightCount");
     program->setNamedAutoConstant(::Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY, "u_f4LightPos_Vs");
-    program->setNamedAutoConstant(::Hardware::PP_LIGHT_AMBIENT_COLOR_ARRAY, "u_f3LightAmbient");
     program->setNamedAutoConstant(::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY, "u_f3LightDiffuse");
     program->setNamedAutoConstant(::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY, "u_f3LightSpecular");
 
@@ -97,6 +96,13 @@ int main()
     program->setNamedAutoConstant(::Hardware::PP_MATERIAL_DIFFUSE, "u_f3Diffuse");
     program->setNamedAutoConstant(::Hardware::PP_MATERIAL_SPECULAR, "u_f3Specular");
     program->setNamedAutoConstant(::Hardware::PP_MATERIAL_SHININESS, "u_fShininess");
+
+    program->setTextureConstant(::Hardware::TS_AMBIENT, "u_s2Ambient");
+    program->setNamedAutoConstant(::Hardware::PP_MATERIAL_HAS_TS_AMBIENT, "u_fHasAmbient");
+    program->setTextureConstant(::Hardware::TS_DIFFUSE, "u_s2Diffuse");
+    program->setNamedAutoConstant(::Hardware::PP_MATERIAL_HAS_TF_DIFFUSE, "u_fHasDiffuse");
+    program->setTextureConstant(::Hardware::TS_SPECULAR, "u_s2Specular");
+    program->setNamedAutoConstant(::Hardware::PP_MATERIAL_HAS_TS_SPECULAR, "u_fHasSpecular");
 
     // Create the mesh.
     ::Render::Mesh* const mesh = sceneManager->createMesh("Mesh");

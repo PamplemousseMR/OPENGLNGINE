@@ -87,7 +87,7 @@ int main()
     program->link();
 
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
-    program->setTextureConstant("u_s2Texture", ::Hardware::TS_AMBIENT);
+    program->setTextureConstant(::Hardware::TS_AMBIENT, "u_s2Texture");
 
     ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
     ::Hardware::MaterialPtr material = materialMng.create("Material");

@@ -80,7 +80,7 @@ int main()
     program->link();
 
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
-    program->setTextureConstant("u_s2Texture", ::Hardware::TS_AMBIENT);
+    program->setTextureConstant(::Hardware::TS_AMBIENT, "u_s2Texture");
 
     // Create the mesh.
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
