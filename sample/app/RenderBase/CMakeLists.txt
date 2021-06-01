@@ -2,7 +2,7 @@
 #                EXECUTABLE
 #=======================================
 
-set(GLNGINE_APP_NAME GLBase)
+set(GLNGINE_APP_NAME RenderBase)
 
 set(GLNGINE_SRC
         main.cpp)
@@ -18,4 +18,4 @@ set_target_properties(${GLNGINE_APP_NAME} PROPERTIES
                         CXX_STANDARD_REQUIRED ON
                         CXX_EXTENSIONS OFF)
 
-target_compile_definitions(${GLNGINE_APP_NAME} PRIVATE GLNGINE_GLSL_PATH="${CMAKE_SOURCE_DIR}/bin/GLSL")
+target_compile_definitions(${GLNGINE_APP_NAME} PRIVATE GLNGINE_GLSL_PATH="${CMAKE_SOURCE_DIR}/sample/bin/GLSL")

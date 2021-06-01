@@ -27,13 +27,7 @@ find_package(OpenMP)
 add_subdirectory("OpenGLNgine")
 
 #=======================================
-#                 BIN
+#                 SAMPLE                
 #=======================================
 
-add_subdirectory("bin")
-
-#=======================================
-#                 APPS
-#=======================================
-
-add_subdirectory("app")
+add_subdirectory("sample")
