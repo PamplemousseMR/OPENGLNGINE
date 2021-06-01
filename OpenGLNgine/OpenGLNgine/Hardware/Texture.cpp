@@ -228,7 +228,6 @@ void Texture::generateMipMaps()
 
 void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
-    m_texture.bind();
     m_texture.load(_path, getType(_type), getType(_internalFormat));
 }
 

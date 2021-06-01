@@ -246,9 +246,7 @@ int main()
                     {
                         ::GL::DrawCall::drawArrays(::GL::DR_TRIANGLES, 0, 36);
                     }
-                    meshVAO.unbind();
                 }
-                program.unbind();
 
                 renderWindow->swapBuffers();
 

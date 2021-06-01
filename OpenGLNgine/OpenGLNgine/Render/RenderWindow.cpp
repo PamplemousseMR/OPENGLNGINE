@@ -184,7 +184,6 @@ void RenderWindow::render() const
                                         {
                                             indexData->m_indexBuffer->lock();
                                         }
-                                        vertexData->m_vertexDeclaration->unlock();
                                         subMesh->_notifyDirty();
                                     }
 

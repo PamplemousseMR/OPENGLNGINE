@@ -253,6 +253,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         if(mesh->HasPositions())
         {
             const ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertices.size()*3, ::Hardware::HU_STATIC_DRAW);
+            vertexBuffer->lock();
             vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertices.data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_POSITION, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);
@@ -266,7 +267,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
             const ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::IT_UNSIGNED_INT, indices.size(), ::Hardware::HU_STATIC_DRAW);
             subMesh->m_indexData->m_indexBuffer = indexBuffer;
-
+            indexBuffer->lock();
             indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indices.data(), false);
             subMesh->m_indexData->m_indexCount = indices.size();
             subMesh->m_indexData->m_indexStart = 0;
@@ -275,6 +276,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         for(unsigned col=0; col<mesh->GetNumColorChannels() && col<6; ++col)
         {
             const ::Hardware::HardwareVertexBufferPtr colorBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, colors[col].size()*4, ::Hardware::HU_STATIC_DRAW);
+            colorBuffer->lock();
             colorBuffer->writeData(0, colorBuffer->getSizeInBytes(), colors[col].data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_COLOR_0+col, 0, ::Hardware::VET_FLOAT4, ::Hardware::VERTEXELEMENT_SEMANTIC(::Hardware::VES_COLOR_0+col));
@@ -285,6 +287,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         if(mesh->HasNormals())
         {
             const ::Hardware::HardwareVertexBufferPtr normalBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, normals.size()*3, ::Hardware::HU_STATIC_DRAW);
+            normalBuffer->lock();
             normalBuffer->writeData(0, normalBuffer->getSizeInBytes(), normals.data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_NORMAL, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_NORMAL);
@@ -295,6 +298,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         for(unsigned uv=0; uv<mesh->GetNumUVChannels() && uv<6; ++uv)
         {
             const ::Hardware::HardwareVertexBufferPtr textCoordBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, textCoords[uv].size()*2, ::Hardware::HU_STATIC_DRAW);
+            textCoordBuffer->lock();
             textCoordBuffer->writeData(0, textCoordBuffer->getSizeInBytes(), textCoords[uv].data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_TEXTURE_COORDINATES_0+uv, 0, ::Hardware::VET_FLOAT2, ::Hardware::VERTEXELEMENT_SEMANTIC(::Hardware::VES_TEXTURE_COORDINATES_0+uv));
@@ -305,6 +309,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         if(mesh->HasTangentsAndBitangents())
         {
             const ::Hardware::HardwareVertexBufferPtr tangentBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertices.size()*3*2, ::Hardware::HU_STATIC_DRAW);
+            tangentBuffer->lock();
             tangentBuffer->writeData(0, tangentBuffer->getSizeInBytes(), tangents.data(), false);
 
             subMesh->m_vertexData->m_vertexDeclaration->addElement(::Hardware::VES_BITANGENT, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_TANGENT);
@@ -428,6 +433,7 @@ void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _ty
         if(!texture)
         {
             texture = textureManager.create(textName);
+            texture->lock();
             texture->load(path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
         }
 

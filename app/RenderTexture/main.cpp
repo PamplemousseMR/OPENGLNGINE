@@ -76,6 +76,7 @@ int main()
     // Create the texture.
     ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
     ::Hardware::TexturePtr texture = textureManager.create("Texture");
+    texture->lock();
     texture->load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
     texture->generateMipMaps();
 
@@ -223,7 +224,8 @@ int main()
     subMesh->m_vertexData = manager.createVertexData();
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLES;
 
-    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
+    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::VT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);    
+    vertexBuffer->lock();
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
     subMesh->m_vertexData->m_vertexDeclaration->addElement(0, 0, ::Hardware::VET_FLOAT3, ::Hardware::VES_POSITION);

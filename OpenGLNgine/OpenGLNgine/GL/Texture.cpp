@@ -72,7 +72,6 @@ Texture::Texture(const Texture& _texture) :
         case TT_1D :
         {
             glGetTexImage(GL_TEXTURE_1D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-            _texture.unbind();
             bind();
             glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
         }
@@ -80,7 +79,6 @@ Texture::Texture(const Texture& _texture) :
         case TT_2D :
         {
             glGetTexImage(GL_TEXTURE_2D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-            _texture.unbind();
             bind();
             glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
         }
@@ -91,10 +89,6 @@ Texture::Texture(const Texture& _texture) :
             GLNGINE_EXCEPTION("Unhandle texture type");
         }
         unbind();
-    }
-    else
-    {
-        _texture.unbind();
     }
     GLNGINE_CHECK_GL;
 }
@@ -140,7 +134,6 @@ Texture& Texture::operator=(const Texture& _texture)
             case TT_1D :
             {
                 glGetTexImage(GL_TEXTURE_1D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-                _texture.unbind();
                 bind();
                 glTexImage1D(GL_TEXTURE_1D, 0, destFormat, width, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
             }
@@ -148,7 +141,6 @@ Texture& Texture::operator=(const Texture& _texture)
             case TT_2D :
             {
                 glGetTexImage(GL_TEXTURE_2D, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
-                _texture.unbind();
                 bind();
                 glTexImage2D(GL_TEXTURE_2D, 0, destFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, &data[0]);
             }
@@ -159,10 +151,6 @@ Texture& Texture::operator=(const Texture& _texture)
                 GLNGINE_EXCEPTION("Unhandle texture type");
             }
             unbind();
-        }
-        else
-        {
-            _texture.unbind();
         }
         GLNGINE_CHECK_GL;
     }

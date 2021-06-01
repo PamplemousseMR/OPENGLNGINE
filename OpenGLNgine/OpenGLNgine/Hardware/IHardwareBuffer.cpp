@@ -7,7 +7,6 @@ namespace Hardware
 
 void IHardwareBuffer::writeData(size_t _offset, size_t _sizeInBytes, const void* _src, bool _discard)
 {
-    m_dataBuffer.bind();
     if(_offset == 0 && _sizeInBytes == m_sizeInBytes)
     {
         m_dataBuffer.writeData(m_sizeInBytes, _src, getUsage(m_usage));
@@ -30,7 +29,7 @@ IHardwareBuffer::IHardwareBuffer(HardwareBufferManager* const _manager, ::GL::DA
     m_usage(_usage)
 {
     GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager mustn't be null");
-    m_dataBuffer.bind();
+    this->lock();
     m_dataBuffer.writeData(m_sizeInBytes, nullptr, getUsage(m_usage));
 }
 
