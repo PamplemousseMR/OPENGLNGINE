@@ -2,7 +2,7 @@
 #                BINARY
 #=======================================
 
-set(GLNGINE_LIBRARY_NAME GLSL)
+set(GLNGINE_LIBRARY_NAME Sample_GLSL)
 
 set(GLNGINE_BINARY
     Common/Default_FP.glsl

@@ -116,6 +116,18 @@ void RenderWindow::render() const
                                         parameter.second = lightSpecularColors;
                                         break;
                                     }
+                                    case ::Hardware::PP_MATERIAL_SHININESS:
+                                        parameter.second = pass->m_shininess;
+                                        break;
+                                    case ::Hardware::PP_MATERIAL_AMBIENT:
+                                        parameter.second = pass->m_ambient;
+                                        break;
+                                    case ::Hardware::PP_MATERIAL_DIFFUSE:
+                                        parameter.second = pass->m_diffuse;
+                                        break;
+                                    case ::Hardware::PP_MATERIAL_SPECULAR:
+                                        parameter.second = pass->m_specular;
+                                        break;
                                     default:
                                         GLNGINE_EXCEPTION("Unhandle program parameter");
                                     }

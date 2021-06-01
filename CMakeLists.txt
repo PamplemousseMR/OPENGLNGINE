@@ -27,6 +27,12 @@ find_package(OpenMP)
 add_subdirectory("OpenGLNgine")
 
 #=======================================
+#              OpenGLViewer
+#=======================================
+
+add_subdirectory("OpenGLViewer")
+
+#=======================================
 #                 SAMPLE                
 #=======================================
 
