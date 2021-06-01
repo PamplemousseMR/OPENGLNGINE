@@ -82,6 +82,8 @@ public:
 
     void destroyAllTextureUnitStates();
 
+    TextureUnitState* findTextureUnitStateBySemantic(TEXTUREUNITSTATE_SEMANTIC _semantic) const;
+
     inline const TextureUnitStateList& getTextureUnitStates() const;
 
     std::array< bool, 4 > colorMask { true, true, true, true };
