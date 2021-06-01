@@ -70,9 +70,7 @@ public:
 
     inline void setProgram(const ProgramPtr& program);
 
-    void lock();
-
-    void unlock();
+    inline ProgramPtr getProgram() const;
 
     inline const Program::AutoConstantMap& getAutoConstants() const;
 
@@ -157,6 +155,11 @@ private:
 void Pass::setProgram(const ProgramPtr& program)
 {
     m_program = program;
+}
+
+inline ProgramPtr Pass::getProgram() const
+{
+    return m_program;
 }
 
 inline const Program::AutoConstantMap& Pass::getAutoConstants() const

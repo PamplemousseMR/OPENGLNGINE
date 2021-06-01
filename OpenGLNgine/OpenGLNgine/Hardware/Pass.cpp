@@ -75,21 +75,6 @@ namespace Hardware
     }
 }
 
-void Pass::lock()
-{
-    if(m_program)
-    {
-        m_program->lock();
-    }
-}
-
-void Pass::unlock()
-{
-    if(m_program)
-    {
-        m_program->unlock();
-    }}
-
 Pass::Pass()
 {
 }
