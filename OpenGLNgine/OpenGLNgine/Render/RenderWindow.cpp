@@ -118,23 +118,27 @@ void RenderWindow::render() const
                                 }
                             }
 
+                            const ::Hardware::Pass::TextureUnitStateList& textureUnitStates = pass->getTextureUnitStates();
                             for(const std::pair< const std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > >& parameter : pass->getTextureConstants())
                             {
                                 parameter.second.first = static_cast< int >(parameter.second.second);
-                            }
-
-                            const ::Hardware::Pass::TextureUnitStateList& textureUnitStates = pass->getTextureUnitStates();
-                            for(::Hardware::TextureUnitState* const textureUnitState : textureUnitStates)
-                            {
-                                const ::Hardware::TexturePtr texture = textureUnitState->getTexture();
-                                if(texture)
+                                ::Hardware::Pass::TextureUnitStateList::const_iterator textureUnitState =
+                                        std::find_if(textureUnitStates.begin(), textureUnitStates.end(), [&](const ::Hardware::TextureUnitState* const _textUnit)
                                 {
-                                    ::GL::Texture::setActiveTexture(textureUnitState->m_semantic);
-                                    texture->lock();
-                                    texture->setMagFilter(textureUnitState->magFilter);
-                                    texture->setMinFilter(textureUnitState->minFilter);
-                                    texture->setUWrap(textureUnitState->m_uWrap);
-                                    texture->setVWrap(textureUnitState->m_vWrap);
+                                    return _textUnit->m_semantic == parameter.second.second;
+                                });
+                                if(textureUnitState != textureUnitStates.end())
+                                {
+                                    const ::Hardware::TexturePtr texture = (*textureUnitState)->getTexture();
+                                    if(texture)
+                                    {
+                                        ::GL::Texture::setActiveTexture((*textureUnitState)->m_semantic);
+                                        texture->lock();
+                                        texture->setMagFilter((*textureUnitState)->magFilter);
+                                        texture->setMinFilter((*textureUnitState)->minFilter);
+                                        texture->setUWrap((*textureUnitState)->m_uWrap);
+                                        texture->setVWrap((*textureUnitState)->m_vWrap);
+                                    }
                                 }
                             }
 
