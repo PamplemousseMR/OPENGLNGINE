@@ -108,6 +108,13 @@ int main()
         {
             textUnit->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
             textUnit->magFilter = ::Hardware::TF_LINEAR;
+
+            const ::Hardware::TexturePtr texture = textUnit->getTexture();
+            if(texture && !texture->isMipMapsGenerated())
+            {
+                texture->lock();
+                texture->generateMipMaps();
+            }
         }
     }
 

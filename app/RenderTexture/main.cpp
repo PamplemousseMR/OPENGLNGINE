@@ -76,8 +76,8 @@ int main()
     // Create the texture.
     ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
     ::Hardware::TexturePtr texture = textureManager.create("Texture");
-    texture->enableMipMaps(true);
     texture->load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+    texture->generateMipMaps();
 
     // Create the material.
     ::Hardware::ProgramPtr program = shaderMng.createProgram("Program");

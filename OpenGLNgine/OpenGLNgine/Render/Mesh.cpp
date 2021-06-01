@@ -428,7 +428,6 @@ void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _ty
         if(!texture)
         {
             texture = textureManager.create(textName);
-            texture->enableMipMaps(true);
             texture->load(path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
         }
 

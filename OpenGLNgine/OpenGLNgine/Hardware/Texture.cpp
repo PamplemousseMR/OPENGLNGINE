@@ -220,15 +220,16 @@ Texture::~Texture()
 {
 }
 
+void Texture::generateMipMaps()
+{
+    m_texture.generateMipmap();
+    m_mipMapsGenerated = true;
+}
+
 void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
     m_texture.bind();
     m_texture.load(_path, getType(_type), getType(_internalFormat));
-    if(m_mipMaps)
-    {
-        m_texture.generateMipmap();
-    }
-    m_texture.unbind();
 }
 
 }
