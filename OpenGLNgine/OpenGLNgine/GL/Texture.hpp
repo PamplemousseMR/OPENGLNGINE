@@ -207,22 +207,24 @@ public:
 
     /**
      * @brief Allocates a texture.
+     * @param _type Type of the texture.
      * @param _width Width of the texture.
      * @param _height Height of the texture.
      * @param _internalFormat Internal format of the texture.
      * @param _format Format of the source texture.
-     * @param _data Type of the texture data.
+     * @param _data Type of the texture source.
      */
-    void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
+    void allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
 
     /**
      * @brief Allocates a multisampled texture.
+     * @param _type Type of the texture.
      * @param _width Width of the texture.
      * @param _height Height of the texture.
      * @param _internalFormat Internal format of the texture.
      * @param _sample Number of sample.
      */
-    void allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample);
+    void allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample);
 
     /// Generates mipmap of the texture.
     void generateMipmap() const;

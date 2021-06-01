@@ -183,6 +183,8 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
 {
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
 
+    m_type = _type;
+
     bool hasAlpha;
     const std::string fileFormat = _path.extension().string();
     if(fileFormat == ".bmp" || fileFormat == ".jpg" || fileFormat == ".jpeg")
@@ -231,17 +233,18 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
     }
     GLNGINE_CHECK_GL;
     SOIL_free_image_data(data);
-
-    m_type = _type;
 }
 
-void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
+void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
         GLNGINE_EXCEPTION("Texture size too large");
     }
+
     m_format = _format;
+    m_type = _type;
+
     switch (m_type)
     {
     case TT_1D :
@@ -263,7 +266,7 @@ void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _interna
     GLNGINE_CHECK_GL;
 }
 
-void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
+void Texture::allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
@@ -273,6 +276,9 @@ void Texture::allocateMultisample(int _width, int _height, TEXTURE_INTERNAL_FORM
     {
         GLNGINE_EXCEPTION("Sample too hight");
     }
+
+    m_type = _type;
+
     switch (m_type)
     {
     case TT_1D :
