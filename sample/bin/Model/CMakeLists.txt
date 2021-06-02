@@ -2,7 +2,7 @@
 #                BINARY
 #=======================================
 
-set(GLNGINE_LIBRARY_NAME Model)
+set(GLNGINE_LIBRARY_NAME Sample_Model)
 
 set(MODEL_BINARY
     Flamethrower/FlamerJetFuelTank_d.png

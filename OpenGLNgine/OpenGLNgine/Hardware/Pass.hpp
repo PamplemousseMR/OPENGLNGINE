@@ -121,7 +121,7 @@ public:
     float m_bumpScaling { 0.f };
 
     /// Defines the shininess of the material.
-    float m_shininess { 0.f };
+    float m_shininess { 1.f };
 
     /// Defines the reflectivity of the material.
     float m_reflectivity { 0.f };
@@ -139,7 +139,7 @@ public:
     ::glm::vec3 m_diffuse {1.f, 1.f, 1.f};
 
     /// Defines the specular color of the material.
-    ::glm::vec3 m_specular {0.f, 0.f, 0.f};
+    ::glm::vec3 m_specular {1.f, 1.f, 1.f};
 
     /// Defines the emissive color of the material.
     ::glm::vec3 m_emissive {0.f, 0.f, 0.f};

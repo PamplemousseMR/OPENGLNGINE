@@ -2,7 +2,7 @@
 #                BINARY
 #=======================================
 
-set(GLNGINE_LIBRARY_NAME Texture)
+set(GLNGINE_LIBRARY_NAME Sample_Texture)
 
 set(TEXTURE_BINARY
     BrickWall.png)

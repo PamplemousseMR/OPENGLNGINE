@@ -21,9 +21,15 @@ enum PROGRAM_PARAMETER
     PP_LIGHT_COUNT,
     PP_LIGHT_POSITION_WORLD_SPACE_ARRAY,
     PP_LIGHT_POSITION_VIEW_SPACE_ARRAY,
-    PP_LIGHT_AMBIENT_COLOR_ARRAY,
     PP_LIGHT_DIFFUSE_COLOR_ARRAY,
-    PP_LIGHT_SPECULAR_COLOR_ARRAY
+    PP_LIGHT_SPECULAR_COLOR_ARRAY,
+    PP_MATERIAL_SHININESS,
+    PP_MATERIAL_AMBIENT,
+    PP_MATERIAL_HAS_TS_AMBIENT,
+    PP_MATERIAL_DIFFUSE,
+    PP_MATERIAL_HAS_TF_DIFFUSE,
+    PP_MATERIAL_SPECULAR,
+    PP_MATERIAL_HAS_TS_SPECULAR,
 };
 
 class Program;
@@ -36,9 +42,9 @@ class Program final : public ::Core::IResource
 
 public:
 
-    typedef std::map<PROGRAM_PARAMETER, ::GL::Uniform> AutoConstantMap;
+    typedef std::map< PROGRAM_PARAMETER, ::GL::Uniform > AutoConstantMap;
 
-    typedef std::map<std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > > TextureConstantMap;
+    typedef std::map< std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > > TextureConstantMap;
 
     Program(ProgramManager* const _manager, const std::string& _name);
 
@@ -64,7 +70,7 @@ public:
 
     inline const AutoConstantMap& getAutoConstants() const;
 
-    void setTextureConstant(const std::string& _name, ::Hardware::TEXTUREUNITSTATE_SEMANTIC _semantic);
+    void setTextureConstant(::Hardware::TEXTUREUNITSTATE_SEMANTIC _semantic, const std::string& _name);
 
     inline const TextureConstantMap& getTextureConstants() const;
 

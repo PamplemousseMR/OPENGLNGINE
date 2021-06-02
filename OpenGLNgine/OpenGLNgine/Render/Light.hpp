@@ -29,10 +29,6 @@ public:
 
     Light& operator=(Light&&) = delete;
 
-    inline void setAmbient(const ::glm::vec3& _ambient);
-
-    inline const ::glm::vec3& getAmbient() const;
-
     inline void setDiffuse(const ::glm::vec3& _diffuse);
 
     inline const ::glm::vec3& getDiffuse() const;
@@ -61,8 +57,6 @@ private:
 
     ~Light();
 
-    ::glm::vec3 m_ambient { 1.f, 1.f, 1.f };
-
     ::glm::vec3 m_diffuse { 1.f, 1.f, 1.f };
 
     ::glm::vec3 m_specular { 1.f, 1.f, 1.f };
@@ -74,16 +68,6 @@ private:
     ::glm::vec3 m_direction { 0.f, 0.f, -1.f};
 
 };
-
-inline void Light::setAmbient(const ::glm::vec3& _ambient)
-{
-    m_ambient = _ambient;
-}
-
-inline const ::glm::vec3& Light::getAmbient() const
-{
-    return m_ambient;
-}
 
 inline void Light::setDiffuse(const ::glm::vec3& _diffuse)
 {

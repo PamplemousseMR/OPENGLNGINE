@@ -55,7 +55,7 @@ void Program::setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::stri
     m_autoConstants.emplace(_parameter, ::GL::Uniform(_name, m_program.getId()));
 }
 
-void Program::setTextureConstant(const std::string& _name, ::Hardware::TEXTUREUNITSTATE_SEMANTIC _semantic)
+void Program::setTextureConstant(::Hardware::TEXTUREUNITSTATE_SEMANTIC _semantic, const std::string& _name)
 {
     m_textureConstants.emplace(_name, std::make_pair( ::GL::Uniform(_name, m_program.getId()), _semantic));
 }
