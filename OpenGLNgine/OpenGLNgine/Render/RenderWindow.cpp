@@ -12,6 +12,36 @@ void RenderWindow::render() const
 
     for(const auto& vp : m_viewports)
     {
+        CompositorChainList::const_iterator compIt = m_compositorChains.find(vp.second);
+        if(compIt != m_compositorChains.end())
+        {
+            for(const ::Hardware::CompositorPtr& compositor : compIt->second->getCompositors())
+            {
+                for(const ::Hardware::CompositorTargetPass* const targetPass : compositor->getCompositorTargetPasses())
+                {
+                    ::Hardware::RenderTargetPtr renderTarget = targetPass->m_renderTarget;
+                    if(renderTarget)
+                    {
+                        if(renderTarget->isDirty())
+                        {
+                            const ::Hardware::RenderTarget::TextureList& textures = renderTarget->getTextures();
+                            renderTarget->lock();
+                            for(const auto& texture : textures)
+                            {
+                                renderTarget->attach(texture.first);
+                            }
+                            renderTarget->check();
+                            renderTarget->_notifyDirty();
+                        }
+                    }
+                    else
+                    {
+                        ::GL::FrameBuffer::bindDefault();
+                    }
+                }
+            }
+        }
+
         const auto& size = vp.second->getViewport();
         ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), static_cast< int >(size[2]*m_width), static_cast< int >(size[3]*m_height));
         ::GL::Rasterizer::enableScissorTest(true);
@@ -326,7 +356,7 @@ CompositorChain* RenderWindow::createCompositorChain(Viewport* const _viewport, 
 {
     if(m_compositorChains.find(_viewport) != m_compositorChains.end())
     {
-        GLNGINE_EXCEPTION("A compositor chain already attached to the viewport '" + _viewport->getName() + "'");
+        GLNGINE_EXCEPTION("A compositor chain is already attached to the viewport '" + _viewport->getName() + "'");
     }
 
     auto sm = new CompositorChain(_viewport, _name);

@@ -1,11 +1,18 @@
 #pragma once
 
 #include "OpenGLNgine/Hardware/CompositorPass.hpp"
+#include "OpenGLNgine/Hardware/RenderTarget.hpp"
 
 #include <vector>
 
 namespace Hardware
 {
+
+enum COMPOSITORTARGETPASS_MODE
+{
+    CM_NONE,
+    CM_PREVIOUS
+};
 
 class Compositor;
 
@@ -33,6 +40,10 @@ public:
     void destroyAllCompositorPasses();
 
     inline const CompositorPassList& getCompositorPasses() const;
+
+    COMPOSITORTARGETPASS_MODE m_mode { CM_NONE };
+
+    RenderTargetPtr m_renderTarget { nullptr };
 
 private:
 

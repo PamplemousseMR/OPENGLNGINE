@@ -3,6 +3,11 @@
 namespace Hardware
 {
 
+enum COMPOSITORPASS_TYPE
+{
+    CT_CLEAR
+};
+
 class CompositorTargetPass;
 
 class CompositorPass
@@ -19,6 +24,8 @@ public:
     CompositorPass& operator=(const CompositorPass&) = delete;
 
     CompositorPass& operator=(CompositorPass&&) = delete;
+
+    COMPOSITORPASS_TYPE m_type { CT_CLEAR };
 
 private:
 

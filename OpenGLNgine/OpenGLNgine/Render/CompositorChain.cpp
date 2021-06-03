@@ -11,6 +11,7 @@ CompositorChain::CompositorChain(Viewport* const _viewport, const std::string& _
 
 CompositorChain::~CompositorChain()
 {
+    m_compositors.clear();
 }
 
 }
