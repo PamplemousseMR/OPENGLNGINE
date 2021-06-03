@@ -143,9 +143,9 @@ int main()
                 ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
 
                 const auto& size = viewport->getViewport();
-                const int width = rwIt->second->getWidth();
-                const int height = rwIt->second->getHeight();
-                ::GL::Rasterizer::setViewport(size[0]*static_cast<float>(width), size[1]*static_cast<float>(height), size[2]*static_cast<float>(width), size[3]*static_cast<float>(height));
+                const float width = static_cast< float >(rwIt->second->getWidth());
+                const float height = static_cast< float >(rwIt->second->getHeight());
+                ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*width), static_cast< int >(size[1]*height), static_cast< int >(size[2]*width), static_cast< int >(size[3]*height));
 
                 ::GL::DrawCall::clear(::GL::DC_COLOR_DEPTH);
 
