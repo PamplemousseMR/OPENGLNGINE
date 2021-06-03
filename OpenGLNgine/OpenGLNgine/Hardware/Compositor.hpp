@@ -2,7 +2,10 @@
 
 #include "OpenGLNgine/Core/IResource.hpp"
 
+#include "OpenGLNgine/Hardware/CompositorTargetPass.hpp"
+
 #include <memory>
+#include <vector>
 
 namespace Hardware
 {
@@ -17,6 +20,8 @@ class Compositor final : public ::Core::IResource
 
 public:
 
+    typedef std::vector< CompositorTargetPass* > CompositorTargetPassList;
+
     Compositor(CompositorManager* const _manager, const std::string& _name);
 
     ~Compositor();
@@ -29,10 +34,25 @@ public:
 
     Compositor& operator=(Compositor&&) = delete;
 
+    CompositorTargetPass* createCompositorTargetPass();
+
+    void destroyCompositorTargetPass(CompositorTargetPass* const _pass);
+
+    void destroyAllCompositorTargetPasses();
+
+    inline const CompositorTargetPassList& getCompositorTargetPasses() const;
+
 private:
 
     CompositorManager* const m_manager;
 
+    CompositorTargetPassList m_compositorTargetPasses {};
+
 };
+
+inline const Compositor::CompositorTargetPassList& Compositor::getCompositorTargetPasses() const
+{
+    return m_compositorTargetPasses;
+}
 
 }

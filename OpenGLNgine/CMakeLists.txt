@@ -27,6 +27,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/GL/VertexArrayBuffer.cpp
     ${GLNGINE_SOURCE}/Hardware/Compositor.cpp
     ${GLNGINE_SOURCE}/Hardware/CompositorManager.cpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorTargetPass.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareBufferManager.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareIndexBuffer.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareVertexBuffer.cpp
@@ -77,6 +78,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/GL/VertexArrayBuffer.hpp
     ${GLNGINE_SOURCE}/Hardware/Compositor.hpp
     ${GLNGINE_SOURCE}/Hardware/CompositorManager.hpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorTargetPass.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareBufferManager.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareIndexBuffer.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareVertexBuffer.hpp
