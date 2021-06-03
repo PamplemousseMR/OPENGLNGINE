@@ -33,7 +33,7 @@ void main()
 
     vec3 f3DiffuseCol = vec3(0.);
     vec3 f3SpecularCol = vec3(0.);
-    vec3 f3MaDiffuse = u_fHasDiffuse * texture(u_s2Diffuse, v_f2TextCoord_Ts).rgb;
+    vec3 f3MaDiffuse = u_fHasDiffuse * texture(u_s2Diffuse, v_f2TextCoord_Ts).rgb + (1 - u_fHasDiffuse);
     vec3 f3MaSpecular = u_fHasSpecular * texture(u_s2Specular, v_f2TextCoord_Ts).rgb + (1 - u_fHasSpecular);
 
     for(uint i=0 ; i<u_uiLightCount && i<MAX_LIGHT_COUNT ; ++i)
