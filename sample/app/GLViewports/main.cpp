@@ -13,19 +13,8 @@ public:
 
     void sizeModified(::Render::RenderWindow* const _rw, int _width, int _height) override
     {
-        ::Render::Viewport* const viewport1 = _rw->getViewport("Viewport_1");
-        viewport1->setViewport(0, 0, _width/2, _height/2);
-
-        ::Render::Viewport* const viewport2 = _rw->getViewport("Viewport_2");
-        viewport2->setViewport(_width/2, 0, _width/2, _height/2);
-
-        ::Render::Viewport* const viewport3 = _rw->getViewport("Viewport_3");
-        viewport3->setViewport(0, _height/2, _width/2, _height/2);
-
-        ::Render::Viewport* const viewport4 = _rw->getViewport("Viewport_4");
-        viewport4->setViewport(_width/2, _height/2, _width/2, _height/2);
-
-        ::Render::Camera* const camera = viewport1->getCamera();
+        ::Render::Viewport* const viewport = _rw->getViewport("Viewport_1");
+        ::Render::Camera* const camera = viewport->getCamera();
         camera->setProjection(camera->getFovy(), static_cast<float>(_width)/static_cast<float>(_height), camera->getNear(), camera->getFar());
     }
 
@@ -64,19 +53,19 @@ int main()
 
     // Make the link between the camera, the scene manager and viewports in the render window.
     ::Render::Viewport* const viewport1 = renderWindow->addViewport("Viewport_1", camera);
-    viewport1->setViewport(0, 0, width/2, height/2);
+    viewport1->setViewport(0.f, 0.f, 0.5f, 0.5f);
     viewport1->setClearColor(0.0f, 1.0f, 0.0f, 0.f);
 
     ::Render::Viewport* const viewport2 = renderWindow->addViewport("Viewport_2", camera);
-    viewport2->setViewport(width/2, 0, width/2, height/2);
+    viewport2->setViewport(0.5f, 0.f, 0.5f, 0.5f);
     viewport2->setClearColor(1.0f, 1.0f, 0.0f, 0.f);
 
     ::Render::Viewport* const viewport3 = renderWindow->addViewport("Viewport_3", camera);
-    viewport3->setViewport(0, height/2, width/2, height/2);
+    viewport3->setViewport(0.f, 0.5f, 0.5f, 0.5f);
     viewport3->setClearColor(0.0f, 0.0f, 1.0f, 0.f);
 
     ::Render::Viewport* const viewport4 = renderWindow->addViewport("Viewport_4", camera);
-    viewport4->setViewport(width/2, height/2, width/2, height/2);
+    viewport4->setViewport(0.5f, 0.5f, 0.5f, 0.5f);
     viewport4->setClearColor(1.0f, 0.0f, 0.0f, 0.f);
 
     // Create a node for the mesh.
@@ -170,8 +159,10 @@ int main()
                     ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
 
                     const auto& size = vp.second->getViewport();
-                    ::GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
-                    ::GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
+                    const int width = rwIt->second->getWidth();
+                    const int height = rwIt->second->getHeight();
+                    ::GL::Rasterizer::setViewport(size[0]*static_cast<float>(width), size[1]*static_cast<float>(height), size[2]*static_cast<float>(width), size[3]*static_cast<float>(height));
+                    ::GL::Rasterizer::setScissor(size[0]*static_cast<float>(width), size[1]*static_cast<float>(height), size[2]*static_cast<float>(width), size[3]*static_cast<float>(height));
 
                     ::GL::DrawCall::clear(::GL::DC_COLOR_DEPTH);
 

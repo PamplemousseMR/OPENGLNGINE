@@ -13,10 +13,9 @@ void RenderWindow::render() const
     for(const auto& vp : m_viewports)
     {
         const auto& size = vp.second->getViewport();
-        ::GL::Rasterizer::setViewport(size[0], size[1], size[2], size[3]);
+        ::GL::Rasterizer::setViewport(size[0]*static_cast<float>(m_width), size[1]*static_cast<float>(m_height), size[2]*static_cast<float>(m_width), size[3]*static_cast<float>(m_height));
         ::GL::Rasterizer::enableScissorTest(true);
-        ::GL::Rasterizer::setScissor(size[0], size[1], size[2], size[3]);
-
+        ::GL::Rasterizer::setScissor(size[0]*static_cast<float>(m_width), size[1]*static_cast<float>(m_height), size[2]*static_cast<float>(m_width), size[3]*static_cast<float>(m_height));
         const auto& color = vp.second->getClearColor();
 
         ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);

@@ -46,13 +46,13 @@ public:
      * @param _width Width of the viewport in pixel.
      * @param _height Height of the viewport in pixel.
      */
-    void setViewport(int _x, int _y, int _width, int _height);
+    void setViewport(float _x, float _y, float _width, float _height);
 
     /**
      * @brief Gets the viewport size and position
      * @return The position and the size.
      */
-    inline const std::array< int, 4 >& getViewport() const;
+    inline const std::array< float, 4 >& getViewport() const;
 
     /**
      * @brief Sets the background color of the viewport.
@@ -92,7 +92,7 @@ private:
     RenderWindow* const m_renderWindow;
 
     /// Defines the position and the size of the viewport.
-    std::array< int, 4 > m_viewport { 0, 0, 1, 1 };
+    std::array< float, 4 > m_viewport { 0, 0, 1, 1 };
 
     /// Defines the background color.
     std::array< float, 4 > m_clearColor { 0.f, 0.f, 0.f, 0.f };
@@ -107,7 +107,7 @@ inline Camera *Viewport::getCamera() const
     return m_camera;
 }
 
-inline const std::array<int, 4>& Viewport::getViewport() const
+inline const std::array<float, 4>& Viewport::getViewport() const
 {
     return m_viewport;
 }
