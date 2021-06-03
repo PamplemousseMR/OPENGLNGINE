@@ -18,8 +18,6 @@ public:
     void sizeModified(::Render::RenderWindow* const _rw, int _width, int _height) override
     {
         ::Render::Viewport* const viewport = _rw->getViewport("Viewport");
-        viewport->setViewport(0, 0, _width, _height);
-
         ::Render::Camera* const camera = viewport->getCamera();
         camera->setProjection(camera->getFovy(), static_cast<float>(_width)/static_cast<float>(_height), camera->getNear(), camera->getFar());
     }
@@ -59,7 +57,6 @@ int main()
 
     // Make the link between the camera, the scene manager and the viewport in the render window.
     ::Render::Viewport* const viewport = renderWindow->addViewport("Viewport", camera);
-    viewport->setViewport(0, 0, width, height);
     viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
     // Create a light.

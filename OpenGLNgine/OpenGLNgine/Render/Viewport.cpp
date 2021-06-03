@@ -6,9 +6,9 @@
 namespace Render
 {
 
-void Viewport::setViewport(int _x, int _y, int _width, int _height)
+void Viewport::setViewport(float _x, float _y, float _width, float _height)
 {
-    GLNGINE_ASSERT_IF(_width < 0 || _height < 0, "The size of the viewport can't be negative");
+    GLNGINE_ASSERT_IF(_width < 0 || _height < 0 || _width > 1 || _height > 1, "The size of the viewport must fit in the range [0-1]");
     m_viewport = {_x, _y, _width, _height};
 }
 
@@ -19,7 +19,7 @@ Viewport::Viewport(RenderWindow* const _renderWindow, Camera* const _camera, con
 {
     GLNGINE_ASSERT_IF(!_renderWindow, "The render window mustn't be null");
     GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
-    m_viewport = {0, 0, m_renderWindow->getWidth(), m_renderWindow->getHeight()};
+    m_viewport = {0.f, 0.f, 1.f, 1.f};
     m_camera->_notifyViewportCreated(this);
 }
 
