@@ -26,7 +26,7 @@ public:
 
     CompositorPtr getByName(const std::string& _name);
 
-    void destroy(const CompositorPtr& _Compositor);
+    void destroy(const CompositorPtr& _compositor);
 
 private:
 

@@ -23,9 +23,9 @@ CompositorPtr CompositorManager::getByName(const std::string& _name)
     return this->get(_name);
 }
 
-void CompositorManager::destroy(const CompositorPtr& _Compositor)
+void CompositorManager::destroy(const CompositorPtr& _compositor)
 {
-    this->remove(_Compositor);
+    this->remove(_compositor);
 }
 
 CompositorManager::Initializer::Initializer()

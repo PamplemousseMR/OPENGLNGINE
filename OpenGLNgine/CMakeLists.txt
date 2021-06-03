@@ -39,6 +39,8 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/Pass.cpp
     ${GLNGINE_SOURCE}/Hardware/Program.cpp
     ${GLNGINE_SOURCE}/Hardware/ProgramManager.cpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTarget.cpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTargetManager.cpp
     ${GLNGINE_SOURCE}/Hardware/Shader.cpp
     ${GLNGINE_SOURCE}/Hardware/Texture.cpp
     ${GLNGINE_SOURCE}/Hardware/TextureManager.cpp
@@ -91,6 +93,8 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/Pass.hpp
     ${GLNGINE_SOURCE}/Hardware/Program.hpp
     ${GLNGINE_SOURCE}/Hardware/ProgramManager.hpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTarget.hpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTargetManager.hpp
     ${GLNGINE_SOURCE}/Hardware/Shader.hpp
     ${GLNGINE_SOURCE}/Hardware/Texture.hpp
     ${GLNGINE_SOURCE}/Hardware/TextureManager.hpp
