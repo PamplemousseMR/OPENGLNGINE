@@ -10,6 +10,7 @@ namespace GL
 GLint Texture::s_MAX_SIZE = 0;
 GLint Texture::s_MAX_SAMPLE = 0;
 GLint Texture::s_MAX_LOCATION = 0;
+int Texture::s_activeTextUnit = 0;
 
 Texture::Texture() :
     IBindable()
@@ -163,8 +164,15 @@ void Texture::setActiveTexture(int _location)
     {
         GLNGINE_EXCEPTION("Active location overflow");
     }
-    glActiveTexture(GLenum(GL_TEXTURE0 + _location));
-
+#ifdef GLNGINE_USE_STATE_CACHE
+    if(s_activeTextUnit != _location)
+    {
+        s_activeTextUnit = _location;
+#endif
+        glActiveTexture(GLenum(GL_TEXTURE0 + _location));
+#ifdef GLNGINE_USE_STATE_CACHE
+    }
+#endif
 }
 
 void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)

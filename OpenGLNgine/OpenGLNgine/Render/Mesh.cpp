@@ -124,8 +124,8 @@ bool Mesh::load(const std::filesystem::path& _path)
 {
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
 
+    ::Assimp::Importer importer;
     const ::aiScene* const scene = importer.ReadFile(_path.u8string(), aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_FlipUVs | aiProcess_SortByPType | aiProcess_PreTransformVertices | aiProcess_CalcTangentSpace);
-    const ::aiScene* const scene = importer.ReadFile(_path.u8string(), aiProcess_FlipUVs | aiProcess_SortByPType | aiProcess_PreTransformVertices | aiProcess_CalcTangentSpace);
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         return false;

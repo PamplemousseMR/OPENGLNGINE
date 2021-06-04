@@ -290,6 +290,8 @@ private:
     TEXTURE_FORMAT m_format {TF_RGBA};
 
 #ifdef GLNGINE_USE_STATE_CACHE
+    static int s_activeTextUnit;
+
     /// Store the last mignification filter used.
     mutable TEXTURE_FILTER m_minFilter { TF_NEAREST_MIPMAP_LINEAR };
 
