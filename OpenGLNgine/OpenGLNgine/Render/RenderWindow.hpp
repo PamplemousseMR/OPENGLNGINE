@@ -199,6 +199,8 @@ class RenderWindow final : public ::Core::IResource
 
 public:
 
+    typedef std::map< std::string, SceneManager* > SceneManagerList;
+
     typedef std::map< std::string, Viewport* > ViewportList;
 
     /// Deleted copy constructor.
@@ -254,6 +256,28 @@ public:
      * @param _listener The listener to add to the window.
      */
     void addListener(RenderWindowListener* const _listener);
+
+    /**
+     * @brief Creates a scene manager.
+     * @param _name The name of the scene manager.
+     * @return The scene manager.
+     */
+    SceneManager* createSceneManager(const std::string& _name);
+
+    /**
+     * @brief Destroys a scene manager.
+     * @param _sceneManager The scene manager to destroy.
+     */
+    void destroySceneManager(const SceneManager* const _sceneManager);
+
+    /// Destroys all scene manager.
+    void destroyAllSceneManagers();
+
+    /**
+     * @brief Gets all scene manager.
+     * @return All scene manager.
+     */
+    inline const SceneManagerList& getSceneManagers() const;
 
     /**
      * @brief Adds a new rendering viewport from a camera
@@ -340,6 +364,9 @@ private:
     /// Defines the height of the window.
     int m_height { 0 };
 
+    /// Stores all scene manager.
+    SceneManagerList m_sceneManagers {};
+
     /// Stores all viewport.
     ViewportList m_viewports {};
 
@@ -373,6 +400,11 @@ inline int RenderWindow::getWidth() const
 inline int RenderWindow::getHeight() const
 {
     return m_height;
+}
+
+inline const RenderWindow::SceneManagerList& RenderWindow::getSceneManagers() const
+{
+    return m_sceneManagers;
 }
 
 inline const RenderWindow::ViewportList& RenderWindow::getViewports() const

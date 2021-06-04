@@ -46,7 +46,7 @@ int main()
     renderWindow->addListener(new Listener);
 
     // Create a scene manager.
-    ::Render::SceneManager* const sceneManager = render.createSceneManager("SeneManager");
+    ::Render::SceneManager* const sceneManager = renderWindow->createSceneManager("SeneManager");
 
     // Create a camera.
     ::Render::Camera* const camera = sceneManager->createCamera("Camera");
@@ -174,6 +174,7 @@ int main()
             {
                 rwIt->second->render();
                 rwIt->second->swapBuffers();
+                node->setOrientation(node->getOrientation() + ::glm::vec3(0.1f, 0.5f, 0.2f));
 
                 ++rwIt;
             }
@@ -182,8 +183,6 @@ int main()
                 rwIt = render.destroyRenderWindow(rwIt->second);
             }
         }
-
-        node->setOrientation(node->getOrientation() + ::glm::vec3(0.1f, 0.5f, 0.2f));
     }
 
     return EXIT_SUCCESS;

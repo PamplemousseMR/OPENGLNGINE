@@ -52,42 +52,6 @@ void Render::destroyAllRenderWindow()
     }
 }
 
-SceneManager* Render::createSceneManager(const std::string& _name)
-{
-    if(m_sceneManagers.find(_name) != m_sceneManagers.end())
-    {
-        GLNGINE_EXCEPTION("A scene manager with the name '" + _name + "' already exists");
-    }
-
-    auto sm = new SceneManager(_name);
-    m_sceneManagers.emplace(_name, sm);
-    return sm;
-}
-
-void Render::destroySceneManager(const SceneManager* const _sceneManager)
-{
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
-
-    SceneManagerList::const_iterator it = m_sceneManagers.find(_sceneManager->getName());
-    if(it == m_sceneManagers.end())
-    {
-        GLNGINE_EXCEPTION("A scene manager with the name '" + _sceneManager->getName() + "' doesn't exists");
-    }
-
-    m_sceneManagers.erase(it);
-    delete _sceneManager;
-}
-
-void Render::destroyAllSceneManagers()
-{
-    SceneManagerList::iterator it = m_sceneManagers.begin();
-    while(it != m_sceneManagers.end())
-    {
-        this->destroySceneManager(it->second);
-        it = m_sceneManagers.begin();
-    }
-}
-
 Render::Initializer::Initializer()
 {
     Render::s_instance = new Render();
@@ -116,7 +80,6 @@ Render::Render()
 Render::~Render()
 {
     this->destroyAllRenderWindow();
-    this->destroyAllSceneManagers();
     glfwTerminate();
 }
 

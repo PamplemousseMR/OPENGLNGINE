@@ -234,6 +234,43 @@ void RenderWindow::addListener(RenderWindowListener* const _listener)
     m_listeners.push_back(_listener);
 }
 
+
+SceneManager* RenderWindow::createSceneManager(const std::string& _name)
+{
+    if(m_sceneManagers.find(_name) != m_sceneManagers.end())
+    {
+        GLNGINE_EXCEPTION("A scene manager with the name '" + _name + "' already exists");
+    }
+
+    auto sm = new SceneManager(_name);
+    m_sceneManagers.emplace(_name, sm);
+    return sm;
+}
+
+void RenderWindow::destroySceneManager(const SceneManager* const _sceneManager)
+{
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+
+    SceneManagerList::const_iterator it = m_sceneManagers.find(_sceneManager->getName());
+    if(it == m_sceneManagers.end())
+    {
+        GLNGINE_EXCEPTION("A scene manager with the name '" + _sceneManager->getName() + "' doesn't exists");
+    }
+
+    m_sceneManagers.erase(it);
+    delete _sceneManager;
+}
+
+void RenderWindow::destroyAllSceneManagers()
+{
+    SceneManagerList::iterator it = m_sceneManagers.begin();
+    while(it != m_sceneManagers.end())
+    {
+        this->destroySceneManager(it->second);
+        it = m_sceneManagers.begin();
+    }
+}
+
 Viewport* RenderWindow::addViewport(const std::string& _name, Camera* const _camera)
 {
     if(m_viewports.find(_name) != m_viewports.end())
@@ -361,6 +398,7 @@ RenderWindow::RenderWindow(const std::string& _name, int _width, int _height) :
 RenderWindow::~RenderWindow()
 {
     this->removeAllViewports();
+    this->destroyAllSceneManagers();
     glfwDestroyWindow(m_window);
 }
 

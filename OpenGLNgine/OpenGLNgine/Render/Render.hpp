@@ -1,7 +1,6 @@
 #pragma once
 
 #include "OpenGLNgine/Render/RenderWindow.hpp"
-#include "OpenGLNgine/Render/SceneManager.hpp"
 
 #include <map>
 #include <string>
@@ -18,8 +17,6 @@ class Render final
 public:
 
     typedef std::map< std::string, RenderWindow* > RenderWindowList;
-
-    typedef std::map< std::string, SceneManager* > SceneManagerList;
 
     /**
      * @brief Gets the only instance of this class.
@@ -63,28 +60,6 @@ public:
      */
     inline const RenderWindowList& getRenderWindows() const;
 
-    /**
-     * @brief Creates a scene manager.
-     * @param _name The name of the scene manager.
-     * @return The scene manager.
-     */
-    SceneManager* createSceneManager(const std::string& _name);
-
-    /**
-     * @brief Destroys a scene manager.
-     * @param _sceneManager The scene manager to destroy.
-     */
-    void destroySceneManager(const SceneManager* const _sceneManager);
-
-    /// Destroys all scene manager.
-    void destroyAllSceneManagers();
-
-    /**
-     * @brief Gets all scene manager.
-     * @return All scene manager.
-     */
-    inline const SceneManagerList& getSceneManagers() const;
-
 private:
 
     /**
@@ -111,19 +86,11 @@ private:
     /// Stores all render window.
     RenderWindowList m_renderWindows {};
 
-    /// Stores all scene manager.
-    SceneManagerList m_sceneManagers {};
-
 };
 
 inline const Render::RenderWindowList& Render::getRenderWindows() const
 {
     return m_renderWindows;
-}
-
-inline const Render::SceneManagerList& Render::getSceneManagers() const
-{
-    return m_sceneManagers;
 }
 
 }
