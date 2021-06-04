@@ -51,6 +51,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/VertexElement.cpp
     ${GLNGINE_SOURCE}/Render/Camera.cpp
     ${GLNGINE_SOURCE}/Render/Component.cpp
+    ${GLNGINE_SOURCE}/Render/CompositorChain.cpp
     ${GLNGINE_SOURCE}/Render/Light.cpp
     ${GLNGINE_SOURCE}/Render/Mesh.cpp
     ${GLNGINE_SOURCE}/Render/Render.cpp
@@ -105,6 +106,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/VertexElement.hpp
     ${GLNGINE_SOURCE}/Render/Camera.hpp
     ${GLNGINE_SOURCE}/Render/Component.hpp
+    ${GLNGINE_SOURCE}/Render/CompositorChain.hpp
     ${GLNGINE_SOURCE}/Render/Light.hpp
     ${GLNGINE_SOURCE}/Render/Mesh.hpp
     ${GLNGINE_SOURCE}/Render/Render.hpp
