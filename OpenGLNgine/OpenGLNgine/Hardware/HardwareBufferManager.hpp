@@ -13,9 +13,6 @@ namespace Hardware
 class HardwareBufferManager final
 {
 
-    friend HardwareVertexBuffer;
-    friend HardwareIndexBuffer;
-
 public:
 
     static HardwareBufferManager& getInstance();
@@ -44,6 +41,10 @@ public:
 
     void destroyAllIndexData();
 
+    void _notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer);
+
+    void _notifyVertexBufferDestroyed(HardwareVertexBuffer* _vertexBuffer);
+
 private:
 
     typedef std::set<VertexData*> VertexDataList;
@@ -66,10 +67,6 @@ private:
     HardwareBufferManager();
 
     ~HardwareBufferManager();
-
-    void _notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer);
-
-    void _notifyVertexBufferDestroyed(HardwareVertexBuffer* _vertexBuffer);
 
     VertexDataList m_vertexData {};
 

@@ -16,7 +16,6 @@ class Camera final : public Component
 {
 
     friend SceneManager;
-    friend Viewport;
 
 public:
 
@@ -46,6 +45,10 @@ public:
 
     inline float getFar() const;
 
+    void _notifyViewportCreated(Viewport* const _viewport);
+
+    void _notifyViewportDestroyed(Viewport* const _viewport);
+
 private:
 
     typedef std::map< std::string, Viewport* > ViewportList;
@@ -53,10 +56,6 @@ private:
     Camera(SceneManager* const _sceneManager, const std::string& _name);
 
     ~Camera();
-
-    void _notifyViewportCreated(Viewport* const _viewport);
-
-    void _notifyViewportDestroyed(Viewport* const _viewport);
 
     ViewportList m_viewports {};
 
