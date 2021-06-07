@@ -40,15 +40,17 @@ public:
 
     inline void unlock();
 
+    void lock(unsigned _location);
+
+    void unlock(unsigned _location);
+
+    void allocate(unsigned _location, int _width, int _height);
+
     void attach(unsigned _location);
 
     inline void check() const;
 
     void addTexture(TEXTURE_INTERNAL_FORMAT _format, unsigned _location);
-
-    void removeTexture(unsigned _location);
-
-    void removeAllTextures();
 
     inline const TextureList& getTextures() const;
 

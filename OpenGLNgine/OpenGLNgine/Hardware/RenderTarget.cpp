@@ -7,6 +7,36 @@
 namespace Hardware
 {
 
+void RenderTarget::lock(unsigned _location)
+{
+    TextureList::iterator it = m_textures.find(_location);
+    if(it == m_textures.end())
+    {
+        GLNGINE_EXCEPTION("The texture '" + std::to_string(_location) + "'doesn't exists");
+    }
+    it->second.first.bind();
+}
+
+void RenderTarget::unlock(unsigned _location)
+{
+    TextureList::iterator it = m_textures.find(_location);
+    if(it == m_textures.end())
+    {
+        GLNGINE_EXCEPTION("The texture '" + std::to_string(_location) + "'doesn't exists");
+    }
+    it->second.first.unbind();
+}
+
+void RenderTarget::allocate(unsigned _location, int _width, int _height)
+{
+    TextureList::iterator it = m_textures.find(_location);
+    if(it == m_textures.end())
+    {
+        GLNGINE_EXCEPTION("The texture '" + std::to_string(_location) + "'doesn't exists");
+    }
+    it->second.first.allocate(::GL::TT_2D, _width, _height, Texture::getType(it->second.second));
+}
+
 void RenderTarget::attach(unsigned _location)
 {
     TextureList::const_iterator it = m_textures.find(_location);
@@ -105,23 +135,6 @@ void RenderTarget::addTexture(TEXTURE_INTERNAL_FORMAT _format, unsigned _locatio
     m_dirty = true;
 }
 
-void RenderTarget::removeTexture(unsigned _location)
-{
-    TextureList::const_iterator it = m_textures.find(_location);
-    if(it == m_textures.end())
-    {
-        GLNGINE_EXCEPTION("The texture '" + std::to_string(_location) + "'doesn't exists");
-    }
-    m_textures.erase(it);
-    m_dirty = true;
-}
-
-void RenderTarget::removeAllTextures()
-{
-    m_textures.clear();
-    m_dirty = true;
-}
-
 RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::string& _name):
     ::Core::IResource(_name),
     m_manager(_manager)
@@ -130,7 +143,6 @@ RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::strin
 
 RenderTarget::~RenderTarget()
 {
-    this->removeAllTextures();
 }
 
 }

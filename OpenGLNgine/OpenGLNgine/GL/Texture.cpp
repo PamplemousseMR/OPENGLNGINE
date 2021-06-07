@@ -428,7 +428,7 @@ void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTE
 
     m_type = _type;
 
-    switch (m_type)
+    switch(m_type)
     {
     case TT_1D :
         if(_height != 1)
