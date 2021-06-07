@@ -150,26 +150,56 @@ private:
     /// Stores all attached color buffer.
     std::vector< unsigned > m_colorAttachement {};
 
-#ifdef GLNGINE_USE_STATE_CACHE
-    /// Defines the bind status.
-    mutable bool m_isBinded { false };
+#ifdef GLNGINE_USE_STATE_CACHE    
+    static ptrdiff_t s_defaultCache;
+
+    static ptrdiff_t s_drawCache;
+
+    static ptrdiff_t s_readCache;
 #endif
 
 };
 
 inline void FrameBuffer::bindDefault()
 {
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_defaultCache != add)
+    {
+        s_defaultCache = add;
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+#else
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif
 }
 
 inline void FrameBuffer::bindDrawDefault()
 {
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_drawCache != add)
+    {
+        s_drawCache = add;
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    }
+#else
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+#endif
 }
 
 inline void FrameBuffer::bindReadDefault()
 {
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_readCache != add)
+    {
+        s_readCache = add;
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    }
+#else
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+#endif
 }
 
 inline void FrameBuffer::blit(int _srcX0, int _srcY0, int _srcX1, int _srcY1, int _dstX0, int _dstY0, int _dstX1, int _dstY1, FRAMBUFFER_MASK _mask, FRAMBUFFER_FILTER _filter)
