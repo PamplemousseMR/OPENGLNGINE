@@ -5,8 +5,16 @@
 
 namespace GL
 {
+
 GLint FrameBuffer::s_MAX_ATTACHEMENT = 0;
+
 GLint FrameBuffer::s_MAX_DRAW = 0;
+
+ptrdiff_t FrameBuffer::s_defaultCache = reinterpret_cast< ptrdiff_t >(nullptr);
+
+ptrdiff_t FrameBuffer::s_drawCache = reinterpret_cast< ptrdiff_t >(nullptr);
+
+ptrdiff_t FrameBuffer::s_readCache = reinterpret_cast< ptrdiff_t >(nullptr);
 
 FrameBuffer::FrameBuffer() :
     IBindable()
@@ -154,12 +162,10 @@ void FrameBuffer::attachDrawBuffers() const
 void FrameBuffer::bind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
+    if(s_defaultCache != add)
     {
-        s_cache = add;
-        m_isBinded = true;
+        s_defaultCache = add;
         glBindFramebuffer(GL_FRAMEBUFFER, m_id);
     }
 #else
@@ -170,11 +176,10 @@ void FrameBuffer::bind() const
 void FrameBuffer::unbind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add)
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_defaultCache != add)
     {
-        s_cache = add;
+        s_defaultCache = add;
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 #else
@@ -185,12 +190,10 @@ void FrameBuffer::unbind() const
 void FrameBuffer::bindDraw() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
+    if(s_drawCache != add)
     {
-        s_cache = add;
-        m_isBinded = false;
+        s_drawCache = add;
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
     }
 #else
@@ -201,11 +204,10 @@ void FrameBuffer::bindDraw() const
 void FrameBuffer::bindRead() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add)
+    if(s_readCache != add)
     {
-        s_cache = add;
+        s_readCache = add;
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
     }
 #else

@@ -147,7 +147,7 @@ int main()
             {
                 rwIt->second->render();
                 rwIt->second->swapBuffers();
-                node->setOrientation(node->getOrientation() + ::glm::vec3(0.1f, 0.5f, 0.2f));
+                node->setOrientation(node->getOrientation() + ::glm::vec3(0.f, 0.5f, 0.f));
 
                 ++rwIt;
             }
