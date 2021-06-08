@@ -410,6 +410,20 @@ void sizeCallback(GLFWwindow* _window, int _width, int _height)
         {
             rw.second->m_height = _height;
             rw.second->m_width = _width;
+            for(const auto& compositorChain : rw.second->getCompositorChain())
+            {
+                for(const ::Hardware::CompositorPtr& compositor : compositorChain.second->getCompositors())
+                {
+                    for(const ::Hardware::CompositorTargetPass* const targetPass : compositor->getCompositorTargetPasses())
+                    {
+                        const ::Hardware::RenderTargetPtr renderTarget = targetPass->m_renderTarget;
+                        if(renderTarget)
+                        {
+                            renderTarget->setDirty();
+                        }
+                    }
+                }
+            }
             for(RenderWindowListener* const listener : rw.second->m_listeners)
             {
                 listener->sizeModified(rw.second, _width, _height);

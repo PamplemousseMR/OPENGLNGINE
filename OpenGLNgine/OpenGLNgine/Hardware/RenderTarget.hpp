@@ -60,6 +60,8 @@ public:
 
     inline bool isDirty() const;
 
+    inline void setDirty();
+
     inline void _notifyDirty() const;
 
 private:
@@ -107,6 +109,11 @@ inline const RenderTarget::TextureList& RenderTarget::getTextures() const
 inline bool RenderTarget::isDirty() const
 {
     return m_dirty;
+}
+
+inline void RenderTarget::setDirty()
+{
+    m_dirty = true;
 }
 
 inline void RenderTarget::_notifyDirty() const

@@ -326,6 +326,8 @@ public:
      */
     void destroyCompositorChain(const CompositorChain* const _compositorChain);
 
+    inline const CompositorChainList& getCompositorChain() const;
+
     /// Destroys all compositor chain.
     void destroyAllCompositorChains();
 
@@ -433,6 +435,11 @@ inline const RenderWindow::SceneManagerList& RenderWindow::getSceneManagers() co
 inline const RenderWindow::ViewportList& RenderWindow::getViewports() const
 {
     return m_viewports;
+}
+
+inline const RenderWindow::CompositorChainList& RenderWindow::getCompositorChain() const
+{
+    return m_compositorChains;
 }
 
 }
