@@ -40,6 +40,10 @@ public:
 
     inline void unlock();
 
+    inline void lockDraw();
+
+    inline void lockRead();
+
     void lock(unsigned _location);
 
     void unlock(unsigned _location);
@@ -78,6 +82,16 @@ inline void RenderTarget::lock()
 inline void RenderTarget::unlock()
 {
     m_frameBuffer.unbind();
+}
+
+inline void RenderTarget::lockDraw()
+{
+    m_frameBuffer.bindDraw();
+}
+
+inline void RenderTarget::lockRead()
+{
+    m_frameBuffer.bindRead();
 }
 
 inline void RenderTarget::check() const

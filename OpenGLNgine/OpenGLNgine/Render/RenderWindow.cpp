@@ -12,7 +12,9 @@ void RenderWindow::render() const
 
     for(const auto& vp : m_viewports)
     {
-        CompositorChainList::const_iterator compIt = m_compositorChains.find(vp.second);
+        const auto& size = vp.second->getViewport();
+        const int viewportWidth = static_cast< int >(size[2]*m_width);
+        const int viewportHeight = static_cast< int >(size[3]*m_height);
         if(compIt != m_compositorChains.end())
         {
             for(const ::Hardware::CompositorPtr& compositor : compIt->second->getCompositors())
@@ -42,10 +44,10 @@ void RenderWindow::render() const
             }
         }
 
-        const auto& size = vp.second->getViewport();
-        ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), static_cast< int >(size[2]*m_width), static_cast< int >(size[3]*m_height));
+        // TODO Render the scene.
+        ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
         ::GL::Rasterizer::enableScissorTest(true);
-        ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), static_cast< int >(size[2]*m_width), static_cast< int >(size[3]*m_height));
+        ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
 
         const auto& color = vp.second->getClearColor();
         ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
