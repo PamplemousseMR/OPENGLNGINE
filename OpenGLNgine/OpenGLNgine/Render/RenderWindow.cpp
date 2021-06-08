@@ -326,6 +326,12 @@ void RenderWindow::removeViewport(const Viewport* const _viewport)
         GLNGINE_EXCEPTION("A viewport with the name '" + _viewport->getName() + "' doesn't exists");
     }
 
+    CompositorChainList::const_iterator cit = m_compositorChains.find(it->second);
+    if(cit != m_compositorChains.end())
+    {
+        this->destroyCompositorChain(cit->second);
+    }
+
     m_viewports.erase(it);
     delete _viewport;
 }
@@ -347,6 +353,42 @@ Viewport* RenderWindow::getViewport(const std::string& _name) const
         GLNGINE_EXCEPTION("A viewport with the name '" + _name + "' doesn't exists");
     }
     return m_viewports.at(_name);
+}
+
+CompositorChain* RenderWindow::createCompositorChain(Viewport* const _viewport, const std::string& _name)
+{
+    if(m_compositorChains.find(_viewport) != m_compositorChains.end())
+    {
+        GLNGINE_EXCEPTION("A compositor chain is already attached to the viewport '" + _viewport->getName() + "'");
+    }
+
+    auto sm = new CompositorChain(_viewport, _name);
+    m_compositorChains.emplace(_viewport, sm);
+    return sm;
+}
+
+void RenderWindow::destroyCompositorChain(const CompositorChain* const _compositorChain)
+{
+    GLNGINE_ASSERT_IF(!_compositorChain, "The scene manager mustn't be null");
+
+    CompositorChainList::const_iterator it = m_compositorChains.find(_compositorChain->getViewport());
+    if(it == m_compositorChains.end())
+    {
+        GLNGINE_EXCEPTION("A compositor chain with the name '" + _compositorChain->getName() + "' doesn't exists");
+    }
+
+    m_compositorChains.erase(it);
+    delete _compositorChain;
+}
+
+void RenderWindow::destroyAllCompositorChains()
+{
+    CompositorChainList::iterator it = m_compositorChains.begin();
+    while(it != m_compositorChains.end())
+    {
+        this->destroyCompositorChain(it->second);
+        it = m_compositorChains.begin();
+    }
 }
 
 RenderWindow::Initializer::Initializer()
@@ -430,6 +472,7 @@ RenderWindow::RenderWindow(const std::string& _name, int _width, int _height) :
 
 RenderWindow::~RenderWindow()
 {
+    this->destroyAllCompositorChains();
     this->removeAllViewports();
     this->destroyAllSceneManagers();
     glfwDestroyWindow(m_window);
