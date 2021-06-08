@@ -18,20 +18,11 @@ ProgramPtr ProgramManager::createProgram(const std::string& _name)
     return ptr;
 }
 
-void ProgramManager::destroyProgram(const ProgramPtr& _program)
-{
-    ::Core::IManager< Program >::remove(_program);
-}
 ShaderPtr ProgramManager::createShader(const std::string& _name, SHADER_TYPE _type)
 {
     ShaderPtr ptr = std::make_shared< Shader >(this, _name, _type);
     ::Core::IManager< Shader >::add(ptr);
     return ptr;
-}
-
-void ProgramManager::destroyShader(const ShaderPtr& _Shader)
-{
-    ::Core::IManager< Shader >::remove(_Shader);
 }
 
 ProgramManager::Initializer::Initializer()

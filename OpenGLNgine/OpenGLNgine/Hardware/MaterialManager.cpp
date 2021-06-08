@@ -23,11 +23,6 @@ MaterialPtr MaterialManager::getByName(const std::string& _name)
     return this->get(_name);
 }
 
-void MaterialManager::destroy(const MaterialPtr& _material)
-{
-    this->remove(_material);
-}
-
 MaterialManager::Initializer::Initializer()
 {
     MaterialManager::s_instance = new MaterialManager();
