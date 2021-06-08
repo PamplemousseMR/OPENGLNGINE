@@ -25,13 +25,13 @@ public:
 
     CompositorPass& operator=(CompositorPass&&) = delete;
 
-    COMPOSITORPASS_TYPE m_type { CT_CLEAR };
+    const COMPOSITORPASS_TYPE m_type;
 
-private:
+protected:
 
-    CompositorPass();
+    CompositorPass(COMPOSITORPASS_TYPE _type);
 
-    ~CompositorPass();
+    virtual ~CompositorPass();
 
 };
 

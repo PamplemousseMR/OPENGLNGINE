@@ -13,9 +13,9 @@ CompositorTargetPass::~CompositorTargetPass()
 {
 }
 
-CompositorPass* CompositorTargetPass::createCompositorPass()
+CompositorPassClear* CompositorTargetPass::createCompositorPassClear()
 {
-    CompositorPass* ptr = new CompositorPass();
+    CompositorPassClear* ptr = new CompositorPassClear();
     m_compositorPasses.push_back(ptr);
     return ptr;
 }
