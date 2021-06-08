@@ -31,8 +31,6 @@ class VertexData final
 
 public:
 
-    static ::GL::DRAWCALL_MODE getRenderType(VERTEXDATA_RENDERTYPE _type);
-
     VertexData(const VertexData&) = delete;
 
     VertexData(VertexData&&) = delete;
@@ -54,6 +52,8 @@ public:
     VertexBufferBinding* const m_vertexBufferBinding { nullptr };
 
 private:
+
+    static ::GL::DRAWCALL_MODE getRenderType(VERTEXDATA_RENDERTYPE _type);
 
     VertexData(HardwareBufferManager* const _manager);
 

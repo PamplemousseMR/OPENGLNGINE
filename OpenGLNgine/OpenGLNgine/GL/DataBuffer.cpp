@@ -3,6 +3,8 @@
 namespace GL
 {
 
+ptrdiff_t DataBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+
 DataBuffer::DataBuffer(DATABUFFER_TARGET _target) :
     IBindable(),
     m_target(_target)
@@ -66,12 +68,10 @@ DataBuffer& DataBuffer::operator=(const DataBuffer& _buffer)
 void DataBuffer::bind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = true;
         glBindBuffer(m_target, m_id);
     }
 #else
@@ -82,12 +82,10 @@ void DataBuffer::bind() const
 void DataBuffer::unbind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = false;
         glBindBuffer(m_target, 0);
     }
 #else

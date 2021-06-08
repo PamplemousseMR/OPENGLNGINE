@@ -75,6 +75,8 @@ public:
      */
     inline RenderWindow* getRenderWindow() const;
 
+    float m_depthClearValue { 1.f };
+
 private:
 
     /**
@@ -111,6 +113,7 @@ inline const std::array<float, 4>& Viewport::getViewport() const
 {
     return m_viewport;
 }
+
 inline void Viewport::setClearColor(float _r, float _g, float _b, float _a)
 {
     m_clearColor = {_r, _g, _b, _a};

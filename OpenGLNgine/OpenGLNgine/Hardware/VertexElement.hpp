@@ -43,8 +43,6 @@ public:
 
     static int getTypeCount(VERTEXELEMENT_TYPE _type);
 
-    static ::GL::DATABUFFER_TYPE getType(VERTEXELEMENT_TYPE _type);
-
     VertexElement(const VertexElement&) = delete;
 
     VertexElement(VertexElement&&) = delete;
@@ -66,6 +64,8 @@ public:
     const VERTEXELEMENT_SEMANTIC m_semantic;
 
 private:
+
+    static ::GL::DATABUFFER_TYPE getType(VERTEXELEMENT_TYPE _type);
 
     VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
 

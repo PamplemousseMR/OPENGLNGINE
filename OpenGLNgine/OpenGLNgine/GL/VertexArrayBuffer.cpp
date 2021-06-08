@@ -4,6 +4,9 @@
 
 namespace GL
 {
+
+ptrdiff_t VertexArrayBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+
 VertexArrayBuffer::VertexArrayBuffer() :
     IBindable()
 {
@@ -23,12 +26,10 @@ VertexArrayBuffer::~VertexArrayBuffer()
 void VertexArrayBuffer::bind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = true;
         glBindVertexArray(m_id);
     }
 #else
@@ -39,12 +40,10 @@ void VertexArrayBuffer::bind() const
 void VertexArrayBuffer::unbind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = false;
         glBindVertexArray(0);
     }
 #else

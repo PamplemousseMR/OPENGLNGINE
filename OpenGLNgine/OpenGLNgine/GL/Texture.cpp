@@ -8,9 +8,197 @@ namespace GL
 {
 
 GLint Texture::s_MAX_SIZE = 0;
+
 GLint Texture::s_MAX_SAMPLE = 0;
+
 GLint Texture::s_MAX_LOCATION = 0;
+
 int Texture::s_activeTextUnit = 0;
+
+GLenum Texture::getBaseFormat(TEXTURE_INTERNAL_FORMAT _format)
+{
+    switch(_format)
+    {
+    case TIF_DEPTH:
+    case TIF_DEPTH16:
+    case TIF_DEPTH24:
+    case TIF_DEPTH32:
+        return GL_DEPTH_COMPONENT;
+    case TIF_DEPTH_STENCIL:
+    case TIF_DEPTH24_STENCIL8:
+    case TIF_DEPTH32F_STENCIL8:
+        return GL_DEPTH_STENCIL;
+    case TIF_RED:
+    case TIF_R8:
+    case TIF_R8_SNORM:
+    case TIF_R16:
+    case TIF_R16_SNORM:
+    case TIF_R3_G3_B2:
+    case TIF_R16F:
+    case TIF_R32F:
+    case TIF_R11F_G11F_B10F:
+        return GL_RED;
+    case TIF_R8I:
+    case TIF_R8UI:
+    case TIF_R16I:
+    case TIF_R16UI:
+    case TIF_R32I:
+    case TIF_R32UI:
+        return GL_RED_INTEGER;
+    case TIF_RG:
+    case TIF_RG8:
+    case TIF_RG8_SNORM:
+    case TIF_RG16:
+    case TIF_RG16_SNORM:
+    case TIF_RG16F:
+    case TIF_RG32F:
+        return GL_RG;
+    case TIF_RG8I:
+    case TIF_RG8UI:
+    case TIF_RG16I:
+    case TIF_RG16UI:
+    case TIF_RG32I:
+    case TIF_RG32UI:
+        return GL_RG_INTEGER;
+    case TIF_RGB:
+    case TIF_RGB4:
+    case TIF_RGB5:
+    case TIF_RGB8:
+    case TIF_RGB8_SNORM:
+    case TIF_RGB10:
+    case TIF_RGB12:
+    case TIF_RGB16_SNORM:
+    case TIF_RGB5_A1:
+    case TIF_RGB10_A2:
+    case TIF_RGB10_A2UI:
+    case TIF_SRGB8:
+    case TIF_RGB16F:
+    case TIF_RGB32F:
+    case TIF_RGB9_E5:
+        return GL_RGB;
+    case TIF_RGB8I:
+    case TIF_RGB8UI:
+    case TIF_RGB16I:
+    case TIF_RGB16UI:
+    case TIF_RGB32I:
+    case TIF_RGB32UI:
+        return GL_RGB_INTEGER;
+    case TIF_RGBA:
+    case TIF_RGBA2:
+    case TIF_RGBA4:
+    case TIF_RGBA8:
+    case TIF_RGBA8_SNORM:
+    case TIF_RGBA12:
+    case TIF_RGBA16:
+    case TIF_RGBA16F:
+    case TIF_RGBA32F:
+    case TIF_SRGB8_ALPHA8:
+        return GL_RGBA;
+    case TIF_RGBA8I:
+    case TIF_RGBA8UI:
+    case TIF_RGBA16I:
+    case TIF_RGBA16UI:
+    case TIF_RGBA32I:
+    case TIF_RGBA32UI:
+        return GL_RGBA_INTEGER;
+    default:
+        GLNGINE_EXCEPTION("Unhandle texture format");
+    }
+}
+
+GLenum Texture::getBaseType(TEXTURE_INTERNAL_FORMAT _format)
+{
+    switch(_format)
+    {
+    case TIF_DEPTH24:
+    case TIF_DEPTH24_STENCIL8:
+        return GL_UNSIGNED_INT_24_8;
+    case TIF_R8:
+    case TIF_RG8:
+    case TIF_RGB8:
+    case TIF_RGBA8:
+        return GL_UNSIGNED_BYTE;
+    case TIF_R3_G3_B2:
+        return GL_UNSIGNED_BYTE_3_3_2;
+    case TIF_R8_SNORM:
+    case TIF_RG8_SNORM:
+    case TIF_RGB8_SNORM:
+    case TIF_RGBA8_SNORM:
+        return GL_BYTE;
+    case TIF_DEPTH16:
+    case TIF_R16:
+    case TIF_RG16:
+    case TIF_RGBA16:
+        return GL_UNSIGNED_SHORT;
+    case TIF_RGB4:
+    case TIF_RGBA4:
+        return GL_UNSIGNED_SHORT_4_4_4_4;
+    case TIF_RGB5:
+    case TIF_RGB5_A1:
+        return GL_UNSIGNED_SHORT_5_5_5_1;
+    case TIF_R16_SNORM:
+    case TIF_RG16_SNORM:
+    case TIF_RGB16_SNORM:
+        return GL_SHORT;
+    case TIF_R8UI:
+    case TIF_R16UI:
+    case TIF_R32UI:
+    case TIF_RG8UI:
+    case TIF_RG16UI:
+    case TIF_RG32UI:
+    case TIF_RGB8UI:
+    case TIF_RGB16UI:
+    case TIF_RGB32UI:
+    case TIF_RGBA16UI:
+    case TIF_RGBA32UI:
+        return GL_UNSIGNED_INT;
+    case TIF_RGBA8UI:
+    case TIF_SRGB8_ALPHA8:
+    case TIF_SRGB8:
+        return GL_UNSIGNED_INT_8_8_8_8;
+    case TIF_RGB10:
+    case TIF_RGB10_A2UI:
+    case TIF_RGB10_A2:
+        return GL_UNSIGNED_INT_10_10_10_2;
+    case TIF_R8I:
+    case TIF_R16I:
+    case TIF_R32I:
+    case TIF_RG8I:
+    case TIF_RG16I:
+    case TIF_RG32I:
+    case TIF_RGB8I:
+    case TIF_RGB16I:
+    case TIF_RGB32I:
+    case TIF_RGBA8I:
+    case TIF_RGBA16I:
+    case TIF_RGBA32I:
+        return GL_INT;
+    case TIF_DEPTH:
+    case TIF_DEPTH32:
+    case TIF_RED:
+    case TIF_RG:
+    case TIF_RGB:
+    case TIF_RGBA:
+    case TIF_R16F:
+    case TIF_R32F:
+    case TIF_R11F_G11F_B10F:
+    case TIF_RG16F:
+    case TIF_RG32F:
+    case TIF_RGB16F:
+    case TIF_RGB32F:
+    case TIF_RGBA16F:
+    case TIF_RGBA32F:
+        return GL_FLOAT;
+    case TIF_DEPTH_STENCIL:
+    case TIF_DEPTH32F_STENCIL8:
+    case TIF_RGB12:
+    case TIF_RGB9_E5:
+    case TIF_RGBA2:
+    case TIF_RGBA12:
+    default:
+        GLNGINE_EXCEPTION("Unhandle texture format");
+    }
+}
 
 Texture::Texture() :
     IBindable()
@@ -231,27 +419,26 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
     SOIL_free_image_data(data);
 }
 
-void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data)
+void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
         GLNGINE_EXCEPTION("Texture size too large");
     }
 
-    m_format = _format;
     m_type = _type;
 
-    switch (m_type)
+    switch(m_type)
     {
     case TT_1D :
         if(_height != 1)
         {
             GLNGINE_EXCEPTION("Not a 1D texture");
         }
-        glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, _format, _data, nullptr);
+        glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, getBaseFormat(_internalFormat), getBaseType(_internalFormat), nullptr);
         break;
     case TT_2D :
-        glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, _data, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, getBaseFormat(_internalFormat), getBaseType(_internalFormat), nullptr);
         break;
     case TT_2DMULTISAMPLE :
         GLNGINE_EXCEPTION("Can't allocate multisampled textures without sample");

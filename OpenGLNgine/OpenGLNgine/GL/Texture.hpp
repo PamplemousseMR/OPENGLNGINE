@@ -211,10 +211,8 @@ public:
      * @param _width Width of the texture.
      * @param _height Height of the texture.
      * @param _internalFormat Internal format of the texture.
-     * @param _format Format of the source texture.
-     * @param _data Type of the texture source.
      */
-    void allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, TEXTURE_FORMAT _format, TEXTURE_DATA _data);
+    void allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
     /**
      * @brief Allocates a multisampled texture.
@@ -234,6 +232,12 @@ public:
      * @return The texture type.
      */
     inline TEXTURE_TYPE getType() const;
+
+    /// Binds the texture.
+    void bind() const override;
+
+    /// Unbinds the texture.
+    void unbind() const override;
 
     /**
      * @brief Set the mignification filter of the texture.
@@ -259,12 +263,6 @@ public:
      */
     void setVWrap(TEXTURE_WRAP _mode) const;
 
-    /// Binds the texture.
-    void bind() const override;
-
-    /// Unbinds the texture.
-    void unbind() const override;
-
 private:
 
     /// Automaticaly called one time.
@@ -273,6 +271,10 @@ private:
         /// Gets the max size of textures.
         Initializer();
     };
+
+    static GLenum getBaseFormat(TEXTURE_INTERNAL_FORMAT _format);
+
+    static GLenum getBaseType(TEXTURE_INTERNAL_FORMAT _format);
 
     /// Defines the maximum size of a texture.
     static GLint s_MAX_SIZE;

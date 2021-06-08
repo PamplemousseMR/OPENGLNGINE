@@ -7,6 +7,9 @@
 
 namespace GL
 {
+
+ptrdiff_t Program::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+
 Program::Program() :
     IBindable()
 {
@@ -107,12 +110,10 @@ void Program::link() const
 void Program::bind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = true;
         glUseProgram(m_id);
     }
 #else
@@ -123,12 +124,10 @@ void Program::bind() const
 void Program::unbind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = false;
         glUseProgram(0);
     }
 #else

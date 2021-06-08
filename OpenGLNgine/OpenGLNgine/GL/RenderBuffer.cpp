@@ -8,6 +8,8 @@ namespace GL
 GLint RenderBuffer::s_MAX_SIZE = 0;
 GLint RenderBuffer::s_MAX_SAMPLE = 0;
 
+ptrdiff_t RenderBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+
 RenderBuffer::RenderBuffer() :
     IBindable()
 {
@@ -66,12 +68,10 @@ void RenderBuffer::allocateMultisample(int _width, int _height, RENDERBUFFER_FOR
 void RenderBuffer::bind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
     ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || !m_isBinded)
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = true;
         glBindRenderbuffer(GL_RENDERBUFFER, m_id);
     }
 #else
@@ -82,12 +82,10 @@ void RenderBuffer::bind() const
 void RenderBuffer::unbind() const
 {
 #ifdef GLNGINE_USE_STATE_CACHE
-    static ptrdiff_t s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_cache != add || m_isBinded)
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_cache != add)
     {
         s_cache = add;
-        m_isBinded = false;
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
     }
 #else
