@@ -46,9 +46,10 @@ void RenderWindow::render() const
         ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), static_cast< int >(size[2]*m_width), static_cast< int >(size[3]*m_height));
         ::GL::Rasterizer::enableScissorTest(true);
         ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), static_cast< int >(size[2]*m_width), static_cast< int >(size[3]*m_height));
-        const auto& color = vp.second->getClearColor();
 
+        const auto& color = vp.second->getClearColor();
         ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+        ::GL::PixelOperation::setDepthClearValue(vp.second->m_depthClearValue);
         ::GL::DrawCall::clear(::GL::DC_COLOR_DEPTH);
         ::GL::Rasterizer::enableScissorTest(false);
 
