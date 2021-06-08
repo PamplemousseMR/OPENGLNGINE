@@ -26,11 +26,7 @@ public:
 
     ProgramPtr createProgram(const std::string& _name);
 
-    void destroyProgram(const ProgramPtr& _program);
-
     ShaderPtr createShader(const std::string& _name, SHADER_TYPE _type);
-
-    void destroyShader(const ShaderPtr& _Shader);
 
 private:
 

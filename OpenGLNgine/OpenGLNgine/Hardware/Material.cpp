@@ -26,19 +26,6 @@ Pass* Material::createPass()
     return ptr;
 }
 
-void Material::destroyPass(Pass* const _pass)
-{
-    GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");
-
-    PassList::const_iterator it = std::find(m_passes.begin(), m_passes.end(), _pass);
-    if(it == m_passes.end())
-    {
-        GLNGINE_EXCEPTION("The pass doesn't exists");
-    }
-    m_passes.erase(it);
-    delete _pass;
-}
-
 void Material::destroyAllPasses()
 {
     PassList::const_iterator itBeg, itEnd;

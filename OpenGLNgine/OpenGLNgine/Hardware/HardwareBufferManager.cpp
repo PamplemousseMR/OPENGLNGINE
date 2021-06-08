@@ -41,22 +41,6 @@ IndexData* HardwareBufferManager::createIndexData()
     return ptr;
 }
 
-void HardwareBufferManager::destroyVertexData(VertexData* _data)
-{
-    GLNGINE_ASSERT_IF(!_data, "The vertex data mustn't be null");
-
-    m_vertexData.erase(_data);
-    delete _data;
-}
-
-void HardwareBufferManager::destroyIndexData(IndexData* _data)
-{
-    GLNGINE_ASSERT_IF(!_data, "The index data mustn't be null");
-
-    m_indexData.erase(_data);
-    delete _data;
-}
-
 void HardwareBufferManager::destroyAllVertexData()
 {
     VertexDataList::const_iterator itBeg, itEnd;

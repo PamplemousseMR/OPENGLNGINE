@@ -25,8 +25,6 @@ public:
 
     TexturePtr getByName(const std::string& _name);
 
-    void destroy(const TexturePtr& _Texture);
-
 private:
 
     struct Initializer final

@@ -23,11 +23,6 @@ TexturePtr TextureManager::getByName(const std::string& _name)
     return this->get(_name);
 }
 
-void TextureManager::destroy(const TexturePtr& _texture)
-{
-    this->remove(_texture);
-}
-
 TextureManager::Initializer::Initializer()
 {
     TextureManager::s_instance = new TextureManager();

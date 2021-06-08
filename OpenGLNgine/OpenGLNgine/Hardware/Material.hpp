@@ -36,8 +36,6 @@ public:
 
     Pass* createPass();
 
-    void destroyPass(Pass* const _pass);
-
     void destroyAllPasses();
 
     inline const PassList& getPasses() const;

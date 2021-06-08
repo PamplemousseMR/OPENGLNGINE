@@ -33,10 +33,6 @@ public:
 
     IndexData* createIndexData();
 
-    void destroyVertexData(VertexData* _data);
-
-    void destroyIndexData(IndexData* _data);
-
     void destroyAllVertexData();
 
     void destroyAllIndexData();

@@ -26,8 +26,6 @@ public:
 
     MaterialPtr getByName(const std::string& _name);
 
-    void destroy(const MaterialPtr& _material);
-
 private:
 
     struct Initializer final
