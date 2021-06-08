@@ -24,10 +24,6 @@ public:
 
     RenderTargetPtr create(const std::string& _name);
 
-    RenderTargetPtr getByName(const std::string& _name);
-
-    void destroy(const RenderTargetPtr& _renderTarget);
-
 private:
 
     struct Initializer final

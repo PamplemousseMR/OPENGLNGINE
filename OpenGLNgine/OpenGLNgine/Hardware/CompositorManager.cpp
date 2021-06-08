@@ -18,16 +18,6 @@ CompositorPtr CompositorManager::create(const std::string& _name)
     return ptr;
 }
 
-CompositorPtr CompositorManager::getByName(const std::string& _name)
-{
-    return this->get(_name);
-}
-
-void CompositorManager::destroy(const CompositorPtr& _compositor)
-{
-    this->remove(_compositor);
-}
-
 CompositorManager::Initializer::Initializer()
 {
     CompositorManager::s_instance = new CompositorManager();

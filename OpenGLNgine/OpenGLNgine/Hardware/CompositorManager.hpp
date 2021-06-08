@@ -24,10 +24,6 @@ public:
 
     CompositorPtr create(const std::string& _name);
 
-    CompositorPtr getByName(const std::string& _name);
-
-    void destroy(const CompositorPtr& _compositor);
-
 private:
 
     struct Initializer final

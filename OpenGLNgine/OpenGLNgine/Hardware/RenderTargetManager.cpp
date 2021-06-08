@@ -18,16 +18,6 @@ RenderTargetPtr RenderTargetManager::create(const std::string& _name)
     return ptr;
 }
 
-RenderTargetPtr RenderTargetManager::getByName(const std::string& _name)
-{
-    return this->get(_name);
-}
-
-void RenderTargetManager::destroy(const RenderTargetPtr& _renderTarget)
-{
-    this->remove(_renderTarget);
-}
-
 RenderTargetManager::Initializer::Initializer()
 {
     RenderTargetManager::s_instance = new RenderTargetManager();
