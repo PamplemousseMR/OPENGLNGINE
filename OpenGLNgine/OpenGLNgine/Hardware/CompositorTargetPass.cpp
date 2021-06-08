@@ -5,6 +5,42 @@
 namespace Hardware
 {
 
+::GL::FRAMBUFFER_MASK CompositorTargetPass::getType(COMPOSITORTARGETPASS_MASK _type)
+{
+    switch(_type)
+    {
+    case CM_COLOR:
+        return ::GL::FM_COLOR;
+    case CM_DEPTH:
+        return ::GL::FM_DEPTH;
+    case CM_STENCIL:
+        return ::GL::FM_STENCIL;
+    case CM_COLOR_DEPTH:
+        return ::GL::FM_COLOR_DEPTH;
+    case CM_COLOR_STENCIL:
+        return ::GL::FM_COLOR_STENCIL;
+    case CM_DEPTH_STENCIL:
+        return ::GL::FM_DEPTH_STENCIL;
+    case CM_ALL:
+        return ::GL::FM_ALL;
+    default:
+        GLNGINE_EXCEPTION("Unhandle mask type");
+    }
+}
+
+::GL::FRAMBUFFER_FILTER CompositorTargetPass::getType(COMPOSITORTARGETPASS_FILTER _type)
+{
+    switch(_type)
+    {
+    case CF_LINEAR:
+        return ::GL::FF_LINEAR;
+    case CF_NEAREST:
+        return ::GL::FF_NEAREST;
+    default:
+        GLNGINE_EXCEPTION("Unhandle filter type");
+    }
+}
+
 CompositorTargetPass::CompositorTargetPass()
 {
 }

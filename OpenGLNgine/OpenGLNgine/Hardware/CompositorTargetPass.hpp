@@ -15,6 +15,23 @@ enum COMPOSITORTARGETPASS_MODE
     CM_PREVIOUS
 };
 
+enum COMPOSITORTARGETPASS_MASK
+{
+    CM_COLOR,
+    CM_DEPTH,
+    CM_STENCIL,
+    CM_COLOR_DEPTH,
+    CM_COLOR_STENCIL,
+    CM_DEPTH_STENCIL,
+    CM_ALL
+};
+
+enum COMPOSITORTARGETPASS_FILTER
+{
+    CF_LINEAR,
+    CF_NEAREST
+};
+
 class Compositor;
 
 class CompositorTargetPass
@@ -23,6 +40,10 @@ class CompositorTargetPass
     friend Compositor;
 
 public:
+
+    static ::GL::FRAMBUFFER_MASK getType(COMPOSITORTARGETPASS_MASK _type);
+
+    static ::GL::FRAMBUFFER_FILTER getType(COMPOSITORTARGETPASS_FILTER _type);
 
     typedef std::vector< CompositorPass* > CompositorPassList;
 
@@ -43,6 +64,10 @@ public:
     inline const CompositorPassList& getCompositorPasses() const;
 
     COMPOSITORTARGETPASS_MODE m_mode { CM_NONE };
+
+    COMPOSITORTARGETPASS_MASK m_mask { CM_COLOR };
+
+    COMPOSITORTARGETPASS_FILTER m_filter { CF_NEAREST };
 
     RenderTargetPtr m_renderTarget { nullptr };
 
