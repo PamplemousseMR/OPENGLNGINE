@@ -29,8 +29,7 @@ public:
 private:
 
 #ifdef GLNGINE_USE_STATE_CACHE
-    /// Defines the bind status.
-    mutable bool m_isBinded { false };
+    static ptrdiff_t s_cache;
 #endif
 
 };

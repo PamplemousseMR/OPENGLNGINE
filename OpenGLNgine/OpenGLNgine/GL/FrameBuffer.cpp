@@ -12,10 +12,6 @@ GLint FrameBuffer::s_MAX_DRAW = 0;
 
 ptrdiff_t FrameBuffer::s_defaultCache = reinterpret_cast< ptrdiff_t >(nullptr);
 
-ptrdiff_t FrameBuffer::s_drawCache = reinterpret_cast< ptrdiff_t >(nullptr);
-
-ptrdiff_t FrameBuffer::s_readCache = reinterpret_cast< ptrdiff_t >(nullptr);
-
 FrameBuffer::FrameBuffer() :
     IBindable()
 {
@@ -189,30 +185,12 @@ void FrameBuffer::unbind() const
 
 void FrameBuffer::bindDraw() const
 {
-#ifdef GLNGINE_USE_STATE_CACHE
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_drawCache != add)
-    {
-        s_drawCache = add;
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
-    }
-#else
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_id);
-#endif
 }
 
 void FrameBuffer::bindRead() const
 {
-#ifdef GLNGINE_USE_STATE_CACHE
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
-    if(s_readCache != add)
-    {
-        s_readCache = add;
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-    }
-#else
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_id);
-#endif
 }
 
 FrameBuffer::Initializer::Initializer()
