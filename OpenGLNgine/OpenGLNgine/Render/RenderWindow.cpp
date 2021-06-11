@@ -230,13 +230,8 @@ void RenderWindow::render() const
                         renderTarget->lock();
                         if(renderTarget->isDirty())
                         {
-                            const ::Hardware::RenderTarget::TextureList& textures = renderTarget->getTextures();
-                            for(auto& texture : textures)
-                            {
-                                renderTarget->lock(texture.first);
-                                renderTarget->allocate(texture.first, viewportWidth, viewportHeight);
-                                renderTarget->attach(texture.first);
-                            }
+                            renderTarget->allocate(viewportWidth, viewportHeight);
+                            renderTarget->attach();
                             renderTarget->check();
                             renderTarget->_notifyDirty();
                         }

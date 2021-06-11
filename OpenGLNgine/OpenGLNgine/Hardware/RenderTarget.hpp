@@ -7,7 +7,6 @@
 #include "OpenGLNgine/Hardware/Texture.hpp"
 
 #include <memory>
-#include <map>
 
 namespace Hardware
 {
@@ -22,7 +21,7 @@ class RenderTarget final : public ::Core::IResource
 
 public:
 
-    typedef std::map< unsigned, std::pair< ::GL::Texture, TEXTURE_INTERNAL_FORMAT > > TextureList;
+    typedef std::vector< std::pair< ::GL::Texture, TEXTURE_INTERNAL_FORMAT > > TextureList;
 
     RenderTarget(RenderTargetManager* const _manager, const std::string& _name);
 
@@ -44,19 +43,13 @@ public:
 
     inline void lockRead();
 
-    void lock(unsigned _location);
+    void allocate(int _width, int _height);
 
-    void unlock(unsigned _location);
-
-    void allocate(unsigned _location, int _width, int _height);
-
-    void attach(unsigned _location);
+    void attach();
 
     inline void check() const;
 
-    void addTexture(TEXTURE_INTERNAL_FORMAT _format, unsigned _location);
-
-    inline const TextureList& getTextures() const;
+    void pushTexture(TEXTURE_INTERNAL_FORMAT _format);
 
     inline bool isDirty() const;
 
@@ -99,11 +92,6 @@ inline void RenderTarget::lockRead()
 inline void RenderTarget::check() const
 {
     m_frameBuffer.checkStatus();
-}
-
-inline const RenderTarget::TextureList& RenderTarget::getTextures() const
-{
-    return m_textures;
 }
 
 inline bool RenderTarget::isDirty() const
