@@ -45,9 +45,9 @@ public:
 
     const TEXTUREUNITSTATE_SEMANTIC m_semantic;
 
-    TEXTURE_FILTER minFilter { TF_NEAREST };
+    TEXTURE_FILTER m_minFilter { TF_NEAREST };
 
-    TEXTURE_FILTER magFilter { TF_NEAREST };
+    TEXTURE_FILTER m_magFilter { TF_NEAREST };
 
     TEXTURE_WRAP m_uWrap { TW_REPEAT };
 

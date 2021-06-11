@@ -95,8 +95,8 @@ int main()
     // Create the texture unit state
     ::Hardware::TextureUnitState* const unitSate = material->getPasses()[0]->createTextureUnitState(::Hardware::TS_AMBIENT);
     unitSate->setTexture(texture);
-    unitSate->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
-    unitSate->magFilter = ::Hardware::TF_LINEAR;
+    unitSate->m_minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
+    unitSate->m_magFilter = ::Hardware::TF_LINEAR;
 
     // Create the mesh.
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");

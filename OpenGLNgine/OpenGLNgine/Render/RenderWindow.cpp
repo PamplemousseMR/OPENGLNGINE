@@ -125,8 +125,8 @@ void RenderWindow::renderScene(const Camera* const _cam) const
                                     {
                                         ::GL::Texture::setActiveTexture(textureUnitState->m_semantic);
                                         texture->lock();
-                                        texture->setMagFilter(textureUnitState->magFilter);
-                                        texture->setMinFilter(textureUnitState->minFilter);
+                                        texture->setMagFilter(textureUnitState->m_magFilter);
+                                        texture->setMinFilter(textureUnitState->m_minFilter);
                                         texture->setUWrap(textureUnitState->m_uWrap);
                                         texture->setVWrap(textureUnitState->m_vWrap);
                                     }
