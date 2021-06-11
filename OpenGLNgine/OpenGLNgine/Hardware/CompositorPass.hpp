@@ -5,7 +5,8 @@ namespace Hardware
 
 enum COMPOSITORPASS_TYPE
 {
-    CT_CLEAR
+    CT_CLEAR,
+    CT_SCENE
 };
 
 class CompositorTargetPass;

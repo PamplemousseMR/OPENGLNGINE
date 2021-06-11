@@ -56,6 +56,13 @@ CompositorPassClear* CompositorTargetPass::createCompositorPassClear()
     return ptr;
 }
 
+CompositorPassScene* CompositorTargetPass::createCompositorPassScene()
+{
+    CompositorPassScene* const ptr = new CompositorPassScene();
+    m_compositorPasses.push_back(ptr);
+    return ptr;
+}
+
 void CompositorTargetPass::destroyCompositorPass(CompositorPass* const _pass)
 {
     GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");

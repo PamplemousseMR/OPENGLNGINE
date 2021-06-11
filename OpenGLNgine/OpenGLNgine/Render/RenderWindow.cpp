@@ -6,6 +6,205 @@
 namespace Render
 {
 
+void RenderWindow::renderScene(const Camera* const _cam) const
+{
+    const SceneManager* const sm = _cam->getSceneManager();
+
+    for(const auto& me : sm->getMeshes())
+    {
+        if(me.second->isAttached())
+        {
+            SceneNode* node = me.second->getParent();
+
+            for(const SubMesh* subMesh : me.second->getSubMeshes())
+            {
+                if(subMesh->m_material != nullptr)
+                {
+                    const ::Hardware::MaterialPtr& mat = subMesh->m_material;
+                    for(::Hardware::Pass* const pass : mat->getPasses())
+                    {
+                        const ::Hardware::ProgramPtr program = pass->getProgram();
+                        if(program)
+                        {
+                            program->lock();
+
+                            for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getAutoConstants())
+                            {
+                                switch(parameter.first)
+                                {
+                                case ::Hardware::PP_MODELVIEWPROJ_MATRIX:
+                                    parameter.second = _cam->getProjection() * _cam->getView() * node->getFullTransform();
+                                    break;
+                                case ::Hardware::PP_MODELVIEW_MATRIX:
+                                    parameter.second = _cam->getView() * node->getFullTransform();
+                                    break;
+                                case ::Hardware::PP_VIEW_MATRIX:
+                                    parameter.second = _cam->getView();
+                                    break;
+                                case ::Hardware::PP_LIGHT_COUNT:
+                                    parameter.second = static_cast< unsigned >(sm->getLights().size());
+                                    break;
+                                case ::Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
+                                {
+                                    std::vector< ::glm::vec4 > lightPositionWorldSpaces;
+                                    lightPositionWorldSpaces.reserve(sm->getLights().size());
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
+                                    }
+                                    parameter.second = lightPositionWorldSpaces;
+                                    break;
+                                }
+                                case ::Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY:
+                                {
+                                    std::vector< ::glm::vec4 > lightPositionViewSpaces;
+                                    lightPositionViewSpaces.reserve(sm->getLights().size());
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightPositionViewSpaces.push_back(_cam->getView() * light.second->getShaderPosition());
+                                    }
+                                    parameter.second = lightPositionViewSpaces;
+                                    break;
+                                }
+                                case ::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
+                                {
+                                    std::vector< ::glm::vec3 > lightDiffuseColors;
+                                    lightDiffuseColors.reserve(sm->getLights().size());
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightDiffuseColors.push_back(light.second->getDiffuse());
+                                    }
+                                    parameter.second = lightDiffuseColors;
+                                    break;
+                                }
+                                case ::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY:
+                                {
+                                    std::vector< ::glm::vec3 > lightSpecularColors;
+                                    lightSpecularColors.reserve(sm->getLights().size());
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightSpecularColors.push_back(light.second->getSpecular());
+                                    }
+                                    parameter.second = lightSpecularColors;
+                                    break;
+                                }
+                                case ::Hardware::PP_MATERIAL_SHININESS:
+                                    parameter.second = pass->m_shininess;
+                                    break;
+                                case ::Hardware::PP_MATERIAL_AMBIENT:
+                                    parameter.second = pass->m_ambient;
+                                    break;
+                                case ::Hardware::PP_MATERIAL_HAS_TS_AMBIENT:
+                                    parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_AMBIENT) ? 1.f : 0.f;
+                                    break;
+                                case ::Hardware::PP_MATERIAL_DIFFUSE:
+                                    parameter.second = pass->m_diffuse;
+                                    break;
+                                case ::Hardware::PP_MATERIAL_HAS_TF_DIFFUSE:
+                                    parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_DIFFUSE) ? 1.f : 0.f;
+                                    break;
+                                case ::Hardware::PP_MATERIAL_SPECULAR:
+                                    parameter.second = pass->m_specular;
+                                    break;
+                                case ::Hardware::PP_MATERIAL_HAS_TS_SPECULAR:
+                                    parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_SPECULAR) ? 1.f : 0.f;
+                                    break;
+                                default:
+                                    GLNGINE_EXCEPTION("Unhandle program parameter");
+                                }
+                            }
+
+                            for(const std::pair< const std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > >& parameter : pass->getTextureConstants())
+                            {
+                                parameter.second.first = static_cast< int >(parameter.second.second);
+                                ::Hardware::TextureUnitState* textureUnitState = pass->findTextureUnitStateBySemantic(parameter.second.second);
+                                if(textureUnitState)
+                                {
+                                    const ::Hardware::TexturePtr texture = textureUnitState->getTexture();
+                                    if(texture)
+                                    {
+                                        ::GL::Texture::setActiveTexture(textureUnitState->m_semantic);
+                                        texture->lock();
+                                        texture->setMagFilter(textureUnitState->magFilter);
+                                        texture->setMinFilter(textureUnitState->minFilter);
+                                        texture->setUWrap(textureUnitState->m_uWrap);
+                                        texture->setVWrap(textureUnitState->m_vWrap);
+                                    }
+                                }
+                            }
+
+                            ::GL::PixelOperation::enableDepthTest(pass->m_depthTest);
+                            ::GL::PixelOperation::enableDepthWrite(pass->m_depthWrite);
+                            ::GL::PixelOperation::setDepthFunc(::Hardware::Pass::getType(pass->m_depthFunc));
+                            ::GL::PixelOperation::enableBlendTest(pass->m_blendTest);
+                            ::GL::PixelOperation::setBlendFunc(::Hardware::Pass::getType(pass->m_sourceFactor), ::Hardware::Pass::getType(pass->m_destinationFactor));
+                            ::GL::PixelOperation::setColorMask(pass->m_colorMask[0], pass->m_colorMask[1], pass->m_colorMask[2], pass->m_colorMask[3]);
+
+                            ::GL::Rasterizer::enableCulling(pass->m_culling != ::Hardware::PC_NONE);
+                            if(pass->m_culling != ::Hardware::PC_NONE)
+                            {
+                                ::GL::Rasterizer::setCullFace(::Hardware::Pass::getType(pass->m_culling));
+                            }
+
+                            const ::Hardware::VertexData* const vertexData = subMesh->m_vertexData;
+                            if(vertexData != nullptr)
+                            {
+                                const ::Hardware::IndexData* const indexData = subMesh->m_indexData;
+                                if(subMesh->isDirty())
+                                {
+                                    vertexData->m_vertexDeclaration->lock();
+                                    for(const auto& binding : vertexData->m_vertexBufferBinding->getBufferBindings())
+                                    {
+                                        const ::Hardware::HardwareVertexBufferPtr buffer = binding.second;
+                                        buffer->lock();
+
+                                        int stride = 0;
+
+                                        const ::Hardware::VertexDeclaration::VertexElementList& elements = vertexData->m_vertexDeclaration->getElements();
+                                        for(const ::Hardware::VertexElement* const element : elements)
+                                        {
+                                            if(element->m_source == binding.first)
+                                            {
+                                                stride += element->getTypeCount();
+                                            }
+                                        }
+
+                                        for(const ::Hardware::VertexElement* const element : elements)
+                                        {
+                                            if(element->m_source == binding.first)
+                                            {
+                                                const int offset = element->m_offsetInBytes + vertexData->m_vertexStart * buffer->m_vertexType;
+                                                ::GL::DataBuffer::setAttrib(element->m_semantic, element->getTypeCount(), element->getType(), false, buffer->m_vertexType*stride, offset);
+                                                ::GL::DataBuffer::setLocation(element->m_semantic);
+                                            }
+                                        }
+                                    }
+                                    if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
+                                    {
+                                        indexData->m_indexBuffer->lock();
+                                    }
+                                    subMesh->_notifyDirty();
+                                }
+
+                                vertexData->m_vertexDeclaration->lock();
+                                if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
+                                {
+                                    const int offset = indexData->m_indexStart * indexData->m_indexBuffer->m_indexType;
+                                    ::GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
+                                }
+                                else
+                                {
+                                    ::GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void RenderWindow::render() const
 {
     this->makeCurrent();
@@ -15,21 +214,27 @@ void RenderWindow::render() const
         const auto& size = vp.second->getViewport();
         const int viewportWidth = static_cast< int >(size[2]*m_width);
         const int viewportHeight = static_cast< int >(size[3]*m_height);
+        ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
+
+        const CompositorChainList::const_iterator compIt = m_compositorChains.find(vp.second);
         if(compIt != m_compositorChains.end())
         {
+            ::Hardware::RenderTargetPtr previousRenderTarget = nullptr;
             for(const ::Hardware::CompositorPtr& compositor : compIt->second->getCompositors())
             {
                 for(const ::Hardware::CompositorTargetPass* const targetPass : compositor->getCompositorTargetPasses())
                 {
-                    ::Hardware::RenderTargetPtr renderTarget = targetPass->m_renderTarget;
+                    const ::Hardware::RenderTargetPtr renderTarget = targetPass->m_renderTarget;
                     if(renderTarget)
                     {
+                        renderTarget->lock();
                         if(renderTarget->isDirty())
                         {
                             const ::Hardware::RenderTarget::TextureList& textures = renderTarget->getTextures();
-                            renderTarget->lock();
-                            for(const auto& texture : textures)
+                            for(auto& texture : textures)
                             {
+                                renderTarget->lock(texture.first);
+                                renderTarget->allocate(texture.first, viewportWidth, viewportHeight);
                                 renderTarget->attach(texture.first);
                             }
                             renderTarget->check();
@@ -40,217 +245,80 @@ void RenderWindow::render() const
                     {
                         ::GL::FrameBuffer::bindDefault();
                     }
+
+                    switch(targetPass->m_mode)
+                    {
+                    case ::Hardware::COMPOSITORTARGETPASS_MODE::CM_NONE:
+                        break;
+                    case ::Hardware::COMPOSITORTARGETPASS_MODE::CM_PREVIOUS:
+                    {
+                        if(previousRenderTarget == nullptr)
+                        {
+                            ::GL::FrameBuffer::bindReadDefault();
+                        }
+                        else
+                        {
+                            previousRenderTarget->lockRead();
+                        }
+
+                        if(renderTarget == nullptr)
+                        {
+                            ::GL::FrameBuffer::bindDrawDefault();
+                        }
+                        else
+                        {
+                            renderTarget->lockDraw();
+                        }
+                        ::GL::FrameBuffer::blit(0, 0, viewportWidth, viewportHeight,
+                                                0, 0, viewportWidth, viewportHeight,
+                                                ::Hardware::CompositorTargetPass::getType(targetPass->m_mask), ::Hardware::CompositorTargetPass::getType(targetPass->m_filter));
+                        break;
+                    }
+                    default:
+                        GLNGINE_EXCEPTION("Unhandle pass mode");
+                    }
+
+                    const ::Hardware::CompositorTargetPass::CompositorPassList& passes = targetPass->getCompositorPasses();
+                    for(const ::Hardware::CompositorPass* const pass : passes)
+                    {
+                        switch(pass->m_type){
+                        case ::Hardware::COMPOSITORPASS_TYPE::CT_CLEAR:
+                        {
+                            const ::Hardware::CompositorPassClear* const cmpClear = static_cast< const ::Hardware::CompositorPassClear* >(pass);
+                            const auto& color = cmpClear->getClearColor();
+                            ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+                            ::GL::PixelOperation::setDepthClearValue(cmpClear->m_depthClearValue);
+                            ::GL::DrawCall::clear(::Hardware::CompositorPassClear::getType(cmpClear->m_buffers));
+                            break;
+                        }
+                        case ::Hardware::COMPOSITORPASS_TYPE::CT_SCENE:
+                        {
+                            this->renderScene(vp.second->getCamera());
+                            break;
+                        }
+                        default:
+                            GLNGINE_EXCEPTION("Unhandle compositor pass type");
+                        }
+                    }
+
+                    previousRenderTarget = renderTarget;
                 }
             }
         }
-
-        // TODO Render the scene.
-        ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
-        ::GL::Rasterizer::enableScissorTest(true);
-        ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
-
-        const auto& color = vp.second->getClearColor();
-        ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
-        ::GL::PixelOperation::setDepthClearValue(vp.second->m_depthClearValue);
-        ::GL::DrawCall::clear(::GL::DC_COLOR_DEPTH);
-        ::GL::Rasterizer::enableScissorTest(false);
-
-        const Camera* const cam = vp.second->getCamera();
-
-        const SceneManager* const sm = cam->getSceneManager();
-
-        for(const auto& me : sm->getMeshes())
+        else
         {
-            if(me.second->isAttached())
-            {
-                SceneNode* node = me.second->getParent();
+            ::GL::Rasterizer::enableScissorTest(true);
+            ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
 
-                for(const SubMesh* subMesh : me.second->getSubMeshes())
-                {
-                    if(subMesh->m_material != nullptr)
-                    {
-                        const ::Hardware::MaterialPtr& mat = subMesh->m_material;
-                        for(::Hardware::Pass* const pass : mat->getPasses())
-                        {
-                            const ::Hardware::ProgramPtr program = pass->getProgram();
-                            if(program)
-                            {
-                                program->lock();
+            const auto& color = vp.second->getClearColor();
+            ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
+            ::GL::PixelOperation::setDepthClearValue(vp.second->m_depthClearValue);
+            ::GL::DrawCall::clear(::GL::DC_ALL);
+            ::GL::Rasterizer::enableScissorTest(false);
 
-                                for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getAutoConstants())
-                                {
-                                    switch(parameter.first)
-                                    {
-                                    case ::Hardware::PP_MODELVIEWPROJ_MATRIX:
-                                        parameter.second = cam->getProjection() * cam->getView() * node->getFullTransform();
-                                        break;
-                                    case ::Hardware::PP_MODELVIEW_MATRIX:
-                                        parameter.second = cam->getView() * node->getFullTransform();
-                                        break;
-                                    case ::Hardware::PP_VIEW_MATRIX:
-                                        parameter.second = cam->getView();
-                                        break;
-                                    case ::Hardware::PP_LIGHT_COUNT:
-                                        parameter.second = static_cast< unsigned >(sm->getLights().size());
-                                        break;
-                                    case ::Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
-                                    {
-                                        std::vector< ::glm::vec4 > lightPositionWorldSpaces;
-                                        lightPositionWorldSpaces.reserve(sm->getLights().size());
-                                        for(const std::pair< const std::string, Light* >& light : sm->getLights())
-                                        {
-                                            lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
-                                        }
-                                        parameter.second = lightPositionWorldSpaces;
-                                        break;
-                                    }
-                                    case ::Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY:
-                                    {
-                                        std::vector< ::glm::vec4 > lightPositionViewSpaces;
-                                        lightPositionViewSpaces.reserve(sm->getLights().size());
-                                        for(const std::pair< const std::string, Light* >& light : sm->getLights())
-                                        {
-                                            lightPositionViewSpaces.push_back(cam->getView() * light.second->getShaderPosition());
-                                        }
-                                        parameter.second = lightPositionViewSpaces;
-                                        break;
-                                    }
-                                    case ::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
-                                    {
-                                        std::vector< ::glm::vec3 > lightDiffuseColors;
-                                        lightDiffuseColors.reserve(sm->getLights().size());
-                                        for(const std::pair< const std::string, Light* >& light : sm->getLights())
-                                        {
-                                            lightDiffuseColors.push_back(light.second->getDiffuse());
-                                        }
-                                        parameter.second = lightDiffuseColors;
-                                        break;
-                                    }
-                                    case ::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY:
-                                    {
-                                        std::vector< ::glm::vec3 > lightSpecularColors;
-                                        lightSpecularColors.reserve(sm->getLights().size());
-                                        for(const std::pair< const std::string, Light* >& light : sm->getLights())
-                                        {
-                                            lightSpecularColors.push_back(light.second->getSpecular());
-                                        }
-                                        parameter.second = lightSpecularColors;
-                                        break;
-                                    }
-                                    case ::Hardware::PP_MATERIAL_SHININESS:
-                                        parameter.second = pass->m_shininess;
-                                        break;
-                                    case ::Hardware::PP_MATERIAL_AMBIENT:
-                                        parameter.second = pass->m_ambient;
-                                        break;
-                                    case ::Hardware::PP_MATERIAL_HAS_TS_AMBIENT:
-                                        parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_AMBIENT) ? 1.f : 0.f;
-                                        break;
-                                    case ::Hardware::PP_MATERIAL_DIFFUSE:
-                                        parameter.second = pass->m_diffuse;
-                                        break;
-                                    case ::Hardware::PP_MATERIAL_HAS_TF_DIFFUSE:
-                                        parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_DIFFUSE) ? 1.f : 0.f;
-                                        break;
-                                    case ::Hardware::PP_MATERIAL_SPECULAR:
-                                        parameter.second = pass->m_specular;
-                                        break;
-                                    case ::Hardware::PP_MATERIAL_HAS_TS_SPECULAR:
-                                        parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_SPECULAR) ? 1.f : 0.f;
-                                        break;
-                                    default:
-                                        GLNGINE_EXCEPTION("Unhandle program parameter");
-                                    }
-                                }
+            const Camera* const cam = vp.second->getCamera();
 
-                                for(const std::pair< const std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > >& parameter : pass->getTextureConstants())
-                                {
-                                    parameter.second.first = static_cast< int >(parameter.second.second);
-                                    ::Hardware::TextureUnitState* textureUnitState = pass->findTextureUnitStateBySemantic(parameter.second.second);
-                                    if(textureUnitState)
-                                    {
-                                        const ::Hardware::TexturePtr texture = textureUnitState->getTexture();
-                                        if(texture)
-                                        {
-                                            ::GL::Texture::setActiveTexture(textureUnitState->m_semantic);
-                                            texture->lock();
-                                            texture->setMagFilter(textureUnitState->magFilter);
-                                            texture->setMinFilter(textureUnitState->minFilter);
-                                            texture->setUWrap(textureUnitState->m_uWrap);
-                                            texture->setVWrap(textureUnitState->m_vWrap);
-                                        }
-                                    }
-                                }
-
-                                ::GL::PixelOperation::enableDepthTest(pass->m_depthTest);
-                                ::GL::PixelOperation::enableDepthWrite(pass->m_depthWrite);
-                                ::GL::PixelOperation::setDepthFunc(::Hardware::Pass::getType(pass->m_depthFunc));
-                                ::GL::PixelOperation::enableBlendTest(pass->m_blendTest);
-                                ::GL::PixelOperation::setBlendFunc(::Hardware::Pass::getType(pass->m_sourceFactor), ::Hardware::Pass::getType(pass->m_destinationFactor));
-                                ::GL::PixelOperation::setColorMask(pass->m_colorMask[0], pass->m_colorMask[1], pass->m_colorMask[2], pass->m_colorMask[3]);
-
-                                ::GL::Rasterizer::enableCulling(pass->m_culling != ::Hardware::PC_NONE);
-                                if(pass->m_culling != ::Hardware::PC_NONE)
-                                {
-                                    ::GL::Rasterizer::setCullFace(::Hardware::Pass::getType(pass->m_culling));
-                                }
-
-                                const ::Hardware::VertexData* const vertexData = subMesh->m_vertexData;
-                                if(vertexData != nullptr)
-                                {
-                                    const ::Hardware::IndexData* const indexData = subMesh->m_indexData;
-                                    if(subMesh->isDirty())
-                                    {
-                                        vertexData->m_vertexDeclaration->lock();
-                                        for(const auto& binding : vertexData->m_vertexBufferBinding->getBufferBindings())
-                                        {
-                                            const ::Hardware::HardwareVertexBufferPtr buffer = binding.second;
-                                            buffer->lock();
-
-                                            int stride = 0;
-
-                                            const ::Hardware::VertexDeclaration::VertexElementList& elements = vertexData->m_vertexDeclaration->getElements();
-                                            for(const ::Hardware::VertexElement* const element : elements)
-                                            {
-                                                if(element->m_source == binding.first)
-                                                {
-                                                    stride += element->getTypeCount();
-                                                }
-                                            }
-
-                                            for(const ::Hardware::VertexElement* const element : elements)
-                                            {
-                                                if(element->m_source == binding.first)
-                                                {
-                                                    const int offset = element->m_offsetInBytes + vertexData->m_vertexStart * buffer->m_vertexType;
-                                                    ::GL::DataBuffer::setAttrib(element->m_semantic, element->getTypeCount(), element->getType(), false, buffer->m_vertexType*stride, offset);
-                                                    ::GL::DataBuffer::setLocation(element->m_semantic);
-                                                }
-                                            }
-                                        }
-                                        if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
-                                        {
-                                            indexData->m_indexBuffer->lock();
-                                        }
-                                        subMesh->_notifyDirty();
-                                    }
-
-                                    vertexData->m_vertexDeclaration->lock();
-                                    if(indexData != nullptr && indexData->m_indexBuffer != nullptr)
-                                    {
-                                        const int offset = indexData->m_indexStart * indexData->m_indexBuffer->m_indexType;
-                                        ::GL::DrawCall::drawElements(vertexData->getRenderType(), indexData->m_indexCount, indexData->m_indexBuffer->getType(), offset);
-                                    }
-                                    else
-                                    {
-                                        ::GL::DrawCall::drawArrays(vertexData->getRenderType(), 0, vertexData->m_vertexCount);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            this->renderScene(cam);
         }
     }
 }
