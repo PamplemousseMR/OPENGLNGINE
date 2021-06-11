@@ -1,6 +1,8 @@
+#include <OpenGLNgine/Hardware/CompositorManager.hpp>
 #include <OpenGLNgine/Hardware/HardwareBufferManager.hpp>
 #include <OpenGLNgine/Hardware/MaterialManager.hpp>
 #include <OpenGLNgine/Hardware/ProgramManager.hpp>
+#include <OpenGLNgine/Hardware/RenderTargetManager.hpp>
 #include <OpenGLNgine/Hardware/TextureManager.hpp>
 #include <OpenGLNgine/Render/Camera.hpp>
 #include <OpenGLNgine/Render/Render.hpp>
@@ -43,7 +45,7 @@ int main()
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("OpenGLViewer", width, height);
     renderWindow->makeCurrent();
-    renderWindow->setSamples(8);
+    renderWindow->setSamples(1);
     renderWindow->addListener(new Listener);
 
     // Create a scene manager.
@@ -120,8 +122,8 @@ int main()
 
         for(::Hardware::TextureUnitState* textUnit : material->getPasses()[0]->getTextureUnitStates())
         {
-            textUnit->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
-            textUnit->magFilter = ::Hardware::TF_LINEAR;
+            textUnit->m_minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
+            textUnit->m_magFilter = ::Hardware::TF_LINEAR;
 
             const ::Hardware::TexturePtr texture = textUnit->getTexture();
             if(texture && !texture->isMipMapsGenerated())
@@ -136,6 +138,38 @@ int main()
     ::Render::SceneNode* const node = sceneManager->getRootSceneNode()->createChild("Node");
     node->setPosition({0.0f, 0.f, 0.f});
     node->attach(mesh);
+
+    // Create a compositor
+    ::Hardware::RenderTargetManager& renderTargetManager = ::Hardware::RenderTargetManager::getInstance();
+    const ::Hardware::RenderTargetPtr renderTarget = renderTargetManager.create("RenderTarget");
+    renderTarget->pushTexture(::Hardware::TIF_DEPTH24_STENCIL8);
+    renderTarget->pushTexture(::Hardware::TIF_RGBA8);
+    renderTarget->m_heightScale = 4.f;
+    renderTarget->m_widthScale = 4.f;
+
+    ::Hardware::CompositorManager& compositorManager = ::Hardware::CompositorManager::getInstance();
+    const ::Hardware::CompositorPtr compositor = compositorManager.create("Compositor");
+
+    {
+        ::Hardware::CompositorTargetPass* cmpTargetPass = compositor->createCompositorTargetPass();
+        cmpTargetPass->m_mode = ::Hardware::CM_NONE;
+        cmpTargetPass->m_renderTarget = renderTarget;
+
+        ::Hardware::CompositorPassClear* const clear = cmpTargetPass->createCompositorPassClear();
+        clear->m_buffers = ::Hardware::CC_COLOR_DEPTH;
+        clear->setClearColor(0.8f, 0.8f, 0.8f, 1.f);
+
+        cmpTargetPass->createCompositorPassScene();
+    }
+    {
+        ::Hardware::CompositorTargetPass* cmpTargetPass = compositor->createCompositorTargetPass();
+        cmpTargetPass->m_mode = ::Hardware::CM_PREVIOUS;
+        cmpTargetPass->m_mask = ::Hardware::CM_COLOR;
+        cmpTargetPass->m_filter = ::Hardware::CF_LINEAR;
+    }
+
+    ::Render::CompositorChain* cmpChain = renderWindow->createCompositorChain(viewport, "CompositorChain");
+    cmpChain->addCompositor(compositor);
 
     // Render loop.
     while(render.getRenderWindows().size() > 0)
