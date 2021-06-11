@@ -214,7 +214,6 @@ void RenderWindow::render() const
         const auto& size = vp.second->getViewport();
         const int viewportWidth = static_cast< int >(size[2]*m_width);
         const int viewportHeight = static_cast< int >(size[3]*m_height);
-        ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
 
         const CompositorChainList::const_iterator compIt = m_compositorChains.find(vp.second);
         if(compIt != m_compositorChains.end())
@@ -224,13 +223,19 @@ void RenderWindow::render() const
             {
                 for(const ::Hardware::CompositorTargetPass* const targetPass : compositor->getCompositorTargetPasses())
                 {
+                    int renderTargetWidth = 0;
+                    int renderTargetHeight = 0;
+
                     const ::Hardware::RenderTargetPtr renderTarget = targetPass->m_renderTarget;
                     if(renderTarget)
                     {
+                        renderTargetWidth = static_cast< int >(viewportWidth*renderTarget->m_widthScale);
+                        renderTargetHeight = static_cast< int >(viewportHeight*renderTarget->m_heightScale);
+
                         renderTarget->lock();
                         if(renderTarget->isDirty())
                         {
-                            renderTarget->allocate(viewportWidth, viewportHeight);
+                            renderTarget->allocate(renderTargetWidth, renderTargetHeight);
                             renderTarget->attach();
                             renderTarget->check();
                             renderTarget->_notifyDirty();
@@ -238,8 +243,12 @@ void RenderWindow::render() const
                     }
                     else
                     {
+                        renderTargetWidth = viewportWidth;
+                        renderTargetHeight = viewportHeight;
                         ::GL::FrameBuffer::bindDefault();
                     }
+
+                    ::GL::Rasterizer::setViewport(0, 0, renderTargetWidth, renderTargetHeight);
 
                     switch(targetPass->m_mode)
                     {
@@ -247,12 +256,18 @@ void RenderWindow::render() const
                         break;
                     case ::Hardware::COMPOSITORTARGETPASS_MODE::CM_PREVIOUS:
                     {
+                        int readTargetWidth = 0;
+                        int readTargetHeight = 0;
                         if(previousRenderTarget == nullptr)
                         {
+                            readTargetWidth = viewportWidth;
+                            readTargetHeight = viewportHeight;
                             ::GL::FrameBuffer::bindReadDefault();
                         }
                         else
                         {
+                            readTargetWidth = static_cast< int >(viewportWidth*previousRenderTarget->m_widthScale);
+                            readTargetHeight = static_cast< int >(viewportHeight*previousRenderTarget->m_heightScale);
                             previousRenderTarget->lockRead();
                         }
 
@@ -264,8 +279,8 @@ void RenderWindow::render() const
                         {
                             renderTarget->lockDraw();
                         }
-                        ::GL::FrameBuffer::blit(0, 0, viewportWidth, viewportHeight,
-                                                0, 0, viewportWidth, viewportHeight,
+                        ::GL::FrameBuffer::blit(0, 0, readTargetWidth, readTargetHeight,
+                                                0, 0, renderTargetWidth, renderTargetHeight,
                                                 ::Hardware::CompositorTargetPass::getType(targetPass->m_mask), ::Hardware::CompositorTargetPass::getType(targetPass->m_filter));
                         break;
                     }
@@ -302,6 +317,8 @@ void RenderWindow::render() const
         }
         else
         {
+            ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
+
             ::GL::Rasterizer::enableScissorTest(true);
             ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
 

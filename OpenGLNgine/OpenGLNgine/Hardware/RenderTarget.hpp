@@ -57,6 +57,10 @@ public:
 
     inline void _notifyDirty() const;
 
+    float m_widthScale { 1.f };
+
+    float m_heightScale { 1.f };
+
 private:
 
     RenderTargetManager* const m_manager;
