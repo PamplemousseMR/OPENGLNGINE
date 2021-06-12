@@ -28,6 +28,8 @@ GLenum Texture::getBaseFormat(TEXTURE_INTERNAL_FORMAT _format)
     case TIF_DEPTH24_STENCIL8:
     case TIF_DEPTH32F_STENCIL8:
         return GL_DEPTH_STENCIL;
+    case TIF_STENCIL_INDEX8:
+        return GL_STENCIL_INDEX;
     case TIF_RED:
     case TIF_R8:
     case TIF_R8_SNORM:
@@ -110,13 +112,13 @@ GLenum Texture::getBaseType(TEXTURE_INTERNAL_FORMAT _format)
 {
     switch(_format)
     {
-    case TIF_DEPTH24:
     case TIF_DEPTH24_STENCIL8:
         return GL_UNSIGNED_INT_24_8;
     case TIF_R8:
     case TIF_RG8:
     case TIF_RGB8:
     case TIF_RGBA8:
+    case TIF_STENCIL_INDEX8:
         return GL_UNSIGNED_BYTE;
     case TIF_R3_G3_B2:
         return GL_UNSIGNED_BYTE_3_3_2;
@@ -174,6 +176,7 @@ GLenum Texture::getBaseType(TEXTURE_INTERNAL_FORMAT _format)
     case TIF_RGBA32I:
         return GL_INT;
     case TIF_DEPTH:
+    case TIF_DEPTH24:
     case TIF_DEPTH32:
     case TIF_RED:
     case TIF_RG:

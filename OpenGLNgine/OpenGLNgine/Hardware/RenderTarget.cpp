@@ -33,6 +33,9 @@ void RenderTarget::attach()
         case TIF_DEPTH32F_STENCIL8:
             m_frameBuffer.attachDepthStencilTexture(texture.first);
             break;
+        case TIF_INDEX_STENCIL8:
+            m_frameBuffer.attachStencilTexture(texture.first);
+            break;
         case TIF_RED:
         case TIF_RG:
         case TIF_RGB:

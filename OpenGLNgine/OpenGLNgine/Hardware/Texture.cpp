@@ -39,6 +39,8 @@ namespace Hardware
         return ::GL::TIF_DEPTH24_STENCIL8;
     case TIF_DEPTH32F_STENCIL8:
         return ::GL::TIF_DEPTH32F_STENCIL8;
+    case TIF_INDEX_STENCIL8:
+        return ::GL::TIF_STENCIL_INDEX8;
     case TIF_RED:
         return ::GL::TIF_RED;
     case TIF_RG:

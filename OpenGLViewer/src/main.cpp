@@ -142,7 +142,7 @@ int main()
     // Create a compositor
     ::Hardware::RenderTargetManager& renderTargetManager = ::Hardware::RenderTargetManager::getInstance();
     const ::Hardware::RenderTargetPtr renderTarget = renderTargetManager.create("RenderTarget");
-    renderTarget->pushTexture(::Hardware::TIF_DEPTH24_STENCIL8);
+    renderTarget->pushTexture(::Hardware::TIF_DEPTH24);
     renderTarget->pushTexture(::Hardware::TIF_RGBA8);
     renderTarget->m_heightScale = 4.f;
     renderTarget->m_widthScale = 4.f;

@@ -99,6 +99,12 @@ public:
     void attachDepthStencilTexture(const Texture& _texture) const;
 
     /**
+     * @brief Attachs a stencil texture to a framebuffer object.
+     * @param _texture Stencil texture to attach.
+     */
+    void attachStencilTexture(const Texture& _texture) const;
+
+    /**
      * @brief Attachs an image buffer to a framebuffer object.
      * @param _buffer Buffer to attach.
      * @param _attach Attachment point to which an image from texture should be attached.
@@ -116,6 +122,12 @@ public:
      * @param _buffer Depth stencil buffer to attach.
      */
     inline void attachDepthStencilBuffer(const RenderBuffer& _buffer) const;
+
+    /**
+     * @brief Attachs a stencil buffer to a framebuffer object.
+     * @param _buffer Stencil buffer to attach.
+     */
+    inline void attachStencilBuffer(const RenderBuffer& _buffer) const;
 
     /// Checks the completeness status of a framebuffer.
     void checkStatus() const;
@@ -198,6 +210,12 @@ inline void FrameBuffer::attachDepthBuffer(const RenderBuffer& _buffer) const
 inline void FrameBuffer::attachDepthStencilBuffer(const RenderBuffer& _buffer) const
 {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
+    GLNGINE_CHECK_GL;
+}
+
+inline void FrameBuffer::attachStencilBuffer(const RenderBuffer& _buffer) const
+{
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
 }
 

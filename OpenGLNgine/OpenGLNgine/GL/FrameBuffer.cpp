@@ -94,6 +94,25 @@ void FrameBuffer::attachDepthStencilTexture(const Texture& _texture) const
     GLNGINE_CHECK_GL;
 }
 
+void FrameBuffer::attachStencilTexture(const Texture& _texture) const
+{
+    switch(_texture.getType())
+    {
+    case TT_1D:
+        glFramebufferTexture1D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_1D, _texture.getId(), 0);
+        break;
+    case TT_2D:
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, _texture.getId(), 0);
+        break;
+    case TT_2DMULTISAMPLE:
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, _texture.getId(), 0);
+        break;
+    default:
+        GLNGINE_EXCEPTION("Unhandle texture type");
+    }
+    GLNGINE_CHECK_GL;
+}
+
 void FrameBuffer::attachColorBuffer(const RenderBuffer& _buffer, unsigned _attach)
 {
     if(_attach >= unsigned(s_MAX_ATTACHEMENT))
