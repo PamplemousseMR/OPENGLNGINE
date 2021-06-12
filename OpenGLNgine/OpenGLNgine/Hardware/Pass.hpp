@@ -56,7 +56,7 @@ enum PASS_CULLING
 
 class Material;
 
-class Pass
+class Pass final
 {
 
     friend Material;

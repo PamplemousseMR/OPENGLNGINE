@@ -33,7 +33,7 @@ enum COMPOSITORTARGETPASS_FILTER
 
 class Compositor;
 
-class CompositorTargetPass
+class CompositorTargetPass final
 {
 
     friend Compositor;

@@ -24,7 +24,7 @@ enum TEXTUREUNITSTATE_SEMANTIC : unsigned
     TS_NONE = 11
 };
 
-class TextureUnitState
+class TextureUnitState final
 {
 
     friend Pass;

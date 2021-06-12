@@ -21,7 +21,7 @@ enum COMPOSITORPASS_CLEAR
 
 class CompositorTargetPass;
 
-class CompositorPassClear : CompositorPass
+class CompositorPassClear final : public CompositorPass
 {
 
     friend CompositorTargetPass;

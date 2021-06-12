@@ -71,7 +71,7 @@ enum PIXELOPERATION_BLEND : GLenum
 /**
  * @brief Manages pixel operation state.
  */
-class PixelOperation
+class PixelOperation final
 {
 
 public:
