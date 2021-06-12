@@ -58,6 +58,8 @@ public:
 
     inline const MeshList& getAttachedMeshes() const;
 
+    void _notifyMeshDestroyed(const std::string& _name);
+
 private:
 
     SceneNode(SceneManager* const _sceneManager);

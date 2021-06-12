@@ -481,7 +481,7 @@ Mesh::~Mesh()
     this->destroyAllSubMeshes();
     for(const auto& node : m_parents)
     {
-        node.second->dettach(this);
+        node.second->_notifyMeshDestroyed(m_name);
     }
 }
 

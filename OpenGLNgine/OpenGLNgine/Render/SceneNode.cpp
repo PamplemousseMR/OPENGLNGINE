@@ -119,6 +119,17 @@ const ::glm::mat4 SceneNode::getFullTransform() const
     return m_fullTransform;
 }
 
+void SceneNode::_notifyMeshDestroyed(const std::string& _name)
+{
+    const MeshList::const_iterator it = m_attachedMeshes.find(_name);
+    if(it == m_attachedMeshes.end())
+    {
+        GLNGINE_EXCEPTION("A mesh with the name '" + _name + "' is not attached");
+    }
+
+    m_attachedMeshes.erase(it);
+}
+
 SceneNode::SceneNode(SceneManager* const _sceneManager):
     IResource("OpenGLNgine/Root"),
     m_sceneManager(_sceneManager),
