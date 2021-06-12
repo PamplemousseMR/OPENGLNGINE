@@ -202,9 +202,9 @@ int main()
     ::GL::DataBuffer::setLocation(::Hardware::VES_TEXTURE_COORDINATES_0);
 
     // Create the texture.
-    ::GL::Texture texture;
+    ::GL::Texture texture(::GL::TT_2D);
     texture.bind();
-    texture.load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::GL::TT_2D, ::GL::TIF_RGBA);
+    texture.load(GLNGINE_TEXTURE_PATH"/BrickWall.png", ::GL::TIF_RGBA);
     texture.generateMipmap();
     texture.setMinFilter(::GL::TF_LINEAR_MIPMAP_LINEAR);
     texture.setMagFilter(::GL::TF_LINEAR);

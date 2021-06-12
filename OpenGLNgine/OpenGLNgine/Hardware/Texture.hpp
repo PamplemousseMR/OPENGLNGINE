@@ -122,7 +122,7 @@ public:
 
     static ::GL::TEXTURE_INTERNAL_FORMAT getType(TEXTURE_INTERNAL_FORMAT _format);
 
-    Texture(TextureManager* const _manager, const std::string& _name);
+    Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type);
 
     ~Texture();
 
@@ -142,7 +142,7 @@ public:
 
     inline bool isMipMapsGenerated() const;
 
-    void load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
+    void load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
     inline void setMagFilter(TEXTURE_FILTER _filter) const;
 

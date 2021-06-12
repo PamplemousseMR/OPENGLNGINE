@@ -12,7 +12,7 @@ void RenderTarget::allocate(int _width, int _height)
     for(auto& texture : m_textures)
     {
         texture.first.bind();
-        texture.first.allocate(::GL::TT_2D, _width, _height, Texture::getType(texture.second));
+        texture.first.allocate(_width, _height, Texture::getType(texture.second));
     }
 }
 
@@ -112,7 +112,7 @@ void RenderTarget::attach()
 
 void RenderTarget::pushTexture(TEXTURE_INTERNAL_FORMAT _format)
 {
-    m_textures.push_back(std::make_pair(::GL::Texture(), _format));
+    m_textures.push_back(std::make_pair(::GL::Texture(::GL::TT_2D), _format));
     m_dirty = true;
 }
 

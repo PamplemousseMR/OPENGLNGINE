@@ -168,7 +168,7 @@ class Texture final : public IBindable
 public:
 
     /// Creates a texture object.
-    Texture();
+    Texture(TEXTURE_TYPE _type);
 
     /// Deletes a texture object.
     ~Texture() override;
@@ -201,29 +201,18 @@ public:
     /**
      * @brief Loads a texture from a file.
      * @param _path Path of the texture to load.
-     * @param _type Type of the texture.
      * @param _internalFormat Format of the texture.
      */
-    void load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat);
+    void load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat);
 
     /**
      * @brief Allocates a texture.
-     * @param _type Type of the texture.
-     * @param _width Width of the texture.
-     * @param _height Height of the texture.
-     * @param _internalFormat Internal format of the texture.
-     */
-    void allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat);
-
-    /**
-     * @brief Allocates a multisampled texture.
-     * @param _type Type of the texture.
      * @param _width Width of the texture.
      * @param _height Height of the texture.
      * @param _internalFormat Internal format of the texture.
      * @param _sample Number of sample.
      */
-    void allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample);
+    void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample = 1);
 
     /// Generates mipmap of the texture.
     void generateMipmap() const;
@@ -287,7 +276,7 @@ private:
     static GLint s_MAX_LOCATION;
 
     /// Stores the type of the texture.
-    TEXTURE_TYPE m_type {TT_2D};
+    const TEXTURE_TYPE m_type;
 
     /// Stores the format of the texture (Not used for multisampled textures).
     TEXTURE_FORMAT m_format {TF_RGBA};

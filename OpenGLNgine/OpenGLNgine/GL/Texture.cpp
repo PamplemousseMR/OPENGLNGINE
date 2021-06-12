@@ -208,8 +208,9 @@ GLenum Texture::getBaseType(TEXTURE_INTERNAL_FORMAT _format)
     }
 }
 
-Texture::Texture() :
-    IBindable()
+Texture::Texture(TEXTURE_TYPE _type) :
+    IBindable(),
+    m_type(_type)
 {
     const static Initializer s_INITIALIZER;
     glGenTextures(1, &m_id);
@@ -292,9 +293,9 @@ Texture::Texture(const Texture& _texture) :
 
 Texture& Texture::operator=(const Texture& _texture)
 {
+    GLNGINE_ASSERT_IF(m_type != _texture.m_type, "Texture source and destination must be the same");
     if(this != &_texture)
     {
-        m_type = _texture.m_type;
         m_format = _texture.m_format;
 
         _texture.bind();
@@ -371,11 +372,9 @@ void Texture::setActiveTexture(int _location)
 #endif
 }
 
-void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
+void Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
-
-    m_type = _type;
 
     bool hasAlpha;
     const std::string fileFormat = _path.extension().string();
@@ -406,7 +405,7 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
     {
         GLNGINE_EXCEPTION("Texture size too large");
     }
-    switch(_type)
+    switch(m_type)
     {
     case TT_1D :
         if(height != 1)
@@ -427,14 +426,16 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTU
     SOIL_free_image_data(data);
 }
 
-void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat)
+void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
 {
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
         GLNGINE_EXCEPTION("Texture size too large");
     }
-
-    m_type = _type;
+    if(_sample > s_MAX_SAMPLE)
+    {
+        GLNGINE_EXCEPTION("Sample too hight");
+    }
 
     switch(m_type)
     {
@@ -449,38 +450,10 @@ void Texture::allocate(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTE
         glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, getBaseFormat(_internalFormat), getBaseType(_internalFormat), nullptr);
         break;
     case TT_2DMULTISAMPLE :
-        GLNGINE_EXCEPTION("Can't allocate multisampled textures without sample");
-    default:
-        GLNGINE_EXCEPTION("Unhandle texture type");
-        break;
-    }
-    GLNGINE_CHECK_GL;
-}
-
-void Texture::allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
-{
-    if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
-    {
-        GLNGINE_EXCEPTION("Size too big");
-    }
-    if(_sample > s_MAX_SAMPLE)
-    {
-        GLNGINE_EXCEPTION("Sample too hight");
-    }
-
-    m_type = _type;
-
-    switch (m_type)
-    {
-    case TT_1D :
-    case TT_2D :
-        GLNGINE_EXCEPTION("Can't allocate multisample to no multisampled textures");
-        break;
-    case TT_2DMULTISAMPLE :
         glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, _internalFormat, _width, _height, GL_TRUE);
-        break;
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
+        break;
     }
     GLNGINE_CHECK_GL;
 }

@@ -212,9 +212,10 @@ namespace Hardware
     }
 }
 
-Texture::Texture(TextureManager* const _manager, const std::string& _name):
+Texture::Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type):
     Core::IResource(_name),
-    m_manager(_manager)
+    m_manager(_manager),
+    m_texture(getType(_type))
 {
 }
 
@@ -228,9 +229,9 @@ void Texture::generateMipMaps()
     m_mipMapsGenerated = true;
 }
 
-void Texture::load(const std::filesystem::path& _path, TEXTURE_TYPE _type, TEXTURE_INTERNAL_FORMAT _internalFormat)
+void Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
-    m_texture.load(_path, getType(_type), getType(_internalFormat));
+    m_texture.load(_path, getType(_internalFormat));
 }
 
 }

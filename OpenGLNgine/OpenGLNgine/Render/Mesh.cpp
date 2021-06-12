@@ -461,9 +461,9 @@ void Mesh::loadTexture(const aiMaterial* const _aiMaterial, ::aiTextureType _typ
         ::Hardware::TexturePtr texture = textureManager.getByName(textName);
         if(!texture)
         {
-            texture = textureManager.create(textName);
+            texture = textureManager.create(textName, ::Hardware::TT_2D);
             texture->lock();
-            texture->load(path, ::Hardware::TT_2D, ::Hardware::TIF_RGBA);
+            texture->load(path, ::Hardware::TIF_RGBA);
         }
 
         textUnitState->setTexture(texture);
