@@ -291,7 +291,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
             subMesh->m_indexData->m_indexBuffer = indexBuffer;
             indexBuffer->lock();
             indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indices.data(), false);
-            subMesh->m_indexData->m_indexCount = indices.size();
+            subMesh->m_indexData->m_indexCount = static_cast< unsigned >(indices.size());
             subMesh->m_indexData->m_indexStart = 0;
         }
 

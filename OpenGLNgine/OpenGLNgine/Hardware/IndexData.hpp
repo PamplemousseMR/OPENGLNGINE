@@ -24,9 +24,9 @@ public:
 
     HardwareIndexBufferPtr m_indexBuffer { nullptr };
 
-    int m_indexStart {0};
+    unsigned m_indexStart {0};
 
-    int m_indexCount {0};
+    unsigned m_indexCount {0};
 
 private:
 
