@@ -31,13 +31,13 @@ Render::RenderWindowList::iterator Render::destroyRenderWindow(const RenderWindo
 {
     GLNGINE_ASSERT_IF(!_renderWindow, "The render window mustn't be null");
 
-    RenderWindowList::const_iterator it = m_renderWindows.find(_renderWindow->getName());
+    const RenderWindowList::const_iterator it = m_renderWindows.find(_renderWindow->getName());
     if(it == m_renderWindows.end())
     {
         GLNGINE_EXCEPTION("A render window with the name '" + _renderWindow->getName() + "' doesn't exists");
     }
 
-    Render::RenderWindowList::iterator eraseIt = m_renderWindows.erase(it);
+    const Render::RenderWindowList::iterator eraseIt = m_renderWindows.erase(it);
     delete _renderWindow;
     return eraseIt;
 }

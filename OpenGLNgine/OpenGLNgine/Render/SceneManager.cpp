@@ -22,7 +22,7 @@ void SceneManager::destroyCamera(const Camera* const _camera)
 {
     GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
 
-    CameraList::const_iterator it = m_cameras.find(_camera->getName());
+    const CameraList::const_iterator it = m_cameras.find(_camera->getName());
     if(it == m_cameras.end())
     {
         GLNGINE_EXCEPTION("A camera with the name '" + _camera->getName() + "' doesn't exists");
@@ -49,7 +49,7 @@ Mesh* SceneManager::createMesh(const std::string& _name)
         GLNGINE_EXCEPTION("A mesh with the name '" + _name + "' already exists");
     }
 
-    Mesh* mesh = new Mesh(this, _name);
+    Mesh* const mesh = new Mesh(this, _name);
     m_meshes.emplace(_name, mesh);
     return mesh;
 }
@@ -58,7 +58,7 @@ void SceneManager::destroyMesh(const Mesh* const _mesh)
 {
     GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
 
-    MeshList::const_iterator it = m_meshes.find(_mesh->getName());
+    const MeshList::const_iterator it = m_meshes.find(_mesh->getName());
     if(it == m_meshes.end())
     {
         GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' doesn't exists");
@@ -85,7 +85,7 @@ Light* SceneManager::createLight(const std::string& _name)
         GLNGINE_EXCEPTION("A light with the name '" + _name + "' already exists");
     }
 
-    Light* light = new Light(this, _name);
+    Light* const light = new Light(this, _name);
     m_lights.emplace(_name, light);
     return light;
 }
@@ -94,7 +94,7 @@ void SceneManager::destroyLight(const Light* const _light)
 {
     GLNGINE_ASSERT_IF(!_light, "The light mustn't be null");
 
-    LightList::const_iterator it = m_lights.find(_light->getName());
+    const LightList::const_iterator it = m_lights.find(_light->getName());
     if(it == m_lights.end())
     {
         GLNGINE_EXCEPTION("A light with the name '" + _light->getName() + "' doesn't exists");

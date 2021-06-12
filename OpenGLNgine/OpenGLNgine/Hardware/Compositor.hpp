@@ -36,7 +36,7 @@ public:
 
     CompositorTargetPass* createCompositorTargetPass();
 
-    void destroyCompositorTargetPass(CompositorTargetPass* const _pass);
+    void destroyCompositorTargetPass(const CompositorTargetPass* const _pass);
 
     void destroyAllCompositorTargetPasses();
 

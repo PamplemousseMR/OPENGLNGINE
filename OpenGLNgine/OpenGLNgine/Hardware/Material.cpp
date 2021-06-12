@@ -21,16 +21,16 @@ Material::~Material()
 
 Pass* Material::createPass()
 {
-    Pass* ptr = new Pass();
+    Pass* const ptr = new Pass();
     m_passes.push_back(ptr);
     return ptr;
 }
 
 void Material::destroyAllPasses()
 {
-    PassList::const_iterator itBeg, itEnd;
-    itEnd = m_passes.end();
-    for(itBeg=m_passes.begin() ; itBeg!=itEnd ; ++itBeg)
+    PassList::const_iterator itBeg = m_passes.begin();
+    const PassList::const_iterator itEnd = m_passes.end();
+    for(; itBeg!=itEnd ; ++itBeg)
     {
         delete *itBeg;
     }

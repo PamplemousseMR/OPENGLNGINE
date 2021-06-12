@@ -20,7 +20,6 @@ public:
 
     typedef std::vector< ::Hardware::CompositorPtr > CompositorList;
 
-
     CompositorChain(const CompositorChain&) = delete;
 
     CompositorChain(CompositorChain&&) = delete;

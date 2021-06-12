@@ -17,6 +17,8 @@ Program::~Program()
 
 void Program::attach(ShaderPtr _shader)
 {
+    GLNGINE_ASSERT_IF(!_shader, "The shader mustn't be null");
+
     switch(_shader->type)
     {
     case ST_VERTEX:

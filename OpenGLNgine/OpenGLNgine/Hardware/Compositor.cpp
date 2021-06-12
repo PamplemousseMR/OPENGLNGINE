@@ -18,16 +18,16 @@ Compositor::~Compositor()
 
 CompositorTargetPass* Compositor::createCompositorTargetPass()
 {
-    CompositorTargetPass* ptr = new CompositorTargetPass();
+    CompositorTargetPass* const ptr = new CompositorTargetPass();
     m_compositorTargetPasses.push_back(ptr);
     return ptr;
 }
 
-void Compositor::destroyCompositorTargetPass(CompositorTargetPass* const _pass)
+void Compositor::destroyCompositorTargetPass(const CompositorTargetPass* const _pass)
 {
     GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");
 
-    CompositorTargetPassList::const_iterator it = std::find(m_compositorTargetPasses.begin(), m_compositorTargetPasses.end(), _pass);
+    const CompositorTargetPassList::const_iterator it = std::find(m_compositorTargetPasses.begin(), m_compositorTargetPasses.end(), _pass);
     if(it == m_compositorTargetPasses.end())
     {
         GLNGINE_EXCEPTION("The pass doesn't exists");
@@ -38,9 +38,9 @@ void Compositor::destroyCompositorTargetPass(CompositorTargetPass* const _pass)
 
 void Compositor::destroyAllCompositorTargetPasses()
 {
-    CompositorTargetPassList::const_iterator itBeg, itEnd;
-    itEnd = m_compositorTargetPasses.end();
-    for(itBeg=m_compositorTargetPasses.begin() ; itBeg!=itEnd ; ++itBeg)
+    CompositorTargetPassList::const_iterator itBeg = m_compositorTargetPasses.begin();
+    const CompositorTargetPassList::const_iterator itEnd = m_compositorTargetPasses.end();
+    for(; itBeg!=itEnd ; ++itBeg)
     {
         delete *itBeg;
     }

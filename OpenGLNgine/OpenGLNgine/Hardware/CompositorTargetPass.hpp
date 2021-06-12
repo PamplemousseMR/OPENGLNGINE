@@ -56,7 +56,7 @@ public:
 
     CompositorPass* createCompositorPass(COMPOSITORPASS_TYPE _type);
 
-    void destroyCompositorPass(CompositorPass* const _pass);
+    void destroyCompositorPass(const CompositorPass* const _pass);
 
     void destroyAllCompositorPasses();
 

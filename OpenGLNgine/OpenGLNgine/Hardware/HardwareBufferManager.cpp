@@ -15,37 +15,37 @@ HardwareBufferManager& HardwareBufferManager::getInstance()
 
 HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
 {
-    HardwareIndexBuffer* ptr = new HardwareIndexBuffer(this, _type, _size, _usage);
+    HardwareIndexBuffer* const ptr = new HardwareIndexBuffer(this, _type, _size, _usage);
     m_indexBuffers.insert(ptr);
     return HardwareIndexBufferPtr(ptr);
 }
 
 HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage)
 {
-    HardwareVertexBuffer* ptr = new HardwareVertexBuffer(this, _type, _numVertices, _usage);
+    HardwareVertexBuffer* const ptr = new HardwareVertexBuffer(this, _type, _numVertices, _usage);
     m_vertexBuffers.insert(ptr);
     return HardwareVertexBufferPtr(ptr);
 }
 
 VertexData* HardwareBufferManager::createVertexData()
 {
-    VertexData* ptr = new VertexData(this);
+    VertexData* const ptr = new VertexData(this);
     m_vertexData.insert(ptr);
     return ptr;
 }
 
 IndexData* HardwareBufferManager::createIndexData()
 {
-    IndexData* ptr = new IndexData();
+    IndexData* const ptr = new IndexData();
     m_indexData.insert(ptr);
     return ptr;
 }
 
 void HardwareBufferManager::destroyAllVertexData()
 {
-    VertexDataList::const_iterator itBeg, itEnd;
-    itEnd = m_vertexData.end();
-    for(itBeg=m_vertexData.begin() ; itBeg!=itEnd ; ++itBeg)
+    VertexDataList::const_iterator itBeg = m_vertexData.begin();
+    const VertexDataList::const_iterator itEnd = m_vertexData.end();
+    for(; itBeg!=itEnd ; ++itBeg)
     {
         delete *itBeg;
     }
@@ -54,20 +54,20 @@ void HardwareBufferManager::destroyAllVertexData()
 
 void HardwareBufferManager::destroyAllIndexData()
 {
-    IndexDataList::const_iterator itBeg, itEnd;
-    itEnd = m_indexData.end();
-    for(itBeg=m_indexData.begin() ; itBeg!=itEnd ; ++itBeg)
+    IndexDataList::const_iterator itBeg = m_indexData.begin();
+    const IndexDataList::const_iterator itEnd = m_indexData.end();
+    for(; itBeg!=itEnd ; ++itBeg)
     {
         delete *itBeg;
     }
     m_vertexData.clear();
 }
 
-void HardwareBufferManager::_notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer)
+void HardwareBufferManager::_notifyIndexBufferDestroyed(const HardwareIndexBuffer* _indexBuffer)
 {
     GLNGINE_ASSERT_IF(!_indexBuffer, "The hardware index buffer mustn't be null");
 
-    IndexBufferList::const_iterator it = std::find(m_indexBuffers.begin(), m_indexBuffers.end(), _indexBuffer);
+    const IndexBufferList::const_iterator it = std::find(m_indexBuffers.begin(), m_indexBuffers.end(), _indexBuffer);
     if(it == m_indexBuffers.end())
     {
         GLNGINE_EXCEPTION("The index buffer doesn't exists");
@@ -75,11 +75,11 @@ void HardwareBufferManager::_notifyIndexBufferDestroyed(HardwareIndexBuffer* _in
     m_indexBuffers.erase(it);
 }
 
-void HardwareBufferManager::_notifyVertexBufferDestroyed(HardwareVertexBuffer* _vertexBuffer)
+void HardwareBufferManager::_notifyVertexBufferDestroyed(const HardwareVertexBuffer* _vertexBuffer)
 {
     GLNGINE_ASSERT_IF(!_vertexBuffer, "The hardware vertex buffer mustn't be null");
 
-    VertexBufferList::const_iterator it = std::find(m_vertexBuffers.begin(), m_vertexBuffers.end(), _vertexBuffer);
+    const VertexBufferList::const_iterator it = std::find(m_vertexBuffers.begin(), m_vertexBuffers.end(), _vertexBuffer);
     if(it == m_vertexBuffers.end())
     {
         GLNGINE_EXCEPTION("The vertex buffer doesn't exists");

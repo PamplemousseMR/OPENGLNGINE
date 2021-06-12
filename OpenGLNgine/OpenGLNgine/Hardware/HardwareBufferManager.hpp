@@ -37,9 +37,9 @@ public:
 
     void destroyAllIndexData();
 
-    void _notifyIndexBufferDestroyed(HardwareIndexBuffer* _indexBuffer);
+    void _notifyIndexBufferDestroyed(const HardwareIndexBuffer* _indexBuffer);
 
-    void _notifyVertexBufferDestroyed(HardwareVertexBuffer* _vertexBuffer);
+    void _notifyVertexBufferDestroyed(const HardwareVertexBuffer* _vertexBuffer);
 
 private:
 

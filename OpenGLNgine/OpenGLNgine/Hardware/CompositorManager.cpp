@@ -13,7 +13,7 @@ CompositorManager& CompositorManager::getInstance()
 
 CompositorPtr CompositorManager::create(const std::string& _name)
 {
-    CompositorPtr ptr = std::make_shared< Compositor >(this, _name);
+    const CompositorPtr ptr = std::make_shared< Compositor >(this, _name);
     this->add(ptr);
     return ptr;
 }

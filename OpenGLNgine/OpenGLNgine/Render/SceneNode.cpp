@@ -16,7 +16,7 @@ SceneNode* SceneNode::createChild(const std::string& _name)
         GLNGINE_EXCEPTION("A scene node with the name '" + _name + "' already exists");
     }
 
-    SceneNode* sn = new SceneNode(m_sceneManager, this, _name);
+    SceneNode* const sn = new SceneNode(m_sceneManager, this, _name);
     m_children.emplace(_name, sn);
     return sn;
 }
@@ -25,7 +25,7 @@ void SceneNode::removeAndDestroyChild(SceneNode* const _child)
 {
     GLNGINE_ASSERT_IF(!_child, "The scene node mustn't be null");
 
-    SceneNodeList::const_iterator it = m_children.find(_child->getName());
+    const SceneNodeList::const_iterator it = m_children.find(_child->getName());
     if(it == m_children.end())
     {
         GLNGINE_EXCEPTION("A scene node with the name '" + _child->getName() + "' doesn't exists");
@@ -62,7 +62,7 @@ void SceneNode::dettach(Mesh* const _mesh)
 {
     GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
 
-    MeshList::const_iterator it = m_attachedMeshes.find(_mesh->getName());
+    const MeshList::const_iterator it = m_attachedMeshes.find(_mesh->getName());
     if(it == m_attachedMeshes.end())
     {
         GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' is not attached");

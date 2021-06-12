@@ -105,7 +105,7 @@ void Mesh::_notifyMeshDettached(SceneNode* const _node)
 
 SubMesh* Mesh::createSubMesh(const std::string& _name)
 {
-    SubMesh* ptr = new SubMesh(this, _name);
+    SubMesh* const ptr = new SubMesh(this, _name);
     m_subMeshes.insert(ptr);
     return ptr;
 }
@@ -120,9 +120,9 @@ void Mesh::destroySubMesh(SubMesh* _subMesh)
 
 void Mesh::destroyAllSubMeshes()
 {
-    SubMeshList::const_iterator itBeg, itEnd;
-    itEnd = m_subMeshes.end();
-    for(itBeg=m_subMeshes.begin() ; itBeg!=itEnd ; ++itBeg)
+    SubMeshList::const_iterator itBeg = m_subMeshes.begin();
+    const SubMeshList::const_iterator itEnd = m_subMeshes.end();
+    for(; itBeg!=itEnd ; ++itBeg)
     {
         delete *itBeg;
     }
@@ -131,9 +131,9 @@ void Mesh::destroyAllSubMeshes()
 
 void Mesh::setMaterial(::Hardware::MaterialPtr _material)
 {
-    SubMeshList::const_iterator itBeg, itEnd;
-    itEnd = m_subMeshes.end();
-    for(itBeg=m_subMeshes.begin() ; itBeg!=itEnd ; ++itBeg)
+    SubMeshList::const_iterator itBeg = m_subMeshes.begin();
+    const SubMeshList::const_iterator itEnd = m_subMeshes.end();
+    for(; itBeg!=itEnd ; ++itBeg)
     {
         (*itBeg)->m_material = _material;
     }
@@ -156,6 +156,9 @@ bool Mesh::load(const std::filesystem::path& _path)
 
 void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, const std::filesystem::path& _directory)
 {
+    GLNGINE_ASSERT_IF(!_node, "The node mustn't be null");
+    GLNGINE_ASSERT_IF(!_scene, "The scene mustn't be null");
+
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
 
     for(unsigned i=0; i<_node->mNumMeshes; ++i)
@@ -351,6 +354,10 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
 void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* const _scene, const aiMesh* const _mesh, const std::filesystem::path& _directory)
 {
+    GLNGINE_ASSERT_IF(!_subMesh, "The sub mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_scene, "The scene mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
+
     ::aiMaterial* const aiMaterial = _scene->mMaterials[_mesh->mMaterialIndex];
 
     ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
@@ -412,8 +419,11 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
     _subMesh->m_material = material;
 }
 
-void Mesh::loadTexture(const aiMaterial * const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory)
+void Mesh::loadTexture(const aiMaterial* const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory)
 {
+    GLNGINE_ASSERT_IF(!_aiMaterial, "The aiMaterial mustn't be null");
+    GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");
+
     GLNGINE_ASSERT_IF(_aiMaterial->GetTextureCount(_type) > 1, "Unhandle multiple textures");
 
     ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();

@@ -20,12 +20,12 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
 
     for(const auto& me : component)
     {
-        for(const SubMesh* subMesh : me.second->getSubMeshes())
+        for(const SubMesh* const subMesh : me.second->getSubMeshes())
         {
             if(subMesh->m_material != nullptr)
             {
                 const ::Hardware::MaterialPtr& mat = subMesh->m_material;
-                for(::Hardware::Pass* const pass : mat->getPasses())
+                for(const ::Hardware::Pass* const pass : mat->getPasses())
                 {
                     const ::Hardware::ProgramPtr program = pass->getProgram();
                     if(program)
@@ -121,7 +121,7 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                         for(const std::pair< const std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > >& parameter : pass->getTextureConstants())
                         {
                             parameter.second.first = static_cast< int >(parameter.second.second);
-                            ::Hardware::TextureUnitState* textureUnitState = pass->findTextureUnitStateBySemantic(parameter.second.second);
+                            const ::Hardware::TextureUnitState* const textureUnitState = pass->findTextureUnitStateBySemantic(parameter.second.second);
                             if(textureUnitState)
                             {
                                 const ::Hardware::TexturePtr texture = textureUnitState->getTexture();
@@ -396,7 +396,7 @@ Viewport* RenderWindow::addViewport(const std::string& _name, Camera* const _cam
         GLNGINE_EXCEPTION("A viewport with the name '" + _name + "' already exists");
     }
 
-    Viewport* viewport = new Viewport(this, _camera, _name);
+    Viewport* const viewport = new Viewport(this, _camera, _name);
     m_viewports.emplace(_name, viewport);
     return viewport;
 }
@@ -456,7 +456,7 @@ void RenderWindow::destroyCompositorChain(const CompositorChain* const _composit
 {
     GLNGINE_ASSERT_IF(!_compositorChain, "The scene manager mustn't be null");
 
-    CompositorChainList::const_iterator it = m_compositorChains.find(_compositorChain->getViewport());
+    const CompositorChainList::const_iterator it = m_compositorChains.find(_compositorChain->getViewport());
     if(it == m_compositorChains.end())
     {
         GLNGINE_EXCEPTION("A compositor chain with the name '" + _compositorChain->getName() + "' doesn't exists");
