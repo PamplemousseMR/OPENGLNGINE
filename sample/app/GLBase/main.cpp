@@ -39,7 +39,6 @@ int main()
 
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("GLBase", width, height);
-    renderWindow->makeCurrent();
     renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
 
@@ -136,6 +135,7 @@ int main()
         {
             if(!rwIt->second->shouldBeClose())
             {
+                rwIt->second->makeCurrent();
                 ::GL::PixelOperation::enableDepthTest(true);
                 ::GL::PixelOperation::enableDepthWrite(true);
 

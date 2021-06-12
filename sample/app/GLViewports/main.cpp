@@ -38,7 +38,6 @@ int main()
 
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("GLViewports", width, height);
-    renderWindow->makeCurrent();
     renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
 
@@ -149,6 +148,7 @@ int main()
         {
             if(!rwIt->second->shouldBeClose())
             {
+                rwIt->second->makeCurrent();
                 for(const auto& vp : rwIt->second->getViewports())
                 {
                     ::GL::PixelOperation::enableDepthTest(true);

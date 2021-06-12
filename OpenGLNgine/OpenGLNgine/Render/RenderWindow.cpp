@@ -208,8 +208,6 @@ void RenderWindow::renderScene(const Camera* const _cam) const
 
 void RenderWindow::render() const
 {
-    this->makeCurrent();
-
     for(const auto& vp : m_viewports)
     {
         const auto& size = vp.second->getViewport();

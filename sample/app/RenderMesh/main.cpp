@@ -42,7 +42,6 @@ int main()
 
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("RenderMesh", width, height);
-    renderWindow->makeCurrent();
     renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
 
@@ -121,6 +120,7 @@ int main()
         const ::Render::Render::RenderWindowList& renderWindows = render.getRenderWindows();
         for(auto rwIt = renderWindows.begin(); rwIt != renderWindows.end();)
         {
+            rwIt->second->makeCurrent();
             if(!rwIt->second->shouldBeClose())
             {
                 rwIt->second->render();
