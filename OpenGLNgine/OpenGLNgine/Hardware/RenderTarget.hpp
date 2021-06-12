@@ -21,7 +21,7 @@ class RenderTarget final : public ::Core::IResource
 
 public:
 
-    typedef std::vector< std::pair< ::GL::Texture, TEXTURE_INTERNAL_FORMAT > > TextureList;
+    typedef std::vector< std::pair< std::shared_ptr< ::GL::Texture >, TEXTURE_INTERNAL_FORMAT > > TextureList;
 
     RenderTarget(RenderTargetManager* const _manager, const std::string& _name);
 

@@ -10,7 +10,7 @@
 
 #define GLNGINE_EXCEPTION(_message) throw std::exception((std::string("[") + __FUNCTION__ + "] " + _message + ".").c_str())
 
-#ifndef NDEBUG
+#ifdef NDEBUG
 #define GLNGINE_CHECK_GL
 #else
 #define GLNGINE_CHECK_GL { \

@@ -451,6 +451,7 @@ void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _interna
         break;
     case TT_2DMULTISAMPLE :
         glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, _internalFormat, _width, _height, GL_TRUE);
+        break;
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
         break;

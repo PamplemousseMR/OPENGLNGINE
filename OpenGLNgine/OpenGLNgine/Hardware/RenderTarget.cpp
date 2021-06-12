@@ -11,8 +11,8 @@ void RenderTarget::allocate(int _width, int _height)
 {
     for(auto& texture : m_textures)
     {
-        texture.first.bind();
-        texture.first.allocate(_width, _height, Texture::getType(texture.second));
+        texture.first->bind();
+        texture.first->allocate(_width, _height, Texture::getType(texture.second));
     }
 }
 
@@ -26,15 +26,15 @@ void RenderTarget::attach()
         case TIF_DEPTH16:
         case TIF_DEPTH24:
         case TIF_DEPTH32:
-            m_frameBuffer.attachDepthTexture(texture.first);
+            m_frameBuffer.attachDepthTexture(*texture.first);
             break;
         case TIF_DEPTH_STENCIL:
         case TIF_DEPTH24_STENCIL8:
         case TIF_DEPTH32F_STENCIL8:
-            m_frameBuffer.attachDepthStencilTexture(texture.first);
+            m_frameBuffer.attachDepthStencilTexture(*texture.first);
             break;
         case TIF_INDEX_STENCIL8:
-            m_frameBuffer.attachStencilTexture(texture.first);
+            m_frameBuffer.attachStencilTexture(*texture.first);
             break;
         case TIF_RED:
         case TIF_RG:
@@ -101,7 +101,7 @@ void RenderTarget::attach()
         case TIF_RGBA16UI:
         case TIF_RGBA32I:
         case TIF_RGBA32UI:
-            m_frameBuffer.attachColorTexture(texture.first, location++);
+            m_frameBuffer.attachColorTexture(*texture.first, location++);
             break;
         default:
             GLNGINE_EXCEPTION("Unhandle texture format");
@@ -112,7 +112,7 @@ void RenderTarget::attach()
 
 void RenderTarget::pushTexture(TEXTURE_INTERNAL_FORMAT _format)
 {
-    m_textures.push_back(std::make_pair(::GL::Texture(::GL::TT_2D), _format));
+    m_textures.push_back(std::make_pair(std::make_shared< ::GL::Texture >(::GL::TT_2D), _format));
     m_dirty = true;
 }
 
