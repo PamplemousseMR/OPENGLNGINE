@@ -50,46 +50,62 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                                 break;
                             case ::Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
                             {
-                                std::vector< ::glm::vec4 > lightPositionWorldSpaces;
-                                lightPositionWorldSpaces.reserve(sm->getLights().size());
-                                for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                const SceneManager::LightList& lights = sm->getLights();
+                                if(lights.size() > 0)
                                 {
-                                    lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
+                                    std::vector< ::glm::vec4 > lightPositionWorldSpaces;
+                                    lightPositionWorldSpaces.reserve(lights.size());
+                                    for(const std::pair< const std::string, Light* >& light : lights)
+                                    {
+                                        lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
+                                    }
+                                    parameter.second = lightPositionWorldSpaces;
                                 }
-                                parameter.second = lightPositionWorldSpaces;
                                 break;
                             }
                             case ::Hardware::PP_LIGHT_POSITION_VIEW_SPACE_ARRAY:
                             {
-                                std::vector< ::glm::vec4 > lightPositionViewSpaces;
-                                lightPositionViewSpaces.reserve(sm->getLights().size());
-                                for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                const SceneManager::LightList& lights = sm->getLights();
+                                if(lights.size() > 0)
                                 {
-                                    lightPositionViewSpaces.push_back(_cam->getView() * light.second->getShaderPosition());
+                                    std::vector< ::glm::vec4 > lightPositionViewSpaces;
+                                    lightPositionViewSpaces.reserve(lights.size());
+                                    for(const std::pair< const std::string, Light* >& light : lights)
+                                    {
+                                        lightPositionViewSpaces.push_back(_cam->getView() * light.second->getShaderPosition());
+                                    }
+                                    parameter.second = lightPositionViewSpaces;
                                 }
-                                parameter.second = lightPositionViewSpaces;
                                 break;
                             }
                             case ::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY:
                             {
-                                std::vector< ::glm::vec3 > lightDiffuseColors;
-                                lightDiffuseColors.reserve(sm->getLights().size());
-                                for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                const SceneManager::LightList& lights = sm->getLights();
+                                if(lights.size() > 0)
                                 {
-                                    lightDiffuseColors.push_back(light.second->getDiffuse());
+                                    std::vector< ::glm::vec3 > lightDiffuseColors;
+                                    lightDiffuseColors.reserve(lights.size());
+                                    for(const std::pair< const std::string, Light* >& light : lights)
+                                    {
+                                        lightDiffuseColors.push_back(light.second->getDiffuse());
+                                    }
+                                    parameter.second = lightDiffuseColors;
                                 }
-                                parameter.second = lightDiffuseColors;
                                 break;
                             }
                             case ::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY:
                             {
-                                std::vector< ::glm::vec3 > lightSpecularColors;
-                                lightSpecularColors.reserve(sm->getLights().size());
-                                for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                const SceneManager::LightList& lights = sm->getLights();
+                                if(lights.size() > 0)
                                 {
-                                    lightSpecularColors.push_back(light.second->getSpecular());
+                                    std::vector< ::glm::vec3 > lightSpecularColors;
+                                    lightSpecularColors.reserve(sm->getLights().size());
+                                    for(const std::pair< const std::string, Light* >& light : sm->getLights())
+                                    {
+                                        lightSpecularColors.push_back(light.second->getSpecular());
+                                    }
+                                    parameter.second = lightSpecularColors;
                                 }
-                                parameter.second = lightSpecularColors;
                                 break;
                             }
                             case ::Hardware::PP_MATERIAL_SHININESS:
