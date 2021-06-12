@@ -1,3 +1,4 @@
+#include "OpenGLNgine/Hardware/CompositorPassClear.hpp"
 #include "OpenGLNgine/Hardware/CompositorTargetPass.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
@@ -49,16 +50,19 @@ CompositorTargetPass::~CompositorTargetPass()
 {
 }
 
-CompositorPassClear* CompositorTargetPass::createCompositorPassClear()
+CompositorPass* CompositorTargetPass::createCompositorPass(COMPOSITORPASS_TYPE _type)
 {
-    CompositorPassClear* const ptr = new CompositorPassClear();
-    m_compositorPasses.push_back(ptr);
-    return ptr;
-}
-
-CompositorPassScene* CompositorTargetPass::createCompositorPassScene()
-{
-    CompositorPassScene* const ptr = new CompositorPassScene();
+    CompositorPass* ptr = nullptr;
+    switch (_type) {
+    case CT_CLEAR:
+        ptr = new CompositorPassClear();
+        break;
+    case CT_SCENE:
+        ptr = new CompositorPass(_type);
+        break;
+    default:
+        GLNGINE_EXCEPTION("Unhandle compositor pass type");
+    }
     m_compositorPasses.push_back(ptr);
     return ptr;
 }

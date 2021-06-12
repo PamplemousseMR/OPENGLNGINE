@@ -1,4 +1,5 @@
 #include <OpenGLNgine/Hardware/CompositorManager.hpp>
+#include <OpenGLNgine/Hardware/CompositorPassClear.hpp>
 #include <OpenGLNgine/Hardware/HardwareBufferManager.hpp>
 #include <OpenGLNgine/Hardware/MaterialManager.hpp>
 #include <OpenGLNgine/Hardware/ProgramManager.hpp>
@@ -155,11 +156,11 @@ int main()
         cmpTargetPass->m_mode = ::Hardware::CM_NONE;
         cmpTargetPass->m_renderTarget = renderTarget;
 
-        ::Hardware::CompositorPassClear* const clear = cmpTargetPass->createCompositorPassClear();
+        ::Hardware::CompositorPassClear* const clear = static_cast< ::Hardware::CompositorPassClear* >(cmpTargetPass->createCompositorPass(::Hardware::CT_CLEAR));
         clear->m_buffers = ::Hardware::CC_COLOR_DEPTH;
         clear->setClearColor(0.8f, 0.8f, 0.8f, 1.f);
 
-        cmpTargetPass->createCompositorPassScene();
+        cmpTargetPass->createCompositorPass(::Hardware::CT_SCENE);
     }
     {
         ::Hardware::CompositorTargetPass* cmpTargetPass = compositor->createCompositorTargetPass();

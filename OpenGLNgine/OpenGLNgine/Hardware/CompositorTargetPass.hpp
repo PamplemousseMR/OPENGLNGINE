@@ -1,8 +1,6 @@
 #pragma once
 
 #include "OpenGLNgine/Hardware/CompositorPass.hpp"
-#include "OpenGLNgine/Hardware/CompositorPassClear.hpp"
-#include "OpenGLNgine/Hardware/CompositorPassScene.hpp"
 #include "OpenGLNgine/Hardware/RenderTarget.hpp"
 
 #include <vector>
@@ -56,9 +54,7 @@ public:
 
     CompositorTargetPass& operator=(CompositorTargetPass&&) = delete;
 
-    CompositorPassClear* createCompositorPassClear();
-
-    CompositorPassScene* createCompositorPassScene();
+    CompositorPass* createCompositorPass(COMPOSITORPASS_TYPE _type);
 
     void destroyCompositorPass(CompositorPass* const _pass);
 

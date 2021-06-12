@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Render/RenderWindow.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/CompositorPassClear.hpp"
 #include "OpenGLNgine/Render/Render.hpp"
 
 namespace Render

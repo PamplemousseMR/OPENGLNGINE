@@ -29,7 +29,6 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/CompositorManager.cpp
     ${GLNGINE_SOURCE}/Hardware/CompositorPass.cpp
     ${GLNGINE_SOURCE}/Hardware/CompositorPassClear.cpp
-    ${GLNGINE_SOURCE}/Hardware/CompositorPassScene.cpp
     ${GLNGINE_SOURCE}/Hardware/CompositorTargetPass.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareBufferManager.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareIndexBuffer.cpp
@@ -86,7 +85,6 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/CompositorManager.hpp
     ${GLNGINE_SOURCE}/Hardware/CompositorPass.hpp
     ${GLNGINE_SOURCE}/Hardware/CompositorPassClear.hpp
-    ${GLNGINE_SOURCE}/Hardware/CompositorPassScene.hpp
     ${GLNGINE_SOURCE}/Hardware/CompositorTargetPass.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareBufferManager.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareIndexBuffer.hpp
