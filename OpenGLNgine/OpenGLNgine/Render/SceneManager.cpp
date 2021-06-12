@@ -122,10 +122,10 @@ SceneManager::SceneManager(const std::string& _name):
 
 SceneManager::~SceneManager()
 {
+    delete m_rootSceneNode;
     this->destroyAllCameras();
     this->destroyAllMeshs();
     this->destroyAllLights();
-    delete m_rootSceneNode;
 }
 
 }
