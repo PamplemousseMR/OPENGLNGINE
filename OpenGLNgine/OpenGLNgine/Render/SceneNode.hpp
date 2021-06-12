@@ -1,7 +1,7 @@
 #pragma once
 
 #include "OpenGLNgine/Core/IResource.hpp"
-#include "OpenGLNgine/Render/Component.hpp"
+#include "OpenGLNgine/Render/Mesh.hpp"
 
 #include <glm/glm.hpp>
 
@@ -19,6 +19,8 @@ class SceneNode final : public ::Core::IResource
     friend SceneManager;
 
 public:
+
+    typedef std::map< std::string, Mesh* > MeshList;
 
     typedef std::map< std::string, SceneNode* > SceneNodeList;
 
@@ -38,9 +40,9 @@ public:
 
     void removeAndDestroyAllChildren();
 
-    void attach(Component* const _component);
+    void attach(Mesh* const _mesh);
 
-    void dettach(Component* const _component);
+    void dettach(Mesh* const _mesh);
 
     void dettachAll();
 
@@ -54,9 +56,9 @@ public:
 
     const ::glm::mat4 getFullTransform() const;
 
-private:
+    inline const MeshList& getAttachedMeshes() const;
 
-    typedef std::map< std::string, Component* > ComponentList;
+private:
 
     SceneNode(SceneManager* const _sceneManager);
 
@@ -87,7 +89,7 @@ private:
 
     SceneNodeList m_children {};
 
-    ComponentList m_attachedComponents {};
+    MeshList m_attachedMeshes {};
 
 };
 
@@ -99,6 +101,11 @@ inline const SceneNode::SceneNodeList& SceneNode::getChildren() const
 inline ::glm::vec3 SceneNode::getOrientation() const
 {
     return ::glm::degrees(m_orientation);
+}
+
+inline const SceneNode::MeshList& SceneNode::getAttachedMeshes() const
+{
+    return m_attachedMeshes;
 }
 
 }

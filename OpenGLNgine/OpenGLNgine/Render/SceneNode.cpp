@@ -44,40 +44,38 @@ void SceneNode::removeAndDestroyAllChildren()
     }
 }
 
-void SceneNode::attach(Component* const _component)
+void SceneNode::attach(Mesh* const _mesh)
 {
-    GLNGINE_ASSERT_IF(!_component, "The component mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
 
-    if(m_attachedComponents.find(_component->getName()) != m_attachedComponents.end())
+    if(m_attachedMeshes.find(_mesh->getName()) != m_attachedMeshes.end())
     {
-        GLNGINE_EXCEPTION("A component with the name '" + _component->getName() + "' is already attached");
+        GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' is already attached");
     }
 
-    m_attachedComponents.emplace(_component->getName(), _component);
-    _component->setParent(this);
+    m_attachedMeshes.emplace(_mesh->getName(), _mesh);
 }
 
-void SceneNode::dettach(Component* const _component)
+void SceneNode::dettach(Mesh* const _mesh)
 {
-    GLNGINE_ASSERT_IF(!_component, "The component mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
 
-    ComponentList::const_iterator it = m_attachedComponents.find(_component->getName());
-    if(it == m_attachedComponents.end())
+    MeshList::const_iterator it = m_attachedMeshes.find(_mesh->getName());
+    if(it == m_attachedMeshes.end())
     {
-        GLNGINE_EXCEPTION("A component with the name '" + _component->getName() + "' is not attached");
+        GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' is not attached");
     }
 
-    m_attachedComponents.erase(it);
-    _component->setParent(nullptr);
+    m_attachedMeshes.erase(it);
 }
 
 void SceneNode::dettachAll()
 {
-    ComponentList::iterator it = m_attachedComponents.begin();
-    while(it != m_attachedComponents.end())
+    MeshList::iterator it = m_attachedMeshes.begin();
+    while(it != m_attachedMeshes.end())
     {
         this->dettach(it->second);
-        it = m_attachedComponents.begin();
+        it = m_attachedMeshes.begin();
     }
 }
 
@@ -108,7 +106,7 @@ const ::glm::mat4 SceneNode::getFullTransform() const
         orientation = ::glm::rotate(orientation, m_orientation.y, ::glm::vec3(0.f, 1.f, 0.f));
         orientation = ::glm::rotate(orientation, m_orientation.x, ::glm::vec3(1.f, 0.f, 0.f));
         orientation = ::glm::rotate(orientation, m_orientation.z, ::glm::vec3(0.f, 0.f, 1.f));
-        m_fullTransform = orientation * ::glm::scale(m_scale);
+        m_fullTransform = ::glm::translate(m_positon) * orientation * ::glm::scale(m_scale);
         if(!m_isRootSCeneNode)
         {
             m_fullTransform = m_parent->getFullTransform() * m_fullTransform;

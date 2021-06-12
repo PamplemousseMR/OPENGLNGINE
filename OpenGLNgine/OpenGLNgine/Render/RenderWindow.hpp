@@ -371,7 +371,7 @@ private:
     /// Destroys the render window.
     ~RenderWindow();
 
-    void renderScene(const Camera* const _cam) const;
+    void renderScene(const SceneNode* const _node, const Camera* const _cam) const;
 
     /// Stores all listener.
     RenderWindowListeners m_listeners {};

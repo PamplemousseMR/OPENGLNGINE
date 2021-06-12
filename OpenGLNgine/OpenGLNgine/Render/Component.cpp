@@ -15,10 +15,6 @@ Component::Component(SceneManager* const _sceneManager, const std::string& _name
 
 Component::~Component()
 {
-    if(isAttached())
-    {
-        m_parent->dettach(this);
-    }
 }
 
 }
