@@ -10,7 +10,9 @@ GLint FrameBuffer::s_MAX_ATTACHEMENT = 0;
 
 GLint FrameBuffer::s_MAX_DRAW = 0;
 
+#ifdef GLNGINE_USE_STATE_CACHE
 ptrdiff_t FrameBuffer::s_defaultCache = reinterpret_cast< ptrdiff_t >(nullptr);
+#endif
 
 FrameBuffer::FrameBuffer() :
     IBindable()

@@ -3,7 +3,9 @@
 namespace GL
 {
 
+#ifdef GLNGINE_USE_STATE_CACHE
 ptrdiff_t DataBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+#endif
 
 DataBuffer::DataBuffer(DATABUFFER_TARGET _target) :
     IBindable(),

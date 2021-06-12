@@ -5,7 +5,9 @@
 namespace GL
 {
 
+#ifdef GLNGINE_USE_STATE_CACHE
 ptrdiff_t VertexArrayBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+#endif
 
 VertexArrayBuffer::VertexArrayBuffer() :
     IBindable()

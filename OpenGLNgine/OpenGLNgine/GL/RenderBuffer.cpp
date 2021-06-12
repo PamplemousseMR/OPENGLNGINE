@@ -8,7 +8,9 @@ namespace GL
 GLint RenderBuffer::s_MAX_SIZE = 0;
 GLint RenderBuffer::s_MAX_SAMPLE = 0;
 
+#ifdef GLNGINE_USE_STATE_CACHE
 ptrdiff_t RenderBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+#endif
 
 RenderBuffer::RenderBuffer() :
     IBindable()

@@ -8,7 +8,9 @@
 namespace GL
 {
 
+#ifdef GLNGINE_USE_STATE_CACHE
 ptrdiff_t Program::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+#endif
 
 Program::Program() :
     IBindable()

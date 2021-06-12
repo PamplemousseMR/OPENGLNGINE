@@ -7,13 +7,18 @@
 namespace GL
 {
 
+
+#ifdef GLNGINE_USE_STATE_CACHE
+ptrdiff_t Texture::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
+
+int Texture::s_activeTextUnit = 0;
+#endif
+
 GLint Texture::s_MAX_SIZE = 0;
 
 GLint Texture::s_MAX_SAMPLE = 0;
 
 GLint Texture::s_MAX_LOCATION = 0;
-
-int Texture::s_activeTextUnit = 0;
 
 GLenum Texture::getBaseFormat(TEXTURE_INTERNAL_FORMAT _format)
 {
@@ -499,38 +504,58 @@ void Texture::generateMipmap() const
 
 void Texture::bind() const
 {
-    switch(m_type)
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(this);
+    if(s_cache != add || m_textUnit != s_activeTextUnit)
     {
-    case TT_1D :
-        glBindTexture(GL_TEXTURE_1D, m_id);
-        break;
-    case TT_2D :
-        glBindTexture(GL_TEXTURE_2D, m_id);
-        break;
-    case TT_2DMULTISAMPLE :
-        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_id);
-        break;
-    default:
-        GLNGINE_EXCEPTION("Unhandle texture type");
+        s_cache = add;
+        m_textUnit = s_activeTextUnit;
+#endif
+        switch(m_type)
+        {
+        case TT_1D :
+            glBindTexture(GL_TEXTURE_1D, m_id);
+            break;
+        case TT_2D :
+            glBindTexture(GL_TEXTURE_2D, m_id);
+            break;
+        case TT_2DMULTISAMPLE :
+            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_id);
+            break;
+        default:
+            GLNGINE_EXCEPTION("Unhandle texture type");
+        }
+#ifdef GLNGINE_USE_STATE_CACHE
     }
+#endif
 }
 
 void Texture::unbind() const
 {
-    switch(m_type)
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_cache != add || m_textUnit != s_activeTextUnit)
     {
-    case TT_1D :
-        glBindTexture(GL_TEXTURE_1D, 0);
-        break;
-    case TT_2D :
-        glBindTexture(GL_TEXTURE_2D, 0);
-        break;
-    case TT_2DMULTISAMPLE :
-        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
-        break;
-    default:
-        GLNGINE_EXCEPTION("Unhandle texture type");
+        s_cache = add;
+        m_textUnit = s_activeTextUnit;
+#endif
+        switch(m_type)
+        {
+        case TT_1D :
+            glBindTexture(GL_TEXTURE_1D, 0);
+            break;
+        case TT_2D :
+            glBindTexture(GL_TEXTURE_2D, 0);
+            break;
+        case TT_2DMULTISAMPLE :
+            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+            break;
+        default:
+            GLNGINE_EXCEPTION("Unhandle texture type");
+        }
+#ifdef GLNGINE_USE_STATE_CACHE
     }
+#endif
 }
 
 void Texture::setMinFilter(TEXTURE_FILTER _filter) const
