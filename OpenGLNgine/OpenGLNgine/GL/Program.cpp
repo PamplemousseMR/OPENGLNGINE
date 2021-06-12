@@ -86,7 +86,7 @@ void Program::detachAll()
 {
     while(m_shaders.size() != 0)
     {
-        detach(*m_shaders[0]);
+        this->detach(*m_shaders[0]);
     }
 }
 

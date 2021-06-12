@@ -221,7 +221,7 @@ public:
     /// Makes the render window GL context as current.
     inline void makeCurrent() const;
 
-    /// render in the render window.
+    /// Renders in the render window.
     void render() const;
 
     /// Swaps the front and back buffers.

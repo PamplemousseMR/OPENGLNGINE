@@ -44,7 +44,7 @@ int main()
     ::Render::Render& render = ::Render::Render::getInstance();
 
     // Create a render window.
-    ::Render::RenderWindow* const renderWindow = render.createRenderWindow("OpenGLViewer", width, height);
+    ::Render::RenderWindow* const renderWindow = render.createRenderWindow("OpenGLViewer", width, height, 16);
     renderWindow->addListener(new Listener);
 
     // Create a scene manager.
@@ -140,11 +140,10 @@ int main()
 
     // Create a compositor
     ::Hardware::RenderTargetManager& renderTargetManager = ::Hardware::RenderTargetManager::getInstance();
-    const ::Hardware::RenderTargetPtr renderTarget = renderTargetManager.create("RenderTarget");
+    const ::Hardware::RenderTargetPtr renderTarget = renderTargetManager.create("RenderTarget", 16);
     renderTarget->pushTexture(::Hardware::TIF_DEPTH24);
     renderTarget->pushTexture(::Hardware::TIF_RGBA8);
-    renderTarget->m_heightScale = 4.f;
-    renderTarget->m_widthScale = 4.f;
+
 
     ::Hardware::CompositorManager& compositorManager = ::Hardware::CompositorManager::getInstance();
     const ::Hardware::CompositorPtr compositor = compositorManager.create("Compositor");
