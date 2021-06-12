@@ -45,7 +45,6 @@ int main()
 
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("OpenGLViewer", width, height);
-    renderWindow->setSamples(1);
     renderWindow->addListener(new Listener);
 
     // Create a scene manager.

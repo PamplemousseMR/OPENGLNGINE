@@ -42,7 +42,6 @@ int main()
 
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("RenderMesh", width, height);
-    renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
 
     // Create a scene manager.

@@ -477,7 +477,8 @@ void Texture::allocateMultisample(TEXTURE_TYPE _type, int _width, int _height, T
         GLNGINE_EXCEPTION("Can't allocate multisample to no multisampled textures");
         break;
     case TT_2DMULTISAMPLE :
-        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, GLenum(_internalFormat), _width, _height, GL_TRUE);
+        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _sample, _internalFormat, _width, _height, GL_TRUE);
+        break;
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
     }
@@ -496,6 +497,7 @@ void Texture::generateMipmap() const
         break;
     case TT_2DMULTISAMPLE :
         GLNGINE_EXCEPTION("Can't generate mipmap to multisampled textures");
+        break;
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
     }

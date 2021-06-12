@@ -218,12 +218,6 @@ public:
     /// Deleted move operator.
     RenderWindow& operator=(RenderWindow&&) = delete;
 
-    /**
-     * @brief Sets the number of samples of the default frame buffer.
-     * @param _samples The number of samples.
-     */
-    inline void setSamples(int _samples) const;
-
     /// Makes the render window GL context as current.
     inline void makeCurrent() const;
 
@@ -365,8 +359,9 @@ private:
      * @param _name The name of the window.
      * @param _width The width of the window.
      * @param _height The height of the window.
+     * @param _sample The number of sample of textures attached to he frame buffer.
      */
-    RenderWindow(const std::string& _name, int _width, int _height);
+    RenderWindow(const std::string& _name, int _width, int _height, int _sample);
 
     /// Destroys the render window.
     ~RenderWindow();
@@ -397,12 +392,10 @@ private:
     /// Stores all compositor chain
     CompositorChainList m_compositorChains {};
 
-};
+    /// Stores the number of sample of textures attached to the frame buffer.
+    const unsigned m_sample;
 
-inline void RenderWindow::setSamples(int _samples) const
-{
-    glfwWindowHint(GLFW_SAMPLES, _samples);
-}
+};
 
 inline void RenderWindow::makeCurrent() const
 {

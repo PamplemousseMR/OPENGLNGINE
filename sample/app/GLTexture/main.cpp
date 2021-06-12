@@ -39,7 +39,6 @@ int main()
 
     // Create a render window.
     ::Render::RenderWindow* const renderWindow = render.createRenderWindow("GLTexture", width, height);
-    renderWindow->setSamples(8);
     renderWindow->addListener(new Listener);
 
     // Create a scene manager.

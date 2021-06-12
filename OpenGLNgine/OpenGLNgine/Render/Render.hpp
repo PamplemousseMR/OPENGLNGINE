@@ -41,9 +41,10 @@ public:
      * @param _name The name of the window.
      * @param _width The width of the window.
      * @param _height The height of the window.
+     * @param _sample The number of sample of textures attached to he frame buffer.
      * @return The render window.
      */
-    RenderWindow* createRenderWindow(const std::string& _name, int _width, int _height);
+    RenderWindow* createRenderWindow(const std::string& _name, int _width, int _height, int _sample = 0);
 
     /**
      * @brief Destroys a render window.

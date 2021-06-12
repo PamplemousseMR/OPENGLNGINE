@@ -264,7 +264,6 @@ void RenderWindow::render() const
                         renderTargetHeight = viewportHeight;
                         ::GL::FrameBuffer::bindDefault();
                     }
-
                     ::GL::Rasterizer::setViewport(0, 0, renderTargetWidth, renderTargetHeight);
 
                     switch(targetPass->m_mode)
@@ -337,6 +336,7 @@ void RenderWindow::render() const
         }
         else
         {
+            ::GL::FrameBuffer::bindDefault();
             ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
 
             ::GL::Rasterizer::enableScissorTest(true);
@@ -567,11 +567,13 @@ void keyCallback(GLFWwindow* _window, int _key, int, int _action, int)
     }
 }
 
-RenderWindow::RenderWindow(const std::string& _name, int _width, int _height) :
+RenderWindow::RenderWindow(const std::string& _name, int _width, int _height, int _sample) :
     IResource(_name),
     m_width(_width),
-    m_height(_height)
+    m_height(_height),
+    m_sample(_sample)
 {
+    glfwWindowHint(GLFW_SAMPLES, _sample);
     m_window = glfwCreateWindow(_width, _height, m_name.c_str(), m_monitor, nullptr);
     if(!m_window)
     {
