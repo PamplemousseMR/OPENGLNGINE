@@ -1,7 +1,6 @@
 #pragma once
 
 #include "OpenGLNgine/Core/IResource.hpp"
-#include "OpenGLNgine/Render/Mesh.hpp"
 
 #include <glm/glm.hpp>
 
@@ -11,6 +10,7 @@
 namespace Render
 {
 
+class Mesh;
 class SceneManager;
 
 class SceneNode final : public ::Core::IResource

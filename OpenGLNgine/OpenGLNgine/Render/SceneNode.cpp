@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Render/SceneNode.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Render/Mesh.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
 
 #include <glm/gtx/transform.hpp>
@@ -54,6 +55,7 @@ void SceneNode::attach(Mesh* const _mesh)
     }
 
     m_attachedMeshes.emplace(_mesh->getName(), _mesh);
+    _mesh->_notifyMeshAttached(this);
 }
 
 void SceneNode::dettach(Mesh* const _mesh)
@@ -67,6 +69,7 @@ void SceneNode::dettach(Mesh* const _mesh)
     }
 
     m_attachedMeshes.erase(it);
+    _mesh->_notifyMeshDettached(this);
 }
 
 void SceneNode::dettachAll()

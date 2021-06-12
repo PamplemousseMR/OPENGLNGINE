@@ -84,6 +84,25 @@ namespace Render
     }
 }
 
+void Mesh::_notifyMeshAttached(SceneNode* const _node)
+{
+    GLNGINE_ASSERT_IF(!_node, "The scene node mustn't be null");
+
+    m_parents.emplace(_node->getName(), _node);
+}
+
+void Mesh::_notifyMeshDettached(SceneNode* const _node)
+{
+    GLNGINE_ASSERT_IF(!_node, "The scene node mustn't be null");
+    ParentList::const_iterator it = m_parents.find(_node->getName());
+    if(it == m_parents.end())
+    {
+        GLNGINE_EXCEPTION("A scene node with the name '" + _node->getName() + "' doesn't exists");
+    }
+
+    m_parents.erase(it);
+}
+
 SubMesh* Mesh::createSubMesh(const std::string& _name)
 {
     SubMesh* ptr = new SubMesh(this, _name);
@@ -450,6 +469,10 @@ Mesh::Mesh(SceneManager* const _sceneManager, const std::string& _name):
 Mesh::~Mesh()
 {
     this->destroyAllSubMeshes();
+    for(const auto& node : m_parents)
+    {
+        node.second->dettach(this);
+    }
 }
 
 }

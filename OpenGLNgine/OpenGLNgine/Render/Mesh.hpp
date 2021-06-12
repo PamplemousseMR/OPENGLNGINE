@@ -4,6 +4,7 @@
 #include "OpenGLNgine/Hardware/Material.hpp"
 #include "OpenGLNgine/Hardware/VertexData.hpp"
 #include "OpenGLNgine/Render/Component.hpp"
+#include "OpenGLNgine/Render/SceneNode.hpp"
 #include "OpenGLNgine/Render/SubMesh.hpp"
 
 #include <assimp/Importer.hpp>
@@ -46,7 +47,13 @@ public:
 
     bool load(const std::filesystem::path& _path);
 
+    void _notifyMeshAttached(SceneNode* const _node);
+
+    void _notifyMeshDettached(SceneNode* const _node);
+
 private:
+
+    typedef std::map< std::string, SceneNode* > ParentList;
 
     Mesh(SceneManager* const _sceneManager, const std::string& _name);
 
@@ -59,6 +66,8 @@ private:
     void loadTexture(const ::aiMaterial* const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory);
 
     SubMeshList m_subMeshes {};
+
+    ParentList m_parents {};
 
 };
 
