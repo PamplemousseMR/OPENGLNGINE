@@ -7,6 +7,7 @@
 #include "OpenGLNgine/GL/Rasterizer.hpp"
 
 #include "OpenGLNgine/Render/Camera.hpp"
+#include "OpenGLNgine/Render/CompositorChain.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
 #include "OpenGLNgine/Render/SceneNode.hpp"
 #include "OpenGLNgine/Render/Mesh.hpp"
@@ -203,6 +204,8 @@ public:
 
     typedef std::map< std::string, Viewport* > ViewportList;
 
+    typedef std::map< Viewport*, CompositorChain* > CompositorChainList;
+
     /// Deleted copy constructor.
     RenderWindow(const RenderWindow&) = delete;
 
@@ -309,6 +312,25 @@ public:
      */
     Viewport* getViewport(const std::string& _name) const;
 
+    /**
+     * @brief Creates a compositor chain.
+     * @param _viewport The viewport related to the compositor chain.
+     * @param _name The name of the compositor chain.
+     * @return The compositor chain.
+     */
+    CompositorChain* createCompositorChain(Viewport* const _viewport, const std::string& _name);
+
+    /**
+     * @brief Destroys a compositor chain.
+     * @param _compositorChain The compositor chain to destroy.
+     */
+    void destroyCompositorChain(const CompositorChain* const _compositorChain);
+
+    inline const CompositorChainList& getCompositorChain() const;
+
+    /// Destroys all compositor chain.
+    void destroyAllCompositorChains();
+
 private:
 
     typedef std::vector< RenderWindowListener* > RenderWindowListeners;
@@ -349,6 +371,8 @@ private:
     /// Destroys the render window.
     ~RenderWindow();
 
+    void renderScene(const Camera* const _cam) const;
+
     /// Stores all listener.
     RenderWindowListeners m_listeners {};
 
@@ -369,6 +393,9 @@ private:
 
     /// Stores all viewport.
     ViewportList m_viewports {};
+
+    /// Stores all compositor chain
+    CompositorChainList m_compositorChains {};
 
 };
 
@@ -410,6 +437,11 @@ inline const RenderWindow::SceneManagerList& RenderWindow::getSceneManagers() co
 inline const RenderWindow::ViewportList& RenderWindow::getViewports() const
 {
     return m_viewports;
+}
+
+inline const RenderWindow::CompositorChainList& RenderWindow::getCompositorChain() const
+{
+    return m_compositorChains;
 }
 
 }

@@ -103,8 +103,8 @@ int main()
 
         for(::Hardware::TextureUnitState* textUnit : material->getPasses()[0]->getTextureUnitStates())
         {
-            textUnit->minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
-            textUnit->magFilter = ::Hardware::TF_LINEAR;
+            textUnit->m_minFilter = ::Hardware::TF_LINEAR_MIPMAP_LINEAR;
+            textUnit->m_magFilter = ::Hardware::TF_LINEAR;
 
             const ::Hardware::TexturePtr texture = textUnit->getTexture();
             if(texture && !texture->isMipMapsGenerated())

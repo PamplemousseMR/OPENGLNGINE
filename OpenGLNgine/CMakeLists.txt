@@ -25,6 +25,12 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/GL/Texture.cpp
     ${GLNGINE_SOURCE}/GL/Uniform.cpp
     ${GLNGINE_SOURCE}/GL/VertexArrayBuffer.cpp
+    ${GLNGINE_SOURCE}/Hardware/Compositor.cpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorManager.cpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorPass.cpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorPassClear.cpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorPassScene.cpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorTargetPass.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareBufferManager.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareIndexBuffer.cpp
     ${GLNGINE_SOURCE}/Hardware/HardwareVertexBuffer.cpp
@@ -35,6 +41,8 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/Pass.cpp
     ${GLNGINE_SOURCE}/Hardware/Program.cpp
     ${GLNGINE_SOURCE}/Hardware/ProgramManager.cpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTarget.cpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTargetManager.cpp
     ${GLNGINE_SOURCE}/Hardware/Shader.cpp
     ${GLNGINE_SOURCE}/Hardware/Texture.cpp
     ${GLNGINE_SOURCE}/Hardware/TextureManager.cpp
@@ -45,6 +53,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/VertexElement.cpp
     ${GLNGINE_SOURCE}/Render/Camera.cpp
     ${GLNGINE_SOURCE}/Render/Component.cpp
+    ${GLNGINE_SOURCE}/Render/CompositorChain.cpp
     ${GLNGINE_SOURCE}/Render/Light.cpp
     ${GLNGINE_SOURCE}/Render/Mesh.cpp
     ${GLNGINE_SOURCE}/Render/Render.cpp
@@ -73,6 +82,12 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/GL/Texture.hpp
     ${GLNGINE_SOURCE}/GL/Uniform.hpp
     ${GLNGINE_SOURCE}/GL/VertexArrayBuffer.hpp
+    ${GLNGINE_SOURCE}/Hardware/Compositor.hpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorManager.hpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorPass.hpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorPassClear.hpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorPassScene.hpp
+    ${GLNGINE_SOURCE}/Hardware/CompositorTargetPass.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareBufferManager.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareIndexBuffer.hpp
     ${GLNGINE_SOURCE}/Hardware/HardwareVertexBuffer.hpp
@@ -83,6 +98,8 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/Pass.hpp
     ${GLNGINE_SOURCE}/Hardware/Program.hpp
     ${GLNGINE_SOURCE}/Hardware/ProgramManager.hpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTarget.hpp
+    ${GLNGINE_SOURCE}/Hardware/RenderTargetManager.hpp
     ${GLNGINE_SOURCE}/Hardware/Shader.hpp
     ${GLNGINE_SOURCE}/Hardware/Texture.hpp
     ${GLNGINE_SOURCE}/Hardware/TextureManager.hpp
@@ -93,6 +110,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/VertexElement.hpp
     ${GLNGINE_SOURCE}/Render/Camera.hpp
     ${GLNGINE_SOURCE}/Render/Component.hpp
+    ${GLNGINE_SOURCE}/Render/CompositorChain.hpp
     ${GLNGINE_SOURCE}/Render/Light.hpp
     ${GLNGINE_SOURCE}/Render/Mesh.hpp
     ${GLNGINE_SOURCE}/Render/Render.hpp
