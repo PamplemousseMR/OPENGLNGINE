@@ -41,9 +41,12 @@ Camera::Camera(SceneManager* const _sceneManager, const std::string& _name):
 
 Camera::~Camera()
 {
-    for(const auto& viewport : m_viewports)
+    ViewportList::iterator it = m_viewports.begin();
+    while(it != m_viewports.end())
     {
-        viewport.second->getRenderWindow()->removeViewport(viewport.second);
+        RenderWindow* const rw = it->second->getRenderWindow();
+        rw->removeViewport(it->second);
+        it = m_viewports.begin();
     }
 }
 
