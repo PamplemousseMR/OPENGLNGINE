@@ -42,9 +42,9 @@ class Program final : public ::Core::IResource
 
 public:
 
-    typedef std::map< PROGRAM_PARAMETER, ::GL::Uniform > AutoConstantMap;
+    typedef std::map< PROGRAM_PARAMETER, std::shared_ptr< ::GL::Uniform > > AutoConstantMap;
 
-    typedef std::map< std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > > TextureConstantMap;
+    typedef std::map< ::Hardware::TEXTUREUNITSTATE_SEMANTIC, std::shared_ptr< ::GL::Uniform > > TextureConstantMap;
 
     Program(ProgramManager* const _manager, const std::string& _name);
 

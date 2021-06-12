@@ -54,12 +54,14 @@ void Program::link()
 
 void Program::setNamedAutoConstant(PROGRAM_PARAMETER _parameter, const std::string& _name)
 {
-    m_autoConstants.emplace(_parameter, ::GL::Uniform(_name, m_program.getId()));
+    std::shared_ptr< ::GL::Uniform > uniform = std::make_shared< ::GL::Uniform >(_name, m_program.getId());
+    m_autoConstants.emplace(_parameter, uniform);
 }
 
 void Program::setTextureConstant(::Hardware::TEXTUREUNITSTATE_SEMANTIC _semantic, const std::string& _name)
 {
-    m_textureConstants.emplace(_name, std::make_pair( ::GL::Uniform(_name, m_program.getId()), _semantic));
+    std::shared_ptr< ::GL::Uniform > uniform = std::make_shared< ::GL::Uniform >(_name, m_program.getId());
+    m_textureConstants.emplace(_semantic, uniform);
 }
 
 }

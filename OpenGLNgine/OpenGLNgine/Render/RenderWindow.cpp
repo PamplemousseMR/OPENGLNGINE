@@ -32,21 +32,21 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                     {
                         program->lock();
 
-                        for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, ::GL::Uniform >& parameter : pass->getAutoConstants())
+                        for(const std::pair< const ::Hardware::PROGRAM_PARAMETER, std::shared_ptr< ::GL::Uniform > >& parameter : pass->getAutoConstants())
                         {
                             switch(parameter.first)
                             {
                             case ::Hardware::PP_MODELVIEWPROJ_MATRIX:
-                                parameter.second = _cam->getProjection() * _cam->getView() * _node->getFullTransform();
+                                *parameter.second = _cam->getProjection() * _cam->getView() * _node->getFullTransform();
                                 break;
                             case ::Hardware::PP_MODELVIEW_MATRIX:
-                                parameter.second = _cam->getView() * _node->getFullTransform();
+                                *parameter.second = _cam->getView() * _node->getFullTransform();
                                 break;
                             case ::Hardware::PP_VIEW_MATRIX:
-                                parameter.second = _cam->getView();
+                                *parameter.second = _cam->getView();
                                 break;
                             case ::Hardware::PP_LIGHT_COUNT:
-                                parameter.second = static_cast< unsigned >(sm->getLights().size());
+                                *parameter.second = static_cast< unsigned >(sm->getLights().size());
                                 break;
                             case ::Hardware::PP_LIGHT_POSITION_WORLD_SPACE_ARRAY:
                             {
@@ -59,7 +59,7 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                                     {
                                         lightPositionWorldSpaces.push_back(light.second->getShaderPosition());
                                     }
-                                    parameter.second = lightPositionWorldSpaces;
+                                    *parameter.second = lightPositionWorldSpaces;
                                 }
                                 break;
                             }
@@ -74,7 +74,7 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                                     {
                                         lightPositionViewSpaces.push_back(_cam->getView() * light.second->getShaderPosition());
                                     }
-                                    parameter.second = lightPositionViewSpaces;
+                                    *parameter.second = lightPositionViewSpaces;
                                 }
                                 break;
                             }
@@ -89,7 +89,7 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                                     {
                                         lightDiffuseColors.push_back(light.second->getDiffuse());
                                     }
-                                    parameter.second = lightDiffuseColors;
+                                    *parameter.second = lightDiffuseColors;
                                 }
                                 break;
                             }
@@ -104,40 +104,40 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
                                     {
                                         lightSpecularColors.push_back(light.second->getSpecular());
                                     }
-                                    parameter.second = lightSpecularColors;
+                                    *parameter.second = lightSpecularColors;
                                 }
                                 break;
                             }
                             case ::Hardware::PP_MATERIAL_SHININESS:
-                                parameter.second = pass->m_shininess;
+                                *parameter.second = pass->m_shininess;
                                 break;
                             case ::Hardware::PP_MATERIAL_AMBIENT:
-                                parameter.second = pass->m_ambient;
+                                *parameter.second = pass->m_ambient;
                                 break;
                             case ::Hardware::PP_MATERIAL_HAS_TS_AMBIENT:
-                                parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_AMBIENT) ? 1.f : 0.f;
+                                *parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_AMBIENT) ? 1.f : 0.f;
                                 break;
                             case ::Hardware::PP_MATERIAL_DIFFUSE:
-                                parameter.second = pass->m_diffuse;
+                                *parameter.second = pass->m_diffuse;
                                 break;
                             case ::Hardware::PP_MATERIAL_HAS_TF_DIFFUSE:
-                                parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_DIFFUSE) ? 1.f : 0.f;
+                                *parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_DIFFUSE) ? 1.f : 0.f;
                                 break;
                             case ::Hardware::PP_MATERIAL_SPECULAR:
-                                parameter.second = pass->m_specular;
+                                *parameter.second = pass->m_specular;
                                 break;
                             case ::Hardware::PP_MATERIAL_HAS_TS_SPECULAR:
-                                parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_SPECULAR) ? 1.f : 0.f;
+                                *parameter.second = pass->findTextureUnitStateBySemantic(::Hardware::TS_SPECULAR) ? 1.f : 0.f;
                                 break;
                             default:
                                 GLNGINE_EXCEPTION("Unhandle program parameter");
                             }
                         }
 
-                        for(const std::pair< const std::string, std::pair< ::GL::Uniform, ::Hardware::TEXTUREUNITSTATE_SEMANTIC > >& parameter : pass->getTextureConstants())
+                        for(const std::pair< const ::Hardware::TEXTUREUNITSTATE_SEMANTIC, std::shared_ptr< ::GL::Uniform > >& parameter : pass->getTextureConstants())
                         {
-                            parameter.second.first = static_cast< int >(parameter.second.second);
-                            const ::Hardware::TextureUnitState* const textureUnitState = pass->findTextureUnitStateBySemantic(parameter.second.second);
+                            *parameter.second = static_cast< int >(parameter.first);
+                            const ::Hardware::TextureUnitState* const textureUnitState = pass->findTextureUnitStateBySemantic(parameter.first);
                             if(textureUnitState)
                             {
                                 const ::Hardware::TexturePtr texture = textureUnitState->getTexture();
