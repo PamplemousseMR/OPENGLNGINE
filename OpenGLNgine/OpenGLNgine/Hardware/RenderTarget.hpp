@@ -23,7 +23,7 @@ public:
 
     typedef std::vector< std::pair< std::shared_ptr< ::GL::Texture >, TEXTURE_INTERNAL_FORMAT > > TextureList;
 
-    RenderTarget(RenderTargetManager* const _manager, const std::string& _name);
+    RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample);
 
     ~RenderTarget();
 
@@ -60,6 +60,8 @@ public:
     float m_widthScale { 1.f };
 
     float m_heightScale { 1.f };
+
+    const unsigned m_sample;
 
 private:
 

@@ -11,9 +11,9 @@ RenderTargetManager& RenderTargetManager::getInstance()
     return *s_instance;
 }
 
-RenderTargetPtr RenderTargetManager::create(const std::string& _name)
+RenderTargetPtr RenderTargetManager::create(const std::string& _name, unsigned _sample)
 {
-    RenderTargetPtr ptr = std::make_shared< RenderTarget >(this, _name);
+    RenderTargetPtr ptr = std::make_shared< RenderTarget >(this, _name, _sample);
     this->add(ptr);
     return ptr;
 }

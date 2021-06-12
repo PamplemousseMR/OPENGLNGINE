@@ -274,30 +274,52 @@ void RenderWindow::render() const
                     {
                         int readTargetWidth = 0;
                         int readTargetHeight = 0;
+                        unsigned readSample = 0;
                         if(previousRenderTarget == nullptr)
                         {
                             readTargetWidth = viewportWidth;
                             readTargetHeight = viewportHeight;
+                            readSample = m_sample;
                             ::GL::FrameBuffer::bindReadDefault();
                         }
                         else
                         {
                             readTargetWidth = static_cast< int >(viewportWidth*previousRenderTarget->m_widthScale);
                             readTargetHeight = static_cast< int >(viewportHeight*previousRenderTarget->m_heightScale);
+                            readSample = previousRenderTarget->m_sample;
                             previousRenderTarget->lockRead();
                         }
 
+                        unsigned writeSample = 0;
                         if(renderTarget == nullptr)
                         {
+                            writeSample = m_sample;
                             ::GL::FrameBuffer::bindDrawDefault();
                         }
                         else
                         {
+                            writeSample = renderTarget->m_sample;
                             renderTarget->lockDraw();
                         }
-                        ::GL::FrameBuffer::blit(0, 0, readTargetWidth, readTargetHeight,
-                                                0, 0, renderTargetWidth, renderTargetHeight,
-                                                ::Hardware::CompositorTargetPass::getType(targetPass->m_mask), ::Hardware::CompositorTargetPass::getType(targetPass->m_filter));
+
+                        if(readSample == 0 && writeSample > 0)
+                        {
+                            GLNGINE_EXCEPTION("Unable to blit framebuffer to a multisampled framebuffer");
+                        }
+                        else if(readSample > 0 && (readTargetWidth != renderTargetWidth || readTargetHeight != renderTargetHeight))
+                        {
+                            GLNGINE_EXCEPTION("Unable to blit multisampled framebuffer to a different size framebuffer");
+                        }
+                        else if(readSample > 0 && readSample != writeSample)
+                        {
+                            GLNGINE_EXCEPTION("Unable to blit multisampled framebuffer to a different sample size framebuffer");
+                        }
+                        else
+                        {
+                            ::GL::FrameBuffer::blit(0, 0, readTargetWidth, readTargetHeight,
+                                                    0, 0, renderTargetWidth, renderTargetHeight,
+                                                    ::Hardware::CompositorTargetPass::getType(targetPass->m_mask), ::Hardware::CompositorTargetPass::getType(targetPass->m_filter));
+                        }
                         break;
                     }
                     default:

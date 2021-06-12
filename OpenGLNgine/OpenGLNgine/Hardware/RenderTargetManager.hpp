@@ -22,7 +22,7 @@ public:
 
     RenderTargetManager& operator=(RenderTargetManager&&) = delete;
 
-    RenderTargetPtr create(const std::string& _name);
+    RenderTargetPtr create(const std::string& _name, unsigned _sample = 0);
 
 private:
 

@@ -12,7 +12,7 @@ void RenderTarget::allocate(int _width, int _height)
     for(auto& texture : m_textures)
     {
         texture.first->bind();
-        texture.first->allocate(_width, _height, Texture::getType(texture.second));
+        texture.first->allocate(_width, _height, Texture::getType(texture.second), m_sample);
     }
 }
 
@@ -112,12 +112,13 @@ void RenderTarget::attach()
 
 void RenderTarget::pushTexture(TEXTURE_INTERNAL_FORMAT _format)
 {
-    m_textures.push_back(std::make_pair(std::make_shared< ::GL::Texture >(::GL::TT_2D), _format));
+    m_textures.push_back(std::make_pair(std::make_shared< ::GL::Texture >(m_sample > 0 ? ::GL::TT_2DMULTISAMPLE : ::GL::TT_2D), _format));
     m_dirty = true;
 }
 
-RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::string& _name):
+RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample):
     ::Core::IResource(_name),
+    m_sample(_sample),
     m_manager(_manager)
 {
 }
