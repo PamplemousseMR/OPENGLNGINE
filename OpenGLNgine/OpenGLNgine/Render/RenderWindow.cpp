@@ -253,7 +253,7 @@ void RenderWindow::render() const
                         renderTargetWidth = static_cast< int >(viewportWidth*renderTarget->m_widthScale);
                         renderTargetHeight = static_cast< int >(viewportHeight*renderTarget->m_heightScale);
 
-                        renderTarget->lock();
+                        renderTarget->lockDraw();
                         if(renderTarget->isDirty())
                         {
                             renderTarget->allocate(renderTargetWidth, renderTargetHeight);
@@ -269,7 +269,7 @@ void RenderWindow::render() const
                         renderTargetOriginY =  viewportOriginY;
                         renderTargetWidth = viewportWidth;
                         renderTargetHeight = viewportHeight;
-                        ::GL::FrameBuffer::bindDefault();
+                        ::GL::FrameBuffer::bindDrawDefault();
                         ::GL::Rasterizer::enableScissorTest(true);
                         ::GL::Rasterizer::setScissor(renderTargetOriginX, renderTargetOriginY, viewportWidth, viewportHeight);
                     }
@@ -371,7 +371,7 @@ void RenderWindow::render() const
         }
         else
         {
-            ::GL::FrameBuffer::bindDefault();
+            ::GL::FrameBuffer::bindDrawDefault();
             ::GL::Rasterizer::enableScissorTest(true);
             ::GL::Rasterizer::setScissor(viewportOriginX, viewportOriginY, viewportWidth, viewportHeight);
             ::GL::Rasterizer::setViewport(viewportOriginX, viewportOriginY, viewportWidth, viewportHeight);

@@ -35,10 +35,6 @@ public:
 
     RenderTarget& operator=(RenderTarget&&) = delete;
 
-    inline void lock();
-
-    inline void unlock();
-
     inline void lockDraw();
 
     inline void lockRead();
@@ -74,16 +70,6 @@ private:
     mutable bool m_dirty { true };
 
 };
-
-inline void RenderTarget::lock()
-{
-    m_frameBuffer.bind();
-}
-
-inline void RenderTarget::unlock()
-{
-    m_frameBuffer.unbind();
-}
 
 inline void RenderTarget::lockDraw()
 {
