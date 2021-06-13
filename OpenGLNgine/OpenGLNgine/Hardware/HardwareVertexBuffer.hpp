@@ -22,7 +22,7 @@ class HardwareVertexBuffer final : public IHardwareBuffer
 
 public:
 
-    HardwareVertexBuffer(HardwareBufferManager* const _manager, HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage);
+    HardwareVertexBuffer(HardwareBufferManager* const _manager, const std::string& _name, HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage);
 
     ~HardwareVertexBuffer() override;
 

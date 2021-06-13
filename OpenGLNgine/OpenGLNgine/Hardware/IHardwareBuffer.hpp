@@ -1,5 +1,6 @@
 #pragma once
 
+#include "OpenGLNgine/Core/IResource.hpp"
 #include "OpenGLNgine/GL/DataBuffer.hpp"
 
 namespace Hardware
@@ -21,7 +22,7 @@ enum HARDWAREBUFFER_USAGE
 
 class HardwareBufferManager;
 
-class IHardwareBuffer
+class IHardwareBuffer : public ::Core::IResource
 {
 
 public:
@@ -44,7 +45,7 @@ public:
 
 protected:
 
-    IHardwareBuffer(HardwareBufferManager* const _manager, ::GL::DATABUFFER_TARGET _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage);
+    IHardwareBuffer(HardwareBufferManager* const _manager, const std::string& _name, ::GL::DATABUFFER_TARGET _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage);
 
     virtual ~IHardwareBuffer();
 

@@ -253,7 +253,8 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
             }
         }
 
-        ::Render::SubMesh* const subMesh = this->createSubMesh(mesh->mName.C_Str());
+        const std::string name(mesh->mName.C_Str());
+        ::Render::SubMesh* const subMesh = this->createSubMesh(name);
 
         subMesh->m_vertexData = manager.createVertexData();
         switch (mesh->mPrimitiveTypes) {
@@ -275,7 +276,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         if(mesh->HasPositions())
         {
-            const ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertices.size()*3, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(name + "_Positions", ::Hardware::HT_FLOAT, vertices.size()*3, ::Hardware::HU_STATIC_DRAW);
             vertexBuffer->lock();
             vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertices.data(), false);
 
@@ -288,7 +289,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
         {
             subMesh->m_indexData = manager.createIndexData();
 
-            const ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(::Hardware::HT_UNSIGNED_INT, indices.size(), ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareIndexBufferPtr indexBuffer = manager.createIndexBuffer(name + "_Indexes", ::Hardware::HT_UNSIGNED_INT, indices.size(), ::Hardware::HU_STATIC_DRAW);
             subMesh->m_indexData->m_indexBuffer = indexBuffer;
             indexBuffer->lock();
             indexBuffer->writeData(0, indexBuffer->getSizeInBytes(), indices.data(), false);
@@ -298,7 +299,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         for(unsigned col=0; col<mesh->GetNumColorChannels() && col<6; ++col)
         {
-            const ::Hardware::HardwareVertexBufferPtr colorBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, colors[col].size()*4, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr colorBuffer = manager.createVertexBuffer(name + "_Colors", ::Hardware::HT_FLOAT, colors[col].size()*4, ::Hardware::HU_STATIC_DRAW);
             colorBuffer->lock();
             colorBuffer->writeData(0, colorBuffer->getSizeInBytes(), colors[col].data(), false);
 
@@ -309,7 +310,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         if(mesh->HasNormals())
         {
-            const ::Hardware::HardwareVertexBufferPtr normalBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, normals.size()*3, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr normalBuffer = manager.createVertexBuffer(name + "_Normals", ::Hardware::HT_FLOAT, normals.size()*3, ::Hardware::HU_STATIC_DRAW);
             normalBuffer->lock();
             normalBuffer->writeData(0, normalBuffer->getSizeInBytes(), normals.data(), false);
 
@@ -320,7 +321,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         for(unsigned uv=0; uv<mesh->GetNumUVChannels() && uv<6; ++uv)
         {
-            const ::Hardware::HardwareVertexBufferPtr textCoordBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, textCoords[uv].size()*2, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr textCoordBuffer = manager.createVertexBuffer(name + "_UVs", ::Hardware::HT_FLOAT, textCoords[uv].size()*2, ::Hardware::HU_STATIC_DRAW);
             textCoordBuffer->lock();
             textCoordBuffer->writeData(0, textCoordBuffer->getSizeInBytes(), textCoords[uv].data(), false);
 
@@ -331,7 +332,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
         if(mesh->HasTangentsAndBitangents())
         {
-            const ::Hardware::HardwareVertexBufferPtr tangentBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertices.size()*3*2, ::Hardware::HU_STATIC_DRAW);
+            const ::Hardware::HardwareVertexBufferPtr tangentBuffer = manager.createVertexBuffer(name + "_TangentsBitangents", ::Hardware::HT_FLOAT, vertices.size()*3*2, ::Hardware::HU_STATIC_DRAW);
             tangentBuffer->lock();
             tangentBuffer->writeData(0, tangentBuffer->getSizeInBytes(), tangents.data(), false);
 

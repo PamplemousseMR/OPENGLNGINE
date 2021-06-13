@@ -13,18 +13,18 @@ HardwareBufferManager& HardwareBufferManager::getInstance()
     return *s_instance;
 }
 
-HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
+HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(const std::string& _name, HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
 {
-    HardwareIndexBuffer* const ptr = new HardwareIndexBuffer(this, _type, _size, _usage);
-    m_indexBuffers.insert(ptr);
-    return HardwareIndexBufferPtr(ptr);
+    const HardwareIndexBufferPtr ptr = std::make_shared< HardwareIndexBuffer >(this, _name,  _type, _size, _usage);
+    ::Core::IManager< HardwareIndexBuffer >::add(ptr);
+    return ptr;
 }
 
-HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage)
+HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(const std::string& _name, HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage)
 {
-    HardwareVertexBuffer* const ptr = new HardwareVertexBuffer(this, _type, _numVertices, _usage);
-    m_vertexBuffers.insert(ptr);
-    return HardwareVertexBufferPtr(ptr);
+    const HardwareVertexBufferPtr ptr = std::make_shared< HardwareVertexBuffer >(this, _name, _type, _numVertices, _usage);
+    ::Core::IManager< HardwareVertexBuffer >::add(ptr);
+    return ptr;
 }
 
 VertexData* HardwareBufferManager::createVertexData()
@@ -63,29 +63,6 @@ void HardwareBufferManager::destroyAllIndexData()
     m_vertexData.clear();
 }
 
-void HardwareBufferManager::_notifyIndexBufferDestroyed(const HardwareIndexBuffer* _indexBuffer)
-{
-    GLNGINE_ASSERT_IF(!_indexBuffer, "The hardware index buffer shall not be null");
-
-    const IndexBufferList::const_iterator it = std::find(m_indexBuffers.begin(), m_indexBuffers.end(), _indexBuffer);
-    if(it == m_indexBuffers.end())
-    {
-        GLNGINE_EXCEPTION("The index buffer doesn't exists");
-    }
-    m_indexBuffers.erase(it);
-}
-
-void HardwareBufferManager::_notifyVertexBufferDestroyed(const HardwareVertexBuffer* _vertexBuffer)
-{
-    GLNGINE_ASSERT_IF(!_vertexBuffer, "The hardware vertex buffer shall not be null");
-
-    const VertexBufferList::const_iterator it = std::find(m_vertexBuffers.begin(), m_vertexBuffers.end(), _vertexBuffer);
-    if(it == m_vertexBuffers.end())
-    {
-        GLNGINE_EXCEPTION("The vertex buffer doesn't exists");
-    }    m_vertexBuffers.erase(it);
-}
-
 HardwareBufferManager::Initializer::Initializer()
 {
     HardwareBufferManager::s_instance = new HardwareBufferManager();
@@ -105,9 +82,6 @@ HardwareBufferManager::~HardwareBufferManager()
 {
     this->destroyAllVertexData();
     this->destroyAllIndexData();
-
-    m_vertexBuffers.clear();
-    m_indexBuffers.clear();
 }
 
 }

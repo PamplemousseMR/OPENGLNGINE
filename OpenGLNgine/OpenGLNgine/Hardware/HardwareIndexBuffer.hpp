@@ -26,7 +26,7 @@ public:
 
     static ::GL::DATABUFFER_TYPE getType(HARDWREINDEXBUFFER_TYPE _type);
 
-    HardwareIndexBuffer(HardwareBufferManager* const _manager, HARDWREINDEXBUFFER_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
+    HardwareIndexBuffer(HardwareBufferManager* const _manager, const std::string& _name, HARDWREINDEXBUFFER_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
 
     ~HardwareIndexBuffer() override;
 

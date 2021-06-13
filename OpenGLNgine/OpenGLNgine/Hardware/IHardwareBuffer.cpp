@@ -22,7 +22,8 @@ void IHardwareBuffer::writeData(size_t _offset, size_t _sizeInBytes, const void*
     }
 }
 
-IHardwareBuffer::IHardwareBuffer(HardwareBufferManager* const _manager, ::GL::DATABUFFER_TARGET _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage):
+IHardwareBuffer::IHardwareBuffer(HardwareBufferManager* const _manager, const std::string& _name, ::GL::DATABUFFER_TARGET _target, size_t _sizeInBytes, HARDWAREBUFFER_USAGE _usage):
+    ::Core::IResource(_name),
     m_manager(_manager),
     m_dataBuffer(_target),
     m_sizeInBytes(_sizeInBytes),

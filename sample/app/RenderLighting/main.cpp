@@ -256,7 +256,7 @@ int main()
     subMesh->m_vertexData = manager.createVertexData();
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;
 
-    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer(::Hardware::HT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
+    ::Hardware::HardwareVertexBufferPtr vertexBuffer = manager.createVertexBuffer("Buffer", ::Hardware::HT_FLOAT, vertexData.size(), ::Hardware::HU_STATIC_DRAW);
     vertexBuffer->lock();
     vertexBuffer->writeData(0, vertexBuffer->getSizeInBytes(), vertexData.data(), false);
 
