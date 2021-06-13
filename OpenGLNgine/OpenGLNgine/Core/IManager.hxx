@@ -3,6 +3,13 @@
 #include "OpenGLNgine/Core/Exception.hpp"
 
 template< class T >
+std::shared_ptr< T > IManager< T >::getByName(const std::string& _name)
+{
+    typename ResourceList::const_iterator it = m_resources.find(_name);
+    return it != m_resources.end() ? it->second : nullptr;
+}
+
+template< class T >
 IManager< T >::IManager()
 {
 }
@@ -21,13 +28,6 @@ void IManager< T >::add(const std::shared_ptr< T >& _resource)
         GLNGINE_EXCEPTION("A resource with the name '" + _resource->getName() + "' already exists");
     }
     m_resources.emplace(_resource->getName(), _resource);
-}
-
-template< class T >
-std::shared_ptr< T > IManager< T >::get(const std::string& _name) const
-{
-    typename ResourceList::const_iterator it = m_resources.find(_name);
-    return it != m_resources.end() ? it->second : nullptr;
 }
 
 template< class T >

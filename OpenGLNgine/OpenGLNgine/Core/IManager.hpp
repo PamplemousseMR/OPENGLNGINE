@@ -11,6 +11,10 @@ template <class T>
 class IManager
 {
 
+public:
+
+    std::shared_ptr< T > getByName(const std::string& _name);
+
 protected:
 
     IManager();
@@ -19,11 +23,9 @@ protected:
 
     void add(const std::shared_ptr< T >& _resource);
 
-    std::shared_ptr< T > get(const std::string& _name) const;
+private:
 
     void removeAll();
-
-private:
 
     typedef std::map< std::string, std::shared_ptr< T > > ResourceList;
 

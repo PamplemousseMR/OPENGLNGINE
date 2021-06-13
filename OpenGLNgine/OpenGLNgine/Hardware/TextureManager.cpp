@@ -18,11 +18,6 @@ TexturePtr TextureManager::create(const std::string& _name, TEXTURE_TYPE _type)
     return ptr;
 }
 
-TexturePtr TextureManager::getByName(const std::string& _name)
-{
-    return this->get(_name);
-}
-
 TextureManager::Initializer::Initializer()
 {
     TextureManager::s_instance = new TextureManager();

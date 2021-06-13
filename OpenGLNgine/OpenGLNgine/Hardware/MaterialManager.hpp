@@ -24,8 +24,6 @@ public:
 
     MaterialPtr create(const std::string& _name);
 
-    MaterialPtr getByName(const std::string& _name);
-
 private:
 
     struct Initializer final

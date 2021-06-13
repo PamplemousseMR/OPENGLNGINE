@@ -18,11 +18,6 @@ MaterialPtr MaterialManager::create(const std::string& _name)
     return ptr;
 }
 
-MaterialPtr MaterialManager::getByName(const std::string& _name)
-{
-    return this->get(_name);
-}
-
 MaterialManager::Initializer::Initializer()
 {
     MaterialManager::s_instance = new MaterialManager();

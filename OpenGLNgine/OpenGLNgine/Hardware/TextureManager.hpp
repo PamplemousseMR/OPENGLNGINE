@@ -23,8 +23,6 @@ public:
 
     TexturePtr create(const std::string& _name, TEXTURE_TYPE _type);
 
-    TexturePtr getByName(const std::string& _name);
-
 private:
 
     struct Initializer final

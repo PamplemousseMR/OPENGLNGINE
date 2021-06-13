@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Hardware/Compositor.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/CompositorManager.hpp"
 
 namespace Hardware
 {
@@ -9,6 +10,7 @@ Compositor::Compositor(CompositorManager* const _manager, const std::string& _na
     ::Core::IResource(_name),
     m_manager(_manager)
 {
+    GLNGINE_ASSERT_IF(_manager->getByName(_name), "The pass shall not be null");
 }
 
 Compositor::~Compositor()
