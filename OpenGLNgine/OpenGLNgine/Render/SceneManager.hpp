@@ -17,7 +17,6 @@ class RenderWindow;
 class SceneManager final : public ::Core::IResource
 {
 
-    friend Camera;
     friend RenderWindow;
 
 public:
