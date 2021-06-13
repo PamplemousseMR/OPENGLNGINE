@@ -24,7 +24,6 @@ Program::Program() :
 
 Program::~Program()
 {
-    detachAll();
     glDeleteProgram(m_id);
 }
 
