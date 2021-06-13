@@ -428,6 +428,7 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _
 
 void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
 {
+    GLNGINE_ASSERT_IF(_width<0 || _height<0, "The texture size musn't be negativ");
     if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
     {
         GLNGINE_EXCEPTION("Texture size too large");

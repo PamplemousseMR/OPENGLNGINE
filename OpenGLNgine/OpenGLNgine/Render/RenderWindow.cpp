@@ -229,6 +229,8 @@ void RenderWindow::render() const
     for(const auto& vp : m_viewports)
     {
         const auto& size = vp.second->getViewport();
+        const int viewportOriginX = static_cast< int >(size[0]*m_width);
+        const int viewportOriginY = static_cast< int >(size[1]*m_height);
         const int viewportWidth = static_cast< int >(size[2]*m_width);
         const int viewportHeight = static_cast< int >(size[3]*m_height);
 
@@ -240,6 +242,8 @@ void RenderWindow::render() const
             {
                 for(const ::Hardware::CompositorTargetPass* const targetPass : compositor->getCompositorTargetPasses())
                 {
+                    int renderTargetOriginX = 0;
+                    int renderTargetOriginY = 0;
                     int renderTargetWidth = 0;
                     int renderTargetHeight = 0;
 
@@ -257,14 +261,19 @@ void RenderWindow::render() const
                             renderTarget->check();
                             renderTarget->_notifyDirty();
                         }
+                        ::GL::Rasterizer::enableScissorTest(false);
                     }
                     else
                     {
+                        renderTargetOriginX = viewportOriginX;
+                        renderTargetOriginY =  viewportOriginY;
                         renderTargetWidth = viewportWidth;
                         renderTargetHeight = viewportHeight;
                         ::GL::FrameBuffer::bindDefault();
+                        ::GL::Rasterizer::enableScissorTest(true);
+                        ::GL::Rasterizer::setScissor(renderTargetOriginX, renderTargetOriginY, viewportWidth, viewportHeight);
                     }
-                    ::GL::Rasterizer::setViewport(0, 0, renderTargetWidth, renderTargetHeight);
+                    ::GL::Rasterizer::setViewport(renderTargetOriginX, renderTargetOriginY, renderTargetWidth, renderTargetHeight);
 
                     switch(targetPass->m_mode)
                     {
@@ -272,11 +281,15 @@ void RenderWindow::render() const
                         break;
                     case ::Hardware::COMPOSITORTARGETPASS_MODE::CM_PREVIOUS:
                     {
+                        int readTargetOriginX = 0;
+                        int readTargetOriginY = 0;
                         int readTargetWidth = 0;
                         int readTargetHeight = 0;
                         unsigned readSample = 0;
                         if(previousRenderTarget == nullptr)
                         {
+                            readTargetOriginX = viewportOriginX;
+                            readTargetOriginY =  viewportOriginY;
                             readTargetWidth = viewportWidth;
                             readTargetHeight = viewportHeight;
                             readSample = m_sample;
@@ -316,8 +329,8 @@ void RenderWindow::render() const
                         }
                         else
                         {
-                            ::GL::FrameBuffer::blit(0, 0, readTargetWidth, readTargetHeight,
-                                                    0, 0, renderTargetWidth, renderTargetHeight,
+                            ::GL::FrameBuffer::blit(readTargetOriginX, readTargetOriginY, readTargetWidth+readTargetOriginX, readTargetHeight+readTargetOriginY,
+                                                    renderTargetOriginX, renderTargetOriginY, renderTargetWidth+renderTargetOriginX, renderTargetHeight+renderTargetOriginY,
                                                     ::Hardware::CompositorTargetPass::getType(targetPass->m_mask), ::Hardware::CompositorTargetPass::getType(targetPass->m_filter));
                         }
                         break;
@@ -359,10 +372,9 @@ void RenderWindow::render() const
         else
         {
             ::GL::FrameBuffer::bindDefault();
-            ::GL::Rasterizer::setViewport(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
-
             ::GL::Rasterizer::enableScissorTest(true);
-            ::GL::Rasterizer::setScissor(static_cast< int >(size[0]*m_width), static_cast< int >(size[1]*m_height), viewportWidth, viewportHeight);
+            ::GL::Rasterizer::setScissor(viewportOriginX, viewportOriginY, viewportWidth, viewportHeight);
+            ::GL::Rasterizer::setViewport(viewportOriginX, viewportOriginY, viewportWidth, viewportHeight);
 
             const auto& color = vp.second->getClearColor();
             ::GL::PixelOperation::setColorClearValue(color[0], color[1], color[2], color[3]);
