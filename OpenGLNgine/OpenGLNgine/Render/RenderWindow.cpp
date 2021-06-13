@@ -446,6 +446,7 @@ Viewport* RenderWindow::addViewport(const std::string& _name, Camera* const _cam
     {
         GLNGINE_EXCEPTION("A viewport with the name '" + _name + "' already exists");
     }
+    GLNGINE_ASSERT_IF(_camera->getSceneManager()->m_renderWindow != this, "The camera does not came from this render window");
 
     Viewport* const viewport = new Viewport(this, _camera, _name);
     m_viewports.emplace(_name, viewport);
