@@ -20,9 +20,9 @@ typedef std::shared_ptr<HardwareVertexBuffer> HardwareVertexBufferPtr;
 class HardwareVertexBuffer final : public IHardwareBuffer
 {
 
-public:
+    friend HardwareBufferManager;
 
-    HardwareVertexBuffer(HardwareBufferManager* const _manager, const std::string& _name, HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage);
+public:
 
     ~HardwareVertexBuffer() override;
 
@@ -37,6 +37,10 @@ public:
     const HARDWAREVERTEXBUFFER_TYPE m_vertexType;
 
     const size_t m_numVertices;
+
+private:
+
+    HardwareVertexBuffer(HardwareBufferManager* const _manager, const std::string& _name, HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage);
 
 };
 

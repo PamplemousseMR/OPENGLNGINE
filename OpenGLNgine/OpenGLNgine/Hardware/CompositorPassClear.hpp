@@ -50,7 +50,7 @@ private:
 
     CompositorPassClear();
 
-    virtual ~CompositorPassClear();
+    ~CompositorPassClear() override;
 
     std::array< float, 4 > m_clearColor { 0.f, 0.f, 0.f, 0.f };
 

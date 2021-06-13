@@ -22,11 +22,11 @@ typedef std::shared_ptr<HardwareIndexBuffer> HardwareIndexBufferPtr;
 class HardwareIndexBuffer final : public IHardwareBuffer
 {
 
+    friend HardwareBufferManager;
+
 public:
 
     static ::GL::DATABUFFER_TYPE getType(HARDWREINDEXBUFFER_TYPE _type);
-
-    HardwareIndexBuffer(HardwareBufferManager* const _manager, const std::string& _name, HARDWREINDEXBUFFER_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
 
     ~HardwareIndexBuffer() override;
 
@@ -43,6 +43,10 @@ public:
     const HARDWREINDEXBUFFER_TYPE m_indexType;
 
     const size_t m_numIndex;
+
+private:
+
+    HardwareIndexBuffer(HardwareBufferManager* const _manager, const std::string& _name, HARDWREINDEXBUFFER_TYPE _type, size_t _numIndex, HARDWAREBUFFER_USAGE _usage);
 
 };
 

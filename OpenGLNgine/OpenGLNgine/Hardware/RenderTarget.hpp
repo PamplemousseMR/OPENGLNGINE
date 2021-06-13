@@ -19,11 +19,11 @@ typedef std::shared_ptr< RenderTarget > RenderTargetPtr;
 class RenderTarget final : public ::Core::IResource
 {
 
+    friend RenderTargetManager;
+
 public:
 
     typedef std::vector< std::pair< std::shared_ptr< ::GL::Texture >, TEXTURE_INTERNAL_FORMAT > > TextureList;
-
-    RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample);
 
     ~RenderTarget();
 
@@ -60,6 +60,8 @@ public:
     const unsigned m_sample;
 
 private:
+
+    RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample);
 
     RenderTargetManager* const m_manager;
 

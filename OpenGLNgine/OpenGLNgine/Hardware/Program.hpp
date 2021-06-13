@@ -40,13 +40,13 @@ typedef std::shared_ptr< Program > ProgramPtr;
 class Program final : public ::Core::IResource
 {
 
+    friend ProgramManager;
+
 public:
 
     typedef std::map< PROGRAM_PARAMETER, std::shared_ptr< ::GL::Uniform > > AutoConstantMap;
 
     typedef std::map< ::Hardware::TEXTUREUNITSTATE_SEMANTIC, std::shared_ptr< ::GL::Uniform > > TextureConstantMap;
-
-    Program(ProgramManager* const _manager, const std::string& _name);
 
     ~Program();
 
@@ -75,6 +75,8 @@ public:
     inline const TextureConstantMap& getTextureConstants() const;
 
 private:
+
+    Program(ProgramManager* const _manager, const std::string& _name);
 
     ProgramManager* const m_manager;
 

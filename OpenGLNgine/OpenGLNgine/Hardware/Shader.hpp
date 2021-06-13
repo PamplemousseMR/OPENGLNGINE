@@ -26,10 +26,9 @@ class Shader final : public ::Core::IResource
 {
 
     friend Program;
+    friend ProgramManager;
 
 public:
-
-    Shader(ProgramManager* const _manager, const std::string& _name, SHADER_TYPE _type);
 
     ~Shader();
 
@@ -50,6 +49,8 @@ public:
 private:
 
     static ::GL::SHADER_TYPE getType(SHADER_TYPE _type);
+
+    Shader(ProgramManager* const _manager, const std::string& _name, SHADER_TYPE _type);
 
     ProgramManager* const m_manager;
 

@@ -18,11 +18,11 @@ typedef std::shared_ptr< Material > MaterialPtr;
 class Material final : public ::Core::IResource
 {
 
+    friend MaterialManager;
+
 public:
 
     typedef std::vector< Pass* > PassList;
-
-    Material(MaterialManager* const _manager, const std::string& _name);
 
     ~Material();
 
@@ -41,6 +41,8 @@ public:
     inline const PassList& getPasses() const;
 
 private:
+
+    Material(MaterialManager* const _manager, const std::string& _name);
 
     MaterialManager* const m_manager;
 

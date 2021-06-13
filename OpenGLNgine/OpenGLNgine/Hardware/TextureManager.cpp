@@ -13,7 +13,7 @@ TextureManager& TextureManager::getInstance()
 
 TexturePtr TextureManager::create(const std::string& _name, TEXTURE_TYPE _type)
 {
-    TexturePtr ptr = std::make_shared< Texture >(this, _name, _type);
+    TexturePtr ptr(new Texture(this, _name, _type));
     this->add(ptr);
     return ptr;
 }

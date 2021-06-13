@@ -18,11 +18,11 @@ typedef std::shared_ptr< Compositor > CompositorPtr;
 class Compositor final : public ::Core::IResource
 {
 
+    friend CompositorManager;
+
 public:
 
     typedef std::vector< CompositorTargetPass* > CompositorTargetPassList;
-
-    Compositor(CompositorManager* const _manager, const std::string& _name);
 
     ~Compositor();
 
@@ -43,6 +43,8 @@ public:
     inline const CompositorTargetPassList& getCompositorTargetPasses() const;
 
 private:
+
+    Compositor(CompositorManager* const _manager, const std::string& _name);
 
     CompositorManager* const m_manager;
 

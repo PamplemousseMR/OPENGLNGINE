@@ -118,11 +118,11 @@ typedef std::shared_ptr< Texture > TexturePtr;
 class Texture final : public ::Core::IResource
 {
 
+    friend TextureManager;
+
 public:
 
     static ::GL::TEXTURE_INTERNAL_FORMAT getType(TEXTURE_INTERNAL_FORMAT _format);
-
-    Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type);
 
     ~Texture();
 
@@ -159,6 +159,8 @@ private:
     static ::GL::TEXTURE_FILTER getType(TEXTURE_FILTER _filter);
 
     static ::GL::TEXTURE_WRAP getType(TEXTURE_WRAP _mode);
+
+    Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type);
 
     TextureManager* const m_manager;
 
