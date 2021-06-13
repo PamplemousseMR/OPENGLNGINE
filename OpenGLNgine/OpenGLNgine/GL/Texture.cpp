@@ -3,7 +3,7 @@
 #include "OpenGLNgine/Core/Exception.hpp"
 
 #include <SOIL2/SOIL2.h>
-
+#include <iostream>
 namespace GL
 {
 
@@ -374,7 +374,7 @@ void Texture::setActiveTexture(int _location)
 
 void Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _internalFormat)
 {
-    GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
+    GLNGINE_ASSERT_IF(!std::filesystem::exists(_path) || !std::filesystem::is_regular_file(_path), ("The file '" + _path.string() + "' does not exist").c_str());
 
     bool hasAlpha;
     const std::string fileFormat = _path.extension().string();
