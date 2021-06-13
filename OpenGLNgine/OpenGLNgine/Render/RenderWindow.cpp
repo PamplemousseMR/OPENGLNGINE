@@ -235,7 +235,7 @@ void RenderWindow::render() const
         const int viewportHeight = static_cast< int >(size[3]*m_height);
 
         const CompositorChainList::const_iterator compIt = m_compositorChains.find(vp.second);
-        if(compIt != m_compositorChains.end())
+        if(compIt != m_compositorChains.end() && compIt->second->getCompositors().size() > 0)
         {
             ::Hardware::RenderTargetPtr previousRenderTarget = nullptr;
             for(const ::Hardware::CompositorPtr& compositor : compIt->second->getCompositors())
