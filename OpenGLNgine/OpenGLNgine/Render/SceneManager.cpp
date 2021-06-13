@@ -28,6 +28,8 @@ void SceneManager::destroyCamera(const Camera* const _camera)
         GLNGINE_EXCEPTION("A camera with the name '" + _camera->getName() + "' doesn't exists");
     }
 
+    it->second->getSceneManager()->m_renderWindow->removeViewports(it->second);
+
     m_cameras.erase(it);
     delete _camera;
 }
@@ -114,9 +116,10 @@ void SceneManager::destroyAllLights()
     }
 }
 
-SceneManager::SceneManager(const std::string& _name):
+SceneManager::SceneManager(RenderWindow* const _renderWindow, const std::string& _name):
     IResource(_name),
-    m_rootSceneNode(new SceneNode(this))
+    m_rootSceneNode(new SceneNode(this)),
+    m_renderWindow(_renderWindow)
 {
 }
 

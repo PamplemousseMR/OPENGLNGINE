@@ -410,7 +410,7 @@ SceneManager* RenderWindow::createSceneManager(const std::string& _name)
         GLNGINE_EXCEPTION("A scene manager with the name '" + _name + "' already exists");
     }
 
-    auto sm = new SceneManager(_name);
+    auto sm = new SceneManager(this, _name);
     m_sceneManagers.emplace(_name, sm);
     return sm;
 }
@@ -469,6 +469,31 @@ void RenderWindow::removeViewport(const Viewport* const _viewport)
 
     m_viewports.erase(it);
     delete _viewport;
+}
+
+void RenderWindow::removeViewports(const Camera* const _camera)
+{
+    GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
+
+    ViewportList::iterator it = m_viewports.begin();
+    while(it != m_viewports.end())
+    {
+        if(it->second->getCamera() == _camera)
+        {
+            delete it->second;
+            it = m_viewports.erase(it);
+
+            CompositorChainList::const_iterator cit = m_compositorChains.find(it->second);
+            if(cit != m_compositorChains.end())
+            {
+                this->destroyCompositorChain(cit->second);
+            }
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 void RenderWindow::removeAllViewports()

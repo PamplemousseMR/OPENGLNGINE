@@ -62,7 +62,7 @@ private:
 
     typedef std::map< std::string, Camera* > CameraList;
 
-    SceneManager(const std::string& _name);
+    SceneManager(RenderWindow* const _renderWindow, const std::string& _name);
 
     ~SceneManager();
 
@@ -73,6 +73,8 @@ private:
     LightList m_lights {};
 
     SceneNode* const m_rootSceneNode;
+
+    RenderWindow* const m_renderWindow;
 
 };
 

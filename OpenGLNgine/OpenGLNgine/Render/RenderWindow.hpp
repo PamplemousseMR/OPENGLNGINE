@@ -286,9 +286,15 @@ public:
 
     /**
      * @brief Removes the given viewport.
-     * @param _viewport The viewpor to removed.
+     * @param _viewport The viewport to removed.
      */
     void removeViewport(const Viewport* const _viewport);
+
+    /**
+     * @brief Removes the viewports attached to the given camera.
+     * @param _camera The camera use to retrive viewports.
+     */
+    void removeViewports(const Camera* const _camera);
 
     /// Removes all viewports.
     void removeAllViewports();

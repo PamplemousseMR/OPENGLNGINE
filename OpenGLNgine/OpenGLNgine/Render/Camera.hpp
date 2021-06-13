@@ -10,8 +10,6 @@
 namespace Render
 {
 
-class Viewport;
-
 class Camera final : public Component
 {
 
@@ -45,19 +43,11 @@ public:
 
     inline float getFar() const;
 
-    void _notifyViewportCreated(Viewport* const _viewport);
-
-    void _notifyViewportDestroyed(Viewport* const _viewport);
-
 private:
-
-    typedef std::map< std::string, Viewport* > ViewportList;
 
     Camera(SceneManager* const _sceneManager, const std::string& _name);
 
     ~Camera();
-
-    ViewportList m_viewports {};
 
     ::glm::mat4 m_projection { 1.f };
 

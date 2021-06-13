@@ -3,7 +3,6 @@
 #include "OpenGLNgine/Core/Exception.hpp"
 #include "OpenGLNgine/Render/RenderWindow.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
-#include "OpenGLNgine/Render/Viewport.hpp"
 
 #include <glm/gtx/string_cast.hpp>
 
@@ -41,32 +40,6 @@ Camera::Camera(SceneManager* const _sceneManager, const std::string& _name):
 
 Camera::~Camera()
 {
-    ViewportList::iterator it = m_viewports.begin();
-    while(it != m_viewports.end())
-    {
-        RenderWindow* const rw = it->second->getRenderWindow();
-        rw->removeViewport(it->second);
-        it = m_viewports.begin();
-    }
-}
-
-void Camera::_notifyViewportCreated(Viewport* const _viewport)
-{
-    if(m_viewports.find(_viewport->getName()) != m_viewports.end())
-    {
-        GLNGINE_EXCEPTION("A viewport with the name '" + _viewport->getName() + "' already exists");
-    }
-    m_viewports.emplace(_viewport->getName(), _viewport);
-}
-
-void Camera::_notifyViewportDestroyed(Viewport* const _viewport)
-{
-    ViewportList::const_iterator it = m_viewports.find(_viewport->getName());
-    if(it == m_viewports.end())
-    {
-        GLNGINE_EXCEPTION("A viewport with the name '" + _viewport->getName() + "' doesn't exists");
-    }
-    m_viewports.erase(it);
 }
 
 }
