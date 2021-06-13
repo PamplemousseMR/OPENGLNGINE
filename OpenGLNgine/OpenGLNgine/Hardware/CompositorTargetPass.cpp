@@ -69,7 +69,7 @@ CompositorPass* CompositorTargetPass::createCompositorPass(COMPOSITORPASS_TYPE _
 
 void CompositorTargetPass::destroyCompositorPass(const CompositorPass* const _pass)
 {
-    GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");
+    GLNGINE_ASSERT_IF(!_pass, "The pass shall not be null");
 
     const CompositorPassList::const_iterator it = std::find(m_compositorPasses.begin(), m_compositorPasses.end(), _pass);
     if(it == m_compositorPasses.end())

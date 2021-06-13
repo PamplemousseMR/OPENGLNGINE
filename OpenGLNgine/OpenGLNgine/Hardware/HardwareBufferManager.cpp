@@ -65,7 +65,7 @@ void HardwareBufferManager::destroyAllIndexData()
 
 void HardwareBufferManager::_notifyIndexBufferDestroyed(const HardwareIndexBuffer* _indexBuffer)
 {
-    GLNGINE_ASSERT_IF(!_indexBuffer, "The hardware index buffer mustn't be null");
+    GLNGINE_ASSERT_IF(!_indexBuffer, "The hardware index buffer shall not be null");
 
     const IndexBufferList::const_iterator it = std::find(m_indexBuffers.begin(), m_indexBuffers.end(), _indexBuffer);
     if(it == m_indexBuffers.end())
@@ -77,7 +77,7 @@ void HardwareBufferManager::_notifyIndexBufferDestroyed(const HardwareIndexBuffe
 
 void HardwareBufferManager::_notifyVertexBufferDestroyed(const HardwareVertexBuffer* _vertexBuffer)
 {
-    GLNGINE_ASSERT_IF(!_vertexBuffer, "The hardware vertex buffer mustn't be null");
+    GLNGINE_ASSERT_IF(!_vertexBuffer, "The hardware vertex buffer shall not be null");
 
     const VertexBufferList::const_iterator it = std::find(m_vertexBuffers.begin(), m_vertexBuffers.end(), _vertexBuffer);
     if(it == m_vertexBuffers.end())

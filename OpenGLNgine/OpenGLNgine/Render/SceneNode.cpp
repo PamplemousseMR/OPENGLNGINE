@@ -23,13 +23,14 @@ SceneNode* SceneNode::createChild(const std::string& _name)
 
 void SceneNode::removeAndDestroyChild(SceneNode* const _child)
 {
-    GLNGINE_ASSERT_IF(!_child, "The scene node mustn't be null");
+    GLNGINE_ASSERT_IF(!_child, "The scene node shall not be null");
 
     const SceneNodeList::const_iterator it = m_children.find(_child->getName());
     if(it == m_children.end())
     {
         GLNGINE_EXCEPTION("A scene node with the name '" + _child->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_child->m_sceneManager != m_sceneManager, "The scene node does not came from this scene manager");
 
     m_children.erase(it);
     delete _child;
@@ -47,12 +48,13 @@ void SceneNode::removeAndDestroyAllChildren()
 
 void SceneNode::attach(Mesh* const _mesh)
 {
-    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh shall not be null");
 
     if(m_attachedMeshes.find(_mesh->getName()) != m_attachedMeshes.end())
     {
         GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' is already attached");
     }
+    GLNGINE_ASSERT_IF(_mesh->getSceneManager() != m_sceneManager, "The mesh does not came from this scene manager");
 
     m_attachedMeshes.emplace(_mesh->getName(), _mesh);
     _mesh->_notifyMeshAttached(this);
@@ -60,13 +62,14 @@ void SceneNode::attach(Mesh* const _mesh)
 
 void SceneNode::dettach(Mesh* const _mesh)
 {
-    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh shall not be null");
 
     const MeshList::const_iterator it = m_attachedMeshes.find(_mesh->getName());
     if(it == m_attachedMeshes.end())
     {
         GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' is not attached");
     }
+    GLNGINE_ASSERT_IF(_mesh->getSceneManager() != m_sceneManager, "The mesh does not came from this scene manager");
 
     m_attachedMeshes.erase(it);
     _mesh->_notifyMeshDettached(this);
@@ -135,7 +138,7 @@ SceneNode::SceneNode(SceneManager* const _sceneManager):
     m_sceneManager(_sceneManager),
     m_isRootSCeneNode(true)
 {
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 }
 
 SceneNode::SceneNode(SceneManager* const _sceneManager, SceneNode* const _parent, const std::string& _name):
@@ -144,7 +147,7 @@ SceneNode::SceneNode(SceneManager* const _sceneManager, SceneNode* const _parent
     m_isRootSCeneNode(false),
     m_parent(_parent)
 {
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 }
 
 SceneNode::SceneNode(SceneManager* const _sceneManager, const std::string& _name):

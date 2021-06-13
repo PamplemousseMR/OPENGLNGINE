@@ -86,14 +86,14 @@ namespace Render
 
 void Mesh::_notifyMeshAttached(SceneNode* const _node)
 {
-    GLNGINE_ASSERT_IF(!_node, "The scene node mustn't be null");
+    GLNGINE_ASSERT_IF(!_node, "The scene node shall not be null");
 
     m_parents.emplace(_node->getName(), _node);
 }
 
 void Mesh::_notifyMeshDettached(SceneNode* const _node)
 {
-    GLNGINE_ASSERT_IF(!_node, "The scene node mustn't be null");
+    GLNGINE_ASSERT_IF(!_node, "The scene node shall not be null");
     ParentList::const_iterator it = m_parents.find(_node->getName());
     if(it == m_parents.end())
     {
@@ -112,7 +112,8 @@ SubMesh* Mesh::createSubMesh(const std::string& _name)
 
 void Mesh::destroySubMesh(SubMesh* _subMesh)
 {
-    GLNGINE_ASSERT_IF(!_subMesh, "The sub mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_subMesh, "The sub mesh shall not be null");
+    GLNGINE_ASSERT_IF(_subMesh->m_parent != this, "The sub mesh does not came from this mesh");
 
     m_subMeshes.erase(_subMesh);
     delete _subMesh;
@@ -156,8 +157,8 @@ bool Mesh::load(const std::filesystem::path& _path)
 
 void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, const std::filesystem::path& _directory)
 {
-    GLNGINE_ASSERT_IF(!_node, "The node mustn't be null");
-    GLNGINE_ASSERT_IF(!_scene, "The scene mustn't be null");
+    GLNGINE_ASSERT_IF(!_node, "The node shall not be null");
+    GLNGINE_ASSERT_IF(!_scene, "The scene shall not be null");
 
     ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
 
@@ -354,9 +355,9 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
 void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* const _scene, const aiMesh* const _mesh, const std::filesystem::path& _directory)
 {
-    GLNGINE_ASSERT_IF(!_subMesh, "The sub mesh mustn't be null");
-    GLNGINE_ASSERT_IF(!_scene, "The scene mustn't be null");
-    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_subMesh, "The sub mesh shall not be null");
+    GLNGINE_ASSERT_IF(!_scene, "The scene shall not be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh shall not be null");
 
     ::aiMaterial* const aiMaterial = _scene->mMaterials[_mesh->mMaterialIndex];
 
@@ -421,8 +422,8 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
 
 void Mesh::loadTexture(const aiMaterial* const _aiMaterial, ::aiTextureType _type, ::Hardware::Pass* const _pass, const std::filesystem::path& _directory)
 {
-    GLNGINE_ASSERT_IF(!_aiMaterial, "The aiMaterial mustn't be null");
-    GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");
+    GLNGINE_ASSERT_IF(!_aiMaterial, "The aiMaterial shall not be null");
+    GLNGINE_ASSERT_IF(!_pass, "The pass shall not be null");
 
     GLNGINE_ASSERT_IF(_aiMaterial->GetTextureCount(_type) > 1, "Unhandle multiple textures");
 
@@ -473,7 +474,7 @@ void Mesh::loadTexture(const aiMaterial* const _aiMaterial, ::aiTextureType _typ
 Mesh::Mesh(SceneManager* const _sceneManager, const std::string& _name):
     Component(_sceneManager, _name)
 {
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 }
 
 Mesh::~Mesh()

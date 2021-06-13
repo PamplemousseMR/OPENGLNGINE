@@ -41,7 +41,7 @@ VertexData::VertexData(HardwareBufferManager* const _manager) :
     m_vertexBufferBinding(new VertexBufferBinding()),
     m_manager(_manager)
 {
-    GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager shall not be null");
 }
 
 VertexData::~VertexData()

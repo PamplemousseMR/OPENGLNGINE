@@ -398,7 +398,7 @@ void RenderWindow::swapBuffers()
 
 void RenderWindow::addListener(RenderWindowListener* const _listener)
 {
-    GLNGINE_ASSERT_IF(!_listener, "The listener mustn't be null");
+    GLNGINE_ASSERT_IF(!_listener, "The listener shall not be null");
     m_listeners.push_back(_listener);
 }
 
@@ -417,13 +417,14 @@ SceneManager* RenderWindow::createSceneManager(const std::string& _name)
 
 void RenderWindow::destroySceneManager(const SceneManager* const _sceneManager)
 {
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 
     SceneManagerList::const_iterator it = m_sceneManagers.find(_sceneManager->getName());
     if(it == m_sceneManagers.end())
     {
         GLNGINE_EXCEPTION("A scene manager with the name '" + _sceneManager->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_sceneManager->m_renderWindow != this, "The scene manager does not came from this render window");
 
     m_sceneManagers.erase(it);
     delete _sceneManager;
@@ -453,13 +454,14 @@ Viewport* RenderWindow::addViewport(const std::string& _name, Camera* const _cam
 
 void RenderWindow::removeViewport(const Viewport* const _viewport)
 {
-    GLNGINE_ASSERT_IF(!_viewport, "The viewport mustn't be null");
+    GLNGINE_ASSERT_IF(!_viewport, "The viewport shall not be null");
 
     ViewportList::const_iterator it = m_viewports.find(_viewport->getName());
     if(it == m_viewports.end())
     {
         GLNGINE_EXCEPTION("A viewport with the name '" + _viewport->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_viewport->m_renderWindow != this, "The viewport does not came from this render window");
 
     CompositorChainList::const_iterator cit = m_compositorChains.find(it->second);
     if(cit != m_compositorChains.end())
@@ -473,7 +475,7 @@ void RenderWindow::removeViewport(const Viewport* const _viewport)
 
 void RenderWindow::removeViewports(const Camera* const _camera)
 {
-    GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
+    GLNGINE_ASSERT_IF(!_camera, "The camera shall not be null");
 
     ViewportList::iterator it = m_viewports.begin();
     while(it != m_viewports.end())
@@ -521,6 +523,7 @@ CompositorChain* RenderWindow::createCompositorChain(Viewport* const _viewport, 
     {
         GLNGINE_EXCEPTION("A compositor chain is already attached to the viewport '" + _viewport->getName() + "'");
     }
+    GLNGINE_ASSERT_IF(_viewport->m_renderWindow != this, "The viewport does not came from this render window");
 
     auto sm = new CompositorChain(_viewport, _name);
     m_compositorChains.emplace(_viewport, sm);
@@ -529,13 +532,14 @@ CompositorChain* RenderWindow::createCompositorChain(Viewport* const _viewport, 
 
 void RenderWindow::destroyCompositorChain(const CompositorChain* const _compositorChain)
 {
-    GLNGINE_ASSERT_IF(!_compositorChain, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_compositorChain, "The scene manager shall not be null");
 
     const CompositorChainList::const_iterator it = m_compositorChains.find(_compositorChain->getViewport());
     if(it == m_compositorChains.end())
     {
         GLNGINE_EXCEPTION("A compositor chain with the name '" + _compositorChain->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_compositorChain->getViewport()->m_renderWindow != this, "The compositor chain does not came from this render window");
 
     m_compositorChains.erase(it);
     delete _compositorChain;

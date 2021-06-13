@@ -10,7 +10,7 @@ SubMesh::SubMesh(Mesh* const _mesh, const std::string& _name):
     IResource(_name),
     m_parent(_mesh)
 {
-    GLNGINE_ASSERT_IF(!_mesh, "The parent mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The parent mesh shall not be null");
 }
 
 SubMesh::~SubMesh()

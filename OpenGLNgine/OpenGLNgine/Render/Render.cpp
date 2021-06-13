@@ -29,7 +29,7 @@ RenderWindow* Render::createRenderWindow(const std::string& _name, int _width, i
 
 Render::RenderWindowList::iterator Render::destroyRenderWindow(const RenderWindow* const _renderWindow)
 {
-    GLNGINE_ASSERT_IF(!_renderWindow, "The render window mustn't be null");
+    GLNGINE_ASSERT_IF(!_renderWindow, "The render window shall not be null");
 
     const RenderWindowList::const_iterator it = m_renderWindows.find(_renderWindow->getName());
     if(it == m_renderWindows.end())

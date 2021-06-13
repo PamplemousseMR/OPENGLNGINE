@@ -35,7 +35,7 @@ void Camera::setPosition(const ::glm::vec3& _position)
 Camera::Camera(SceneManager* const _sceneManager, const std::string& _name):
     Component(_sceneManager, _name)
 {
-    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 }
 
 Camera::~Camera()

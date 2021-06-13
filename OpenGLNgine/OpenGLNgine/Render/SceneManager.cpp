@@ -20,13 +20,14 @@ Camera* SceneManager::createCamera(const std::string& _name)
 
 void SceneManager::destroyCamera(const Camera* const _camera)
 {
-    GLNGINE_ASSERT_IF(!_camera, "The camera mustn't be null");
+    GLNGINE_ASSERT_IF(!_camera, "The camera shall not be null");
 
     const CameraList::const_iterator it = m_cameras.find(_camera->getName());
     if(it == m_cameras.end())
     {
         GLNGINE_EXCEPTION("A camera with the name '" + _camera->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_camera->m_sceneManager != this, "The camera does not came from this scene manager");
 
     it->second->getSceneManager()->m_renderWindow->removeViewports(it->second);
 
@@ -58,13 +59,14 @@ Mesh* SceneManager::createMesh(const std::string& _name)
 
 void SceneManager::destroyMesh(const Mesh* const _mesh)
 {
-    GLNGINE_ASSERT_IF(!_mesh, "The mesh mustn't be null");
+    GLNGINE_ASSERT_IF(!_mesh, "The mesh shall not be null");
 
     const MeshList::const_iterator it = m_meshes.find(_mesh->getName());
     if(it == m_meshes.end())
     {
         GLNGINE_EXCEPTION("A mesh with the name '" + _mesh->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_mesh->m_sceneManager != this, "The mesh does not came from this scene manager");
 
     m_meshes.erase(it);
     delete _mesh;
@@ -94,13 +96,14 @@ Light* SceneManager::createLight(const std::string& _name)
 
 void SceneManager::destroyLight(const Light* const _light)
 {
-    GLNGINE_ASSERT_IF(!_light, "The light mustn't be null");
+    GLNGINE_ASSERT_IF(!_light, "The light shall not be null");
 
     const LightList::const_iterator it = m_lights.find(_light->getName());
     if(it == m_lights.end())
     {
         GLNGINE_EXCEPTION("A light with the name '" + _light->getName() + "' doesn't exists");
     }
+    GLNGINE_ASSERT_IF(_light->m_sceneManager != this, "The light does not came from this scene manager");
 
     m_lights.erase(it);
     delete _light;

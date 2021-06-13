@@ -25,7 +25,7 @@ CompositorTargetPass* Compositor::createCompositorTargetPass()
 
 void Compositor::destroyCompositorTargetPass(const CompositorTargetPass* const _pass)
 {
-    GLNGINE_ASSERT_IF(!_pass, "The pass mustn't be null");
+    GLNGINE_ASSERT_IF(!_pass, "The pass shall not be null");
 
     const CompositorTargetPassList::const_iterator it = std::find(m_compositorTargetPasses.begin(), m_compositorTargetPasses.end(), _pass);
     if(it == m_compositorTargetPasses.end())

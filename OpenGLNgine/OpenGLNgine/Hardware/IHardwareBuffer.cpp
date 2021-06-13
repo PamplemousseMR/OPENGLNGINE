@@ -28,7 +28,7 @@ IHardwareBuffer::IHardwareBuffer(HardwareBufferManager* const _manager, ::GL::DA
     m_sizeInBytes(_sizeInBytes),
     m_usage(_usage)
 {
-    GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager mustn't be null");
+    GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager shall not be null");
     this->lock();
     m_dataBuffer.writeData(m_sizeInBytes, nullptr, getUsage(m_usage));
 }
