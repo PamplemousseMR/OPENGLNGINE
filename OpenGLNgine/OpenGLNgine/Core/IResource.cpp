@@ -6,13 +6,6 @@
 namespace Core
 {
 
-IResource::IResource()
-{
-    std::ostringstream address;
-    address << (const void*)this;
-    m_name = address.str();
-}
-
 IResource::IResource(const std::string& _name):
     m_name(_name)
 {

@@ -24,9 +24,6 @@ public:
 
 protected:
 
-    /// Creates a unique name based on the current memory adress.
-    IResource();
-
     /**
      * @brief Creates a name from a string.
      * @param _name The name of the ressouce.
