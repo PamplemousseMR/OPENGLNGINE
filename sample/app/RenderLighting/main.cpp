@@ -57,7 +57,7 @@ int main()
     viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
     // Create the Program.
-    ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
+    ::Hardware::ProgramManager& shaderMng = renderWindow->getProgramManager();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
     vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Lighting/BlinnPhong_VP.glsl");
@@ -90,7 +90,7 @@ int main()
     program->setNamedAutoConstant(::Hardware::PP_LIGHT_DIFFUSE_COLOR_ARRAY, "u_f3LightDiffuse");
     program->setNamedAutoConstant(::Hardware::PP_LIGHT_SPECULAR_COLOR_ARRAY, "u_f3LightSpecular");
 
-    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+    ::Hardware::MaterialManager& materialMng = renderWindow->getMaterialManager();
     ::Hardware::MaterialPtr material = materialMng.create("Material");
 
     material->getPasses()[0]->setProgram(program);
@@ -251,7 +251,7 @@ int main()
         0.0f, 0.0f, -1.0f,
     };
 
-    ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
+    ::Hardware::HardwareBufferManager& manager = renderWindow->getHardwareBufferManager();;
 
     subMesh->m_vertexData = manager.createVertexData();
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;

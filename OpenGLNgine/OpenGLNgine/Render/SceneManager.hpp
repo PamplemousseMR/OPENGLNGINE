@@ -35,6 +35,8 @@ public:
 
     inline SceneNode* getRootSceneNode() const;
 
+    inline RenderWindow* getRenderWindow() const;
+
     Camera* createCamera(const std::string& _name);
 
     void destroyCamera(const Camera* const _camera);
@@ -77,10 +79,14 @@ private:
 
 };
 
-
 inline SceneNode* SceneManager::getRootSceneNode() const
 {
     return m_rootSceneNode;
+}
+
+inline RenderWindow* SceneManager::getRenderWindow() const
+{
+    return m_renderWindow;
 }
 
 inline const SceneManager::MeshList& SceneManager::getMeshes() const

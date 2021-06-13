@@ -5,14 +5,6 @@
 namespace Hardware
 {
 
-HardwareBufferManager* HardwareBufferManager::s_instance = nullptr;
-
-HardwareBufferManager& HardwareBufferManager::getInstance()
-{
-    const static Initializer s_INITIALIZER;
-    return *s_instance;
-}
-
 HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(const std::string& _name, HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
 {
     const HardwareIndexBufferPtr ptr(new HardwareIndexBuffer(this, _name,  _type, _size, _usage));
@@ -61,17 +53,6 @@ void HardwareBufferManager::destroyAllIndexData()
         delete *itBeg;
     }
     m_vertexData.clear();
-}
-
-HardwareBufferManager::Initializer::Initializer()
-{
-    HardwareBufferManager::s_instance = new HardwareBufferManager();
-}
-
-HardwareBufferManager::Initializer::~Initializer()
-{
-    delete HardwareBufferManager::s_instance;
-    HardwareBufferManager::s_instance = nullptr;
 }
 
 HardwareBufferManager::HardwareBufferManager()

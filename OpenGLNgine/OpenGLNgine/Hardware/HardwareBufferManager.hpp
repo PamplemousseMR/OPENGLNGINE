@@ -8,6 +8,11 @@
 
 #include <set>
 
+namespace Render
+{
+    class RenderWindow;
+}
+
 namespace Hardware
 {
 
@@ -16,9 +21,9 @@ class HardwareBufferManager final :
         public ::Core::IManager< HardwareVertexBuffer >
 {
 
-public:
+    friend ::Render::RenderWindow;
 
-    static HardwareBufferManager& getInstance();
+public:
 
     HardwareBufferManager(const HardwareBufferManager&) = delete;
 
@@ -45,15 +50,6 @@ private:
     typedef std::set<VertexData*> VertexDataList;
 
     typedef std::set<IndexData*> IndexDataList;
-
-    struct Initializer final
-    {
-        Initializer();
-
-        ~Initializer();
-    };
-
-    static HardwareBufferManager* s_instance;
 
     HardwareBufferManager();
 

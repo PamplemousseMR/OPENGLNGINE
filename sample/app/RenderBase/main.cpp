@@ -57,7 +57,7 @@ int main()
     viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
     // Create the Program.
-    ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
+    ::Hardware::ProgramManager& shaderMng = renderWindow->getProgramManager();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
     vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Common/Default_VP.glsl");
@@ -75,7 +75,7 @@ int main()
 
     program->setNamedAutoConstant(::Hardware::PP_MODELVIEWPROJ_MATRIX, "u_m4MVP");
 
-    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+    ::Hardware::MaterialManager& materialMng = renderWindow->getMaterialManager();
     ::Hardware::MaterialPtr material = materialMng.create("Material");
 
     material->getPasses()[0]->setProgram(program);
@@ -120,7 +120,7 @@ int main()
         3, 2, 6, 7, 4, 2, 0, 3, 1, 6, 5, 4, 1, 0
     };
 
-    ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
+    ::Hardware::HardwareBufferManager& manager = renderWindow->getHardwareBufferManager();;
 
     subMesh->m_vertexData = manager.createVertexData();
     subMesh->m_vertexData->m_renderOperation = ::Hardware::VR_TRIANGLE_STRIP;

@@ -66,7 +66,7 @@ int main()
     light->setDirection(::glm::vec3(-1.f, 0.f, -1.f));
 
     // Create the Program.
-    ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
+    ::Hardware::ProgramManager& shaderMng = renderWindow->getProgramManager();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
     vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/OpenGLViewer_VP.glsl");
@@ -106,7 +106,7 @@ int main()
     ::Render::Mesh* const mesh = sceneManager->createMesh("Mesh");
     mesh->load(MODEL_PATH"/Flamethrower/Flamethrower.obj");
 
-    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+    ::Hardware::MaterialManager& materialMng = renderWindow->getMaterialManager();
     for(::Render::SubMesh* subMesh : mesh->getSubMeshes())
     {
         ::Hardware::MaterialPtr material = subMesh->m_material;
@@ -139,13 +139,13 @@ int main()
     node->attach(mesh);
 
     // Create a compositor
-    ::Hardware::RenderTargetManager& renderTargetManager = ::Hardware::RenderTargetManager::getInstance();
+    ::Hardware::RenderTargetManager& renderTargetManager = renderWindow->getRenderTargetManager();
     const ::Hardware::RenderTargetPtr renderTarget = renderTargetManager.create("RenderTarget", 16);
     renderTarget->pushTexture(::Hardware::TIF_DEPTH24);
     renderTarget->pushTexture(::Hardware::TIF_RGBA8);
 
 
-    ::Hardware::CompositorManager& compositorManager = ::Hardware::CompositorManager::getInstance();
+    ::Hardware::CompositorManager& compositorManager = renderWindow->getCompositorManager();
     const ::Hardware::CompositorPtr compositor = compositorManager.create("Compositor");
 
     {

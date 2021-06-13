@@ -160,7 +160,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
     GLNGINE_ASSERT_IF(!_node, "The node shall not be null");
     GLNGINE_ASSERT_IF(!_scene, "The scene shall not be null");
 
-    ::Hardware::HardwareBufferManager& manager = ::Hardware::HardwareBufferManager::getInstance();
+    ::Hardware::HardwareBufferManager& manager = m_sceneManager->getRenderWindow()->getHardwareBufferManager();
 
     for(unsigned i=0; i<_node->mNumMeshes; ++i)
     {
@@ -362,7 +362,7 @@ void Mesh::loadMaterial(::Render::SubMesh* const _subMesh, const ::aiScene* cons
 
     ::aiMaterial* const aiMaterial = _scene->mMaterials[_mesh->mMaterialIndex];
 
-    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+    ::Hardware::MaterialManager& materialMng = m_sceneManager->getRenderWindow()->getMaterialManager();
     ::Hardware::MaterialPtr material = materialMng.getByName(aiMaterial->GetName().C_Str());
     if(!material)
     {
@@ -428,7 +428,7 @@ void Mesh::loadTexture(const aiMaterial* const _aiMaterial, ::aiTextureType _typ
 
     GLNGINE_ASSERT_IF(_aiMaterial->GetTextureCount(_type) > 1, "Unhandle multiple textures");
 
-    ::Hardware::TextureManager& textureManager = ::Hardware::TextureManager::getInstance();
+    ::Hardware::TextureManager& textureManager = m_sceneManager->getRenderWindow()->getTextureManager();
 
     for(unsigned int i = 0; i < _aiMaterial->GetTextureCount(_type); i++)
     {

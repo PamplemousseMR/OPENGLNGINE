@@ -4,15 +4,20 @@
 
 #include "OpenGLNgine/Hardware/Material.hpp"
 
+namespace Render
+{
+    class RenderWindow;
+}
+
 namespace Hardware
 {
 
 class MaterialManager final : public ::Core::IManager< Material >
 {
 
-public:
+    friend ::Render::RenderWindow;
 
-    static MaterialManager& getInstance();
+public:
 
     MaterialManager(const MaterialManager&) = delete;
 
@@ -25,15 +30,6 @@ public:
     MaterialPtr create(const std::string& _name);
 
 private:
-
-    struct Initializer final
-    {
-        Initializer();
-
-        ~Initializer();
-    };
-
-    static MaterialManager* s_instance;
 
     MaterialManager();
 

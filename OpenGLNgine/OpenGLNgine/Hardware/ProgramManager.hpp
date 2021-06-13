@@ -4,6 +4,11 @@
 #include "OpenGLNgine/Hardware/Program.hpp"
 #include "OpenGLNgine/Hardware/Shader.hpp"
 
+namespace Render
+{
+    class RenderWindow;
+}
+
 namespace Hardware
 {
 
@@ -12,9 +17,9 @@ class ProgramManager final :
         public ::Core::IManager< Program >
 {
 
-public:
+    friend ::Render::RenderWindow;
 
-    static ProgramManager& getInstance();
+public:
 
     ProgramManager(const ProgramManager&) = delete;
 
@@ -29,15 +34,6 @@ public:
     ShaderPtr createShader(const std::string& _name, SHADER_TYPE _type);
 
 private:
-
-    struct Initializer final
-    {
-        Initializer();
-
-        ~Initializer();
-    };
-
-    static ProgramManager* s_instance;
 
     ProgramManager();
 

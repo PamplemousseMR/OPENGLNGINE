@@ -4,15 +4,20 @@
 
 #include "OpenGLNgine/Hardware/Compositor.hpp"
 
+namespace Render
+{
+    class RenderWindow;
+}
+
 namespace Hardware
 {
 
 class CompositorManager final : public ::Core::IManager< Compositor >
 {
 
-public:
+    friend ::Render::RenderWindow;
 
-    static CompositorManager& getInstance();
+public:
 
     CompositorManager(const CompositorManager&) = delete;
 
@@ -25,15 +30,6 @@ public:
     CompositorPtr create(const std::string& _name);
 
 private:
-
-    struct Initializer final
-    {
-        Initializer();
-
-        ~Initializer();
-    };
-
-    static CompositorManager* s_instance;
 
     CompositorManager();
 

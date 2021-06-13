@@ -4,15 +4,20 @@
 
 #include "OpenGLNgine/Hardware/RenderTarget.hpp"
 
+namespace Render
+{
+    class RenderWindow;
+}
+
 namespace Hardware
 {
 
 class RenderTargetManager final : public ::Core::IManager< RenderTarget >
 {
 
-public:
+    friend ::Render::RenderWindow;
 
-    static RenderTargetManager& getInstance();
+public:
 
     RenderTargetManager(const RenderTargetManager&) = delete;
 
@@ -25,15 +30,6 @@ public:
     RenderTargetPtr create(const std::string& _name, unsigned _sample = 0);
 
 private:
-
-    struct Initializer final
-    {
-        Initializer();
-
-        ~Initializer();
-    };
-
-    static RenderTargetManager* s_instance;
 
     RenderTargetManager();
 

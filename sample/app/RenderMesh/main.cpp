@@ -58,7 +58,7 @@ int main()
     viewport->setClearColor(0.8f, 0.8f, 0.8f, 0.f);
 
     // Create the Program.
-    ::Hardware::ProgramManager& shaderMng = ::Hardware::ProgramManager::getInstance();
+    ::Hardware::ProgramManager& shaderMng = renderWindow->getProgramManager();
 
     ::Hardware::ShaderPtr vertexShader = shaderMng.createShader("VertexShader", ::Hardware::ST_VERTEX);
     vertexShader->setSourceFromFile(GLNGINE_GLSL_PATH"/Texture/SamplerMap_VP.glsl");
@@ -86,7 +86,7 @@ int main()
 
     mesh->load(MODEL_PATH"/Flamethrower/Flamethrower.obj");
 
-    ::Hardware::MaterialManager& materialMng = ::Hardware::MaterialManager::getInstance();
+    ::Hardware::MaterialManager& materialMng = renderWindow->getMaterialManager();
     for(::Render::SubMesh* subMesh : mesh->getSubMeshes())
     {
         ::Hardware::MaterialPtr material = subMesh->m_material;

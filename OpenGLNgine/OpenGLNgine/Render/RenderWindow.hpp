@@ -6,6 +6,13 @@
 #include "OpenGLNgine/GL/PixelOperation.hpp"
 #include "OpenGLNgine/GL/Rasterizer.hpp"
 
+#include "OpenGLNgine/Hardware/CompositorManager.hpp"
+#include "OpenGLNgine/Hardware/HardwareBufferManager.hpp"
+#include "OpenGLNgine/Hardware/MaterialManager.hpp"
+#include "OpenGLNgine/Hardware/ProgramManager.hpp"
+#include "OpenGLNgine/Hardware/RenderTargetManager.hpp"
+#include "OpenGLNgine/Hardware/TextureManager.hpp"
+
 #include "OpenGLNgine/Render/Camera.hpp"
 #include "OpenGLNgine/Render/CompositorChain.hpp"
 #include "OpenGLNgine/Render/SceneManager.hpp"
@@ -255,6 +262,42 @@ public:
     void addListener(RenderWindowListener* const _listener);
 
     /**
+     * @brief Gets the compositor manager.
+     * @return The compositor manager.
+     */
+    inline ::Hardware::CompositorManager& getCompositorManager();
+
+    /**
+     * @brief Gets the hardware buffer manager.
+     * @return The hardware buffer manager.
+     */
+    inline ::Hardware::HardwareBufferManager& getHardwareBufferManager();
+
+    /**
+     * @brief Gets the material manager.
+     * @return The material manager.
+     */
+    inline ::Hardware::MaterialManager& getMaterialManager();
+
+    /**
+     * @brief Gets the program manager.
+     * @return The program manager.
+     */
+    inline ::Hardware::ProgramManager& getProgramManager();
+
+    /**
+     * @brief Gets the render target manager.
+     * @return The render target manager.
+     */
+    inline ::Hardware::RenderTargetManager& getRenderTargetManager();
+
+    /**
+     * @brief Gets the texture manager.
+     * @return The texture manager.
+     */
+    inline ::Hardware::TextureManager& getTextureManager();
+
+    /**
      * @brief Creates a scene manager.
      * @param _name The name of the scene manager.
      * @return The scene manager.
@@ -389,6 +432,24 @@ private:
     /// Defines the height of the window.
     int m_height { 0 };
 
+    /// Stores the compositor manager.
+    ::Hardware::CompositorManager m_compositorManager;
+
+    /// Stores the hardware buffer manager
+    ::Hardware::HardwareBufferManager m_hardwareBufferManager;
+
+    /// Stores the material manager.
+    ::Hardware::MaterialManager m_materialManager;
+
+    /// Stores the program manager.
+    ::Hardware::ProgramManager m_programManager;
+
+    /// Stores the render target manager.
+    ::Hardware::RenderTargetManager m_renderTargetManager;
+
+    /// Stores the texture manager.
+    ::Hardware::TextureManager m_textureManager;
+
     /// Stores all scene manager.
     SceneManagerList m_sceneManagers {};
 
@@ -426,6 +487,36 @@ inline int RenderWindow::getWidth() const
 inline int RenderWindow::getHeight() const
 {
     return m_height;
+}
+
+inline ::Hardware::CompositorManager& RenderWindow::getCompositorManager()
+{
+    return m_compositorManager;
+}
+
+inline ::Hardware::HardwareBufferManager& RenderWindow::getHardwareBufferManager()
+{
+    return m_hardwareBufferManager;
+}
+
+inline ::Hardware::MaterialManager& RenderWindow::getMaterialManager()
+{
+    return m_materialManager;
+}
+
+inline ::Hardware::ProgramManager& RenderWindow::getProgramManager()
+{
+    return m_programManager;
+}
+
+inline ::Hardware::RenderTargetManager& RenderWindow::getRenderTargetManager()
+{
+    return m_renderTargetManager;
+}
+
+inline ::Hardware::TextureManager& RenderWindow::getTextureManager()
+{
+    return m_textureManager;
 }
 
 inline const RenderWindow::SceneManagerList& RenderWindow::getSceneManagers() const

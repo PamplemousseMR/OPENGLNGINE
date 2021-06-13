@@ -3,15 +3,20 @@
 #include "OpenGLNgine/Core/IManager.hpp"
 #include "OpenGLNgine/Hardware/Texture.hpp"
 
+namespace Render
+{
+    class RenderWindow;
+}
+
 namespace Hardware
 {
 
 class TextureManager final : public Core::IManager< Texture >
 {
 
-public:
+    friend ::Render::RenderWindow;
 
-    static TextureManager& getInstance();
+public:
 
     TextureManager(const TextureManager&) = delete;
 
@@ -24,15 +29,6 @@ public:
     TexturePtr create(const std::string& _name, TEXTURE_TYPE _type);
 
 private:
-
-    struct Initializer final
-    {
-        Initializer();
-
-        ~Initializer();
-    };
-
-    static TextureManager* s_instance;
 
     TextureManager();
 
