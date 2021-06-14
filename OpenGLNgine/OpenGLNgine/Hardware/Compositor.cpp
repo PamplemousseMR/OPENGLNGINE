@@ -3,6 +3,8 @@
 #include "OpenGLNgine/Core/Exception.hpp"
 #include "OpenGLNgine/Hardware/CompositorManager.hpp"
 
+#include <algorithm>
+
 namespace Hardware
 {
 
