@@ -255,13 +255,6 @@ public:
 
 private:
 
-    /// Automaticaly called one time.
-    struct Initializer final
-    {
-        /// Gets the max size of textures.
-        Initializer();
-    };
-
     static GLenum getBaseFormat(TEXTURE_INTERNAL_FORMAT _format);
 
     static GLenum getBaseType(TEXTURE_INTERNAL_FORMAT _format);

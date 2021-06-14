@@ -146,13 +146,6 @@ public:
 
 private:
 
-    /// Automaticaly called one time.
-    struct Initializer final
-    {
-        /// Gets the max size of the viewport.
-        Initializer();
-    };
-
     /// Defines the maximum value where attach a color texture or buffer:
     static GLint s_MAX_ATTACHEMENT;
 

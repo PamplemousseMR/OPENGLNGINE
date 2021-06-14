@@ -58,13 +58,6 @@ public:
 
 private:
 
-    /// Automaticaly called one time.
-    struct Initializer final
-    {
-        /// Gets the max size of the viewport.
-        Initializer();
-    };
-
     /// Defines the max size of the viewport
     static GLint s_MAX_SIZE[2];
 

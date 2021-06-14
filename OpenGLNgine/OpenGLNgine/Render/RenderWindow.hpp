@@ -379,15 +379,6 @@ private:
     typedef std::vector< RenderWindowListener* > RenderWindowListeners;
 
     /**
-     * @brief This struct allows to initialize the render window one time.
-     */
-    struct Initializer final
-    {
-        /// Initializes the render window.
-        Initializer();
-    };
-
-    /**
      * @brief Called when the render window is resized.
      * @param _window Resized window.
      * @param _width New width of the window.

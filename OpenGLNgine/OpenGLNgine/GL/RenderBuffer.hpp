@@ -139,13 +139,6 @@ public:
 
 private:
 
-    /// Automaticaly called one time.
-    struct Initializer final
-    {
-        /// Gets the max size of render buffer.
-        Initializer();
-    };
-
     /// Defines the maximum size of a render buffer.
     static GLint s_MAX_SIZE;
 

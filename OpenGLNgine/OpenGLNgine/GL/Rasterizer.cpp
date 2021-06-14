@@ -12,7 +12,13 @@ GLint Rasterizer::s_MAX_SIZE[2] = {0, 0};
 
 void Rasterizer::setViewport(int _x, int _y, int _width, int _height)
 {
-    const static Initializer s_INITIALIZER;
+    [[maybe_unused]] static const void* initializer = []()
+    {
+        glGetIntegerv(GL_MAX_VIEWPORT_DIMS, s_MAX_SIZE);
+        GLNGINE_CHECK_GL;
+        return nullptr;
+    } ();
+
     if(_width > s_MAX_SIZE[0] || _height > s_MAX_SIZE[1])
     {
         GLNGINE_EXCEPTION("Viewport size too large");
@@ -89,12 +95,6 @@ void Rasterizer::setCullFace(RASTERIZER_CULLFACE _cullface)
 #else
     glCullFace(_cullface);
 #endif
-}
-
-Rasterizer::Initializer::Initializer()
-{
-    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, s_MAX_SIZE);
-    GLNGINE_CHECK_GL;
 }
 
 }

@@ -556,15 +556,6 @@ void RenderWindow::destroyAllCompositorChains()
     }
 }
 
-RenderWindow::Initializer::Initializer()
-{
-    glewExperimental = true;
-    if(glewInit() != GLEW_OK)
-    {
-        GLNGINE_EXCEPTION("Can't initialize the render");
-    }
-}
-
 void sizeCallback(GLFWwindow* _window, int _width, int _height)
 {
     Render& render = Render::getInstance();
@@ -645,7 +636,16 @@ RenderWindow::RenderWindow(const std::string& _name, int _width, int _height, in
     }
 
     this->makeCurrent();
-    const static Initializer s_INITIALIZER;
+
+    [[maybe_unused]] static const void* initializer = []()
+    {
+        glewExperimental = true;
+        if(glewInit() != GLEW_OK)
+        {
+            GLNGINE_EXCEPTION("Can't initialize the render");
+        }
+        return nullptr;
+    } ();
 
     glfwSetWindowSizeCallback(m_window, sizeCallback);
     glfwSetKeyCallback(m_window, keyCallback);

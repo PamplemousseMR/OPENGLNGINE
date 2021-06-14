@@ -212,7 +212,15 @@ Texture::Texture(TEXTURE_TYPE _type) :
     IBindable(),
     m_type(_type)
 {
-    const static Initializer s_INITIALIZER;
+    [[maybe_unused]] static const void* initializer = []()
+    {
+        glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &s_MAX_LOCATION);
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_MAX_SIZE);
+        glGetIntegerv(GL_MAX_SAMPLES, &s_MAX_SAMPLE);
+        GLNGINE_CHECK_GL;
+        return nullptr;
+    } ();
+
     glGenTextures(1, &m_id);
     if(m_id == 0)
     {
@@ -639,13 +647,6 @@ void Texture::setVWrap(TEXTURE_WRAP _mode) const
 #ifdef GLNGINE_USE_STATE_CACHE
     }
 #endif
-}
-
-Texture::Initializer::Initializer()
-{
-    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &s_MAX_LOCATION);
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &s_MAX_SIZE);
-    glGetIntegerv(GL_MAX_SAMPLES, &s_MAX_SAMPLE);
 }
 
 }

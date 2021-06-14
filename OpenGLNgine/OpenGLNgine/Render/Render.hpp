@@ -63,20 +63,8 @@ public:
 
 private:
 
-    /**
-     * @brief This struct allows to initialize the render one time.
-     */
-    struct Initializer final
-    {
-        /// Initializes the render.
-        Initializer();
-
-        /// Terminates the render.
-        ~Initializer();
-    };
-
     /// Contains the only instance of this class.
-    static Render* s_instance;
+    static Render s_instance;
 
     /// Creates and initializes the render.
     Render();

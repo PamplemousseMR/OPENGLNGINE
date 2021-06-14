@@ -7,12 +7,11 @@
 namespace  Render
 {
 
-Render* Render::s_instance = nullptr;
+Render Render::s_instance {};
 
 Render& Render::getInstance()
 {
-    const static Initializer s_INITIALIZER;
-    return *s_instance;
+    return s_instance;
 }
 
 RenderWindow* Render::createRenderWindow(const std::string& _name, int _width, int _height, int _sample)
@@ -50,17 +49,6 @@ void Render::destroyAllRenderWindow()
         this->destroyRenderWindow(it->second);
         it = m_renderWindows.begin();
     }
-}
-
-Render::Initializer::Initializer()
-{
-    Render::s_instance = new Render();
-}
-
-Render::Initializer::~Initializer()
-{
-    delete Render::s_instance;
-    Render::s_instance = nullptr;
 }
 
 Render::Render()

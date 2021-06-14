@@ -19,7 +19,14 @@ ptrdiff_t FrameBuffer::s_readCache = reinterpret_cast< ptrdiff_t >(nullptr);
 FrameBuffer::FrameBuffer() :
     IBindable()
 {
-    static const Initializer s_INITIALIZER;
+    [[maybe_unused]] static const void* initializer = []()
+    {
+        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &s_MAX_ATTACHEMENT);
+        glGetIntegerv(GL_MAX_DRAW_BUFFERS, &s_MAX_DRAW);
+        GLNGINE_CHECK_GL;
+        return nullptr;
+    } ();
+
     glGenFramebuffers(1, &m_id);
     if(m_id == 0)
     {
@@ -216,9 +223,4 @@ void FrameBuffer::bindRead() const
 #endif
 }
 
-FrameBuffer::Initializer::Initializer()
-{
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &s_MAX_ATTACHEMENT);
-    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &s_MAX_DRAW);
-}
 }

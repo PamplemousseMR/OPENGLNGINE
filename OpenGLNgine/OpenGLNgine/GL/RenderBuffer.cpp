@@ -15,7 +15,14 @@ ptrdiff_t RenderBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
 RenderBuffer::RenderBuffer() :
     IBindable()
 {
-    const static Initializer s_INITIALIZER;
+    [[maybe_unused]] static const void* initializer = []()
+    {
+        glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &s_MAX_SIZE);
+        glGetIntegerv(GL_MAX_SAMPLES, &s_MAX_SAMPLE);
+        GLNGINE_CHECK_GL;
+        return nullptr;
+    } ();
+
     glGenRenderbuffers(1, &m_id);
     if(m_id == 0)
     {
@@ -93,12 +100,6 @@ void RenderBuffer::unbind() const
 #else
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 #endif
-}
-
-RenderBuffer::Initializer::Initializer()
-{
-    glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &s_MAX_SIZE);
-    glGetIntegerv(GL_MAX_SAMPLES, &s_MAX_SAMPLE);
 }
 
 }
