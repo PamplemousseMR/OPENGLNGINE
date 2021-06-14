@@ -55,7 +55,7 @@ public:
 
     inline ::GL::DATABUFFER_TYPE getType() const;
 
-    const unsigned short m_source;
+    const unsigned m_source;
 
     const int m_offsetInBytes;
 
@@ -67,7 +67,7 @@ private:
 
     static ::GL::DATABUFFER_TYPE getType(VERTEXELEMENT_TYPE _type);
 
-    VertexElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
+    VertexElement(unsigned _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
 
     ~VertexElement();
 

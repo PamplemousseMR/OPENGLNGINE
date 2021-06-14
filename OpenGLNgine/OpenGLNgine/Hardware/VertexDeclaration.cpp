@@ -3,7 +3,7 @@
 namespace Hardware
 {
 
-const VertexElement* VertexDeclaration::addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic)
+const VertexElement* VertexDeclaration::addElement(unsigned _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic)
 {
     VertexElementList::const_iterator it, itEnd;
     itEnd = m_elements.end();

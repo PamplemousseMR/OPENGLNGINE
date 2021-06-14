@@ -16,7 +16,7 @@ class VertexBufferBinding final
 
 public:
 
-    typedef std::map<unsigned short, HardwareVertexBufferPtr> VertexBufferBindingMap;
+    typedef std::map<unsigned, HardwareVertexBufferPtr> VertexBufferBindingMap;
 
     VertexBufferBinding(const VertexBufferBinding&) = delete;
 
@@ -26,9 +26,9 @@ public:
 
     VertexBufferBinding& operator=(VertexBufferBinding&&) = delete;
 
-    inline void setBinding(unsigned short _index, const HardwareVertexBufferPtr& _buffer);
+    inline void setBinding(unsigned _index, const HardwareVertexBufferPtr& _buffer);
 
-    const HardwareVertexBufferPtr& getBuffer(unsigned short _index) const;
+    const HardwareVertexBufferPtr& getBuffer(unsigned _index) const;
 
     inline const VertexBufferBindingMap& getBufferBindings() const;
 
@@ -42,7 +42,7 @@ private:
 
 };
 
-inline void VertexBufferBinding::setBinding(unsigned short _index, const HardwareVertexBufferPtr& _buffer)
+inline void VertexBufferBinding::setBinding(unsigned _index, const HardwareVertexBufferPtr& _buffer)
 {
     m_bindingMap[_index] = _buffer;
 }

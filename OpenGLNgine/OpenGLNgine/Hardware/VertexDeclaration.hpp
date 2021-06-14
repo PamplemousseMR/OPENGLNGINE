@@ -31,7 +31,7 @@ public:
 
     inline void unlock();
 
-    const VertexElement* addElement(unsigned short _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
+    const VertexElement* addElement(unsigned _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic);
 
     void removeAllElements();
 

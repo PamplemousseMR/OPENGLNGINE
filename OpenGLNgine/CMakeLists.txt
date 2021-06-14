@@ -140,6 +140,11 @@ if(${GLNGINE_USE_STATE_CACHE})
     target_compile_definitions(${GLNGINE_LIBRARY_NAME} PUBLIC GLNGINE_USE_STATE_CACHE)
 endif(${GLNGINE_USE_STATE_CACHE})
 
+target_compile_options(${GLNGINE_LIBRARY_NAME} PRIVATE
+  $<$<CXX_COMPILER_ID:MSVC>:/W4>
+  $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -pedantic>
+)
+
 #=======================================
 #               LIBRARIES
 #=======================================

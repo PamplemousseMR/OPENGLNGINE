@@ -3,7 +3,7 @@
 namespace Hardware
 {
 
-const HardwareVertexBufferPtr& VertexBufferBinding::getBuffer(unsigned short _index) const
+const HardwareVertexBufferPtr& VertexBufferBinding::getBuffer(unsigned _index) const
 {
     const VertexBufferBindingMap::const_iterator it = m_bindingMap.find(_index);
     if(it == m_bindingMap.end())
