@@ -136,7 +136,7 @@ public:
      * @param _depthFail Sction when the stencil test passes, but the depth test fails.
      * @param _pass Sction when both the stencil test and the depth test pass, or when the stencil test passes and either there is no depth buffer or depth testing is not enabled.
      */
-    inline static void setStencilOperation(PIXELOPERATION_STENCIL_OPERATION _stencilFail, PIXELOPERATION_STENCIL_OPERATION _depthFail, PIXELOPERATION_STENCIL_OPERATION _pass);
+    static void setStencilOperation(PIXELOPERATION_STENCIL_OPERATION _stencilFail, PIXELOPERATION_STENCIL_OPERATION _depthFail, PIXELOPERATION_STENCIL_OPERATION _pass);
 
     /**
      * @brief Sets front and back function and reference value for stencil testing.
