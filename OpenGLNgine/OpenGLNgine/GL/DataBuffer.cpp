@@ -1,16 +1,42 @@
 #include "OpenGLNgine/GL/DataBuffer.hpp"
 
+#include <iostream>
+
 namespace GL
 {
+
+GLint DataBuffer::s_MAX_VERTEX_ATTRIBS = 0;
 
 #ifdef GLNGINE_USE_STATE_CACHE
 ptrdiff_t DataBuffer::s_cache = reinterpret_cast< ptrdiff_t >(nullptr);
 #endif
 
+void DataBuffer::setLocation(unsigned _location)
+{
+    GLNGINE_ASSERT_IF(_location >= unsigned(s_MAX_VERTEX_ATTRIBS), "Location too hight");
+    glEnableVertexAttribArray(_location);
+    GLNGINE_CHECK_GL;
+}
+
+void DataBuffer::setAttrib(unsigned _location, unsigned _size, DATABUFFER_TYPE _type, bool _normalize, unsigned _stride, unsigned _offset)
+{
+    GLNGINE_ASSERT_IF(_location >= unsigned(s_MAX_VERTEX_ATTRIBS), "Location too hight");
+    GLNGINE_ASSERT_IF(_size != 1 && _size != 2 && _size != 3 && _size != 4, "Size shall be 1, 2, 3 or 4");
+    glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
+    GLNGINE_CHECK_GL;
+}
+
 DataBuffer::DataBuffer(DATABUFFER_TARGET _target) :
     IBindable(),
     m_target(_target)
 {
+    [[maybe_unused]] static const void* initializer = []()
+    {
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &s_MAX_VERTEX_ATTRIBS);
+        GLNGINE_CHECK_GL;
+        return nullptr;
+    } ();
+
     glGenBuffers(1, &m_id);
     if(m_id == 0)
     {

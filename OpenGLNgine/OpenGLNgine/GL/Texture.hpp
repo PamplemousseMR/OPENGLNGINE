@@ -212,7 +212,7 @@ public:
      * @param _internalFormat Internal format of the texture.
      * @param _sample Number of sample.
      */
-    void allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample = 1);
+    void allocate(unsigned _width, unsigned _height, TEXTURE_INTERNAL_FORMAT _internalFormat, unsigned _sample = 1);
 
     /// Generates mipmap of the texture.
     void generateMipmap() const;

@@ -120,7 +120,7 @@ public:
      * @param _height The render buffer height.
      * @param _format The render buffer format.
      */
-    void allocate(int _width, int _height, RENDERBUFFER_FORMAT _format) const;
+    void allocate(unsigned _width, unsigned _height, RENDERBUFFER_FORMAT _format) const;
 
     /**
      * @brief Allocates the memory of the render buffer.
@@ -129,7 +129,7 @@ public:
      * @param _format The render buffer format.
      * @param _sample The render buffer sample.
      */
-    void allocateMultisample(int _width, int _height, RENDERBUFFER_FORMAT _format, int _sample) const;
+    void allocateMultisample(unsigned _width, unsigned _height, RENDERBUFFER_FORMAT _format, unsigned _sample) const;
 
     /// Binds the render buffer.
     void bind() const override;

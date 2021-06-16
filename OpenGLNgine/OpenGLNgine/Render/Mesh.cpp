@@ -54,7 +54,8 @@ namespace Render
 
 ::aiTextureMapMode toAI(::Hardware::TEXTURE_WRAP _mode)
 {
-    switch (_mode) {
+    switch (_mode)
+    {
     case ::Hardware::TEXTURE_WRAP::TW_REPEAT:
         return ::aiTextureMapMode::aiTextureMapMode_Wrap;
     case ::Hardware::TEXTURE_WRAP::TW_CLAMP:
@@ -70,7 +71,8 @@ namespace Render
 
 ::Hardware::TEXTURE_WRAP fromAI(::aiTextureMapMode _mode)
 {
-    switch (_mode) {
+    switch (_mode)
+    {
     case ::aiTextureMapMode::aiTextureMapMode_Wrap:
         return ::Hardware::TEXTURE_WRAP::TW_REPEAT;
     case ::aiTextureMapMode::aiTextureMapMode_Clamp:

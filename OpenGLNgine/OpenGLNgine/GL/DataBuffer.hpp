@@ -55,7 +55,7 @@ public:
     * @brief Enables the generic vertex attribute array.
     * @param _location Index of the genereric vertex attribute to be enabled.
     */
-    static inline void setLocation(unsigned _location);
+    static void setLocation(unsigned _location);
 
     /**
     * @brief Defines an array of generic vertex attribute data.
@@ -66,7 +66,7 @@ public:
     * @param _stride Byte offset between consecutive generic vertex attributes. If stride is 0, the generic vertex attributes are understood to be tightly packed in the array.
     * @param _offset Offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently.
     */
-    static inline void setAttrib(unsigned _location, int _size, DATABUFFER_TYPE _type, bool _normalize, int _stride, int _offset);
+    static void setAttrib(unsigned _location, unsigned _size, DATABUFFER_TYPE _type, bool _normalize, unsigned _stride, unsigned _offset);
 
     /// Creates a buffer.
     DataBuffer(DATABUFFER_TARGET _target);
@@ -114,7 +114,7 @@ public:
      * @param _sizeInBytes Size in bytes of the buffer object's new data store.
      * @param _src Pointer to data that will be copied into the data store for initialization.
      */
-    inline void writeData(size_t _offset, size_t _sizeInBytes, const void* _src) const;
+    inline void writeData(size_t  _offset, size_t _sizeInBytes, const void* _src) const;
 
     /// Binds the buffer.
     virtual void bind() const override;
@@ -124,6 +124,8 @@ public:
 
 private:
 
+    static GLint s_MAX_VERTEX_ATTRIBS;
+
     /// Defines the buffer target.
     const GLenum m_target;
 
@@ -132,18 +134,6 @@ private:
 #endif
 
 };
-
-inline void DataBuffer::setLocation(unsigned _location)
-{
-    glEnableVertexAttribArray(_location);
-    GLNGINE_CHECK_GL;
-}
-
-inline void DataBuffer::setAttrib(unsigned _location, int _size, DATABUFFER_TYPE _type, bool _normalize, int _stride, int _offset)
-{
-    glVertexAttribPointer(_location, _size, _type, _normalize, _stride, BUFFER_OFFSET(_offset));
-    GLNGINE_CHECK_GL;
-}
 
 template<typename T>
 inline void DataBuffer::writeData(const std::vector<T>& _arr, DATABUFFER_USAGE _usage) const
@@ -158,7 +148,7 @@ inline void DataBuffer::writeData(size_t _sizeInBytes, const void* _src, DATABUF
     GLNGINE_CHECK_GL;
 }
 
-inline void DataBuffer::writeData(size_t _offset, size_t _sizeInBytes, const void* _src) const
+inline void DataBuffer::writeData(size_t  _offset, size_t _sizeInBytes, const void* _src) const
 {
     glBufferSubData(m_target, _offset, _sizeInBytes, _src);
     GLNGINE_CHECK_GL;

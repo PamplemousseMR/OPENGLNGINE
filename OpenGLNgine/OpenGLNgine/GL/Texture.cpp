@@ -416,17 +416,14 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _
     switch(m_type)
     {
     case TT_1D :
-        if(height != 1)
-        {
-            GLNGINE_EXCEPTION("Not a 1D texture");
-        }
+        GLNGINE_ASSERT_IF(height != 1, "Not a 1D texture");
         glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, width, 0, m_format, GL_UNSIGNED_BYTE, data);
         break;
     case TT_2D :
         glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, width, height, 0, m_format, GL_UNSIGNED_BYTE, data);
         break;
     case TT_2DMULTISAMPLE :
-        GLNGINE_EXCEPTION("Can't load image to multisampled textures");
+        GLNGINE_ASSERT("Can't load image to multisampled textures");
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
     }
@@ -434,25 +431,15 @@ void Texture::load(const std::filesystem::path& _path, TEXTURE_INTERNAL_FORMAT _
     SOIL_free_image_data(data);
 }
 
-void Texture::allocate(int _width, int _height, TEXTURE_INTERNAL_FORMAT _internalFormat, int _sample)
+void Texture::allocate(unsigned _width, unsigned _height, TEXTURE_INTERNAL_FORMAT _internalFormat, unsigned _sample)
 {
-    GLNGINE_ASSERT_IF(_width<0 || _height<0, "The texture size musn't be negativ");
-    if(_width > s_MAX_SIZE || _height > s_MAX_SIZE)
-    {
-        GLNGINE_EXCEPTION("Texture size too large");
-    }
-    if(_sample > s_MAX_SAMPLE)
-    {
-        GLNGINE_EXCEPTION("Sample too hight");
-    }
+    GLNGINE_ASSERT_IF(_width > unsigned(s_MAX_SIZE) || _height > unsigned(s_MAX_SIZE), "Texture size too large");
+    GLNGINE_ASSERT_IF(_sample > unsigned(s_MAX_SAMPLE), "Sample value too hight");
 
     switch(m_type)
     {
     case TT_1D :
-        if(_height != 1)
-        {
-            GLNGINE_EXCEPTION("Not a 1D texture");
-        }
+        GLNGINE_ASSERT_IF(_height != 1, "Not a 1D texture");
         glTexImage1D(GL_TEXTURE_1D, 0, _internalFormat, _width, 0, getBaseFormat(_internalFormat), getBaseType(_internalFormat), nullptr);
         break;
     case TT_2D :
@@ -479,7 +466,7 @@ void Texture::generateMipmap() const
         glGenerateMipmap(GL_TEXTURE_2D);
         break;
     case TT_2DMULTISAMPLE :
-        GLNGINE_EXCEPTION("Can't generate mipmap to multisampled textures");
+        GLNGINE_ASSERT("Can't generate mipmap to multisampled textures");
         break;
     default:
         GLNGINE_EXCEPTION("Unhandle texture type");
@@ -560,7 +547,7 @@ void Texture::setMinFilter(TEXTURE_FILTER _filter) const
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter);
             break;
         case TT_2DMULTISAMPLE :
-            GLNGINE_EXCEPTION("Can't set filter to multisampled textures");
+            GLNGINE_ASSERT("Can't set filter to multisampled textures");
         default:
             GLNGINE_EXCEPTION("Unhandle texture type");
         }
@@ -587,7 +574,7 @@ void Texture::setMagFilter(TEXTURE_FILTER _filter) const
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filter);
             break;
         case TT_2DMULTISAMPLE :
-            GLNGINE_EXCEPTION("Can't set filter to multisampled textures");
+            GLNGINE_ASSERT("Can't set filter to multisampled textures");
         default:
             GLNGINE_EXCEPTION("Unhandle texture type");
         }
@@ -614,7 +601,6 @@ void Texture::setUWrap(TEXTURE_WRAP _mode) const
             break;
         case TT_2DMULTISAMPLE :
             glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, _mode);
-            break;
         default:
             GLNGINE_EXCEPTION("Unhandle wrap mode");
         }
@@ -641,7 +627,6 @@ void Texture::setVWrap(TEXTURE_WRAP _mode) const
             break;
         case TT_2DMULTISAMPLE :
             glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, _mode);
-            break;
         default:
             GLNGINE_EXCEPTION("Unhandle wrap mode");
         }

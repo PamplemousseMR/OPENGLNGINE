@@ -57,7 +57,7 @@ public:
      * @param _type Specifies the type of the values in indices.
      * @param _offset Specifies a pointer to the location where the indices are stored.
      */
-    inline static void drawElements(DRAWCALL_MODE _mode, int _count, DATABUFFER_TYPE _type, int _offset);
+    inline static void drawElements(DRAWCALL_MODE _mode, unsigned _count, DATABUFFER_TYPE _type, int _offset);
 
     /**
      * @brief Render primitives from array data.
@@ -65,7 +65,7 @@ public:
      * @param _first Specifies the starting index in the enabled arrays.
      * @param _count Specifies the number of indices to be rendered.
      */
-    inline static void drawArrays(DRAWCALL_MODE _mode, int _first, int _count);
+    inline static void drawArrays(DRAWCALL_MODE _mode, int _first, unsigned _count);
 
 };
 
@@ -75,13 +75,13 @@ inline void DrawCall::clear(DRAWCALL_CLEAR _mask)
     GLNGINE_CHECK_GL;
 }
 
-inline void DrawCall::drawElements(DRAWCALL_MODE _mode, int _count, DATABUFFER_TYPE _type, int _offset)
+inline void DrawCall::drawElements(DRAWCALL_MODE _mode, unsigned _count, DATABUFFER_TYPE _type, int _offset)
 {
     glDrawElements(_mode, _count, _type, BUFFER_OFFSET(_offset));
     GLNGINE_CHECK_GL;
 }
 
-inline void DrawCall::drawArrays(DRAWCALL_MODE _mode, int _first, int _count)
+inline void DrawCall::drawArrays(DRAWCALL_MODE _mode, int _first, unsigned _count)
 {
     glDrawArrays(_mode, _first, _count);
     GLNGINE_CHECK_GL;

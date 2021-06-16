@@ -38,10 +38,10 @@ class FrameBuffer final : public IBindable
 public:
 
     /// Binds the current render frame buffer to as draw buffer.
-    static inline void bindDrawDefault();
+    static void bindDrawDefault();
 
     /// Binds the current render frame buffer to as read buffer.
-    static inline void bindReadDefault();
+    static void bindReadDefault();
 
     /**
      * @brief Copy a block of pixels from a readable frame buffer to a drawable frame buffer.
@@ -163,34 +163,6 @@ private:
 
 };
 
-inline void FrameBuffer::bindDrawDefault()
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
-    if(s_drawCache != add)
-    {
-        s_drawCache = add;
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    }
-#else
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-#endif
-}
-
-inline void FrameBuffer::bindReadDefault()
-{
-#ifdef GLNGINE_USE_STATE_CACHE
-    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
-    if(s_readCache != add)
-    {
-        s_readCache = add;
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-    }
-#else
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-#endif
-}
-
 inline void FrameBuffer::blit(int _srcX0, int _srcY0, int _srcX1, int _srcY1, int _dstX0, int _dstY0, int _dstX1, int _dstY1, FRAMBUFFER_MASK _mask, FRAMBUFFER_FILTER _filter)
 {
     glBlitFramebuffer(_srcX0, _srcY0, _srcX1, _srcY1, _dstX0, _dstY0, _dstX1, _dstY1, _mask, _filter);
@@ -199,19 +171,19 @@ inline void FrameBuffer::blit(int _srcX0, int _srcY0, int _srcX1, int _srcY1, in
 
 inline void FrameBuffer::attachDepthBuffer(const RenderBuffer& _buffer) const
 {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
+    glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
 }
 
 inline void FrameBuffer::attachDepthStencilBuffer(const RenderBuffer& _buffer) const
 {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
+    glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
 }
 
 inline void FrameBuffer::attachStencilBuffer(const RenderBuffer& _buffer) const
 {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
+    glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
 }
 

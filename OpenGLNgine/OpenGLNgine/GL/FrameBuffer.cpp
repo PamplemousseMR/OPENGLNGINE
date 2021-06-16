@@ -16,6 +16,34 @@ ptrdiff_t FrameBuffer::s_drawCache = reinterpret_cast< ptrdiff_t >(nullptr);
 ptrdiff_t FrameBuffer::s_readCache = reinterpret_cast< ptrdiff_t >(nullptr);
 #endif
 
+void FrameBuffer::bindDrawDefault()
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_drawCache != add)
+    {
+        s_drawCache = add;
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    }
+#else
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+#endif
+}
+
+void FrameBuffer::bindReadDefault()
+{
+#ifdef GLNGINE_USE_STATE_CACHE
+    ptrdiff_t add = reinterpret_cast< ptrdiff_t >(nullptr);
+    if(s_readCache != add)
+    {
+        s_readCache = add;
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    }
+#else
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+#endif
+}
+
 FrameBuffer::FrameBuffer() :
     IBindable()
 {
@@ -41,10 +69,7 @@ FrameBuffer::~FrameBuffer()
 
 void FrameBuffer::attachColorTexture(const Texture& _texture, unsigned _attach)
 {
-    if(_attach >= unsigned(s_MAX_ATTACHEMENT))
-    {
-        GLNGINE_EXCEPTION("Can't attach a texture to this index");
-    }
+    GLNGINE_ASSERT_IF(_attach >= unsigned(s_MAX_ATTACHEMENT), "Location too hight");
     switch(_texture.getType())
     {
     case TT_1D:
@@ -126,10 +151,7 @@ void FrameBuffer::attachStencilTexture(const Texture& _texture) const
 
 void FrameBuffer::attachColorBuffer(const RenderBuffer& _buffer, unsigned _attach)
 {
-    if(_attach >= unsigned(s_MAX_ATTACHEMENT))
-    {
-        GLNGINE_EXCEPTION("Can't attach a buffer to this index");
-    }
+    GLNGINE_ASSERT_IF(_attach >= unsigned(s_MAX_ATTACHEMENT), "Location too hight");
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + _attach, GL_RENDERBUFFER, _buffer.getId());
     GLNGINE_CHECK_GL;
     auto p = find(m_colorAttachement.begin(), m_colorAttachement.end(), _attach);
@@ -172,10 +194,7 @@ void FrameBuffer::checkStatus() const
 
 void FrameBuffer::attachDrawBuffers() const
 {
-    if(m_colorAttachement.size() >= unsigned(s_MAX_DRAW))
-    {
-        GLNGINE_EXCEPTION("Too much draw texture");
-    }
+    GLNGINE_ASSERT_IF(m_colorAttachement.size() > unsigned(s_MAX_DRAW), "Too much draw texture");
     std::vector< GLenum > drawBuffers(m_colorAttachement.size());
     for(size_t i=0 ; i<m_colorAttachement.size() ; ++i)
     {

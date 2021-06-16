@@ -3,7 +3,7 @@
 namespace Hardware
 {
 
-int VertexElement::getTypeCount(VERTEXELEMENT_TYPE _type)
+unsigned VertexElement::getTypeCount(VERTEXELEMENT_TYPE _type)
 {
     switch(_type)
     {

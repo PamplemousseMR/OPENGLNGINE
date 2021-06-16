@@ -41,7 +41,7 @@ class VertexElement final
 
 public:
 
-    static int getTypeCount(VERTEXELEMENT_TYPE _type);
+    static unsigned getTypeCount(VERTEXELEMENT_TYPE _type);
 
     VertexElement(const VertexElement&) = delete;
 
