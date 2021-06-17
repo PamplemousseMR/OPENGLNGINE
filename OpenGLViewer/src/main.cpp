@@ -109,11 +109,11 @@ int main()
     ::Hardware::MaterialManager& materialMng = renderWindow->getMaterialManager();
     for(::Render::SubMesh* subMesh : mesh->getSubMeshes())
     {
-        ::Hardware::MaterialPtr material = subMesh->m_material;
+        ::Hardware::MaterialPtr material = subMesh->getMaterial();
         if(!material)
         {
             material = materialMng.create("Material_" + subMesh->getName());
-            subMesh->m_material = material;
+            subMesh->setMaterial(material);
         }
 
         material->getPasses()[0]->setProgram(program);

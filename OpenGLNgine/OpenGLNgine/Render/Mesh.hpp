@@ -1,8 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Hardware/IndexData.hpp"
 #include "OpenGLNgine/Hardware/Material.hpp"
-#include "OpenGLNgine/Hardware/VertexData.hpp"
 #include "OpenGLNgine/Render/Component.hpp"
 #include "OpenGLNgine/Render/SceneNode.hpp"
 #include "OpenGLNgine/Render/SubMesh.hpp"

@@ -134,11 +134,13 @@ void Mesh::destroyAllSubMeshes()
 
 void Mesh::setMaterial(::Hardware::MaterialPtr _material)
 {
+    GLNGINE_ASSERT_IF(_material->m_manager->m_renderWindow != m_sceneManager->getRenderWindow(), "The material doe not came from this context");
+
     SubMeshList::const_iterator itBeg = m_subMeshes.begin();
     const SubMeshList::const_iterator itEnd = m_subMeshes.end();
     for(; itBeg!=itEnd ; ++itBeg)
     {
-        (*itBeg)->m_material = _material;
+        (*itBeg)->setMaterial(_material);
     }
 }
 

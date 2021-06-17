@@ -17,6 +17,10 @@ namespace Core
 class IHardwareManager
 {
 
+public:
+
+    const ::Render::RenderWindow* const m_renderWindow;
+
 protected:
 
     IHardwareManager(const ::Render::RenderWindow* const _renderWindow);
@@ -26,8 +30,6 @@ protected:
     void add(const std::shared_ptr< IResource >& _resource);
 
     std::shared_ptr< IResource > get(const std::string& _name) const;
-
-    const ::Render::RenderWindow* const m_renderWindow;
 
 private:
 

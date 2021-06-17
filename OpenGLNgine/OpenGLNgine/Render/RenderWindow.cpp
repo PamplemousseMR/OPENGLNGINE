@@ -22,9 +22,9 @@ void RenderWindow::renderScene(const SceneNode* const _node, const Camera* const
     {
         for(const SubMesh* const subMesh : me.second->getSubMeshes())
         {
-            if(subMesh->m_material != nullptr)
+            if(subMesh->getMaterial() != nullptr)
             {
-                const ::Hardware::MaterialPtr& mat = subMesh->m_material;
+                const ::Hardware::MaterialPtr& mat = subMesh->getMaterial();
                 for(const ::Hardware::Pass* const pass : mat->getPasses())
                 {
                     const ::Hardware::ProgramPtr program = pass->getProgram();

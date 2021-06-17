@@ -75,6 +75,9 @@ public:
      */
     inline RenderWindow* getRenderWindow() const;
 
+    /// Stores the related render window.
+    RenderWindow* const m_renderWindow;
+
     float m_depthClearValue { 1.f };
 
 private:
@@ -89,9 +92,6 @@ private:
 
     /// Destroys the viewport and notifies the attached camera.
     ~Viewport();
-
-    /// Stores the related render window.
-    RenderWindow* const m_renderWindow;
 
     /// Defines the position and the size of the viewport.
     std::array< float, 4 > m_viewport { 0, 0, 1, 1 };

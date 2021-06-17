@@ -25,6 +25,10 @@ public:
 
     SubMesh& operator=(SubMesh&&) = delete;
 
+    void setMaterial(::Hardware::MaterialPtr _material);
+
+    inline const ::Hardware::MaterialPtr getMaterial() const;
+
     inline bool isDirty() const;
 
     inline void _notifyDirty() const;
@@ -32,8 +36,6 @@ public:
     ::Hardware::VertexData* m_vertexData { nullptr };
 
     ::Hardware::IndexData* m_indexData { nullptr };
-
-    ::Hardware::MaterialPtr m_material { nullptr };
 
     Mesh* const m_parent;
 
@@ -43,9 +45,16 @@ private:
 
     ~SubMesh();
 
+    ::Hardware::MaterialPtr m_material { nullptr };
+
     mutable bool m_dirty { true };
 
 };
+
+inline const ::Hardware::MaterialPtr SubMesh::getMaterial() const
+{
+    return m_material;
+}
 
 inline bool SubMesh::isDirty() const
 {
