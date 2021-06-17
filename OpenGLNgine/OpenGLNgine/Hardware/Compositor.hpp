@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 
 #include "OpenGLNgine/Hardware/CompositorTargetPass.hpp"
 
@@ -15,7 +15,7 @@ class CompositorManager;
 
 typedef std::shared_ptr< Compositor > CompositorPtr;
 
-class Compositor final : public ::Core::IResource
+class Compositor final : public ::Core::IHardwareResource
 {
 
     friend CompositorManager;

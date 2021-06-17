@@ -11,7 +11,7 @@ RenderTargetPtr RenderTargetManager::create(const std::string& _name, unsigned _
 }
 
 RenderTargetManager::RenderTargetManager():
-    ::Core::IManager<RenderTarget>()
+    ::Core::IManager()
 {
 }
 

@@ -17,8 +17,7 @@ namespace Hardware
 {
 
 class HardwareBufferManager final :
-        public ::Core::IManager< HardwareIndexBuffer >,
-        public ::Core::IManager< HardwareVertexBuffer >
+        public ::Core::IManager
 {
 
     friend ::Render::RenderWindow;

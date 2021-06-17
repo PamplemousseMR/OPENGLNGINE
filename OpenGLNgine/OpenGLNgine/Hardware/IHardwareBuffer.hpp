@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 #include "OpenGLNgine/GL/DataBuffer.hpp"
 
 namespace Hardware
@@ -22,7 +22,7 @@ enum HARDWAREBUFFER_USAGE
 
 class HardwareBufferManager;
 
-class IHardwareBuffer : public ::Core::IResource
+class IHardwareBuffer : public ::Core::IHardwareResource
 {
 
 public:

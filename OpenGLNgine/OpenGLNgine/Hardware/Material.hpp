@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 
 #include "OpenGLNgine/Hardware/Pass.hpp"
 
@@ -15,7 +15,7 @@ class MaterialManager;
 
 typedef std::shared_ptr< Material > MaterialPtr;
 
-class Material final : public ::Core::IResource
+class Material final : public ::Core::IHardwareResource
 {
 
     friend MaterialManager;

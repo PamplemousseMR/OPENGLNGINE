@@ -12,6 +12,8 @@ set(GLNGINE_LIBRARY_NAME OpenGLNgine)
 set(GLNGINE_SOURCE OpenGLNgine)
 
 set(GLNGINE_SRC
+    ${GLNGINE_SOURCE}/Core/IManager.cpp
+    ${GLNGINE_SOURCE}/Core/IHardwareResource.cpp
     ${GLNGINE_SOURCE}/Core/IResource.cpp
     ${GLNGINE_SOURCE}/GL/DataBuffer.cpp
     ${GLNGINE_SOURCE}/GL/DrawCall.cpp
@@ -66,8 +68,8 @@ set(GLNGINE_SRC
 set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Core/Exception.hpp
     ${GLNGINE_SOURCE}/Core/Helper.hpp
+    ${GLNGINE_SOURCE}/Core/IHardwareResource.hpp
     ${GLNGINE_SOURCE}/Core/IManager.hpp
-    ${GLNGINE_SOURCE}/Core/IManager.hxx
     ${GLNGINE_SOURCE}/Core/IResource.hpp
     ${GLNGINE_SOURCE}/GL/DrawCall.hpp
     ${GLNGINE_SOURCE}/GL/DataBuffer.hpp

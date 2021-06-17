@@ -5,6 +5,8 @@
 namespace Core
 {
 
+class IManager;
+
 /**
  * @brief This interface allows to manage a resource for the render.
  */
@@ -25,7 +27,7 @@ public:
 protected:
 
     /**
-     * @brief Creates a name from a string.
+     * @brief Creates a resource.
      * @param _name The name of the ressouce.
      */
     IResource(const std::string& _name);

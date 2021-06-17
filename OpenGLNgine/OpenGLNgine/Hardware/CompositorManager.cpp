@@ -11,7 +11,7 @@ CompositorPtr CompositorManager::create(const std::string& _name)
 }
 
 CompositorManager::CompositorManager():
-    ::Core::IManager<Compositor>()
+    ::Core::IManager()
 {
 }
 

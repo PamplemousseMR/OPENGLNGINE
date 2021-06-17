@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Hardware/RenderTarget.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/RenderTargetManager.hpp"
 
 #include <algorithm>
 
@@ -117,7 +118,7 @@ void RenderTarget::pushTexture(TEXTURE_INTERNAL_FORMAT _format)
 }
 
 RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample):
-    ::Core::IResource(_name),
+    ::Core::IHardwareResource(_manager, _name),
     m_sample(_sample),
     m_manager(_manager)
 {

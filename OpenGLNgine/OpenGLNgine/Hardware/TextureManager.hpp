@@ -11,7 +11,7 @@ namespace Render
 namespace Hardware
 {
 
-class TextureManager final : public Core::IManager< Texture >
+class TextureManager final : public Core::IManager
 {
 
     friend ::Render::RenderWindow;
@@ -27,6 +27,8 @@ public:
     TextureManager& operator=(TextureManager&&) = delete;
 
     TexturePtr create(const std::string& _name, TEXTURE_TYPE _type);
+
+    TexturePtr getByName(const std::string& _name) const;
 
 private:
 

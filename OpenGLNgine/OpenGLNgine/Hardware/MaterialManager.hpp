@@ -12,7 +12,7 @@ namespace Render
 namespace Hardware
 {
 
-class MaterialManager final : public ::Core::IManager< Material >
+class MaterialManager final : public ::Core::IManager
 {
 
     friend ::Render::RenderWindow;
@@ -29,6 +29,7 @@ public:
 
     MaterialPtr create(const std::string& _name);
 
+    MaterialPtr getByName(const std::string& _name) const;
 private:
 
     MaterialManager();

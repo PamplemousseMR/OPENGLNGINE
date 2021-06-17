@@ -8,14 +8,14 @@ namespace Hardware
 HardwareIndexBufferPtr HardwareBufferManager::createIndexBuffer(const std::string& _name, HARDWREINDEXBUFFER_TYPE _type, size_t _size, HARDWAREBUFFER_USAGE _usage)
 {
     const HardwareIndexBufferPtr ptr(new HardwareIndexBuffer(this, _name,  _type, _size, _usage));
-    ::Core::IManager< HardwareIndexBuffer >::add(ptr);
+    this->add(ptr);
     return ptr;
 }
 
 HardwareVertexBufferPtr HardwareBufferManager::createVertexBuffer(const std::string& _name, HARDWAREVERTEXBUFFER_TYPE _type, size_t _numVertices, HARDWAREBUFFER_USAGE _usage)
 {
     const HardwareVertexBufferPtr ptr(new HardwareVertexBuffer(this, _name, _type, _numVertices, _usage));
-    ::Core::IManager< HardwareVertexBuffer >::add(ptr);
+    this->add(ptr);
     return ptr;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 #include "OpenGLNgine/GL/Program.hpp"
 #include "OpenGLNgine/GL/Uniform.hpp"
 #include "OpenGLNgine/Hardware/Shader.hpp"
@@ -37,7 +37,7 @@ class ProgramManager;
 
 typedef std::shared_ptr< Program > ProgramPtr;
 
-class Program final : public ::Core::IResource
+class Program final : public ::Core::IHardwareResource
 {
 
     friend ProgramManager;

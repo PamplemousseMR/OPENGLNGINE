@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Hardware/Shader.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/ProgramManager.hpp"
 
 namespace Hardware
 {
@@ -21,7 +22,7 @@ namespace Hardware
 }
 
 Shader::Shader(ProgramManager* const _manager, const std::string& _name, SHADER_TYPE _type):
-    ::Core::IResource(_name),
+    ::Core::IHardwareResource(_manager, _name),
     type(_type),
     m_manager(_manager),
     m_shader(getType(_type))

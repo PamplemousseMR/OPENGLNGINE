@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Hardware/Material.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/MaterialManager.hpp"
 
 #include <algorithm>
 
@@ -8,7 +9,7 @@ namespace Hardware
 {
 
 Material::Material(MaterialManager* const _manager, const std::string& _name):
-    ::Core::IResource(_name),
+    ::Core::IHardwareResource(_manager, _name),
     m_manager(_manager)
 {
     this->createPass();

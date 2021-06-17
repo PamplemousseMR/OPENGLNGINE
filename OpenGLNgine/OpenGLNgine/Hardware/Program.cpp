@@ -1,12 +1,13 @@
 #include "OpenGLNgine/Hardware/Program.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/ProgramManager.hpp"
 
 namespace Hardware
 {
 
 Program::Program(ProgramManager* const _manager, const std::string& _name):
-    ::Core::IResource(_name),
+    ::Core::IHardwareResource(_manager, _name),
     m_manager(_manager)
 {
 }

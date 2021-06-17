@@ -12,7 +12,7 @@ namespace Render
 namespace Hardware
 {
 
-class CompositorManager final : public ::Core::IManager< Compositor >
+class CompositorManager final : public ::Core::IManager
 {
 
     friend ::Render::RenderWindow;

@@ -10,8 +10,13 @@ MaterialPtr MaterialManager::create(const std::string& _name)
     return ptr;
 }
 
+MaterialPtr MaterialManager::getByName(const std::string& _name) const
+{
+    return std::dynamic_pointer_cast< Material >(this->get(_name));
+}
+
 MaterialManager::MaterialManager():
-    ::Core::IManager<Material>()
+    ::Core::IManager()
 {
 }
 

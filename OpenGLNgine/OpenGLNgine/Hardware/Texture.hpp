@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 #include "OpenGLNgine/GL/Texture.hpp"
 
 #include <memory>
@@ -115,7 +115,7 @@ class TextureManager;
 
 typedef std::shared_ptr< Texture > TexturePtr;
 
-class Texture final : public ::Core::IResource
+class Texture final : public ::Core::IHardwareResource
 {
 
     friend TextureManager;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 #include "OpenGLNgine/GL/Shader.hpp"
 
 #include <filesystem>
@@ -22,7 +22,7 @@ class ProgramManager;
 
 typedef std::shared_ptr< Shader > ShaderPtr;
 
-class Shader final : public ::Core::IResource
+class Shader final : public ::Core::IHardwareResource
 {
 
     friend Program;

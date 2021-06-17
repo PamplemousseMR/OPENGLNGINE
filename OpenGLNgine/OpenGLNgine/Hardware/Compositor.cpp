@@ -9,10 +9,9 @@ namespace Hardware
 {
 
 Compositor::Compositor(CompositorManager* const _manager, const std::string& _name):
-    ::Core::IResource(_name),
+    ::Core::IHardwareResource(_manager, _name),
     m_manager(_manager)
 {
-    GLNGINE_ASSERT_IF(_manager->getByName(_name), "The pass shall not be null");
 }
 
 Compositor::~Compositor()

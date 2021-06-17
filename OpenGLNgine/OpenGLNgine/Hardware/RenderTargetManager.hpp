@@ -12,7 +12,7 @@ namespace Render
 namespace Hardware
 {
 
-class RenderTargetManager final : public ::Core::IManager< RenderTarget >
+class RenderTargetManager final : public ::Core::IManager
 {
 
     friend ::Render::RenderWindow;

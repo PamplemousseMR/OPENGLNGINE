@@ -1,5 +1,7 @@
 #pragma once
 
+#include "OpenGLNgine/Core/IResource.hpp"
+
 #include <map>
 #include <memory>
 #include <string>
@@ -7,13 +9,8 @@
 namespace Core
 {
 
-template <class T>
 class IManager
 {
-
-public:
-
-    std::shared_ptr< T > getByName(const std::string& _name);
 
 protected:
 
@@ -21,18 +18,18 @@ protected:
 
     virtual ~IManager();
 
-    void add(const std::shared_ptr< T >& _resource);
+    void add(const std::shared_ptr< IResource >& _resource);
+
+    std::shared_ptr< IResource > get(const std::string& _name) const;
 
 private:
 
     void removeAll();
 
-    typedef std::map< std::string, std::shared_ptr< T > > ResourceList;
+    typedef std::map< std::string, std::shared_ptr< IResource > > ResourceList;
 
     ResourceList m_resources {};
 
 };
-
-#include "OpenGLNgine/Core/IManager.hxx"
 
 }

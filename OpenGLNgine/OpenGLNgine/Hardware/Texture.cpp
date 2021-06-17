@@ -1,6 +1,7 @@
 #include "OpenGLNgine/Hardware/Texture.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
+#include "OpenGLNgine/Hardware/TextureManager.hpp"
 
 #include <algorithm>
 
@@ -213,7 +214,7 @@ namespace Hardware
 }
 
 Texture::Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type):
-    Core::IResource(_name),
+    Core::IHardwareResource(_manager, _name),
     m_manager(_manager),
     m_texture(getType(_type))
 {

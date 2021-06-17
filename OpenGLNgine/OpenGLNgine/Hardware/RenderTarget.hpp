@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IResource.hpp"
+#include "OpenGLNgine/Core/IHardwareResource.hpp"
 #include "OpenGLNgine/GL/FrameBuffer.hpp"
 #include "OpenGLNgine/GL/Texture.hpp"
 #include "OpenGLNgine/Hardware/Pass.hpp"
@@ -16,7 +16,7 @@ class RenderTargetManager;
 
 typedef std::shared_ptr< RenderTarget > RenderTargetPtr;
 
-class RenderTarget final : public ::Core::IResource
+class RenderTarget final : public ::Core::IHardwareResource
 {
 
     friend RenderTargetManager;
