@@ -9,14 +9,14 @@
 namespace Core
 {
 
-class IManager
+class IHardwareManager
 {
 
 protected:
 
-    IManager();
+    IHardwareManager();
 
-    virtual ~IManager();
+    virtual ~IHardwareManager();
 
     void add(const std::shared_ptr< IResource >& _resource);
 

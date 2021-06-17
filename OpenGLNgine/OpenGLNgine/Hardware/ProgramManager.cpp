@@ -18,7 +18,7 @@ ShaderPtr ProgramManager::createShader(const std::string& _name, SHADER_TYPE _ty
 }
 
 ProgramManager::ProgramManager():
-    ::Core::IManager()
+    ::Core::IHardwareManager()
 {
 }
 

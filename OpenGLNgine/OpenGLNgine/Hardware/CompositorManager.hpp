@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IManager.hpp"
+#include "OpenGLNgine/Core/IHardwareManager.hpp"
 
 #include "OpenGLNgine/Hardware/Compositor.hpp"
 
@@ -12,7 +12,7 @@ namespace Render
 namespace Hardware
 {
 
-class CompositorManager final : public ::Core::IManager
+class CompositorManager final : public ::Core::IHardwareManager
 {
 
     friend ::Render::RenderWindow;

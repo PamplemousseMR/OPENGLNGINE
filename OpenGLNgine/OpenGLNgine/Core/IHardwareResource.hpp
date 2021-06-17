@@ -7,7 +7,7 @@
 namespace Core
 {
 
-class IManager;
+class IHardwareManager;
 
 /**
  * @brief This interface allows to manage a resource for the render.
@@ -20,6 +20,9 @@ public:
     /// Destroys the nameable resource.
     virtual ~IHardwareResource();
 
+    /// Stores the manager of this resource.
+    IHardwareManager* const m_manager;
+
 protected:
 
     /**
@@ -27,10 +30,7 @@ protected:
      * @param _manager The manager of this resource.
      * @param _name The name of the ressouce.
      */
-    IHardwareResource(IManager* const _manager, const std::string& _name);
-
-    /// Stores the manager of this resource.
-    IManager* const m_manager;
+    IHardwareResource(IHardwareManager* const _manager, const std::string& _name);
 
 };
 

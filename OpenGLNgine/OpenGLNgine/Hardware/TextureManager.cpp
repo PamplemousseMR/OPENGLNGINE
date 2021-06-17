@@ -16,7 +16,7 @@ TexturePtr TextureManager::getByName(const std::string& _name) const
 }
 
 TextureManager::TextureManager():
-    Core::IManager()
+    Core::IHardwareManager()
 {
 }
 

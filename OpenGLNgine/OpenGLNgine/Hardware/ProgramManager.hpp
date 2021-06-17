@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IManager.hpp"
+#include "OpenGLNgine/Core/IHardwareManager.hpp"
 #include "OpenGLNgine/Hardware/Program.hpp"
 #include "OpenGLNgine/Hardware/Shader.hpp"
 
@@ -13,7 +13,7 @@ namespace Hardware
 {
 
 class ProgramManager final :
-        public ::Core::IManager
+        public ::Core::IHardwareManager
 {
 
     friend ::Render::RenderWindow;

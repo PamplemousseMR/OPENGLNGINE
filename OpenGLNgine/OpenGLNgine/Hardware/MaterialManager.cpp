@@ -16,7 +16,7 @@ MaterialPtr MaterialManager::getByName(const std::string& _name) const
 }
 
 MaterialManager::MaterialManager():
-    ::Core::IManager()
+    ::Core::IHardwareManager()
 {
 }
 

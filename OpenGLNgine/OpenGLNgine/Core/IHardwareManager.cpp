@@ -1,20 +1,20 @@
-#include "OpenGLNgine/Core/IManager.hpp"
+#include "OpenGLNgine/Core/IHardwareManager.hpp"
 
 #include "OpenGLNgine/Core/Exception.hpp"
 
 namespace Core
 {
 
-IManager::IManager()
+IHardwareManager::IHardwareManager()
 {
 }
 
-IManager::~IManager()
+IHardwareManager::~IHardwareManager()
 {
     this->removeAll();
 }
 
-void IManager::add(const std::shared_ptr< IResource >& _resource)
+void IHardwareManager::add(const std::shared_ptr< IResource >& _resource)
 {
     if(m_resources.find(_resource->getName()) != m_resources.end())
     {
@@ -23,13 +23,13 @@ void IManager::add(const std::shared_ptr< IResource >& _resource)
     m_resources.emplace(_resource->getName(), _resource);
 }
 
-std::shared_ptr< IResource > IManager::get(const std::string& _name) const
+std::shared_ptr< IResource > IHardwareManager::get(const std::string& _name) const
 {
     typename ResourceList::const_iterator it = m_resources.find(_name);
     return it != m_resources.end() ? it->second : nullptr;
 }
 
-void IManager::removeAll()
+void IHardwareManager::removeAll()
 {
     typename ResourceList::iterator itBeg, itEnd;
     itEnd = m_resources.end();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IManager.hpp"
+#include "OpenGLNgine/Core/IHardwareManager.hpp"
 #include "OpenGLNgine/Hardware/HardwareIndexBuffer.hpp"
 #include "OpenGLNgine/Hardware/HardwareVertexBuffer.hpp"
 #include "OpenGLNgine/Hardware/IndexData.hpp"
@@ -17,7 +17,7 @@ namespace Hardware
 {
 
 class HardwareBufferManager final :
-        public ::Core::IManager
+        public ::Core::IHardwareManager
 {
 
     friend ::Render::RenderWindow;

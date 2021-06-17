@@ -5,7 +5,7 @@
 namespace Core
 {
 
-class IManager;
+class IHardwareManager;
 
 /**
  * @brief This interface allows to manage a resource for the render.

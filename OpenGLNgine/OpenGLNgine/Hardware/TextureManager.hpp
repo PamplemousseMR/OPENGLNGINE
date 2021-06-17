@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpenGLNgine/Core/IManager.hpp"
+#include "OpenGLNgine/Core/IHardwareManager.hpp"
 #include "OpenGLNgine/Hardware/Texture.hpp"
 
 namespace Render
@@ -11,7 +11,7 @@ namespace Render
 namespace Hardware
 {
 
-class TextureManager final : public Core::IManager
+class TextureManager final : public Core::IHardwareManager
 {
 
     friend ::Render::RenderWindow;
