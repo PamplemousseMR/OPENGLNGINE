@@ -21,7 +21,7 @@ public:
     virtual ~IHardwareResource();
 
     /// Stores the manager of this resource.
-    IHardwareManager* const m_manager;
+    const IHardwareManager* const m_manager;
 
 protected:
 
@@ -30,7 +30,7 @@ protected:
      * @param _manager The manager of this resource.
      * @param _name The name of the ressouce.
      */
-    IHardwareResource(IHardwareManager* const _manager, const std::string& _name);
+    IHardwareResource(const IHardwareManager* const _manager, const std::string& _name);
 
 };
 

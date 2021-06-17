@@ -6,7 +6,7 @@
 namespace Core
 {
 
-IHardwareResource::IHardwareResource(IHardwareManager* const _manager, const std::string& _name):
+IHardwareResource::IHardwareResource(const IHardwareManager* const _manager, const std::string& _name) :
     IResource(_name),
     m_manager(_manager)
 {

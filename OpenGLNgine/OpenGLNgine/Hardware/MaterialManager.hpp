@@ -32,7 +32,7 @@ public:
     MaterialPtr getByName(const std::string& _name) const;
 private:
 
-    MaterialManager();
+    MaterialManager(const ::Render::RenderWindow* const _renderWindow);
 
     ~MaterialManager();
 

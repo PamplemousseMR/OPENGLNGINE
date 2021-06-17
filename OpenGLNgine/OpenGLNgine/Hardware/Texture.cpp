@@ -213,9 +213,8 @@ namespace Hardware
     }
 }
 
-Texture::Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type):
+Texture::Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type) :
     Core::IHardwareResource(_manager, _name),
-    m_manager(_manager),
     m_texture(getType(_type))
 {
 }

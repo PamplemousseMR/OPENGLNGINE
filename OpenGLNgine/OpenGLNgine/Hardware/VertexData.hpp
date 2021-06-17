@@ -59,8 +59,6 @@ private:
 
     ~VertexData();
 
-    HardwareBufferManager* const m_manager;
-
 };
 
 inline ::GL::DRAWCALL_MODE VertexData::getRenderType() const

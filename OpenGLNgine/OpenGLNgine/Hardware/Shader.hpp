@@ -52,8 +52,6 @@ private:
 
     Shader(ProgramManager* const _manager, const std::string& _name, SHADER_TYPE _type);
 
-    ProgramManager* const m_manager;
-
     ::GL::Shader m_shader;
 
 };

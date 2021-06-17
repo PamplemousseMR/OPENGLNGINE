@@ -5,8 +5,10 @@
 namespace Core
 {
 
-IHardwareManager::IHardwareManager()
+IHardwareManager::IHardwareManager(const ::Render::RenderWindow* const _renderWindow) :
+    m_renderWindow(_renderWindow)
 {
+    GLNGINE_ASSERT_IF(!_renderWindow, "The render window shall not be nullptr");
 }
 
 IHardwareManager::~IHardwareManager()

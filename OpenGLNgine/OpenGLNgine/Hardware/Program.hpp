@@ -78,8 +78,6 @@ private:
 
     Program(ProgramManager* const _manager, const std::string& _name);
 
-    ProgramManager* const m_manager;
-
     ::GL::Program m_program;
 
     ShaderPtr m_vertexShader { nullptr };

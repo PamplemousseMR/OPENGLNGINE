@@ -162,8 +162,6 @@ private:
 
     Texture(TextureManager* const _manager, const std::string& _name, TEXTURE_TYPE _type);
 
-    TextureManager* const m_manager;
-
     bool m_mipMapsGenerated { false };
 
     ::GL::Texture m_texture;

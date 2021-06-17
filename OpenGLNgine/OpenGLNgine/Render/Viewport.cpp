@@ -12,7 +12,7 @@ void Viewport::setViewport(float _x, float _y, float _width, float _height)
     m_viewport = {_x, _y, _width, _height};
 }
 
-Viewport::Viewport(RenderWindow* const _renderWindow, Camera* const _camera, const std::string& _name):
+Viewport::Viewport(RenderWindow* const _renderWindow, Camera* const _camera, const std::string& _name) :
     IResource(_name),
     m_renderWindow(_renderWindow),
     m_camera(_camera)

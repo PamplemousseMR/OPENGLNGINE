@@ -32,7 +32,7 @@ public:
 
 private:
 
-    TextureManager();
+    TextureManager(const ::Render::RenderWindow* const _renderWindow);
 
     ~TextureManager();
 

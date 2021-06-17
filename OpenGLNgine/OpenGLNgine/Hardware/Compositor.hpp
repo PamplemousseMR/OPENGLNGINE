@@ -46,8 +46,6 @@ private:
 
     Compositor(CompositorManager* const _manager, const std::string& _name);
 
-    CompositorManager* const m_manager;
-
     CompositorTargetPassList m_compositorTargetPasses {};
 
 };

@@ -55,7 +55,8 @@ void HardwareBufferManager::destroyAllIndexData()
     m_vertexData.clear();
 }
 
-HardwareBufferManager::HardwareBufferManager()
+HardwareBufferManager::HardwareBufferManager(const ::Render::RenderWindow* const _renderWindow) :
+    ::Core::IHardwareManager(_renderWindow)
 {
 }
 

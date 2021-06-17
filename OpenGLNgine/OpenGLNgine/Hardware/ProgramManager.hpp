@@ -34,7 +34,7 @@ public:
 
 private:
 
-    ProgramManager();
+    ProgramManager(const ::Render::RenderWindow* const _renderWindow);
 
     ~ProgramManager();
 

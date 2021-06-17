@@ -10,8 +10,8 @@ RenderTargetPtr RenderTargetManager::create(const std::string& _name, unsigned _
     return ptr;
 }
 
-RenderTargetManager::RenderTargetManager():
-    ::Core::IHardwareManager()
+RenderTargetManager::RenderTargetManager(const ::Render::RenderWindow* const _renderWindow) :
+    ::Core::IHardwareManager(_renderWindow)
 {
 }
 

@@ -474,7 +474,7 @@ void Mesh::loadTexture(const aiMaterial* const _aiMaterial, ::aiTextureType _typ
     }
 }
 
-Mesh::Mesh(SceneManager* const _sceneManager, const std::string& _name):
+Mesh::Mesh(SceneManager* const _sceneManager, const std::string& _name) :
     Component(_sceneManager, _name)
 {
     GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");

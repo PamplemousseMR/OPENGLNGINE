@@ -3,7 +3,7 @@
 namespace Hardware
 {
 
-CompositorPass::CompositorPass(COMPOSITORPASS_TYPE _type):
+CompositorPass::CompositorPass(COMPOSITORPASS_TYPE _type) :
     m_type(_type)
 {
 }

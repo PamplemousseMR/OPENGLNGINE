@@ -133,7 +133,7 @@ void SceneNode::_notifyMeshDestroyed(const std::string& _name)
     m_attachedMeshes.erase(it);
 }
 
-SceneNode::SceneNode(SceneManager* const _sceneManager):
+SceneNode::SceneNode(SceneManager* const _sceneManager) :
     IResource("OpenGLNgine/Root"),
     m_sceneManager(_sceneManager),
     m_isRootSCeneNode(true)
@@ -141,7 +141,7 @@ SceneNode::SceneNode(SceneManager* const _sceneManager):
     GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 }
 
-SceneNode::SceneNode(SceneManager* const _sceneManager, SceneNode* const _parent, const std::string& _name):
+SceneNode::SceneNode(SceneManager* const _sceneManager, SceneNode* const _parent, const std::string& _name) :
     IResource(_name),
     m_sceneManager(_sceneManager),
     m_isRootSCeneNode(false),
@@ -150,7 +150,7 @@ SceneNode::SceneNode(SceneManager* const _sceneManager, SceneNode* const _parent
     GLNGINE_ASSERT_IF(!_sceneManager, "The scene manager shall not be null");
 }
 
-SceneNode::SceneNode(SceneManager* const _sceneManager, const std::string& _name):
+SceneNode::SceneNode(SceneManager* const _sceneManager, const std::string& _name) :
     SceneNode(_sceneManager, nullptr, _name)
 {
 }

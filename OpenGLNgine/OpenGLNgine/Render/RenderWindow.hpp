@@ -408,21 +408,6 @@ private:
 
     void renderScene(const SceneNode* const _node, const Camera* const _cam) const;
 
-    /// Stores all listener.
-    RenderWindowListeners m_listeners {};
-
-    /// Contains the monitor to use for full screen mode
-    GLFWmonitor* m_monitor { nullptr };
-
-    /// Containms the the render window.
-    GLFWwindow* m_window { nullptr };
-
-    /// Defines the width of the window.
-    int m_width { 0 };
-
-    /// Defines the height of the window.
-    int m_height { 0 };
-
     /// Stores the compositor manager.
     ::Hardware::CompositorManager m_compositorManager;
 
@@ -449,6 +434,21 @@ private:
 
     /// Stores all compositor chain
     CompositorChainList m_compositorChains {};
+
+    /// Stores all listener.
+    RenderWindowListeners m_listeners {};
+
+    /// Contains the monitor to use for full screen mode
+    GLFWmonitor* m_monitor { nullptr };
+
+    /// Containms the the render window.
+    GLFWwindow* m_window { nullptr };
+
+    /// Defines the width of the window.
+    int m_width { 0 };
+
+    /// Defines the height of the window.
+    int m_height { 0 };
 
     /// Stores the number of sample of textures attached to the frame buffer.
     const unsigned m_sample;

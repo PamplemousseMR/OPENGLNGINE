@@ -6,7 +6,7 @@
 namespace Render
 {
 
-Component::Component(SceneManager* const _sceneManager, const std::string& _name):
+Component::Component(SceneManager* const _sceneManager, const std::string& _name) :
     IResource(_name),
     m_sceneManager(_sceneManager)
 {

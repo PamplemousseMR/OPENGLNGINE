@@ -63,8 +63,6 @@ private:
 
     RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample);
 
-    RenderTargetManager* const m_manager;
-
     ::GL::FrameBuffer m_frameBuffer {};
 
     TextureList m_textures {};

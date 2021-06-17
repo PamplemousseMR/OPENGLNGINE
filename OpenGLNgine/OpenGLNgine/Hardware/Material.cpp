@@ -8,9 +8,8 @@
 namespace Hardware
 {
 
-Material::Material(MaterialManager* const _manager, const std::string& _name):
-    ::Core::IHardwareResource(_manager, _name),
-    m_manager(_manager)
+Material::Material(MaterialManager* const _manager, const std::string& _name) :
+    ::Core::IHardwareResource(_manager, _name)
 {
     this->createPass();
 }

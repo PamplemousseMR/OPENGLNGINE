@@ -10,8 +10,8 @@ CompositorPtr CompositorManager::create(const std::string& _name)
     return ptr;
 }
 
-CompositorManager::CompositorManager():
-    ::Core::IHardwareManager()
+CompositorManager::CompositorManager(const ::Render::RenderWindow* const _renderWindow) :
+    ::Core::IHardwareManager(_renderWindow)
 {
 }
 

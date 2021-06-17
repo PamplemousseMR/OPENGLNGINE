@@ -44,8 +44,6 @@ private:
 
     Material(MaterialManager* const _manager, const std::string& _name);
 
-    MaterialManager* const m_manager;
-
     PassList m_passes {};
 
 };

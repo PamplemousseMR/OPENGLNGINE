@@ -624,6 +624,12 @@ void keyCallback(GLFWwindow* _window, int _key, int, int _action, int)
 
 RenderWindow::RenderWindow(const std::string& _name, int _width, int _height, int _sample) :
     IResource(_name),
+    m_compositorManager(this),
+    m_hardwareBufferManager(this),
+    m_materialManager(this),
+    m_programManager(this),
+    m_renderTargetManager(this),
+    m_textureManager(this),
     m_width(_width),
     m_height(_height),
     m_sample(_sample)

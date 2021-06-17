@@ -50,7 +50,7 @@ private:
 
     typedef std::set<IndexData*> IndexDataList;
 
-    HardwareBufferManager();
+    HardwareBufferManager(const ::Render::RenderWindow* const _renderWindow);
 
     ~HardwareBufferManager();
 

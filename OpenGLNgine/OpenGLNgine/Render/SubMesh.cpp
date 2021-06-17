@@ -6,7 +6,7 @@
 namespace Render
 {
 
-SubMesh::SubMesh(Mesh* const _mesh, const std::string& _name):
+SubMesh::SubMesh(Mesh* const _mesh, const std::string& _name) :
     IResource(_name),
     m_parent(_mesh)
 {

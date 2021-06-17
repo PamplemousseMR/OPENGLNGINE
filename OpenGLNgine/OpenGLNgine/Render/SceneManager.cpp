@@ -119,7 +119,7 @@ void SceneManager::destroyAllLights()
     }
 }
 
-SceneManager::SceneManager(RenderWindow* const _renderWindow, const std::string& _name):
+SceneManager::SceneManager(RenderWindow* const _renderWindow, const std::string& _name) :
     IResource(_name),
     m_rootSceneNode(new SceneNode(this)),
     m_renderWindow(_renderWindow)

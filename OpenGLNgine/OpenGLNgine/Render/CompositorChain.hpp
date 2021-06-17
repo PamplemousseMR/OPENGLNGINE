@@ -30,7 +30,7 @@ public:
 
     inline Viewport* getViewport() const;
 
-    inline void addCompositor(const ::Hardware::CompositorPtr& _compositor);
+    void addCompositor(const ::Hardware::CompositorPtr& _compositor);
 
     inline const CompositorList& getCompositors() const;
 
@@ -49,11 +49,6 @@ private:
 inline Viewport* CompositorChain::getViewport() const
 {
     return m_viewport;
-}
-
-inline void CompositorChain::addCompositor(const ::Hardware::CompositorPtr& _compositor)
-{
-    m_compositors.push_back(_compositor);
 }
 
 inline const CompositorChain::CompositorList& CompositorChain::getCompositors() const

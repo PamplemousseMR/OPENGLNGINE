@@ -31,7 +31,7 @@ unsigned VertexElement::getTypeCount(VERTEXELEMENT_TYPE _type)
     }
 }
 
-VertexElement::VertexElement(unsigned _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic):
+VertexElement::VertexElement(unsigned _source, int _offsetInBytes, VERTEXELEMENT_TYPE _type, VERTEXELEMENT_SEMANTIC _semantic) :
     m_source(_source),
     m_offsetInBytes(_offsetInBytes),
     m_type(_type),

@@ -49,8 +49,6 @@ protected:
 
     virtual ~IHardwareBuffer();
 
-    HardwareBufferManager* const m_manager;
-
 private:
 
     static ::GL::DATABUFFER_USAGE getUsage(HARDWAREBUFFER_USAGE _usage);

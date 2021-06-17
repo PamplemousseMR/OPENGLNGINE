@@ -31,7 +31,7 @@ public:
 
 private:
 
-    CompositorManager();
+    CompositorManager(const ::Render::RenderWindow* const _renderWindow);
 
     ~CompositorManager();
 

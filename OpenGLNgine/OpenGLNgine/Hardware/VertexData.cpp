@@ -38,8 +38,7 @@ namespace Hardware
 
 VertexData::VertexData(HardwareBufferManager* const _manager) :
     m_vertexDeclaration(new VertexDeclaration()),
-    m_vertexBufferBinding(new VertexBufferBinding()),
-    m_manager(_manager)
+    m_vertexBufferBinding(new VertexBufferBinding())
 {
     GLNGINE_ASSERT_IF(!_manager, "The hardware buffer manager shall not be null");
 }

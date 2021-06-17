@@ -31,7 +31,7 @@ public:
 
 private:
 
-    RenderTargetManager();
+    RenderTargetManager(const ::Render::RenderWindow* const _renderWindow);
 
     ~RenderTargetManager();
 

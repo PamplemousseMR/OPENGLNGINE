@@ -117,10 +117,9 @@ void RenderTarget::pushTexture(TEXTURE_INTERNAL_FORMAT _format)
     m_dirty = true;
 }
 
-RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample):
+RenderTarget::RenderTarget(RenderTargetManager* const _manager, const std::string& _name, unsigned _sample) :
     ::Core::IHardwareResource(_manager, _name),
-    m_sample(_sample),
-    m_manager(_manager)
+    m_sample(_sample)
 {
 }
 

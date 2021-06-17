@@ -6,9 +6,8 @@
 namespace Hardware
 {
 
-Program::Program(ProgramManager* const _manager, const std::string& _name):
-    ::Core::IHardwareResource(_manager, _name),
-    m_manager(_manager)
+Program::Program(ProgramManager* const _manager, const std::string& _name) :
+    ::Core::IHardwareResource(_manager, _name)
 {
 }
 

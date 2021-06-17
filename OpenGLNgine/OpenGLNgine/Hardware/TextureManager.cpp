@@ -15,8 +15,8 @@ TexturePtr TextureManager::getByName(const std::string& _name) const
     return std::dynamic_pointer_cast< Texture >(this->get(_name));
 }
 
-TextureManager::TextureManager():
-    Core::IHardwareManager()
+TextureManager::TextureManager(const ::Render::RenderWindow* const _renderWindow) :
+    Core::IHardwareManager(_renderWindow)
 {
 }
 
