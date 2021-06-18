@@ -601,6 +601,7 @@ void Texture::setUWrap(TEXTURE_WRAP _mode) const
             break;
         case TT_2DMULTISAMPLE :
             glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, _mode);
+            break;
         default:
             GLNGINE_EXCEPTION("Unhandle wrap mode");
         }
@@ -627,6 +628,7 @@ void Texture::setVWrap(TEXTURE_WRAP _mode) const
             break;
         case TT_2DMULTISAMPLE :
             glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, _mode);
+            break;
         default:
             GLNGINE_EXCEPTION("Unhandle wrap mode");
         }

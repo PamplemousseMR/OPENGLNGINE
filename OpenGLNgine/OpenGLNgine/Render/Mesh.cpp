@@ -346,10 +346,7 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
             subMesh->m_vertexData->m_vertexBufferBinding->setBinding(::Hardware::VES_BITANGENT, tangentBuffer);
         }
 
-        if(mesh->mMaterialIndex >= 0)
-        {
-            this->loadMaterial(subMesh, _scene, mesh, _directory);
-        }
+        this->loadMaterial(subMesh, _scene, mesh, _directory);
     }
 
     for(unsigned i=0; i<_node->mNumChildren; ++i)
