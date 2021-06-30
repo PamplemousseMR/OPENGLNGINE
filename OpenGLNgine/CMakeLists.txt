@@ -52,6 +52,7 @@ set(GLNGINE_SRC
     ${GLNGINE_SOURCE}/Hardware/VertexData.cpp
     ${GLNGINE_SOURCE}/Hardware/VertexDeclaration.cpp
     ${GLNGINE_SOURCE}/Hardware/VertexElement.cpp
+    ${GLNGINE_SOURCE}/Render/BoundingBox.cpp
     ${GLNGINE_SOURCE}/Render/Camera.cpp
     ${GLNGINE_SOURCE}/Render/Component.cpp
     ${GLNGINE_SOURCE}/Render/CompositorChain.cpp
@@ -108,6 +109,7 @@ set(GLNGINE_HEADER
     ${GLNGINE_SOURCE}/Hardware/VertexData.hpp
     ${GLNGINE_SOURCE}/Hardware/VertexDeclaration.hpp
     ${GLNGINE_SOURCE}/Hardware/VertexElement.hpp
+    ${GLNGINE_SOURCE}/Render/BoundingBox.hpp
     ${GLNGINE_SOURCE}/Render/Camera.hpp
     ${GLNGINE_SOURCE}/Render/Component.hpp
     ${GLNGINE_SOURCE}/Render/CompositorChain.hpp

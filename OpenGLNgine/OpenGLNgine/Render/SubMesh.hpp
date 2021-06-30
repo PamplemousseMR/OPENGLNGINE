@@ -4,6 +4,7 @@
 #include "OpenGLNgine/Hardware/IndexData.hpp"
 #include "OpenGLNgine/Hardware/Material.hpp"
 #include "OpenGLNgine/Hardware/VertexData.hpp"
+#include "OpenGLNgine/Render/BoundingBox.hpp"
 
 namespace Render
 {
@@ -39,9 +40,11 @@ public:
 
     Mesh* const m_parent;
 
+    BoundingBox m_boundingBox;
+
 private:
 
-    SubMesh(Mesh* const _mesh, const std::string& _name);
+    SubMesh(Mesh* const _parent, const std::string& _name);
 
     ~SubMesh();
 

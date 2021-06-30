@@ -149,7 +149,14 @@ bool Mesh::load(const std::filesystem::path& _path)
     GLNGINE_ASSERT_IF(!std::filesystem::exists(_path), std::filesystem::is_regular_file(_path));
 
     ::Assimp::Importer importer;
-    const ::aiScene* const scene = importer.ReadFile(_path.u8string(), aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_FlipUVs | aiProcess_SortByPType | aiProcess_PreTransformVertices | aiProcess_CalcTangentSpace);
+    const ::aiScene* const scene = importer.ReadFile(_path.u8string(),
+                                                     aiProcess_Triangulate |
+                                                     aiProcess_GenNormals |
+                                                     aiProcess_FlipUVs |
+                                                     aiProcess_SortByPType |
+                                                     aiProcess_PreTransformVertices |
+                                                     aiProcess_CalcTangentSpace |
+                                                     aiProcess_GenBoundingBoxes);
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         return false;
@@ -345,6 +352,9 @@ void Mesh::loadNode(const ::aiNode* const _node, const ::aiScene* const _scene, 
 
             subMesh->m_vertexData->m_vertexBufferBinding->setBinding(::Hardware::VES_BITANGENT, tangentBuffer);
         }
+
+        subMesh->m_boundingBox.m_min = ::glm::vec3(mesh->mAABB.mMin.x, mesh->mAABB.mMin.y ,mesh->mAABB.mMin.z);
+        subMesh->m_boundingBox.m_max = ::glm::vec3(mesh->mAABB.mMax.x, mesh->mAABB.mMax.y ,mesh->mAABB.mMax.z);
 
         this->loadMaterial(subMesh, _scene, mesh, _directory);
     }

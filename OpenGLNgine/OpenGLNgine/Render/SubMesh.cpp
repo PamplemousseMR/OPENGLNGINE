@@ -15,11 +15,11 @@ void SubMesh::setMaterial(::Hardware::MaterialPtr _material)
     m_material = _material;
 }
 
-SubMesh::SubMesh(Mesh* const _mesh, const std::string& _name) :
+SubMesh::SubMesh(Mesh* const _parent, const std::string& _name) :
     IResource(_name),
-    m_parent(_mesh)
+    m_parent(_parent)
 {
-    GLNGINE_ASSERT_IF(!_mesh, "The parent mesh shall not be null");
+    GLNGINE_ASSERT_IF(!_parent, "The parent mesh shall not be null");
 }
 
 SubMesh::~SubMesh()
