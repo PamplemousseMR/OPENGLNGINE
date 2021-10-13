@@ -154,10 +154,10 @@ target_compile_options(${GLNGINE_LIBRARY_NAME} PRIVATE
 #=======================================
 
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE OpenGL::GL)
-target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glfw::glfw)
-target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC GLEW::GLEW)
-target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glm::glm)
-target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE soil2::soil2)
+target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC glfw)
+target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC GLEW::glew)
+target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC GLM::GLM)
+target_link_libraries(${GLNGINE_LIBRARY_NAME} PRIVATE SOIL2::SOIL2)
 target_link_libraries(${GLNGINE_LIBRARY_NAME} PUBLIC assimp::assimp)
 
 if(${OpenMP_FOUND})
