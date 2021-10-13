@@ -9,20 +9,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- [Conan](https://conan.io/) : The C / C++ Package Manager for Developers.
-- [OpenGL](https://www.opengl.org/) : An environment for developing portable, interactive 2D and 3D graphics applications.
-- [glew](http://glew.sourceforge.net/index.html) : The OpenGL Extension Wrangler Library.
-- [glfw](http://www.glfw.org/) : It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
-- [glm](https://glm.g-truc.net/0.9.9/index.html) : A mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
-- [SOIL](https://www.lonesock.net/soil.html) : A library used primarily for uploading textures into OpenGL.
-
-### Generation
-
-Add bincrafters remote : `conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan`
-
-Use conan to download/build libraries : `conan install -s build_type=Release -if C:\build_release .`
-
-Generate using cmake in the same build directory than conan: `cmake`.
+- [Conan](https://conan.io/): The C / C++ Package Manager for Developers.
+- [OpenGL](https://www.opengl.org/): An environment for developing portable, interactive 2D and 3D graphics applications.
+- [glew](http://glew.sourceforge.net/index.html): The OpenGL Extension Wrangler Library.
+- [glfw](http://www.glfw.org/): It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
+- [glm](https://github.com/g-truc/glm) : A mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
+- [SOIL2](https://github.com/SpartanJ/SOIL2): A tiny C library used primarily for uploading textures into OpenGL. into OpenGL.
+- [assimp](https://assimp.org/): The official Open-Asset-Importer-Library Repository. Loads 40+ 3D-file-formats into one unified and clean data structure.
 
 ## Documentation
 
