@@ -82,49 +82,52 @@ jobs:
           sudo pip3 install conan
           sudo pip3 install --upgrade urllib3
           sudo pip3 install --upgrade jinja2
+          cd ${{github.workspace}}
           git clone https://github.com/PamplemousseMR/conan-recipes.git
+          cd conan-recipes
+          git checkout v4.3.0
 
       - name: Glew
         run: |
-          cd conan-recipes/conan-glew
-          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 2.2.0@pamplemousseMR/stable
-          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 2.2.0@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-glew
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 2.2.0@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 2.2.0@pamplemousseMR/stable
 
       - name: Glfw
         run: |
-          cd conan-recipes/conan-glfw
-          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 3.3.4@pamplemousseMR/stable
-          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 3.3.4@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-glfw
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 3.3.4@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 3.3.4@pamplemousseMR/stable
 
       - name: Glm
         run: |
-          cd conan-recipes/conan-glm
-          conan create -s build_type=Debug  -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 0.9.9.8@pamplemousseMR/stable
-          conan test -s build_type=Release  -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} test_package_0 glm/0.9.9.8@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-glm
+          conan create -s build_type=Debug  -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 0.9.9.8@pamplemousseMR/stable
+          conan test -s build_type=Release  -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 test_package_0 glm/0.9.9.8@pamplemousseMR/stable
           
       - name: Soil2
         run: |
-          cd conan-recipes/conan-soil2
-          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.20@pamplemousseMR/stable
-          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.20@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-soil2
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 1.20@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 1.20@pamplemousseMR/stable
 
       - name: Zlib
         run: |
-          cd conan-recipes/conan-zlib
-          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2.11@pamplemousseMR/stable
-          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2.11@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-zlib
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 1.2.11@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 1.2.11@pamplemousseMR/stable
 
       - name: Irrxml
         run: |
-          cd conan-recipes/conan-irrxml
-          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2@pamplemousseMR/stable
-          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-irrxml
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 1.2@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 1.2@pamplemousseMR/stable
 
       - name: Assimp
         run: |
-          cd conan-recipes/conan-assimp
-          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 5.0.1@pamplemousseMR/stable
-          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 5.0.1@pamplemousseMR/stable
+          cd ${{github.workspace}}/conan-recipes/conan-assimp
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 5.0.1@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} -s compiler.libcxx=libstdc++11 . 5.0.1@pamplemousseMR/stable
           
       - name: Configure
         run: |

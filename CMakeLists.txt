@@ -30,7 +30,8 @@ if(OPENGLNGINE_CONAN_BUILD_DEPENDENCIES)
                             "glfw/3.3.4@${OPENGLNGINE_CONAN_USER_AND_CHANNEL}"
                             "soil2/1.20@${OPENGLNGINE_CONAN_USER_AND_CHANNEL}"
                             "assimp/5.0.1@${OPENGLNGINE_CONAN_USER_AND_CHANNEL}"
-                          OPTIONS "*:shared=True"
+                          OPTIONS 
+                            "*:shared=True"
                           GENERATORS 
                             "cmake"
                             "cmake_find_package"

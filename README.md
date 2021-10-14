@@ -3,6 +3,10 @@
 
 OpenGL sandbox.
 
+## CI
+
+![Build Status](https://github.com/PamplemousseMR/OPENGLNGINE/actions/workflows/build.yml/badge.svg)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
