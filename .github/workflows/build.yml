@@ -1,0 +1,137 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.OS }}
+
+    strategy:
+      matrix:
+        name: [ubuntu_18-04_g++5, ubuntu_18-04_g++6, ubuntu_18-04_g++7, ubuntu_18-04_g++8, 
+               ubuntu_20-04_g++7, ubuntu_20-04_g++8, ubuntu_20-04_g++9, ubuntu_20-04_g++10]
+        include:
+        - name: ubuntu_18-04_g++5
+          OS: ubuntu-18.04
+          COMPILER: g++-5
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 5
+
+        - name: ubuntu_18-04_g++6
+          OS: ubuntu-18.04
+          COMPILER: g++-6
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 6
+
+        - name: ubuntu_18-04_g++7
+          OS: ubuntu-18.04
+          COMPILER: g++-7
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 7
+
+        - name: ubuntu_18-04_g++8
+          OS: ubuntu-18.04
+          COMPILER: g++-8
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 8
+
+        - name: ubuntu_20-04_g++7
+          OS: ubuntu-20.04
+          COMPILER: g++-7
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 7
+
+        - name: ubuntu_20-04_g++8
+          OS: ubuntu-20.04
+          COMPILER: g++-8
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 8
+
+        - name: ubuntu_20-04_g++9
+          OS: ubuntu-20.04
+          COMPILER: g++-9
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 9
+
+        - name: ubuntu_20-04_g++10
+          OS: ubuntu-20.04
+          COMPILER: g++-10
+          COMPILER_NAME: gcc
+          COMPILER_VERSION: 10
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Package
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+              sudo apt-get update
+              sudo apt-get --assume-yes install ${{ matrix.COMPILER }}
+              sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${{ matrix.COMPILER_VERSION }} 50
+              sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${{ matrix.COMPILER_VERSION }} 50
+              sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libglu1-mesa-dev python3-setuptools
+          else
+              echo "$RUNNER_OS not supported"
+              exit 1
+          fi
+
+      - name: Conan
+        run: |
+          sudo pip3 install conan
+          sudo pip3 install --upgrade urllib3
+          sudo pip3 install --upgrade jinja2
+          git clone https://github.com/PamplemousseMR/conan-recipes.git
+
+      - name: Glew
+        run: |
+          cd conan-recipes/conan-glew
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 2.2.0@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 2.2.0@pamplemousseMR/stable
+
+      - name: Glfw
+        run: |
+          cd conan-recipes/conan-glfw
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 3.3.4@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 3.3.4@pamplemousseMR/stable
+
+      - name: Glm
+        run: |
+          cd conan-recipes/conan-glm
+          conan create -s build_type=Debug  -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 0.9.9.8@pamplemousseMR/stable
+          conan test -s build_type=Release  -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} test_package_0 glm/0.9.9.8@pamplemousseMR/stable
+          
+      - name: Soil2
+        run: |
+          cd conan-recipes/conan-soil2
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.20@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.20@pamplemousseMR/stable
+
+      - name: Zlib
+        run: |
+          cd conan-recipes/conan-zlib
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2.11@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2.11@pamplemousseMR/stable
+
+      - name: Irrxml
+        run: |
+          cd conan-recipes/conan-irrxml
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 1.2@pamplemousseMR/stable
+
+      - name: Assimp
+        run: |
+          cd conan-recipes/conan-assimp
+          conan create -o *:shared=True -s build_type=Debug -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 5.0.1@pamplemousseMR/stable
+          conan create -o *:shared=True -s build_type=Release -s compiler=${{ matrix.COMPILER_NAME }} -s compiler.version=${{ matrix.COMPILER_VERSION }} . 5.0.1@pamplemousseMR/stable
+          
+      - name: Configure
+        run: |
+          cmake -B ${{github.workspace}}/build_debug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=${{ matrix.COMPILER }} -DOPENGLNGINE_CONAN_BUILD_DEPENDENCIES=True -DOPENGLNGINE_CONAN_USER_AND_CHANNEL=pamplemousseMR/stable
+          cmake -B ${{github.workspace}}/build_release -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=${{ matrix.COMPILER }} -DOPENGLNGINE_CONAN_BUILD_DEPENDENCIES=True -DOPENGLNGINE_CONAN_USER_AND_CHANNEL=pamplemousseMR/stable
+
+      - name: Build
+        run: |
+          cmake --build ${{github.workspace}}/build_debug
+          cmake --build ${{github.workspace}}/build_release
