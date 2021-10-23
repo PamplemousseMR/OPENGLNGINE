@@ -4,6 +4,8 @@
 
 #include <SOIL2/SOIL2.h>
 #include <iostream>
+#include <vector>
+
 namespace GL
 {
 

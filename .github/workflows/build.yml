@@ -10,38 +10,14 @@ jobs:
 
     strategy:
       matrix:
-        name: [ubuntu_18-04_g++5, ubuntu_18-04_g++6, ubuntu_18-04_g++7, ubuntu_18-04_g++8, 
-               ubuntu_20-04_g++7, ubuntu_20-04_g++8, ubuntu_20-04_g++9, ubuntu_20-04_g++10]
+        name: [ubuntu_18-04_g++8, 
+               ubuntu_20-04_g++8, ubuntu_20-04_g++9, ubuntu_20-04_g++10]
         include:
-        - name: ubuntu_18-04_g++5
-          OS: ubuntu-18.04
-          COMPILER: g++-5
-          COMPILER_NAME: gcc
-          COMPILER_VERSION: 5
-
-        - name: ubuntu_18-04_g++6
-          OS: ubuntu-18.04
-          COMPILER: g++-6
-          COMPILER_NAME: gcc
-          COMPILER_VERSION: 6
-
-        - name: ubuntu_18-04_g++7
-          OS: ubuntu-18.04
-          COMPILER: g++-7
-          COMPILER_NAME: gcc
-          COMPILER_VERSION: 7
-
         - name: ubuntu_18-04_g++8
           OS: ubuntu-18.04
           COMPILER: g++-8
           COMPILER_NAME: gcc
           COMPILER_VERSION: 8
-
-        - name: ubuntu_20-04_g++7
-          OS: ubuntu-20.04
-          COMPILER: g++-7
-          COMPILER_NAME: gcc
-          COMPILER_VERSION: 7
 
         - name: ubuntu_20-04_g++8
           OS: ubuntu-20.04
